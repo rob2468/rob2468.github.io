@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post 
 title: UML中类及其关系的符号表示
 ---
 
