@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: post
 title: 视图控制对象的视图的生命周期
 ---
 
