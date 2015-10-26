@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 在UIScrollView中使用Constraints
+title: 在UIScrollView中使用Autolayout
 ---
 
 # {{ page.title }}
