@@ -49,6 +49,10 @@ Constraints 2：ContainerView的左右与UIScrollView的父视图贴边。该约
 
 ContainerView的子视图根据业务需要，相对于ContainerView进行布局。ContainerView竖直方向的布局根据内容视图的布局确定，同时也确定了UIScrollView中contentSize的竖直布局。
 
+## 四、Demo
+
+[ConstraintsInScrollView](https://github.com/rob2468/ConstraintsInScrollView)
+
 ### 参考文献:
 
 "AutoLayout深入浅出三[相遇Scrollview]", [https://grayluo.github.io/WeiFocusIo/autolayout/2015/01/27/autolayout3/](https://grayluo.github.io/WeiFocusIo/autolayout/2015/01/27/autolayout3/)
