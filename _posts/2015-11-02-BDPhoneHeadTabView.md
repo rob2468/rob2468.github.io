@@ -15,7 +15,7 @@ title: Head Tab View
 
 ## 一、前言
 
-在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 6，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了Head Tab View，使用autolayout方式实现布局。
+在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了Head Tab View，使用autolayout方式实现布局。
 
 ## 二、代码结构
 
