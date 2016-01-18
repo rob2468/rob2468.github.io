@@ -55,9 +55,38 @@ UIScrollView中有如下3个属性，通过设置这些属性，能够实现内�
 
 ## 四、经验分享
 
-图片查看器支持两种方式缩放图片，双击和手指捏合。
+图片查看器支持两种方式缩放图片，双击和手指捏合。在scrollViewWillBeginZooming:withView:方法中通过语句`scrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateBegan`判断缩放操作是由代码执行的，还是由用户捏合执行的。
+
+图2是双击缩放图片时的处理流程图。
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%" /></div>
+
+<div align="center">图2. 双击缩放图片处理流程</div>
+
+图片刚加载时，根据需求计算并设置Scroll View contentInset、contentSize和Image View frame。onDoubleTappedGestureRecognizer:是自定义的响应双击手势的方法，其中执行的操作如图2所示。
+
+通过此种方式缩放图片，在图片缩放的过程中不会有其它事件的干预，因此在缩放操作刚开始时便已知道缩放结束后的最终状态。如图2所示，在用户双击图片后计算出图片缩放最终状态下的Scroll View的contentInset，并修改Scroll View的contentInset。因为修改Scroll View的contentInset会导致contentOffset发生改变，所以需要先存储contentOffset，设置好contentInset后再恢复contentOffset。将Scroll View的属性修改为其最终状态的值后，通过setZoomScale:animated:方法或者zoomToRect:animated:方法缩放图片。
+
+图3是手指捏合缩放图片时的处理流程。
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%" /></div>
+
+<div align="center">图3. 手指捏合缩放图片处理流程</div>
+
+图3图片刚加载时的处理流程和图2相同。
+
+如上文“三、UIScrollView的zoom特性”中介绍，scrollViewDidZoom:方法在用户捏合缩放图片的过程中会被持续不断的调用，对应图3中的第1部分。第1部分的处理是确保图片在缩放时，边缘的空白能够始终被contentInset填充。否则用户捏合图片结束后，获取出的contentOffset值有时会不正确。
+
+图3中的第2部分和第3部分执行相同的处理代码。用户捏合图片松手后，图片所处的位置可能不是最佳位置，该部分代码负责最后的布局操作。首先计算出最佳的Scroll View contentInset和contentOffset，然后在动画block中设置contentInset和contentOffset。
+
+图3第2部分处理分支对应的情况是，用户捏合图片松手，并且此时图片的缩放程度超过了图片缩放极限。图3第3部分对应的情况是，用户捏合图片松手，并且此时图片的缩放程度没有超过图片的缩放极限。
 
 ## 五、总结
 
+最后是自己的两点总结。
+
+1. 一句有名的话是“不要重复造轮子”。在初接触图片查看器的需求时，觉得非常复杂，但是实际上UIScrollView的zoom特性已经能帮助我们实现大部分的功能。
+
+2. 花点时间研究将要使用的控件能少走许多弯路。一些奇技淫巧可能也能解决问题，但是实现方案会变的复杂。
 
 {{ page.date | date_to_string }}
