@@ -2,12 +2,16 @@
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <link rel="stylesheet" href="/css/default.css" type="text/css" />
+        <link rel="stylesheet" href="/css/post.css" type="text/css" />
         <title>{{ page.title }}</title>
     </head>
     <body>
+        <div class="header"></div>
+
+        <div class="main">
         {{ content }}
 
+        <div class="comment">
         <div id="disqus_thread"></div>
         <script>
             /**
@@ -30,6 +34,12 @@
             })();
         </script>
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        </div><!-- comment -->
+        </div><!-- main -->
+
+        <div class="footer">
+            <p>powered by github</p>
+        </div>
     </body>
 </html>
 
