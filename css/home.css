@@ -13,8 +13,6 @@ body
 	font: 13.34px helvetica, arial, clean, sans-serif;
 	font-size: small;
 
-	margin-left: 25%;
-	margin-right: 20%;
 	text-align: left;
 }
 
@@ -50,3 +48,15 @@ a:visited
 
 /*  */
 
+div.main
+{
+	width: 610px;
+
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.footer
+{
+	text-align: center;
+}
