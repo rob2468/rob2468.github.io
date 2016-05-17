@@ -1,1 +1,28 @@
 /* post custom css */
+
+h1
+{
+    font-size: 1.25em;
+    line-height: 1.4em;
+}
+
+h2
+{
+    font-size: 1.125em;
+}
+
+h3
+{
+    font-size: 1.05em;
+}
+
+h4, h5, h6
+{
+    font-size: 1em;
+    margin: 1em 0;
+}
+
+p
+{
+    line-height: 1.5em;
+}
