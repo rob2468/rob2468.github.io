@@ -1,1 +1,49 @@
 /* home custom css */
+
+.header
+{
+    background: #0C4B33;
+    overflow: hidden;
+    margin: 0;
+    padding: 0 14% 0 25%;
+    position: relative;
+    z-index: 0
+}
+
+.header .self
+{
+    display: block;
+    float: left;
+    font-size: 1.3em;
+    width: 104px;
+    color: #fff;
+}
+
+.header [rol="navigation"]
+{
+    float: right;
+}
+
+.header [role="navigation"] li
+{
+    font-size: 1.3em;
+    display: block;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: left;
+    margin: 0 10px;
+    float: right;
+}
+
+.header [role="navigation"] li a
+{
+    color: #fff;
+    display: block;
+    padding: 20px 0px;
+    text-decoration: none
+}
+
+.header [role="navigation"] li a:hover
+{
+    color: #C9F0DD;
+}
