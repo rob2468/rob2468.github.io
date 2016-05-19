@@ -21,14 +21,9 @@ h1, h2, h3, h4, h5, h6
 	font-size: 100%;
 }
 
-h1
+h1, h2, p
 {
-	margin-bottom: 1em;
-}
-
-p
-{
-	margin: 1em 0;
+	margin-top: 1em;
 }
 
 div.main
