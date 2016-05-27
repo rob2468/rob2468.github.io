@@ -9,7 +9,9 @@ title: JSPatch代码分析
 
 JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。
 
-## 消息转发
+## 方法调用
+
+### 1. OC 消息转发
 
 objc_msgSend 函数的重要工作是根据某个方法的 selector 找到相应的方法实现(IMP)。IMP 类型即为函数指针。
 
@@ -22,6 +24,10 @@ _objc_msgForward 消息转发会调用如下的方法，详细解释参考[此�
     - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;
     - (void)forwardInvocation:(NSInvocation *)anInvocation;
     - (void)doesNotRecognizeSelector:(SEL)aSelector;
+
+## 2. 方法调用流程
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/temp_JSPatch_MessageSend.png" alt="" width="80%" /></div>
 
 ## 问题发现与解释
 
