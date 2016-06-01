@@ -19,11 +19,12 @@ _objc_msgForward 是 IMP 类型，当 objc_msgSend 未找到某个 selector 的 
 
 _objc_msgForward 消息转发会调用如下的方法，详细解释参考[此文](http://mxxivapp.com/2015/09/22/%E6%8B%9B%E8%81%98%E4%B8%80%E4%B8%AA%E9%9D%A0%E8%B0%B1%E7%9A%84%20iOS%E7%AD%94%E6%A1%88%E4%B8%8B/#objc_msgForward_u51FD_u6570_u662F_u505A_u4EC0_u4E48_u7684_uFF0C_u76F4_u63A5_u8C03_u7528_u5B83_u5C06_u4F1A_u53D1_u751F_u4EC0_u4E48_uFF1F)。
 
-    + (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
-    - (id)forwardingTargetForSelector:(SEL)aSelector;
-    - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;
-    - (void)forwardInvocation:(NSInvocation *)anInvocation;
-    - (void)doesNotRecognizeSelector:(SEL)aSelector;
+<div class="code"><pre><code>+ (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
+- (id)forwardingTargetForSelector:(SEL)aSelector;
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;
+- (void)forwardInvocation:(NSInvocation *)anInvocation;
+- (void)doesNotRecognizeSelector:(SEL)aSelector;
+</code></pre></div>
 
 ## 2. 方法调用流程
 
@@ -43,8 +44,8 @@ JS中快速遍历的顺序依赖于具体实现，不能保证永远按照索引
 
 ### 参考文献:
 
-"Message Forwarding", [https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtForwarding.html](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtForwarding.html)
+[Message Forwarding](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtForwarding.html)
 
-"NSObject Class Reference", [https://developer.apple.com/library/watchos/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/#//apple_ref/occ/clm/NSObject/resolveClassMethod:](https://developer.apple.com/library/watchos/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/#//apple_ref/occ/clm/NSObject/resolveClassMethod:)
+[NSObject Class Reference](https://developer.apple.com/library/watchos/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/#//apple_ref/occ/clm/NSObject/resolveClassMethod:)
 
 {{ page.date | date_to_string }}
