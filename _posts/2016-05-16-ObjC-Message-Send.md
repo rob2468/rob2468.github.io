@@ -15,19 +15,20 @@ OC为动态运行时语言，其将许多决策从编译和链接时延迟到运
 
 <p></p>
 
-    Declaration  
-    id objc_msgSend(id self, SEL op, ...)
+<div class="code"><pre><code>Declaration  
+id objc_msgSend(id self, SEL op, ...)
 
-    Parameters  
-    self  
-    A pointer that points to the instance of the class that is to receive the message.  
-    op  
-    The selector of the method that handles the message.  
-    ...  
-    A variable argument list containing the arguments to the method.
+Parameters  
+self  
+A pointer that points to the instance of the class that is to receive the message.  
+op  
+The selector of the method that handles the message.  
+...  
+A variable argument list containing the arguments to the method.
 
-    Return Value  
-    The return value of the method.
+Return Value  
+The return value of the method.
+</code></pre></div>
 
 编译后，OC中的消息传递实现将转换为objc_msgSend函数调用。比如，[receiver message]会转换成相应的objc_msgSend(receiver, selector)。selector的类型是SEL，为要执行方法的名称，objc_msgSend的重要工作就是找到selector对应的方法实现。
 
@@ -53,9 +54,10 @@ objc_msgSend获取到方法实现后，便调用该方法实现。该方法实�
 
 <p></p>
 
-    void (*setter)(id, SEL, BOOL);
-    setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
-    setter(target, @selector(setFilled:), YES);
+<div class="code"><pre><code>void (*setter)(id, SEL, BOOL);
+setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
+setter(target, @selector(setFilled:), YES);
+</code></pre></div>
 
 objc_msgSend自动调用函数时，会自动传如两个隐藏参数，但是主动调用需要显式的传入。
 
@@ -63,24 +65,25 @@ objc_msgSend自动调用函数时，会自动传如两个隐藏参数，但是�
 
 <p></p>
 
-    void (*setter)(id, SEL, BOOL);
-    setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
-    for (int i = 0 ; i < 1000 ; i++ )
-        setter(targetList[i], @selector(setFilled:), YES);
+<div class="code"><pre><code>void (*setter)(id, SEL, BOOL);
+setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
+for (int i = 0 ; i < 1000 ; i++ )
+    setter(targetList[i], @selector(setFilled:), YES);
+</code></pre></div>
 
 附 methodForSelector: 方法的[说明](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/#//apple_ref/occ/instm/NSObject/methodForSelector:)：
 
 <p></p>
 
-    Declaration
-    - (IMP)methodForSelector:(SEL)aSelector
+<div class="code"><pre><code>Declaration
+- (IMP)methodForSelector:(SEL)aSelector
 
-    Parameters
-    aSelector	
-    A selector that identifies the method for which to return the implementation address. The selector must be a valid and non-NULL. If in doubt, use the respondsToSelector: method to check before passing the selector to methodForSelector:.
+Parameters
+aSelector	
+A selector that identifies the method for which to return the implementation address. The selector must be a valid and non-NULL. If in doubt, use the respondsToSelector: method to check before passing the selector to methodForSelector:.
 
-    Return Value
-    The address of the receiver’s implementation of the aSelector.
+Return Value
+The address of the receiver’s implementation of the aSelector.</code></pre></div>
 
 <p></p>
 
