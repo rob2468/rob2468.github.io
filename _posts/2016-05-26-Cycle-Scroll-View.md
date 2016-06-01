@@ -27,24 +27,25 @@ title: 可循环滚动的 ScrollView
 
 <p></p>
 
-    if (currentOffsetX < pageWidth && currentOffsetX < lastContentOffsetX) // 右划
-    {
-        // 修改布局
-        lastContentOffsetX = currentOffsetX + offset;
-        bounds.origin.x = lastContentOffsetX;
-        scrollView.bounds = bounds;
-    }
-    else if (currentOffsetX > offset && currentOffsetX > lastContentOffsetX) // 左划
-    {
-        // 修改布局
-        lastContentOffsetX = currentOffsetX - offset;
-        bounds.origin.x = lastContentOffsetX;
-        scrollView.bounds = bounds;
-    }
-    else
-    {
-        lastContentOffsetX = currentOffsetX;
-    }
+<div class="code"><pre><code>if (currentOffsetX < pageWidth && currentOffsetX < lastContentOffsetX) // 右划
+{
+    // 修改布局
+    lastContentOffsetX = currentOffsetX + offset;
+    bounds.origin.x = lastContentOffsetX;
+    scrollView.bounds = bounds;
+}
+else if (currentOffsetX > offset && currentOffsetX > lastContentOffsetX) // 左划
+{
+    // 修改布局
+    lastContentOffsetX = currentOffsetX - offset;
+    bounds.origin.x = lastContentOffsetX;
+    scrollView.bounds = bounds;
+}
+else
+{
+    lastContentOffsetX = currentOffsetX;
+}
+</code></pre></div>
 
 以第一个 if 判断分支为例，ScrollView 展示的是原始第一页并开始滑入复制在开头的原始最后一页。此时需要调整布局，调整后的状态是 ScrollView 展示复制在最后的原始第一页并开始滑入原始最后一页。
 
