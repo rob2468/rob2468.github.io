@@ -42,6 +42,16 @@ JS中的数组JPBoxing对象可调用方法toJS()，获取相应的原生JS数�
 
 JS中快速遍历的顺序依赖于具体实现，不能保证永远按照索引顺序访问。因此最好使用for(;;)语法访问数组。
 
+### 2. 通过调用未实现方法以测试自定义的forwardInvocation时，在一些情况下直接抛出方法未实现错误，而不是执行forwardInvocation中逻辑。
+
+Objective-C的消息转发会调用一系列方法。在调用forwardInvocation之前，methodSignatureForSelector会被调用。如果methodSignatureForSelector能够返回有效的NSMethodSignature对象，forwardInvocation会在后续步骤中被调用，否则forwardInvocation将不会被调用（因为forwardInvocation的NSInvocation参数的形成依赖于methodSignatureForSelector返回的NSMethondSignature对象）。
+
+所以有两种方法解决这个问题。
+
+一、在待测试的类中添加方法，并将该方法的实现设置为空（_objc_msgForward）。此时methodSignatureForSelector能够基于该方法生成合适的NSMethodSignature对象。
+
+二、直接在待测试类中重载methodSignatureForSelector方法，手动构造并返回一个有效的NSMethodSignature对象。
+
 ### 参考文献:
 
 [Message Forwarding](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtForwarding.html)
