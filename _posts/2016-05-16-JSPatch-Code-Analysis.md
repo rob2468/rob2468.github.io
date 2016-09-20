@@ -26,7 +26,7 @@ _objc_msgForward 消息转发会调用如下的方法，详细解释参考[此�
 - (void)doesNotRecognizeSelector:(SEL)aSelector;
 </code></pre></div>
 
-## 2. 方法调用流程
+### 2. 方法调用流程
 
 <div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/temp_JSPatch_MessageSend.png" alt="" width="80%" /></div>
 
