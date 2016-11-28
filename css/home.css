@@ -19,9 +19,14 @@
     color: #fff;
 }
 
-.header [rol="navigation"]
+.header [role="navigation"]
 {
     float: right;
+}
+
+.header [role="navigation"] :after
+{
+    clear: both;
 }
 
 .header [role="navigation"] li
@@ -32,7 +37,7 @@
     line-height: 16px;
     text-align: left;
     margin: 0 10px;
-    float: right;
+    float: left;
 }
 
 .header [role="navigation"] li a
