@@ -1,18 +1,30 @@
 /* home custom css */
 
+.header .self, .header .menu-button, .header [role="navigation"]
+{
+    margin: 20px 0px;
+}
+
 .header
 {
     background: #0C4B33;
     overflow: hidden;
-    margin: 0;
-    padding: 0 14% 0 25%;
     position: relative;
-    z-index: 0
+    z-index: 0;
+    width: 100%;
 }
 
-.header .self, .header .menu-button, .header [role="navigation"]
+.header .container
 {
-    margin: 20px 0px;
+    display: block;
+    margin: 0 20px;
+}
+
+.header .container:after
+{
+    content: "";
+    display: block;;
+    clear: both;
 }
 
 .header .self
@@ -29,6 +41,17 @@
     display: block;
     float: right;
     width: 45px;
+}
+
+@media screen and (min-width: 768px) {
+    .header .container
+    {
+        margin: 0 14% 0 25%;
+    }
+    .header .menu-button
+    {
+        display: none;
+    }
 }
 
 .header .menu-button .icon
@@ -48,11 +71,6 @@
     float: right;
 }
 
-.header [role="navigation"]:after
-{
-    clear: both;
-}
-
 .header [role="navigation"] li
 {
     font-size: 1.3em;
@@ -67,7 +85,6 @@
 .header [role="navigation"] li a
 {
     color: #fff;
-    /*display: block;*/
     text-decoration: none
 }
 
