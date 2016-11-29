@@ -10,6 +10,11 @@
     z-index: 0
 }
 
+.header .self, .header .menu-button, .header [role="navigation"]
+{
+    margin: 20px 0px;
+}
+
 .header .self
 {
     display: block;
@@ -19,12 +24,31 @@
     color: #fff;
 }
 
+.header .menu-button
+{
+    display: block;
+    float: right;
+    width: 45px;
+}
+
+.header .menu-button .icon
+{
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    color: #fff;
+}
+.header .menu-button .icon:before
+{
+    content: "";
+}
+
 .header [role="navigation"]
 {
     float: right;
 }
 
-.header [role="navigation"] :after
+.header [role="navigation"]:after
 {
     clear: both;
 }
@@ -36,15 +60,14 @@
     font-weight: 700;
     line-height: 16px;
     text-align: left;
-    margin: 0 10px;
+    margin: 0px 10px;
     float: left;
 }
 
 .header [role="navigation"] li a
 {
     color: #fff;
-    display: block;
-    padding: 20px 0px;
+    /*display: block;*/
     text-decoration: none
 }
 
