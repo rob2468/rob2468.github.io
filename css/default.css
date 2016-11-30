@@ -27,7 +27,7 @@ h1, h2, p
 
 div.main
 {
-    width: 610px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -43,4 +43,11 @@ div.code
     overflow-x: auto;
     overflow-y: hidden;
     white-space: pre;
+}
+
+@media screen and (min-width: 768px) {
+    div.main
+    {
+        width: 610px;
+    }
 }

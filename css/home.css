@@ -44,17 +44,6 @@
     width: 45px;
 }
 
-@media screen and (min-width: 768px) {
-    .header .container
-    {
-        margin: 0 14% 0 25%;
-    }
-    .header .menu-button
-    {
-        display: none;
-    }
-}
-
 .header .menu-button .icon
 {
     display: inline-block;
@@ -98,4 +87,16 @@
 .main ul h1
 {
     font-size: 12px;
+}
+
+@media screen and (min-width: 768px) {
+    /* header */
+    .header .container
+    {
+        margin: 0 14% 0 25%;
+    }
+    .header .menu-button
+    {
+        display: none;
+    }
 }
