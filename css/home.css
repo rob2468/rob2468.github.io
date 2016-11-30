@@ -63,7 +63,7 @@
 }
 .header .menu-button .icon:before
 {
-    content: "";
+    content: "💗";
 }
 
 .header [role="navigation"]
