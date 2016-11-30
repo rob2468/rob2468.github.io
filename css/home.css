@@ -1,5 +1,6 @@
 /* home custom css */
 
+/* header */
 .header .self, .header .menu-button, .header [role="navigation"]
 {
     margin: 20px 0px;
@@ -91,4 +92,10 @@
 .header [role="navigation"] li a:hover
 {
     color: #C9F0DD;
+}
+
+/* main */
+.main ul h1
+{
+    font-size: 12px;
 }
