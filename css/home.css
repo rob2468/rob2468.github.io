@@ -1,7 +1,7 @@
 /* home custom css */
 
 /* header */
-.header .self, .header .menu-button, .header [role="navigation"]
+.header .self, .header .menu-button
 {
     margin: 20px 0px;
 }
@@ -53,12 +53,23 @@
 }
 .header .menu-button .icon:before
 {
-    content: "💗";
+    content: "aaa";
 }
 
 .header [role="navigation"]
 {
+    display: block;
+    overflow: hidden;
+    width: 100%;
     float: right;
+    margin: 0;
+}
+
+.header [role="navigation"] ul:after
+{
+    display: block;
+    content: "";
+    clear: both;
 }
 
 .header [role="navigation"] li
@@ -69,7 +80,8 @@
     line-height: 16px;
     text-align: left;
     margin: 0px 10px;
-    float: left;
+    padding: 20px 0px;
+    border-top: 1px solid #106142;
 }
 
 .header [role="navigation"] li a
@@ -98,5 +110,16 @@
     .header .menu-button
     {
         display: none;
+    }
+    .header [role="navigation"]
+    {
+        margin: 20px 0px;
+        width: auto;
+    }
+    .header [role="navigation"] li
+    {
+        float: left;
+        border: 0px;
+        padding: 0px;
     }
 }
