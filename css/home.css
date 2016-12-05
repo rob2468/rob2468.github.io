@@ -42,6 +42,7 @@
     display: block;
     float: right;
     width: 45px;
+    cursor: pointer;
 }
 
 .header .menu-button .icon
