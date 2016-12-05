@@ -51,28 +51,35 @@
     width: 100%;
     color: #fff;
 }
-.header .menu-button .icon:before
+
+.header .menu-button.active .icon
 {
-    content: "aaa";
+    color: #C9F0DD;
 }
 
-.header [role="navigation"]
+.header .menu-navigation
 {
     display: block;
     overflow: hidden;
     width: 100%;
     float: right;
     margin: 0;
+    max-height: 0;
 }
 
-.header [role="navigation"] ul:after
+.header .menu-navigation.active
+{
+    max-height: 200px;
+}
+
+.header .menu-navigation ul:after
 {
     display: block;
     content: "";
     clear: both;
 }
 
-.header [role="navigation"] li
+.header .menu-navigation li
 {
     font-size: 1.3em;
     display: block;
@@ -84,13 +91,13 @@
     border-top: 1px solid #106142;
 }
 
-.header [role="navigation"] li a
+.header .menu-navigation li a
 {
     color: #fff;
     text-decoration: none
 }
 
-.header [role="navigation"] li a:hover
+.header .menu-navigation li a:hover
 {
     color: #C9F0DD;
 }
@@ -111,12 +118,13 @@
     {
         display: none;
     }
-    .header [role="navigation"]
+    .header .menu-navigation
     {
         margin: 20px 0px;
         width: auto;
+        max-height: none;
     }
-    .header [role="navigation"] li
+    .header .menu-navigation li
     {
         float: left;
         border: 0px;
