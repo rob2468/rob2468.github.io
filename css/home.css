@@ -95,7 +95,9 @@
 .header .menu-navigation li a
 {
     color: #fff;
-    text-decoration: none
+    text-decoration: none;
+    display: block;
+    width: 100%;
 }
 
 .header .menu-navigation li a:hover
