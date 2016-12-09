@@ -7,9 +7,9 @@ title: jam.chenjun
 <ul>
     {% for post in site.posts %}
         <li>
-        <h1>
+        <h2>
         {{ post.date | date_to_string }} <a href="{{ post.url }}" target="_blank">{{ post.title }}</a>
-    	</h1>
+    	</h2>
         </li>
     {% endfor %}
 </ul>
