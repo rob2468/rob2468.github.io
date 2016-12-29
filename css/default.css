@@ -52,6 +52,11 @@ div.code
     white-space: pre;
 }
 
+a
+{
+    word-wrap: break-word;
+}
+
 @media screen and (min-width: 768px) {
     div.main
     {
