@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JSPatch代码分析
+title: JSPatch 代码分析
 ---
 
 # {{ page.title }}
@@ -9,7 +9,7 @@ title: JSPatch代码分析
 
 JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。
 
-## 方法调用
+## 一、方法调用
 
 ### 1. OC 消息转发
 
@@ -30,7 +30,7 @@ _objc_msgForward 消息转发会调用如下的方法，详细解释参考[此�
 
 <div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/temp_JSPatch_MessageSend.png" alt="" width="80%" /></div>
 
-## 问题发现与解释
+## 二、问题发现与解释
 
 在项目中引入了 JSPatch，利用其能力实现了不少针对app线上问题的热修复。在使用过程中发现一些问题，并做了调研。
 
@@ -48,9 +48,9 @@ Objective-C的消息转发会调用一系列方法。在调用forwardInvocation�
 
 所以有两种方法解决这个问题。
 
-一、在待测试的类中添加方法，并将该方法的实现设置为空（_objc_msgForward）。此时methodSignatureForSelector能够基于该方法生成合适的NSMethodSignature对象。
+a. 在待测试的类中添加方法，并将该方法的实现设置为空（_objc_msgForward）。此时methodSignatureForSelector能够基于该方法生成合适的NSMethodSignature对象。
 
-二、直接在待测试类中重载methodSignatureForSelector方法，手动构造并返回一个有效的NSMethodSignature对象。
+b. 直接在待测试类中重载methodSignatureForSelector方法，手动构造并返回一个有效的NSMethodSignature对象。
 
 ### 参考文献:
 
