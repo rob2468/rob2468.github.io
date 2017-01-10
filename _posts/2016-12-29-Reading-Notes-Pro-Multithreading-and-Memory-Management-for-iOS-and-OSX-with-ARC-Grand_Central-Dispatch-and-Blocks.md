@@ -24,8 +24,6 @@ OC 使用引用计数来实现内存管理。引用计数是内存管理的基�
 * 当不再需要某个你拥有的对象时，你必须放弃对该对象的所有权。
 * 当不拥有某个对象时，你不能放弃对该对象的所有权。
 
-<p></p>
-
 ### 1. [GNUstep](http://gnustep.org/) 和 Apple 存储引用计数的不同方式
 
 下面两幅图描述 GNUstep 和 Apple 存储对象引用计数的方式。
@@ -56,8 +54,6 @@ Apple 实现方式的优点：
 * 对象实例不包含额外的头部，不必考虑因为存在头部而引入的内存对齐问题。
 * 可以简单的通过遍历哈希表，访问到所有对象实例的内存空间。（尤其便于调试）
 
-<p></p>
-
 ### 2. autorelease
 
 当采用 ARC 方式开发时，很少用到 autorelease 语法，但是其相关的知识点值得了解一下。
@@ -74,13 +70,9 @@ autorelease 中，该指定的代码块称为自动释放池。在自动释放�
 
 在某些时候，默认存在的自动释放池不能满足需求。比如，在某个循环体内创建了许多对象，分配了大量内存，如果等到循环体执行完毕，最后离开自动释放池的时候才整体释放这些对象，会带来严重的内存问题。这时候可以通过手动创建和释放自动释放池解决。（可以看出，自动释放池是可以嵌套使用的，最内层的为当前自动释放池。）
 
-<p></p>
-
 ### 3. ARC 中的所有权修饰符（Ownership Qualifiers）
 
-开启 ARC 后，编译器会承担内存管理的工作，开发者不必再手动调用 retain 和 release。本章节开头所述的内存管理的4条规则仍然适用。
-
-ARC 引入了如下4个所有权描述符，开发者需要合理的使用所有权描述符，才能正确实现 ARC 下的内存管理。
+开启 ARC 后，编译器会承担内存管理的工作，开发者不必再手动调用 retain 和 release。ARC 引入了如下4个所有权描述符，开发者需要合理的使用所有权描述符，才能正确实现 ARC 下的内存管理。
 
 * __strong
 * __weak
@@ -89,13 +81,149 @@ ARC 引入了如下4个所有权描述符，开发者需要合理的使用所有
 
 OC 中的每个对象实例都有类型，或者是具体的类的指针，或者是 id（类似于 C 语言中的 void*）。当 ARC 开启后，所有对象实例必须有一个所有权描述符。
 
+所有使用 __strong、__weak 和 __autoreleasing 所有权描述符的对象实例都会被初始化为nil，如下两处代码块的效果相同。
+
+<div class="code"><pre><code>id __strong obj0;
+id __weak obj1;
+id __autoreleasing obj2;
+</code></pre></div>
+
+<p></p>
+
+<div class="code"><pre><code>id __strong obj0 = nil;
+id __weak obj1 = nil;
+id __autoreleasing obj2 = nil;
+</code></pre></div>
+
+本章节开头所述的内存管理的4条规则仍然适用。将对象赋给 __strong 变量即满足了前两条规则。第三条规则在不同的情况下自动满足，比如，离开变量的作用域；将值赋给变量；持有成员变量的对象实例被释放。因为不再需要手动调用 release，第四条规则显然满足。
+
 #### 3.1. __strong 所有权描述符
+
+__strong 所有权描述符是默认描述符。即如果描述符缺失，编译器默认使用 __strong。使用 __strong 所有权描述符修饰变量，表明该变量对目标对象具有强引用（该变量对目标对象有所有权）。
 
 #### 3.2. __weak 所有权描述符
 
-#### 3.3. __unsate_unretained 所有权描述符
+使用 __weak 所有权描述符修饰变量，表明该变量对目标对象具有弱引用（该变量对目标对象没有所有权）。__weak 所有权描述符的重要用途就是避免产生循环引用导致内存泄漏。
+
+<div class="code"><pre><code>id __weak obj = [[NSObject alloc] init];</code></pre></div>
+
+编译这段代码编译器有可能给出编译警告。该段代码创建了一个 NSObject 对象并赋给 obj 变量，obj 使用 __weak 修饰，对该 NSObject 对象没有所有权。当编译器开启编译优化后，该 NSObject 对象刚创建出来就被销毁。下面的写法能解决这个问题。
+
+<div class="code"><pre><code>id __strong obj0 = [[NSObject alloc] init];
+id __weak obj1 = obj0;
+</code></pre></div>
+
+__weak 所有权描述符还存在如下一个重要特性。当对象实例销毁后，所有引用该对象实例的 __weak 变量会自动设置为 nil。
+
+#### 3.3. __unsafe_unretained 所有权描述符
+
+__unsafe_unretained 的行为和 __weak 类似，使用该所有权描述符修饰的变量对目标对象具有弱引用（该变量对目标对象没有所有权）。
+
+__unsafe_unretained 和 __weak 的区别在于，当对象实例销毁后，引用该对象实例的 __unsafe_unretained 变量不会自动设置为 nil。
+
+除非有特殊需求（比如需要支持iOS 5 和 OSX Lion 之前版本的系统），否则尽量使用 __weak 代替 __unsafe_unretained。
 
 #### 3.4. __autoreleasing 所有权描述符
+
+autorelease 的相关知识见上文介绍，ARC 和 non-ARC 下的原理相同。ARC 引入新的语法让操作变得简单直观。如下两处代码段分别是 non-ARC 和 ARC 下 autorelease 的使用方式。
+
+<div class="code"><pre><code>/* non-ARC */
+NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+id obj = [[NSObject alloc] init];
+[obj autorelease];
+[pool drain];
+</code></pre></div>
+
+<p></p>
+
+<div class="code"><pre><code>/* ARC */
+@autoreleasepool {
+    id __autoreleasing obj = [[NSObject alloc] init];
+}
+</code></pre></div>
+
+两种写法的对应关系如下图所示。
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%" /></div>
+
+<div align="center">图 @autoreleasepool 和 __autoreleasing 描述符</div>
+
+得益于编译器的自动化操作，简化了开发者的许多工作，在实际使用中，很少使用到 __autoreleasing 语法。下面分情况对背后的细节进行说明。
+
+##### 情况分析一
+
+在 non-ARC 下创建对象实例有如下规则，通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权。在各种情况下，需要配合使用 autorelease、retain 和 release 方法才能合理的管理内存。
+
+通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权，这条规则在 ARC 下仍然成立。在 ARC 下开发时情况变的简单，虽然引入了所有权描述符，但是编译器默认做了许多工作，开发者需要考虑的问题减少了许多。后面以如下代码段说明 ARC 下，__autoreleasing 是如何发生作用的。
+
+<div class="code"><pre><code>@implementation NSMutableArray
++ (id)array
+{
+    id obj = [[NSMutableArray alloc] init];     // part 1
+    return obj;                                 // part 2
+}
+@end
+
+@autoreleasepool {
+    id obj = [NSMutableArray array];            // part 3
+}
+</code></pre></div>
+
+查看 @autoreleasepool 中的代码，part 3 语句以 [NSMutableArray array] 的方式创建了对象实例，方法的名称不符合以 alloc/new/copy/mutableCopy 开头的规则，所以调用者没有该对象实例的所有权，该对象实例注册在自动释放池中。因为 obj 变量使用 __strong 所有权描述符修饰，其会持有该对象实例。
+
+深入 NSMutableArray 的 array 方法中查看。part 1 语句创建了对象实例，并由变量 obj 持有。part 2 将 obj 持有的对象实例返回给调用者。part 2 语句执行之后，obj 持有的对象实例会被释放。在此之前，编译器检测到该对象实例会被返回给调用者，会将该对象实例注册到自动释放池中。
+
+##### 情况分析二
+
+当使用 __weak 所有权描述符修饰的变量时，该变量引用的对象实例总是会被注册到自动释放池中。
+
+<div class="code"><pre><code>id __weak obj1 = obj0;
+NSLog(@"class=%@", [obj1 class]);
+</code></pre></div>
+
+上述代码等同于如下代码段。
+
+<div class="code"><pre><code>id __weak obj1 = obj0;
+id __autoreleasing tmp = obj1;
+NSLog(@"class=%@", [tmp class]);
+</code></pre></div>
+
+因为使用 __weak 所有权描述符修饰的变量不持有对象实例，该对象实例可能会在任一时刻被释放，为了能安全的使用该对象实例，编译器总是会先将该对象实例注册到自动释放池中再使用。
+
+##### 情况分析三
+
+`"id obj"` 的默认行为是 `"id __strong obj"`，但是 `"id *obj"` 的默认行为却是 `"id __autoreleasing *obj"`，同样的，`"NSObject **obj"` 的默认行为是 `"NSObject * __autoreleasing *obj"`。这种方式的默认行为是由该种语法的通常用途决定的，即方法调用通过参数返回值，如下代码所示。
+
+<div class="code"><pre><code>NSError *error = nil;
+BOOL result = [obj performOperationWithError:&error];
+</code></pre></div>
+
+因为只有通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权。上述通过参数返回调用结果的方式不属于规则中约定的条件，所以使用 __autoreleasing 所有权修饰符。
+
+给对象实例的指针赋值还有一个要求，即声明的对象实例指针的所有权描述符必须与赋值给该对象实例指针的所有权描述符相同。如下代码。
+
+<div class="code"><pre><code>/* 错误示例 */
+NSError *error =nil;
+NSError **error = &error;   // __strong 赋给 __autoreleasing
+
+/* 正确示例 */
+NSError *error =nil;
+NSError * __strong *error = &error;
+
+NSError __weak *error =nil;
+NSError * __weak *error = &error;
+
+NSError __unsafe_unretained *error =nil;
+NSError * __unsafe_unretained *error = &error;
+</code></pre></div>
+
+在实际开发中经常书写本小节开头的那段示例代码，但是并不会报错，原因是编译器自动做了处理，实际转化后的代码如下所示。
+
+<div class="code"><pre><code>NSError __strong *error = nil;
+NSError __autoreleasing *tmp = error;
+BOOL result = [obj performOperationWithError:&tmp];
+error = tmp;
+</code></pre></div>
 
 ## 二、Block
 
