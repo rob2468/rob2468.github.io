@@ -281,7 +281,21 @@ CFRelease(cfObject);
 id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer id)cfObject;
 </code></pre></div>
 
-### 5. 属性和数组
+### 5. 属性
+
+ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二者存在对应关系，如下表所示。
+
+<div class="code"><pre><code>----------------------------------------------------------------------------
+|  属性修饰符            |  所有权描述符                                       |
+|----------------------|---------------------------------------------------|
+|  assign              |  __unsafe_unretained                              |
+|  copy                |  __strong (note: new copied object is assigned.)  |
+|  retain              |  __strong                                         |
+|  strong              |  __strong                                         |
+|  unsafe_unretained   |  __unsafe_unretained                              |
+|  weak                |  __weak                                           |
+----------------------------------------------------------------------------
+</code></pre></div>
 
 ## 二、Block
 
