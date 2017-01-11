@@ -198,7 +198,7 @@ NSLog(@"class=%@", [tmp class]);
 BOOL result = [obj performOperationWithError:&error];
 </code></pre></div>
 
-因为只有通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权。上述通过参数返回调用结果的方式不属于规则中约定的条件，所以使用 __autoreleasing 所有权修饰符。
+因为只有通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权。上述通过参数返回调用结果的方式不属于规则中约定的条件，所以应该使用 __autoreleasing 所有权修饰符。
 
 给对象实例的指针赋值还有一个要求，即声明的对象实例指针的所有权描述符必须与赋值给该对象实例指针的所有权描述符相同。如下代码。
 
@@ -224,6 +224,64 @@ NSError __autoreleasing *tmp = error;
 BOOL result = [obj performOperationWithError:&tmp];
 error = tmp;
 </code></pre></div>
+
+### 4. 类型转换与内存管理
+
+OC 环境下开发会遇到多种类型的对象实例，而且对象实例可能需要在不同的类型之间转换。比如有如下对象实例类型，Foundation 框架下的对象实例，原生 C 语言下的对象实例，Core Foundation 框架下的对象实例。本小节描述这三种类型的对象实例之间的转换以及内存管理。
+
+在 non-ARC 环境下，所有的内存管理都是开发者手动操作的，对象实例可以轻易的在这三种类型之间转换。
+
+在 ARC 环境下，编译器不再允许对象实例直接在这三种类型之间转换，但是可以通过 `__bridge` 转换符实现类型转换，如下代码所示。
+
+<div class="code"><pre><code>id obj = [[NSObject alloc] init];
+void *p = (__bridge void *)obj;
+id o = (__bridge id)p;
+</code></pre></div>
+
+`__bridge` 只能使得对象实例在不同的类型之间转换，若要实现内存管理，需要使用 `__bridge_retained` 和 `__bridge_transfer` 这两个转换符。下面用两段示例代码说明。
+
+<div class="code"><pre><code>/* ARC */
+id obj = [[NSObject alloc] init];
+void *p = (__bridge_retained void *)obj;
+
+/* 等效的 non-ARC 实现*/
+id obj = [[NSObject alloc] init];
+void *p = obj;
+[(id)p retain];
+</code></pre></div>
+
+`__bridge_retained` 使得被赋值的变量拥有对象实例的所有权。
+
+<div class="code"><pre><code>/* ARC */
+id obj = (__bridge_transfer id)p;
+
+/* 等效的 non-ARC 实现*/
+id obj = (id)p;
+[obj retain];
+[(id)p release];
+</code></pre></div>
+
+`__bridge_transfer` 将赋值变量对对象实例的所有权转交给被赋值变量。
+
+Core Foundation 框架主要使用 C 语言实现，其中创建的对象实例和 Foundation 框架下创建的对象实例差异很小，可以在没有任何资源损耗的情况下实现二者的转换，但是开发者需要关心二者转换之间的内存管理。
+
+除了上面所述的 `__bridge_retained` 和 `__bridge_transfer` 转换符，Core Foundation 框架引入了两个函数实现相同的功能，分别是 `CFBridgingRetain` 和 `CFBridgingRelease`。见如下代码示例。
+
+<div class="code"><pre><code>CFMutableArrayRef cfObject = NULL;
+{
+    id obj = [[NSMutableArray alloc] init];
+    cfObject = CFBridgingRetain(obj);   // 等同于 cfObject = (__bridge_retained CFMutableArrayRef)obj;
+}
+CFRelease(cfObject);
+</code></pre></div>
+
+<p></p>
+
+<div class="code"><pre><code>CFMutableArrayRef cfObject = CFArrayCreateMutable(kCFAllocatorDefault, 0, NULL);
+id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer id)cfObject;
+</code></pre></div>
+
+### 5. 属性和数组
 
 ## 二、Block
 
