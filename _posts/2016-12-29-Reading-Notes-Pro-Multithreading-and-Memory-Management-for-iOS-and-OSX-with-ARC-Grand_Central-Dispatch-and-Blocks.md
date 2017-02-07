@@ -148,7 +148,7 @@ id obj = [[NSObject alloc] init];
 
 <div align="center">图 @autoreleasepool 和 __autoreleasing 描述符</div>
 
-得益于编译器的自动化操作，简化了开发者的许多工作，在实际使用中，很少使用到 __autoreleasing 语法。下面分情况对背后的细节进行说明。
+得益于编译器的自动化操作，简化了开发者的许多工作，在实际使用中，很少使用到 __autoreleasing 语法。下面分情况对背后的细节进行说明。(使用下面方法调试查看自动释放池状态，`extern void _objc_autoreleasePoolPrint(); /* 声明 */ _objc_autoreleasePoolPrint(); /* 调用 */`)
 
 ##### 情况分析一
 
@@ -189,6 +189,10 @@ NSLog(@"class=%@", [tmp class]);
 </code></pre></div>
 
 因为使用 __weak 所有权描述符修饰的变量不持有对象实例，该对象实例可能会在任一时刻被释放，为了能安全的使用该对象实例，编译器总是会先将该对象实例注册到自动释放池中再使用。
+
+由于每次使用 __weak 变量都会导致对象实例注册到自动释放池，为了提升性能，可先将 __weak 变量赋给 __strong 变量再使用。
+
+我使用 `_objc_autoreleasePoolPrint();` 方法调试验证时，并未发现该行为（使用 __weak 变量导致对象实例自动注册自动释放池）。
 
 ##### 情况分析三
 
@@ -296,6 +300,63 @@ ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二�
 |  weak                |  __weak                                           |
 ----------------------------------------------------------------------------
 </code></pre></div>
+
+### 6. ARC 的实现方式
+
+这一小节揭示 ARC 的实现方式和部分底层机制。编译器会将 OC 代码翻译成机器码，为了方便理解，本小节使用伪代码进行描述。
+
+#### 6.1. __strong所有权描述符
+
+下面三组代码示例展示 OC 源代码与翻译后的对应伪代码。
+
+示例1
+<div class="code"><pre><code>{
+    id __strong obj = [[NSObject alloc] init];
+}
+
+/* pseudo code by the compiler */
+id obj = objc_msgSend(NSObject, @selector(alloc));
+objc_msgSend(obj, @selector(init));
+objc_release(obj);
+</code></pre></div>
+
+示例2
+<div class="code"><pre><code>{
+    id __strong obj = [NSMutableArray array];
+}
+
+/* pseudo code by the compiler */
+id obj = objc_msgSend(NSMutableArray, @selector(array));
+objc_retainAutoreleasedReturnValue(obj);
+objc_release(obj);
+</code></pre></div>
+
+示例3
+<div class="code"><pre><code>+ (id)array
+{
+    return [[NSMutableArray alloc] init];
+}
+
+/* pseudo code by the compiler */
++ (id) array
+{
+    id obj = objc_msgSend(NSMutableArray, @selector(alloc));
+    objc_msgSend(obj, @selector(init));
+    return objc_autoreleaseReturnValue(obj);
+}
+</code></pre></div>
+
+示例3和示例2的伪代码中调用了一对函数，objc_autoreleaseReturnValue() 和 objc_retainAutoreleasedReturnValue()，这对函数调用对应“3.4. 情况分析一”小节的解释。objc_autoreleaseReturnValue() 的作用是将对象注册到自动释放池中，objc_retainAutoreleasedReturnValue() 的作用是持有目标对象。
+
+实际情况下，objc_autoreleaseReturnValue() 并不总会将对象注册到对象释放池。objc_autoreleaseReturnValue() 会检测调用者的执行代码，如果调用者接下来调用了 objc_retainAutoreleasedReturnValue() 函数，便跳过将对象注册到自动释放池的步骤，以提升性能。见下图。
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%" /></div>
+
+<div align="center">图 跳过对象加入自动释放池步骤</div>
+
+### 6. _objc_rootRetainCount
+
+iOS 提供了查看对象实例引用计数的函数，`uintptr_t _objc_rootRetainCount(id obj)`。该函数可在调试时使用，但是其返回的值也并不总是正确的，需慎用。在 ARC 下只要遵循各所有权描述符的规则即可实现内存管理，不需要关注引用计数的数值。
 
 ## 二、Block
 
