@@ -360,6 +360,68 @@ iOS 提供了查看对象实例引用计数的函数，`uintptr_t _objc_rootReta
 
 ## 二、Block
 
+Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions together with automatic (local) variables）”。
+
+这部分不多说 Block 的使用方法，着重讨论 Block 的实现机制。
+
+### 1. Block 的基本实现
+
+可以使用指令 `clang -rewrite-objc file_name_of_the_source_code`，将 OC 源代码转换成对应的 C++ 实现，从而探究 Block 的实现原理。
+
+原始代码：
+
+<div class="code"><pre><code>int main()
+{
+    void (^blk)(void) = ^{printf("Block\n");};
+    blk();
+    return 0;
+}
+</code></pre></div>
+
+转换后代码：
+
+<div class="code"><pre><code>struct __block_impl {
+    void *isa;
+    int Flags;
+    int Reserved;
+    void *FuncPtr;
+};
+
+struct __main_block_impl_0 {
+    struct __block_impl impl;
+    struct __main_block_desc_0 *Desc;
+    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int flags=0) {
+        impl.isa = &_NSConcreteStackBlock;
+        impl.Flags = flags;
+        impl.FuncPtr = fp;
+        Desc = desc; 
+    }
+};
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself)
+{
+    printf("Block\n");
+}
+
+static struct __main_block_desc_0
+{
+    unsigned long reserved;
+    unsigned long Block_size;
+} __main_block_desc_0_DATA = {
+    0,
+    sizeof(struct __main_block_impl_0)
+};
+
+int main() {
+    void (*blk)(void) =
+        (void (*)(void))&__main_block_impl_0((void *)__main_block_func_0, &__main_block_desc_0_DATA);
+    ((void (*)(struct __block_impl *))((struct __block_impl *)blk)->FuncPtr)((struct __block_impl *)blk);
+    return 0;
+}
+</code></pre></div>
+
+### 2. 
+
 ## 三、GCD
 
 
