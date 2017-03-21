@@ -420,7 +420,163 @@ int main() {
 }
 </code></pre></div>
 
-### 2. 
+对比原始代码，转换后的代码增加了三个结构体和一个函数的定义。结构体：`__block_impl`、`__main_block_impl_0`、`__main_block_desc_0`；函数：`__main_block_func_0`。`__main_block_func_0`对应原始代码中的 Block 实现，函数命名的规则是取原始方法名（main）和该 Block 在原始方法中的次序（第0个），结构体的命名规则也是如此。
+
+### 2. isa 和 _NSConcreteStackBlock
+
+上小节 __main_block_impl_0 的构造函数中有赋值语句 `impl.isa = &_NSConcreteStackBlock`，本小节简述 isa 和 _NSConcreteStackBlock 的含义。
+
+OC 中的对象实例和类编译后都有其对应的结构体定义，如下所示。
+
+对象实例对应的结构体：
+<div class="code"><pre><code>/* declared in /usr/include/objc/objc.h */
+struct objc_object {
+    Class isa;
+}
+</code></pre></div>
+
+类对应的结构体：
+<div class="code"><pre><code>/* declared in /usr/include/objc/runtime.h */
+struct objc_class {
+    Class isa;
+};
+
+typedef struct objc_class *Class;
+
+/* declared at runtime/objc-runtime-new.h in the objc4 runtime library */
+struct class_t {
+    struct class_t *isa;
+    struct class_t *superclass;
+    Cache cache;
+    IMP *vtable;
+    uintptr_t data_NEVER_USE;
+};
+</code></pre></div>
+
+OC 中的类使用 class_t 构造（class_t 本身基于 objc_class），也就是说 OC 中的每个类都使用 class_t 创建了实例。比如，NSObject 有其对应的 class_t 实例，NSMutableArray 有其对应的 class_t 实例。class_t 实例保存了类的信息，如方法名、方法实现、指向父类的指针等，提供给 OC 运行时库使用。
+
+基于上面描述，下图描述 isa 值的含义。
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%" /></div>
+
+<div align="center">图 OC 对象和类中 isa 指针的指向</div>
+
+__main_block_impl_0 结构体基于 objc_object，表明 Block 本身即为 OC 对象。创建 Block 时执行语句 `impl.isa = &_NSConcreteStackBlock`。根据上文描述，_NSConcreteStackBlock 是 class_t 实例，保存了该 Block 对应的类的信息。
+
+### 3. Block 捕获自动变量
+
+Block 能够捕获自动变量。下面使用 `clang -rewrite-objc file_name_of_the_source_code` 指令转换代码，描述了在这种情况下 Block 实现方式的变化。（__block_impl、__main_block_desc_0、__main_block_desc_0_DATA的声明和定义与上文相同，不再描述）
+
+原始代码：
+
+<div class="code"><pre><code>int main() {
+    int dmy = 256;
+    int val = 10;
+    const char *fmt = "val = %d\n";
+    void (^blk)(void) = ^{printf(fmt, val);};
+    return 0;
+}
+</code></pre></div>
+
+转换后代码：
+
+<div class="code"><pre><code>struct __main_block_impl_0 {
+    struct __block_impl impl;
+    struct __main_block_desc_0* Desc;
+    const char *fmt;
+    int val;
+
+    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, const char *_fmt, int _val, int flags=0)
+        : fmt(_fmt), val(_val) {
+        impl.isa = &_NSConcreteStackBlock;
+        impl.Flags = flags;
+        impl.FuncPtr = fp;
+        Desc = desc;
+    }
+};
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself)
+{
+    const char *fmt = __cself->fmt;
+    int val = __cself->val;
+    printf(fmt, val);
+}
+
+int main() {
+    int dmy = 256;
+    int val = 10;
+    const char *fmt = "val = %d\n";
+    void (*blk)(void) = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, fmt, val);
+  return 0;
+}
+</code></pre></div>
+
+__main_block_impl_0 为 Block 对象的定义，在这种情况下，其中增加了两个成员变量（fmt 和 val）用来存储捕获的自动变量。Block 不会捕获未使用的自动变量（dmy）。
+
+### 4. Block 中修改静态变量、静态全局变量和全局变量
+
+Block 中能够修改静态变量、静态全局变量和全局变量的值，但是底层实现机制存在差异。下面给出转换前后的代码，并给出说明。
+
+原始代码：
+
+<div class="code"><pre><code>int global_val = 1;
+static int static_global_val = 2;
+int main()
+{
+    static int static_val = 3;
+    void (^blk)(void) = ^{
+        global_val *= 1;
+        static_global_val *= 2;
+        static_val *= 3;
+    };
+    return 0;
+}
+</code></pre></div>
+
+转换后代码：
+
+<div class="code"><pre><code>int global_val = 1;
+static int static_global_val = 2;
+
+struct __main_block_impl_0 {
+    struct __block_impl impl;
+    struct __main_block_desc_0 *Desc;
+    int *static_val;
+    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int *_static_val, int flags=0)
+        : static_val(_static_val) {
+        impl.isa = &_NSConcreteStackBlock;
+        impl.Flags = flags;
+        impl.FuncPtr = fp;
+        Desc = desc;
+    }
+};
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself) {
+    int *static_val = __cself->static_val;
+
+    global_val *= 1;
+    static_global_val *= 2;
+    (*static_val) *= 3;
+}
+
+int main()
+{
+    static int static_val = 3;
+    
+    blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, &static_val);
+    return 0;
+}
+</code></pre></div>
+
+静态全局变量和全局变量的处理方式是一致的，Block 能够直接对其进行读写。
+
+静态变量的可见性只是当前函数内，转换后的代码中 __main_block_func_0 无法访问。在 __main_block_impl_0 中增加指向静态变量指针的成员变量，通过该成员变量实现读写静态变量。
+
+前文说到 Block 能够捕获自动变量，但是不能修改其值。自动变量的生命周期跟随其所在的作用域，离开作用域即销毁。Block 的生命周期可能会长于自动变量的生命周期，所以无法采用读写静态变量的实现方案。
+
+### 5. Block 中修改 __block 自动变量
+
+
 
 ## 三、GCD
 
