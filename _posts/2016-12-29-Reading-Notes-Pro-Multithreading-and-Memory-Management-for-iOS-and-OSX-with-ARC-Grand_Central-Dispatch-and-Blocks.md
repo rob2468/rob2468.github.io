@@ -5,6 +5,16 @@ title: 读书笔记 - Pro Multithreading and Memory Management for iOS and OS X 
 
 # {{ page.title }}
 
+<h2>目录</h2>
+<a href="#section_1">一、内存管理</a><br />
+<a href="#section_2">二、Block</a><br />
+<a href="#section_2_1">1. Block 的基本实现</a><br />
+<a href="#section_2_2">2. isa 和 _NSConcreteStackBlock</a><br />
+<a href="#section_2_3">3. </a><br />
+<a href="#section_2_4">4. </a><br />
+<a href="#section_2_5">5. </a><br />
+<a href="#section_3">三、GCD</a>
+
 iOS Objective-C 开发中用到许多 block 语法。block 给开发带来了许多便利，但是相关的内存管理得加以小心，避免引入如循环引用这样的内存问题。在查阅相关资料的时候找到这本书，初读后颇有收获，现再读作本读书笔记以加深记忆与理解，并方便以后查阅。
 
 本书篇幅不多，可分为如下3部分，共8个章节。
@@ -15,7 +25,7 @@ Block：第四章、Getting Started with Blocks；第五章、Blocks Implementat
 
 GCD：第六章、Grand Central Dispatch；第七章、GCD Basics；第八章、GCD Implementation。
 
-## 一、内存管理
+<h2 id="section_1">一、内存管理</h2>
 
 OC 使用引用计数来实现内存管理。引用计数是内存管理的基本原理，与是否采用 ARC 开发没有关系。开发者不必亲自记录每个对象的引用计数，遵循如下规则即可。
 
@@ -358,13 +368,13 @@ objc_release(obj);
 
 iOS 提供了查看对象实例引用计数的函数，`uintptr_t _objc_rootRetainCount(id obj)`。该函数可在调试时使用，但是其返回的值也并不总是正确的，需慎用。在 ARC 下只要遵循各所有权描述符的规则即可实现内存管理，不需要关注引用计数的数值。
 
-## 二、Block
+<h2 id="section_2">二、Block</h2>
 
 Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions together with automatic (local) variables）”。
 
 这部分不多说 Block 的使用方法，着重讨论 Block 的实现机制。
 
-### 1. Block 的基本实现
+<h3 id="section_2_1">1. Block 的基本实现</h3>
 
 可以使用指令 `clang -rewrite-objc file_name_of_the_source_code`，将 OC 源代码转换成对应的 C++ 实现，从而探究 Block 的实现原理。
 
@@ -422,7 +432,7 @@ int main() {
 
 对比原始代码，转换后的代码增加了三个结构体和一个函数的定义。结构体：`__block_impl`、`__main_block_impl_0`、`__main_block_desc_0`；函数：`__main_block_func_0`。`__main_block_func_0`对应原始代码中的 Block 实现，函数命名的规则是取原始方法名（main）和该 Block 在原始方法中的次序（第0个），结构体的命名规则也是如此。
 
-### 2. isa 和 _NSConcreteStackBlock
+<h3 id="section_2_2">2. isa 和 _NSConcreteStackBlock</h3>
 
 上小节 __main_block_impl_0 的构造函数中有赋值语句 `impl.isa = &_NSConcreteStackBlock`，本小节简述 isa 和 _NSConcreteStackBlock 的含义。
 
@@ -463,7 +473,7 @@ OC 中的类使用 class_t 构造（class_t 本身基于 objc_class），也就�
 
 __main_block_impl_0 结构体基于 objc_object，表明 Block 本身即为 OC 对象。创建 Block 时执行语句 `impl.isa = &_NSConcreteStackBlock`。根据上文描述，_NSConcreteStackBlock 是 class_t 实例，保存了该 Block 对应的类的信息。
 
-### 3. Block 捕获自动变量
+<h3 id="section_2_3">3. Block 捕获自动变量</h3>
 
 Block 能够捕获自动变量。下面使用 `clang -rewrite-objc file_name_of_the_source_code` 指令转换代码，描述了在这种情况下 Block 实现方式的变化。（__block_impl、__main_block_desc_0、__main_block_desc_0_DATA的声明和定义与上文相同，不再描述）
 
@@ -513,7 +523,7 @@ int main() {
 
 __main_block_impl_0 为 Block 对象的定义，在这种情况下，其中增加了两个成员变量（fmt 和 val）用来存储捕获的自动变量。Block 不会捕获未使用的自动变量（dmy）。
 
-### 4. Block 中修改静态变量、静态全局变量和全局变量
+<h3 id="section_2_4">4. Block 中修改静态变量、静态全局变量和全局变量</h3>
 
 Block 中能够修改静态变量、静态全局变量和全局变量的值，但是底层实现机制存在差异。下面给出转换前后的代码，并给出说明。
 
@@ -574,11 +584,105 @@ int main()
 
 前文说到 Block 能够捕获自动变量，但是不能修改其值。自动变量的生命周期跟随其所在的作用域，离开作用域即销毁。Block 的生命周期可能会长于自动变量的生命周期，所以无法采用读写静态变量的实现方案。
 
-### 5. Block 中修改 __block 自动变量
+<h3 id="section_2_5">5. Block 中修改 __block 变量</h3>
+
+原始代码：
+
+<div class="code"><pre><code>int main() {
+    __block int val = 10;
+    void (^blk)(void) = ^{val = 1;};
+    return 0;
+}
+</code></pre></div>
+
+转换后代码：
+
+<div class="code"><pre><code>struct __Block_byref_val_0 {
+    void *__isa;
+    __Block_byref_val_0 *__forwarding;
+    int __flags;
+    int __size;
+    int val;
+};
+
+struct __main_block_impl_0 {
+    struct __block_impl impl;
+    struct __main_block_desc_0 *Desc;
+    __Block_byref_val_0 *val;
+    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, __Block_byref_val_0 *_val, int flags=0)
+        : val(_val->__forwarding) {
+        impl.isa = &_NSConcreteStackBlock;
+        impl.Flags = flags;
+        impl.FuncPtr = fp;
+        Desc = desc;
+    }
+};
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself)
+{
+    __Block_byref_val_0 *val = __cself->val;
+    (val->__forwarding->val) = 1;
+}
+
+static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+{
+    _Block_object_assign(&dst->val, src->val, BLOCK_FIELD_IS_BYREF);
+}
+
+static void __main_block_dispose_0(struct __main_block_impl_0 *src)
+{
+    _Block_object_dispose(src->val, BLOCK_FIELD_IS_BYREF);
+}
+
+static struct __main_block_desc_0 {
+    unsigned long reserved;
+    unsigned long Block_size;
+    void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);
+    void (*dispose)(struct __main_block_impl_0*);
+} __main_block_desc_0_DATA = {
+    0,
+    sizeof(struct __main_block_impl_0),
+    __main_block_copy_0,
+    __main_block_dispose_0
+};
+
+int main()
+{
+    __Block_byref_val_0 val = {
+        0,
+        &val,
+        0,
+        sizeof(__Block_byref_val_0),
+        10
+    };
+    blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, &val, 0x22000000);
+    return 0;
+}
+</code></pre></div>
+
+转换后的代码中，原始 __block 变量转换成了 __Block_byref_val_0 结构体类型。__Block_byref_val_0 的成员变量 val 存储原始值。
+
+__Block_byref_val_0 实例和 __main_block_impl_0 实例是多对多的关系，即一个 __Block_byref_val_0 实例可以在多个 __main_block_impl_0 实例中使用，一个 __main_block_impl_0 实例也可以使用多个 __Block_byref_val_0 实例。
+
+<h3 id="section_2_6">6. Block 的存储类型</h3>
+
+上文可知 Block 本身也是 OC 对象，其在内存中的存储方式有三种：_NSConcreteStackBlock、_NSConcreteGlobalBlock、_NSConcreteMallocBlock，分别对应：栈、全局/静态存储区、堆。内存区域划分方式大致可用下图表示，下图同时描述了不同存储方式的 Block 对应的内存区域。
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%" /></div>
+
+<div align="center">图 Block 不同存储方式对应的内存区域</div>
+
+Block 字面定义在全局作用域生成 _NSConcreteGlobalBlock 类型 Block 对象。
+
+存储类型为 _NSConcreteStackBlock 的 Block 以及 __block 修饰的变量的生命周期与普通自动变量相同，离开作用域后即销毁。
+
+<h3 id="section_2_7">7. Block 的存储类型 -- 堆上的 Block</h3>
+
+堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。
 
 
 
-## 三、GCD
+<h2 id="section_3">三、GCD</h2>
 
 
 {{ page.date | date_to_string }}
