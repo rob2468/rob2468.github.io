@@ -3,21 +3,7 @@ layout: post
 title: 读书笔记 - Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks
 ---
 
-# {{ page.title }}
-
-<h2>目录</h2>
-<a href="#section_1">一、内存管理</a><br />
-<a href="#section_2">二、Block</a><br />
-<a href="#section_2_1">1. Block 的基本实现</a><br />
-<a href="#section_2_2">2. isa 和 _NSConcreteStackBlock</a><br />
-<a href="#section_2_3">3. Block 捕获自动变量</a><br />
-<a href="#section_2_4">4. Block 中修改静态变量、静态全局变量和全局变量</a><br />
-<a href="#section_2_5">5. Block 中修改 __block 变量</a><br />
-<a href="#section_2_6">6. Block 的存储类型</a><br />
-<a href="#section_2_7">7. Block 的存储类型 -- 堆上的 Block</a><br />
-<a href="#section_2_8">8. __block 变量</a><br />
-<a href="#section_2_9"></a><br />
-<a href="#section_3">三、GCD</a>
+<h1 class="title">{{ page.title }}</h1>
 
 iOS Objective-C 开发中用到许多 block 语法。block 给开发带来了许多便利，但是相关的内存管理得加以小心，避免引入如循环引用这样的内存问题。在查阅相关资料的时候找到这本书，初读后颇有收获，现再读作本读书笔记以加深记忆与理解，并方便以后查阅。
 
@@ -38,7 +24,7 @@ OC 使用引用计数来实现内存管理。引用计数是内存管理的基�
 * 当不再需要某个你拥有的对象时，你必须放弃对该对象的所有权。
 * 当不拥有某个对象时，你不能放弃对该对象的所有权。
 
-### 1. [GNUstep](http://gnustep.org/) 和 Apple 存储引用计数的不同方式
+<h3 id="section_1_1">1. [GNUstep](http://gnustep.org/) 和 Apple 存储引用计数的不同方式</h3>
 
 下面两幅图描述 GNUstep 和 Apple 存储对象引用计数的方式。
 
@@ -68,7 +54,7 @@ Apple 实现方式的优点：
 * 对象实例不包含额外的头部，不必考虑因为存在头部而引入的内存对齐问题。
 * 可以简单的通过遍历哈希表，访问到所有对象实例的内存空间。（尤其便于调试）
 
-### 2. autorelease
+<h3 id="section_1_2">2. autorelease</h3>
 
 当采用 ARC 方式开发时，很少用到 autorelease 语法，但是其相关的知识点值得了解一下。
 
@@ -84,7 +70,7 @@ autorelease 中，该指定的代码块称为自动释放池。在自动释放�
 
 在某些时候，默认存在的自动释放池不能满足需求。比如，在某个循环体内创建了许多对象，分配了大量内存，如果等到循环体执行完毕，最后离开自动释放池的时候才整体释放这些对象，会带来严重的内存问题。这时候可以通过手动创建和释放自动释放池解决。（可以看出，自动释放池是可以嵌套使用的，最内层的为当前自动释放池。）
 
-### 3. ARC 中的所有权修饰符（Ownership Qualifiers）
+<h3 id="section_1_3">3. ARC 中的所有权修饰符（Ownership Qualifiers）</h3>
 
 开启 ARC 后，编译器会承担内存管理的工作，开发者不必再手动调用 retain 和 release。ARC 引入了如下4个所有权描述符，开发者需要合理的使用所有权描述符，才能正确实现 ARC 下的内存管理。
 
@@ -243,7 +229,7 @@ BOOL result = [obj performOperationWithError:&tmp];
 error = tmp;
 </code></pre></div>
 
-### 4. 类型转换与内存管理
+<h3 id="section_1_4">4. 类型转换与内存管理</h3>
 
 OC 环境下开发会遇到多种类型的对象实例，而且对象实例可能需要在不同的类型之间转换。比如有如下对象实例类型，Foundation 框架下的对象实例，原生 C 语言下的对象实例，Core Foundation 框架下的对象实例。本小节描述这三种类型的对象实例之间的转换以及内存管理。
 
@@ -299,7 +285,7 @@ CFRelease(cfObject);
 id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer id)cfObject;
 </code></pre></div>
 
-### 5. 属性
+<h3 id="section_1_5">5. 属性</h3>
 
 ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二者存在对应关系，如下表所示。
 
@@ -315,7 +301,7 @@ ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二�
 ----------------------------------------------------------------------------
 </code></pre></div>
 
-### 6. ARC 的实现方式
+<h3 id="section_1_6">6. ARC 的实现方式</h3>
 
 这一小节揭示 ARC 的实现方式和部分底层机制。编译器会将 OC 代码翻译成机器码，为了方便理解，本小节使用伪代码进行描述。
 
@@ -368,7 +354,7 @@ objc_release(obj);
 
 <div align="center">图 跳过对象加入自动释放池步骤</div>
 
-### 6. _objc_rootRetainCount
+<h3 id="section_1_7">7. _objc_rootRetainCount</h3>
 
 iOS 提供了查看对象实例引用计数的函数，`uintptr_t _objc_rootRetainCount(id obj)`。该函数可在调试时使用，但是其返回的值也并不总是正确的，需慎用。在 ARC 下只要遵循各所有权描述符的规则即可实现内存管理，不需要关注引用计数的数值。
 
@@ -834,7 +820,7 @@ static void __main_block_dispose_0(struct __main_block_impl_0 *src)
 }
 </code></pre></div>
 
-<h5>10.2 __block 变量内的内存管理实现</h5>
+<h4>10.2 __block 变量内的内存管理实现</h4>
 
 当 __block 修饰的变量为 OC 对象实例时，__block 内部需要负责该对象实例的内存管理。如下代码所示。__block 变量内的内存管理实现和 Block 内的内存管理类似。该情况下，__Block_byref_obj_0 结构体中多了两个成员变量 __Block_byref_id_object_copy 和 __Block_byref_id_object_dispose，都为函数指针，作用与上小节的 copy 和 dispose 相同，OC 运行时检测到 __block 变量从栈拷贝到堆或者 __block 变量被销毁时，适时调用这对方法，实现 __block 变量内的内存管理。
 
