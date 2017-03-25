@@ -10,9 +10,13 @@ title: 读书笔记 - Pro Multithreading and Memory Management for iOS and OS X 
 <a href="#section_2">二、Block</a><br />
 <a href="#section_2_1">1. Block 的基本实现</a><br />
 <a href="#section_2_2">2. isa 和 _NSConcreteStackBlock</a><br />
-<a href="#section_2_3">3. </a><br />
-<a href="#section_2_4">4. </a><br />
-<a href="#section_2_5">5. </a><br />
+<a href="#section_2_3">3. Block 捕获自动变量</a><br />
+<a href="#section_2_4">4. Block 中修改静态变量、静态全局变量和全局变量</a><br />
+<a href="#section_2_5">5. Block 中修改 __block 变量</a><br />
+<a href="#section_2_6">6. Block 的存储类型</a><br />
+<a href="#section_2_7">7. Block 的存储类型 -- 堆上的 Block</a><br />
+<a href="#section_2_8">8. __block 变量</a><br />
+<a href="#section_2_9"></a><br />
 <a href="#section_3">三、GCD</a>
 
 iOS Objective-C 开发中用到许多 block 语法。block 给开发带来了许多便利，但是相关的内存管理得加以小心，避免引入如循环引用这样的内存问题。在查阅相关资料的时候找到这本书，初读后颇有收获，现再读作本读书笔记以加深记忆与理解，并方便以后查阅。
@@ -678,9 +682,199 @@ Block 字面定义在全局作用域生成 _NSConcreteGlobalBlock 类型 Block �
 
 <h3 id="section_2_7">7. Block 的存储类型 -- 堆上的 Block</h3>
 
-堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。
+堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。下图为 Block 从栈拷贝到堆的示意图，同样的，__block 变量也可以从栈拷贝到堆。
 
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%" /></div>
 
+<div align="center">图 Block 和 __block 变量从栈拷贝到堆</div>
+
+在下列情况下，栈中的 Block 会拷贝到堆：
+
+a. 调用 Block 对象的 copy 方法；
+
+b. 函数返回值为 Block 对象；
+
+c. Block 对象赋给 __strong 所有权描述符修饰的变量；
+
+d. Block 对象被 Cocoa 框架中的 "usingBlock" 方法使用，或者被 GCD 中的函数使用。
+
+不同存储类型的 Block 对象调用 copy 方法的效果不同：
+ 
+ a. _NSConcreteStackBlock 类型的 Block 对象，从栈拷贝到堆；
+
+ b. _NSConcreteGlobalBlock 类型的 Block 对象，不发生作用；
+
+ c. _NSConcreteMallocBlock 类型的 Block 对象，引用计数加一。（在 ARC 开启的情况下，多次调用 copy 方法也没有问题。）
+
+<h3 id="section_2_8">8. __block 变量</h3>
+
+当 Block 使用了 __block 变量并且 Block 从栈拷贝到堆时：如果 __block 变量存储在栈上，__block 变量会被拷贝到堆上，并且 Block 对象拥有 __block 变量的所有权；如果 __block 变量本来即存储在堆上，Block 也会拥有 __block 变量的所有权。
+
+__block 变量编译后也是普通的结构体实例，其中有个特别的成员变量 __forwarding。通过 __forwarding 成员变量保证访问 __block 变量的一致性。如下代码片段，__block 变量随着 Block 从栈拷贝到堆上。
+
+<div class="code"><pre><code>__block int val = 0;
+void (^blk)(void) = [^{++val;} copy];
+++val;
+blk();
+</code></pre></div>
+
+Block 内部会修改堆上的 __block 变量，Block 外部会修改栈上的 __block 变量。转换后，这两种行为是一致的，即`++(val.__forwarding->val)`。栈和堆上 __block 变量中的 __forwarding 指针都指向堆上的 __block 变量，下图描述了这种机制。
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%" /></div>
+
+<div align="center">图 __block 变量拷贝到堆</div>
+
+<h3 id="section_2_9">9. Block 捕获对象实例</h3>
+
+前文讲述的 Block 捕获自动变量，自动变量的类型为整型变量。当 Block 捕获的自动变量为 OC 对象时：
+
+原始代码：
+
+<div class="code"><pre><code>blk_t blk;
+{
+    id array = [[NSMutableArray alloc] init];
+    blk = [^(id obj) {
+        [array addObject:obj];
+        NSLog(@"array count = %ld", [array count]);
+    } copy];
+}
+blk([[NSObject alloc] init]);
+blk([[NSObject alloc] init]);
+blk([[NSObject alloc] init]);
+</code></pre></div>
+
+转换后代码：
+
+<div class="code"><pre><code>/* a struct for the Block and some functions */
+struct __main_block_impl_0 {
+    struct __block_impl impl;
+    struct __main_block_desc_0 *Desc;
+    id __strong array;
+    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, id __strong _array, int flags=0)
+        : array(_array) {
+        impl.isa = &_NSConcreteStackBlock;
+        impl.Flags = flags;
+        impl.FuncPtr = fp;
+        Desc = desc;
+    }
+};
+
+static void __main_block_func_0(struct __main_block_impl_0 *__cself, id obj)
+{
+    id __strong array = __cself->array;
+    [array addObject:obj];
+    NSLog(@"array count = %ld", [array count]);
+}
+
+static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+{
+    _Block_object_assign(&dst->array, src->array, BLOCK_FIELD_IS_OBJECT);
+}
+
+static void __main_block_dispose_0(struct __main_block_impl_0 *src)
+{
+    _Block_object_dispose(src->array, BLOCK_FIELD_IS_OBJECT);
+}
+
+static struct __main_block_desc_0 {
+    unsigned long reserved;
+    unsigned long Block_size;
+    void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);
+    void (*dispose)(struct __main_block_impl_0*);
+} __main_block_desc_0_DATA = {
+    0,
+    sizeof(struct __main_block_impl_0),
+    __main_block_copy_0,
+    __main_block_dispose_0
+};
+
+/* Block literal and executing the Block */
+blk_t blk;
+{
+    id __strong array = [[NSMutableArray alloc] init];
+    blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, array, 0x22000000);
+    blk = [blk copy]; 
+}
+(*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
+(*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
+(*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
+</code></pre></div>
+
+<h3 id="section2_10">10. 内存管理</h3>
+
+前文讲述到 Block 内存管理时提到对象之间的所有权关系，但是转换后的 C 代码是无法利用 ARC 机制的。本小节说明相关的内存管理是如何实现的。
+
+<h4>10.1 Block 内的内存管理实现</h4>
+
+在前文中，当 Block 对象需要引用对象时，比如捕获 __block 变量、捕获 OC 对象实例，__main_block_desc_0 结构体中多了两个成员变量 copy 和 dispose，他们都为函数指针，函数实现如下代码所示。copy 和 dispose 分别对应对象的初始化和销毁，OC 运行时检测到 Block 从栈拷贝到堆或者 Block 对象被销毁时，能够适时调用 copy 和 dispose 实现 Block 内的内存管理。
+
+Block 捕获 __block 变量内存管理相关代码：
+
+ <div class="code"><pre><code>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+{
+    _Block_object_assign(&dst->val, src->val, BLOCK_FIELD_IS_BYREF);
+}
+
+static void __main_block_dispose_0(struct __main_block_impl_0 *src)
+{
+    _Block_object_dispose(src->val, BLOCK_FIELD_IS_BYREF);
+}
+</code></pre></div>
+
+Block 捕获对象实例内存管理相关代码：
+
+<div class="code"><pre><code>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+{
+    _Block_object_assign(&dst->array, src->array, BLOCK_FIELD_IS_OBJECT);
+}
+
+static void __main_block_dispose_0(struct __main_block_impl_0 *src)
+{
+    _Block_object_dispose(src->array, BLOCK_FIELD_IS_OBJECT);
+}
+</code></pre></div>
+
+<h5>10.2 __block 变量内的内存管理实现</h5>
+
+当 __block 修饰的变量为 OC 对象实例时，__block 内部需要负责该对象实例的内存管理。如下代码所示。__block 变量内的内存管理实现和 Block 内的内存管理类似。该情况下，__Block_byref_obj_0 结构体中多了两个成员变量 __Block_byref_id_object_copy 和 __Block_byref_id_object_dispose，都为函数指针，作用与上小节的 copy 和 dispose 相同，OC 运行时检测到 __block 变量从栈拷贝到堆或者 __block 变量被销毁时，适时调用这对方法，实现 __block 变量内的内存管理。
+
+原始代码：
+
+<div class="code"><pre><code>__block id obj = [[NSObject alloc] init];
+</code></pre></div>
+
+转换后代码：
+
+<div class="code"><pre><code>/* struct for __block variable */
+struct __Block_byref_obj_0 {
+    void *__isa;
+    __Block_byref_obj_0 *__forwarding;
+    int __flags;
+    int __size;
+    void (*__Block_byref_id_object_copy)(void*, void*);
+    void (*__Block_byref_id_object_dispose)(void*);
+    __strong id obj;
+};
+
+static void __Block_byref_id_object_copy_131(void *dst, void *src) {
+    _Block_object_assign((char*)dst + 40, *(void * *) ((char*)src + 40), 131);
+}
+
+static void __Block_byref_id_object_dispose_131(void *src) {
+    _Block_object_dispose(*(void * *) ((char*)src + 40), 131);
+}
+
+/* __block variable declaration */
+__Block_byref_obj_0 obj = {
+    0,
+    &obj,
+    0x2000000,
+    sizeof(__Block_byref_obj_0),
+    __Block_byref_id_object_copy_131,
+    __Block_byref_id_object_dispose_131,
+    [[NSObject alloc] init]
+};
+</code></pre></div>
 
 <h2 id="section_3">三、GCD</h2>
 
