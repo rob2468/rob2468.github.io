@@ -786,7 +786,7 @@ blk_t blk;
 (*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
 </code></pre></div>
 
-<h3 id="section2_10">10. 内存管理</h3>
+<h3 id="section_2_10">10. 内存管理</h3>
 
 前文讲述到 Block 内存管理时提到对象之间的所有权关系，但是转换后的 C 代码是无法利用 ARC 机制的。本小节说明相关的内存管理是如何实现的。
 
