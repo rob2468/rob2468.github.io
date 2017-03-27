@@ -54,7 +54,7 @@
 
             // 插入到标题后面
             var titleEle = document.querySelectorAll(".title");
-            if (titleEle) {
+            if (titleEle.length > 0) {
                 titleEle = titleEle[0];
                 titleEle.parentNode.insertBefore(contentTableEle, titleEle.nextSibling);
             }
