@@ -420,7 +420,7 @@ int main() {
 }
 </code></pre></div>
 
-对比原始代码，转换后的代码增加了三个结构体和一个函数的定义。结构体：`__block_impl`、`__main_block_impl_0`、`__main_block_desc_0`；函数：`__main_block_func_0`。`__main_block_func_0`对应原始代码中的 Block 实现，函数命名的规则是取原始方法名（main）和该 Block 在原始方法中的次序（第0个），结构体的命名规则也是如此。
+对比原始代码，转换后的代码增加了三个结构体和一个函数的定义。结构体：__block_impl、__main_block_impl_0、__main_block_desc_0；函数：__main_block_func_0。__main_block_func_0 对应原始代码中的 Block 实现，函数命名的规则是取原始方法名（main）和该 Block 在原始方法中的次序（第0个），结构体的命名规则也是如此。
 
 <h3 id="section_2_2">2. isa 和 _NSConcreteStackBlock</h3>
 
