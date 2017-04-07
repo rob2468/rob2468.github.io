@@ -67,6 +67,34 @@
 
         <div class="main">
         {{ content }}
+
+        <!-- <div id="commentit"></div>
+        <script type="text/javascript">
+          /** CONFIGURATION VARIABLES **/
+          var commentitUsername = 'rob2468';
+          var commentitRepo = 'rob2468/rob2468.github.io';
+          var commentitId = '{{ page.id }}'; // for data file way of storing comments
+
+          /** DON'T EDIT FOLLOWING LINES **/
+          (function() {
+              var commentit = document.createElement('script');
+              commentit.type = 'text/javascript';
+              commentit.async = true;
+              commentit.src = 'https://commentit.io/static/embed/dist/commentit.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(commentit);
+          })();
+        </script> -->
+        {%if site.data.comments[page.id] %}
+            {% assign sorted_comments = (site.data.comments[page.id] | sort: 'date') %}
+        {% endif %}
+        {% for c in sorted_comments %}
+          <div>
+              <p>{{ c.author.display_name }} on {{ c.date | date_to_string }}</p>
+              <p>{{ c.content | newline_to_br }}</p>
+          </div>
+        {% else %}
+            There are no comments on this post.
+        {% endfor %}
         </div><!-- main -->
 
         <div class="footer">
@@ -74,4 +102,3 @@
         </div>
     </body>
 </html>
-
