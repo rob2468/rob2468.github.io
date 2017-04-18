@@ -84,8 +84,9 @@
               (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(commentit);
           })();
         </script> -->
-        {%if site.data.comments[page.id] %}
-            {% assign sorted_comments = (site.data.comments[page.id] | sort: 'date') %}
+        {% assign pageid = page.id %}
+        {%if site.data.comments[pageid] %}
+            {% assign sorted_comments = (site.data.comments[pageid] | sort: 'date') %}
         {% endif %}
         {% for c in sorted_comments %}
           <div>
