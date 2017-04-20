@@ -4,6 +4,7 @@ title: （利用GitHub API）实现GitHub Pages的评论系统
 id: id-2017-04-18
 ---
 
+<h1>{{ page.title }}</h1>
 
 <h3>参考文献：</h3>
 1. <a href="https://mdswanson.com/blog/2011/07/23/digging-around-the-github-api-take-2.html" target="_blank">Making a commit with the Github API</a>

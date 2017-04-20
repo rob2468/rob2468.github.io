@@ -68,6 +68,16 @@
         <div class="main">
         {{ content }}
 
+        <div class="comment_area">
+        <!-- comment form -->
+        <div class="comment_form">
+          <form>
+            <input type="text" placeholder="姓名"></input>
+            <input type="text" placeholder="电子邮箱"></input>
+            <textarea placeholder="请输入您的评论"></textarea>
+            <input type="button" value="提交评论"></input>
+          </form>
+        </div>
         <!-- <div id="commentit"></div>
         <script type="text/javascript">
           /** CONFIGURATION VARIABLES **/
@@ -84,6 +94,7 @@
               (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(commentit);
           })();
         </script> -->
+        <!-- comments -->
         {% assign pageid = page.id %}
         {%if site.data.comments[pageid] %}
             {% assign sorted_comments = (site.data.comments[pageid] | sort: 'date') %}
@@ -96,6 +107,7 @@
         {% else %}
             There are no comments on this post.
         {% endfor %}
+        </div>
         </div><!-- main -->
 
         <div class="footer">
