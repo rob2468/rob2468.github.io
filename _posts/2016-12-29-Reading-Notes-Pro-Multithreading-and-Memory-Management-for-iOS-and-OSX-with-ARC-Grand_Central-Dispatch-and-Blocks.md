@@ -35,7 +35,7 @@ OC 使用引用计数来实现内存管理。引用计数是内存管理的基�
 GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字段。struct obj_layout 的定义如下所示：
 
 <div class="code"><pre><code>struct obj_layout {
-    NSUInteger retained; 
+    NSUInteger retained;
 };
 </code></pre></div>
 <div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%" /></div>
@@ -394,7 +394,7 @@ struct __main_block_impl_0 {
         impl.isa = &_NSConcreteStackBlock;
         impl.Flags = flags;
         impl.FuncPtr = fp;
-        Desc = desc; 
+        Desc = desc;
     }
 };
 
@@ -562,7 +562,7 @@ static void __main_block_func_0(struct __main_block_impl_0 *__cself) {
 int main()
 {
     static int static_val = 3;
-    
+
     blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, &static_val);
     return 0;
 }
@@ -685,7 +685,7 @@ c. Block 对象赋给 __strong 所有权描述符修饰的变量；
 d. Block 对象被 Cocoa 框架中的 "usingBlock" 方法使用，或者被 GCD 中的函数使用。
 
 不同存储类型的 Block 对象调用 copy 方法的效果不同：
- 
+
  a. _NSConcreteStackBlock 类型的 Block 对象，从栈拷贝到堆；
 
  b. _NSConcreteGlobalBlock 类型的 Block 对象，不发生作用；
@@ -779,7 +779,7 @@ blk_t blk;
 {
     id __strong array = [[NSMutableArray alloc] init];
     blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, array, 0x22000000);
-    blk = [blk copy]; 
+    blk = [blk copy];
 }
 (*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
 (*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
@@ -864,5 +864,27 @@ __Block_byref_obj_0 obj = {
 
 <h2 id="section_3">三、GCD</h2>
 
+GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要定义好任务并加入到分发队列中，线程管理的相关工作由系统完成。
+
+分发队列是先进先出的队列结构，可以分为串行队列和并发队列。加入到串行队列中的任务会依次有序执行，当前任务完成后再执行队列中下一个任务。并发队列中的任务执行不会等待前次任务执行完成。
+
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%" /></div>
+
+<div align="center">图 串行队列、并发队列与线程的关系</div>
+
+上图描述了分发队列和线程的关系。XNU kernel 是 iOS 和 OS X 的核心部分，负责线程的管理，创建、销毁和调度线程。比如，8个任务添加至并发队列中，XNU kernel 提供了4个线程执行任务，可能有如下执行顺序。
+
+<div class="code"><pre><code>--------------------------------------------------
+|  Thread0  |  Thread1  |  Thread 2  |  Thread3  |
+|-----------|-----------|------------|-----------|
+|  blk0     |  blk1     |  blk2      |  blk3     |
+|  blk4     |  blk6     |  blk5      |           |
+|  blk7     |           |            |           |
+--------------------------------------------------
+</code></pre></div>
+
+分发队列本身不遵循 OC 对象的内存管理规则，当创建了一个分发队列，使用完成后需手动释放。
+
+当创建了一个串行队列并向其中添加了任务，系统会创建一个对应的线程。如果创建了2000个串行队列，系统也会创建2000个线程。开发者需要了解这个特性，避免过多线程造成额外的开销。
 
 {{ page.date | date_to_string }}
