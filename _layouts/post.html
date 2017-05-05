@@ -24,7 +24,7 @@
             <input type="text" name="display_name" placeholder="姓名"></input>
             <input type="text" name="email" placeholder="电子邮箱"></input>
             <textarea name="content" placeholder="请输入您的评论"></textarea>
-            <input type="button" value="提交评论" onclick="submitForm()"></input>
+            <button type="button" class="submit submit_normal" onclick=submitForm()><img src="/resources/loading-bubbles.svg"/><span>提交评论</span></button>
           </form>
         </div>
         <!-- comments -->
@@ -44,17 +44,45 @@
 
         <script>
         function submitForm() {
-          var TOKEN = "token f3257ed1efef5c1ad10d7337636c3b375735270a";
-          var BRANCH_NAME = "comments";
-          var OWNER_NAME = "rob2468";
-          var REPO_NAME = "rob2468.github.io";
-          var pageID = "{{ pageid }}";
-          var email = $("input[name='email']").val();
-          var dateObj = new Date();
-          var date = dateObj.toDateString();
-          var display_name = $("input[name='display_name']").val();
-          var content = $("textarea[name='content']").val();
-          commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content)
+          if ($(".comment_area .submit_normal").length > 0) {
+            var TOKEN = "token f3257ed1efef5c1ad10d7337636c3b375735270a";
+            var BRANCH_NAME = "comments";
+            var OWNER_NAME = "rob2468";
+            var REPO_NAME = "rob2468.github.io";
+            var pageID = "{{ pageid }}";
+            var email = $("input[name='email']").val();
+            var dateObj = new Date();
+            var date = dateObj.toDateString();
+            var display_name = $("input[name='display_name']").val();
+            var content = $("textarea[name='content']").val();
+            
+            $(".comment_area .submit").removeClass("submit_normal");
+            $(".comment_area .submit").addClass("submit_loading");
+            function finnalyCompleteLoading() {
+              $(".comment_area .submit").addClass("submit_normal");
+              $(".comment_area .submit").removeClass("submit_loading");
+            }
+            commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function() {
+              // completionHandler
+              finnalyCompleteLoading();
+            }, function() {
+              // errorHandler
+              finnalyCompleteLoading();
+            });
+            // test(function() {
+            //   // completionHandler
+            //   $(".comment_area .submit").addClass("submit_normal");
+            //   $(".comment_area .submit").removeClass("submit_loading");
+            // }, function() {
+            //   // errorHandler
+            // });
+            // function test(func1, func2) {
+            //   setTimeout(func1, 1000);
+            // }
+          } else {
+            // loading
+            console.log("loading");
+          }
         }
         </script>
         </div><!-- main -->

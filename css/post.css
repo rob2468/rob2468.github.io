@@ -1,18 +1,15 @@
 /* post custom css */
 
-h1
-{
+h1 {
     font-size: 1.25em;
 }
 
-h2
-{
+h2 {
     font-size: 1.125em;
     margin: 1em 0 0 0;
 }
 
-h3
-{
+h3 {
     font-size: 1.05em;
     margin: 1em 0 0 0;
 }
@@ -50,7 +47,7 @@ input[type="text"] {
 textarea {
   resize: vertical;
 }
-input[type="button"] {
+.comment_area .submit {
   margin-top: 15px;
   padding: 6px 12px;
   border-radius: 3px;
@@ -58,11 +55,30 @@ input[type="button"] {
   color: #fff;
   background-image: linear-gradient(#8add6d, #60b044);
   border-color: #5ca941;
-  width: auto;
+  width: 80px;
+  height: 30px;
   float: right;
 }
-input[type="button"]:after {
+.comment_area .submit:after {
     display: block;
     content: "";
     clear: both;
+}
+.comment_area .submit img {
+  width: 40px;
+  height: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.comment_area .submit_normal img {
+  display: none;
+}
+.comment_area .submit_normal span {
+  display: block;
+}
+.comment_area .submit_loading img {
+  display: block;
+}
+.comment_area .submit_loading span {
+  display: none;;
 }
