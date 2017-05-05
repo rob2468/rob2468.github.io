@@ -25,6 +25,7 @@
             <input type="text" name="email" placeholder="电子邮箱"></input>
             <textarea name="content" placeholder="请输入您的评论"></textarea>
             <button type="button" class="submit submit_normal" onclick=submitForm()><img src="/resources/loading-bubbles.svg"/><span>提交评论</span></button>
+            <div class="prompt"></div>
           </form>
         </div>
         <!-- comments -->
@@ -43,6 +44,7 @@
         </div>
 
         <script>
+        var timeoutID;
         function submitForm() {
           if ($(".comment_area .submit_normal").length > 0) {
             var TOKEN = "token f3257ed1efef5c1ad10d7337636c3b375735270a";
@@ -50,35 +52,74 @@
             var OWNER_NAME = "rob2468";
             var REPO_NAME = "rob2468.github.io";
             var pageID = "{{ pageid }}";
-            var email = $("input[name='email']").val();
+            var email = $("input[name='email']").val().trim();
             var dateObj = new Date();
             var date = dateObj.toDateString();
-            var display_name = $("input[name='display_name']").val();
-            var content = $("textarea[name='content']").val();
-            
-            $(".comment_area .submit").removeClass("submit_normal");
-            $(".comment_area .submit").addClass("submit_loading");
-            function finnalyCompleteLoading() {
-              $(".comment_area .submit").addClass("submit_normal");
-              $(".comment_area .submit").removeClass("submit_loading");
+            var display_name = $("input[name='display_name']").val().trim();
+            var content = $("textarea[name='content']").val().trim();
+
+            // 字段有效性检查
+            function validateDisplayName() {
+              var res;
+              if (display_name.length === 0) {
+                res = "姓名没有可见字符";
+              }
+              return res;
             }
-            commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function() {
-              // completionHandler
-              finnalyCompleteLoading();
-            }, function() {
-              // errorHandler
-              finnalyCompleteLoading();
-            });
-            // test(function() {
-            //   // completionHandler
-            //   $(".comment_area .submit").addClass("submit_normal");
-            //   $(".comment_area .submit").removeClass("submit_loading");
-            // }, function() {
-            //   // errorHandler
-            // });
-            // function test(func1, func2) {
-            //   setTimeout(func1, 1000);
-            // }
+            function validateEmail() {
+              var res;
+              if (email.length === 0) {
+                res = "电子邮箱没有可见字符";
+              }
+              return res;
+            }
+            function validateContent() {
+              var res;
+              if (content.length === 0) {
+                res = "评论内容没有可见字符";
+              }
+              return res;
+            }
+            var displayNameValidation = validateDisplayName();
+            var emailValidation = validateEmail();
+            var contentValidation = validateContent();
+            if (!displayNameValidation && !emailValidation && !contentValidation) {
+              $(".comment_area .submit").removeClass("submit_normal");
+              $(".comment_area .submit").addClass("submit_loading");
+              function finnalyCompleteLoading() {
+                $(".comment_area .submit").addClass("submit_normal");
+                $(".comment_area .submit").removeClass("submit_loading");
+              }
+              commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function() {
+                // completionHandler
+                finnalyCompleteLoading();
+              }, function() {
+                // errorHandler
+                finnalyCompleteLoading();
+              });
+              // test(function() {
+              //   // completionHandler
+              //   $(".comment_area .submit").addClass("submit_normal");
+              //   $(".comment_area .submit").removeClass("submit_loading");
+              // }, function() {
+              //   // errorHandler
+              // });
+              // function test(func1, func2) {
+              //   setTimeout(func1, 1000);
+              // }
+            } else {
+              var prompt;
+              // 存在字段无效情况
+              prompt = displayNameValidation? displayNameValidation + "；": "";
+              prompt += emailValidation? emailValidation + "；": "";
+              prompt += contentValidation? contentValidation + "；": "";
+              $(".comment_area .prompt").text(prompt);
+
+              clearTimeout(timeoutID);
+              timeoutID = setTimeout(function() {
+                $(".comment_area .prompt").text("");
+              }, 3000);
+            }
           } else {
             // loading
             console.log("loading");

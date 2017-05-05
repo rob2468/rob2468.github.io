@@ -59,7 +59,7 @@ textarea {
   height: 30px;
   float: right;
 }
-.comment_area .submit:after {
+.comment_area .prompt:after {
     display: block;
     content: "";
     clear: both;
@@ -81,4 +81,9 @@ textarea {
 }
 .comment_area .submit_loading span {
   display: none;;
+}
+.comment_area .prompt {
+  margin-top: 15px;
+  float: left;
+  color: gray;
 }
