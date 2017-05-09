@@ -33,7 +33,13 @@ form:after {
     content: "";
     clear: both;
 }
-input[type="text"], textarea {
+.comment_area input[type="text"] {
+  margin-bottom: 10px;
+}
+.comment_area textarea {
+  resize: vertical;
+}
+.comment_area .input {
   display: block;
   border: 1px solid #ccc;
   width: 100%;
@@ -41,11 +47,8 @@ input[type="text"], textarea {
   float: left;
   padding: 6px 12px;
 }
-input[type="text"] {
-  margin-bottom: 10px;
-}
-textarea {
-  resize: vertical;
+.comment_area .input.input_error {
+  border: 1px solid #e55c5c;
 }
 .comment_area .submit {
   margin-top: 15px;

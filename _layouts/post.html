@@ -23,9 +23,9 @@
         <!-- comment form -->
         <div class="comment_form">
           <form>
-            <input type="text" name="display_name" placeholder="姓名"></input>
-            <input type="text" name="email" placeholder="电子邮箱"></input>
-            <textarea name="content" placeholder="请输入您的评论"></textarea>
+            <input type="text" name="display_name" class="input" placeholder="姓名"></input>
+            <input type="text" name="email" class="input" placeholder="电子邮箱"></input>
+            <textarea name="content" class="input" placeholder="请输入您的评论"></textarea>
             <button type="button" class="submit submit_normal" onclick=submitForm()><img src="/resources/loading-bubbles.svg"/><span>提交评论</span></button>
             <div class="prompt"></div>
           </form>
@@ -48,17 +48,20 @@
         <script>
         var timeoutID;
         function submitForm() {
+          var displayNameEle = $(".comment_area .input[name='display_name']");
+          var emailEle = $(".comment_area .input[name='email']");
+          var contentEle = $(".comment_area .input[name='content']");
           if ($(".comment_area .submit_normal").length > 0) {
             var TOKEN = "%A2%E3%DA%D0%D3%8EP%95%9C%9D%9Cfdhffei%9E%9F%9F%C7%99%99%99%9D%9E%9F%96%92%98%97%94h%9A%9Dpj%98%98i%9D%CB%C7%92c";
             var BRANCH_NAME = "comments";
             var OWNER_NAME = "rob2468";
             var REPO_NAME = "rob2468.github.io";
             var pageID = "{{ pageid }}";
-            var email = $("input[name='email']").val().trim();
+            var email = emailEle.val().trim();
             var dateObj = new Date();
             var date = dateObj.toDateString();
-            var display_name = $("input[name='display_name']").val().trim();
-            var content = $("textarea[name='content']").val().trim();
+            var display_name = displayNameEle.val().trim();
+            var content = contentEle.val().trim();
 
             // 字段有效性检查
             function validateDisplayName() {
@@ -107,12 +110,16 @@
               }
               commentme_submitComment(simpleStrDecode(TOKEN), BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
                 // completionHandler
-                showPrompt("评论已提交成功，可到<a href='https://github.com/" + OWNER_NAME + "/" + REPO_NAME + "/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
                 finnalyCompleteLoading();
+
+                $(".comment_area .input").removeClass("input_error");
+                $(".comment_area .input").val("");
+
+                showPrompt("评论已提交成功，可到<a href='https://github.com/" + OWNER_NAME + "/" + REPO_NAME + "/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
               }, function(msg) {
                 // errorHandler
-                showPrompt("内部错误（" + msg + "）");
                 finnalyCompleteLoading();
+                showPrompt("内部错误（" + msg + "）");
               });
             } else {
               var prompt;
@@ -120,6 +127,21 @@
               prompt = displayNameValidation? displayNameValidation + "；": "";
               prompt += emailValidation? emailValidation + "；": "";
               prompt += contentValidation? contentValidation + "；": "";
+              if (displayNameValidation) {
+                displayNameEle.addClass("input_error");
+              } else {
+                displayNameEle.removeClass("input_error");
+              }
+              if (emailValidation) {
+                emailEle.addClass("input_error");
+              } else {
+                emailEle.removeClass("input_error");
+              }
+              if (contentValidation) {
+                contentEle.addClass("input_error");
+              } else {
+                contentEle.removeClass("input_error");
+              }
               showPrompt(prompt);
             }
           } else {
