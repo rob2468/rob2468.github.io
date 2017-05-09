@@ -83,6 +83,16 @@
               }
               return res;
             }
+            // 显示反馈
+            function showPrompt(prompt) {
+              $(".comment_area .prompt").html(prompt);
+
+              // 延时清除
+              clearTimeout(timeoutID);
+              timeoutID = setTimeout(function() {
+                $(".comment_area .prompt").html("");
+              }, 3000);
+            }
             var displayNameValidation = validateDisplayName();
             var emailValidation = validateEmail();
             var contentValidation = validateContent();
@@ -93,11 +103,13 @@
                 $(".comment_area .submit").addClass("submit_normal");
                 $(".comment_area .submit").removeClass("submit_loading");
               }
-              commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function() {
+              commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
                 // completionHandler
+                showPrompt("评论已提交成功，可到<a href='https://github.com/rob2468/rob2468.github.io/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
                 finnalyCompleteLoading();
-              }, function() {
+              }, function(msg) {
                 // errorHandler
+                showPrompt("内部错误（" + msg + "）");
                 finnalyCompleteLoading();
               });
               // test(function() {
@@ -116,12 +128,7 @@
               prompt = displayNameValidation? displayNameValidation + "；": "";
               prompt += emailValidation? emailValidation + "；": "";
               prompt += contentValidation? contentValidation + "；": "";
-              $(".comment_area .prompt").text(prompt);
-
-              clearTimeout(timeoutID);
-              timeoutID = setTimeout(function() {
-                $(".comment_area .prompt").text("");
-              }, 3000);
+              showPrompt(prompt);
             }
           } else {
             // loading
