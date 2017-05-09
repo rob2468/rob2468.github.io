@@ -68,8 +68,11 @@
             }
             function validateEmail() {
               var res;
+              var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
               if (email.length === 0) {
                 res = "电子邮箱没有可见字符";
+              } else if (!reg.test(email)) {
+                res = "电子邮箱格式不正确";
               }
               return res;
             }
