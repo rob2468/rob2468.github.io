@@ -68,7 +68,7 @@
             }
             function validateEmail() {
               var res;
-              var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+              var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
               if (email.length === 0) {
                 res = "电子邮箱没有可见字符";
               } else if (!reg.test(email)) {
@@ -105,23 +105,13 @@
               }
               commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
                 // completionHandler
-                showPrompt("评论已提交成功，可到<a href='https://github.com/rob2468/rob2468.github.io/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
+                showPrompt("评论已提交成功，可到<a href='https://github.com/" + OWNER_NAME + "/" + REPO_NAME + "/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
                 finnalyCompleteLoading();
               }, function(msg) {
                 // errorHandler
                 showPrompt("内部错误（" + msg + "）");
                 finnalyCompleteLoading();
               });
-              // test(function() {
-              //   // completionHandler
-              //   $(".comment_area .submit").addClass("submit_normal");
-              //   $(".comment_area .submit").removeClass("submit_loading");
-              // }, function() {
-              //   // errorHandler
-              // });
-              // function test(func1, func2) {
-              //   setTimeout(func1, 1000);
-              // }
             } else {
               var prompt;
               // 存在字段无效情况
