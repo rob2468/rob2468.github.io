@@ -1,6 +1,7 @@
 ---
-layout: post 
+layout: post
 title: iOS App在不同状态下收到push通知的行为
+id: id-2015-08-14
 ---
 
 # {{ page.title }}
@@ -12,7 +13,7 @@ iOS App有多种运行状态，并且可能在任一状态下接收到APNS (Appl
 App的状态：1. 未运行；2. 在后台运行；3. 在前台运行。
 
 1. App未运行：
-	
+
 	<pre>
 	接收到push通知，系统处理。
 		用户忽略或者清除push通知，结束。
@@ -20,7 +21,7 @@ App的状态：1. 未运行；2. 在后台运行；3. 在前台运行。
 	</pre>
 
 2. App在后台运行：
-	
+
 	<pre>
 	接收到push通知，系统处理。
 		用户忽略或者清除push通知，结束。
@@ -28,7 +29,7 @@ App的状态：1. 未运行；2. 在后台运行；3. 在前台运行。
 	</pre>
 
 3. App在前台运行：
-	
+
 	<pre>
 	接收到push通知，App处理。在application:didReceiveRemoteNotification:中提供代码处理。
 	</pre>

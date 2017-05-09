@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Objective-C 消息传递
+id: id-2016-05-17
 ---
 
 # {{ page.title }}
@@ -79,7 +80,7 @@ for (int i = 0 ; i < 1000 ; i++ )
 - (IMP)methodForSelector:(SEL)aSelector
 
 Parameters
-aSelector	
+aSelector
 A selector that identifies the method for which to return the implementation address. The selector must be a valid and non-NULL. If in doubt, use the respondsToSelector: method to check before passing the selector to methodForSelector:.
 
 Return Value

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Head Tab View
+id: id-2015-11-02
 ---
 
 # {{ page.title }}
@@ -36,4 +37,3 @@ Head Tab View的整体结构如图2所示。
 <div align="center">图3. BDPhoneHeadTabView的视图层次</div>
 
 {{ page.date | date_to_string }}
-

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 视图控制对象的视图的生命周期
+id: id-2015-04-15
 ---
 
 # {{ page.title }}

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 读书笔记 - Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks
+id: id-2016-12-29
 ---
 
 <h1 class="title">{{ page.title }}</h1>

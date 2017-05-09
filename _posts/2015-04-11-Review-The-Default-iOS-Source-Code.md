@@ -1,6 +1,7 @@
 ---
 layout: post
 title: iOS工程默认源代码文件简介（main.m和AppDelegate.h/.m）
+id: id-2015-04-11
 ---
 
 # {{ page.title }}
