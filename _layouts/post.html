@@ -7,7 +7,9 @@
         <link rel="stylesheet" type="text/css" href="/css/post.css" />
         <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
         <script type="text/javascript" src="https://rawgit.com/rob2468/commentme/master/dist/commentme.js"></script>
+        <!-- <script type="text/javascript" src="/js/commentme.js"></script> -->
         <script type="text/javascript" src="/js/post.js"></script>
+        <script type="text/javascript" src="/js/utility.js"></script>
         <script type="text/javascript">$(document).ready(generateContentsTable);</script>
         <title>{{ page.title }}</title>
     </head>
@@ -47,7 +49,7 @@
         var timeoutID;
         function submitForm() {
           if ($(".comment_area .submit_normal").length > 0) {
-            var TOKEN = "token f3257ed1efef5c1ad10d7337636c3b375735270a";
+            var TOKEN = "%A2%E3%DA%D0%D3%8EP%95%9C%9D%9Cfdhffei%9E%9F%9F%C7%99%99%99%9D%9E%9F%96%92%98%97%94h%9A%9Dpj%98%98i%9D%CB%C7%92c";
             var BRANCH_NAME = "comments";
             var OWNER_NAME = "rob2468";
             var REPO_NAME = "rob2468.github.io";
@@ -103,7 +105,7 @@
                 $(".comment_area .submit").addClass("submit_normal");
                 $(".comment_area .submit").removeClass("submit_loading");
               }
-              commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
+              commentme_submitComment(simpleStrDecode(TOKEN), BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
                 // completionHandler
                 showPrompt("评论已提交成功，可到<a href='https://github.com/" + OWNER_NAME + "/" + REPO_NAME + "/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
                 finnalyCompleteLoading();
