@@ -1,7 +1,7 @@
 ---
 layout: post
 title: UML中类及其关系的符号表示
-id: id-2015-05-24
+page_id: id-2015-05-24
 ---
 
 # {{ page.title }}

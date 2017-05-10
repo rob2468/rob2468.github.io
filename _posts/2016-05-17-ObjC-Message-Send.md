@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Objective-C 消息传递
-id: id-2016-05-17
+page_id: id-2016-05-17
 ---
 
 # {{ page.title }}

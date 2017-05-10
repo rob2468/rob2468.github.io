@@ -31,7 +31,7 @@
           </form>
         </div>
         <!-- comments -->
-        {% assign pageid = page.id %}
+        {% assign pageid = page.page_id %}
         {%if site.data.comments[pageid] %}
             {% assign sorted_comments = (site.data.comments[pageid] | sort: 'date') %}
         {% endif %}

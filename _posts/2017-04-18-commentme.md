@@ -1,7 +1,7 @@
 ---
 layout: post
 title: （利用GitHub API）实现GitHub Pages的评论系统
-id: id-2017-04-18
+page_id: id-2017-04-18
 ---
 
 <h1>{{ page.title }}</h1>

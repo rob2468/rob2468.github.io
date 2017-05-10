@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Head Tab View
-id: id-2015-11-02
+page_id: id-2015-11-02
 ---
 
 # {{ page.title }}

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 可循环滚动的 ScrollView
-id: id-2016-05-26
+page_id: id-2016-05-26
 ---
 
 # {{ page.title }}

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 在UIScrollView中使用Autolayout
-id: id-2015-10-26
+page_id: id-2015-10-26
 ---
 
 # {{ page.title }}

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 初试项目管理，个人经验小结
-id: id-2016-05-20
+page_id: id-2016-05-20
 ---
 
 # {{ page.title }}

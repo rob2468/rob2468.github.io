@@ -1,7 +1,7 @@
 ---
 layout: post
 title: iOS App在不同状态下收到push通知的行为
-id: id-2015-08-14
+page_id: id-2015-08-14
 ---
 
 # {{ page.title }}

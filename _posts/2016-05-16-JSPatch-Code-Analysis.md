@@ -1,7 +1,7 @@
 ---
 layout: post
 title: JSPatch 代码分析
-id: id-2016-05-16
+page_id: id-2016-05-16
 ---
 
 # {{ page.title }}
