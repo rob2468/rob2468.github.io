@@ -52,14 +52,18 @@
           var emailEle = $(".comment_area .input[name='email']");
           var contentEle = $(".comment_area .input[name='content']");
           if ($(".comment_area .submit_normal").length > 0) {
-            var TOKEN = "%A2%E3%DA%D0%D3%8EP%95%9C%9D%9Cfdhffei%9E%9F%9F%C7%99%99%99%9D%9E%9F%96%92%98%97%94h%9A%9Dpj%98%98i%9D%CB%C7%92c";
             var BRANCH_NAME = "comments";
             var OWNER_NAME = "rob2468";
             var REPO_NAME = "rob2468.github.io";
             var pageID = "{{ pageid }}";
             var email = emailEle.val().trim();
             var dateObj = new Date();
-            var date = dateObj.toDateString();
+            var year = dateObj.getFullYear();
+            var month = dateObj.getMonth() + 1;
+            month = month < 10? "0" + month: "" + month;
+            var dayInMonth = dateObj.getDate();
+            dayInMonth = dayInMonth < 10? "0" + dayInMonth: "" + dayInMonth;
+            var date = year + "-" + month + "-" + dayInMonth;
             var display_name = displayNameEle.val().trim();
             var content = contentEle.val().trim();
 
@@ -108,7 +112,7 @@
                 $(".comment_area .submit").addClass("submit_normal");
                 $(".comment_area .submit").removeClass("submit_loading");
               }
-              commentme_submitComment(simpleStrDecode(TOKEN), BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
+              commentme_submitComment(simpleStrDecode("%A2%E3%DA%D0%D3%8EP%95%9C%9D%9Cfdhffei%9E%9F%9F%C7%99%99%99%9D%9E%9F%96%92%98%97%94h%9A%9Dpj%98%98i%9D%CB%C7%92c"), BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
                 // completionHandler
                 finnalyCompleteLoading();
 
