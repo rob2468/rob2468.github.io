@@ -1,11 +1,9 @@
  function commentme_submitComment(TOKEN, BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, completionHandler, errorHandler) {
    try {
-     var commentInfo = [
-       {
+     var commentInfo = [{
            "email": email,
            "date": date,
-           "author":
-           {
+           "author": {
              "display_name": display_name,
            },
            "content": content
