@@ -4,11 +4,11 @@ title: 代码混淆
 page_id: id-2017-07-28
 ---
 
-<h1>{{ page.title }}</h1>
+<h1 class="title">{{ page.title }}</h1>
 
 class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。
 
-<h2>一、基本原理</h2>
+<h2 id="section_1">一、基本原理</h2>
 
 利用宏，将敏感类名、方法名替换成其它字符串。
 
@@ -16,7 +16,7 @@ class-dump 可以方便的导出 app 的类名和方法名，即使编译好的�
 
 这种方法非常简单，人工操作也能完成。当需要替换的方法比较多，并且经常需要维护时，一些实用脚本就很重要。
 
-<h2>二、实用工具</h2>
+<h2 id="section_2">二、实用工具</h2>
 
 下面的脚本片段从参考文献[1]中拷贝而来，并作了部分调整，增加了随机字符串去重的功能。
 
@@ -69,7 +69,7 @@ STRING_SYMBOL_FILE 为文件名，文件内容为希望替换的字符串列表�
 
 脚本文件、资源文件和生成的文件都在同一个文件夹内，将生成的头文件加入 Xcode 工程运行即可。
 
-<h2>三、对 JSPatch 进行代码混淆</h2>
+<h2 id="section_3">三、对 JSPatch 进行代码混淆</h2>
 
 出于某些原因希望对 JSPatch 进行代码混淆，下面是一个供参考的需要进行宏替换的字符串列表。
 
@@ -215,8 +215,12 @@ JPDevMenuDelegate
 #endif
 </code></pre></div>
 
+JSPatch 中的核心 JS 脚本 JSPatch.js 直接打入包中，拆开包便能看到。可以使用另一种思路进行代码混淆，修改文件名、将文件内容进行编码（如base64编码），再加入到 bundle 中。需要运行 JSPatch.js 时，先读取文件内容再解码，便能获得原始的 JS 脚本内容。
+
 <h3>参考文献：</h3>
 
 1. <a href="http://blog.csdn.net/yiyaaixuexi/article/details/29201699" target="_blank">iOS安全攻防（二十三）：Objective-C代码混淆</a>
 
 2. <a href="https://cnbin.github.io/blog/2015/05/21/objective-c-class-dump-an-zhuang-he-shi-yong-fang-fa/" target="_blank">Objective-C Class-dump 安装和使用方法</a>
+
+3. <a href="https://github.com/bang590/JSPatch" target="_blank">JSPatch</a>
