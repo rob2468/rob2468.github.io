@@ -75,17 +75,21 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
 
 我们上面做的计算处理的是，将一个 Texture 的一个像素合成到另一个 Texture 中的一个像素。GPU 需要计算的是两个 Texture 重叠部分的所有像素。通常情况下，大多数应用包含了大量的视图层级，这些内容需要被合成到一起。尽管 GPU 为此高度优化，但这些工作已足以使得 GPU 处于忙碌状态。
 
-<h3>Opaque vs. Transparent</h3>
+<h3 id="section_2_1">2.1 是否透明（Opaque vs. Transparent）</h3>
 
-<h3></h3>
+如果即将添加的 Texture 是完全不透明的，那么最终屏幕上的像素和该 Texture 相同。GPU 可以节省大量的工作，因为只需要拷贝该 Texture 的像素，不再需要进行多个 Texture的混合。但是 GPU 无法知道 Texture 上的像素是否都是不透明的。Texture 对应着 Core Animation 中的 CALayer，CALayer 的 opaque 属性用于设置是否不透明。如果 opaque 设为 YES，那么 GPU 不再进行图层的混合，直接拷贝最上层图层的像素而忽略该图层下面的内容。这样可以为 GPU 节省相当多的工作量。Instruments 和 模拟器调试菜单下有 color blended layers 选项，能够标记出半透明的图层，也就是 GPU 需要进行图层混合的地方。
 
-<h3></h3>
+合成不透明的图层需要的计算更少，代价更小。所以，如果你知道你的图层是不透明的，确保将它的 opaque 属性设为 YES。如果你载入一个没有 Alpha 通道的图片，那该图层的 opaque 属性会自动设为 YES。需要注意的是，一张没有 Alpha 通道的图片和一张所有像素 Alpha 值为100%的图片是不同的。对于后者，Core Animation 必须假设可能有 Alpha 不是100％的像素存在。Finder 中，查看图片简介，在更多信息中会指出当前图片是否有 Alpha 通道。
 
-<h3></h3>
+<h3 id="section_2_2">2.2 像素是否对齐（Pixel Alignment and Misalignment）</h3>
 
-<h3></h3>
+<h3 id="section_2_3">2.3 蒙层（Masks）</h3>
 
-<h3></h3>
+<h3 id="section_2_4">2.4 离屏渲染（Offscreen Rendering）</h3>
+
+<h3>2.5 More about Compositing</h3>
+
+<h3>2.6 OS X</h3>
 
 
 <h2 id="section_3">三、Core Animation & OpenGL ES</h2>
@@ -102,4 +106,4 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
 
 <h3>参考文献：</h3>
 
-<a href="http://twitter.com/danielboedewadt">Daniel Eggert</a>. <a href="https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/?from=timeline&isappinstalled=0">Getting Pixels onto the Screen</a>
+<a href="http://twitter.com/danielboedewadt">Daniel Eggert</a>. <a href="https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/?from=timeline&isappinstalled=0" target="_blank">Getting Pixels onto the Screen</a>
