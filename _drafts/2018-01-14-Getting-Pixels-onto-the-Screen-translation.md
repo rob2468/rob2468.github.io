@@ -6,6 +6,11 @@ page_id: id-2018-01-14
 
 <h1 class="title">{{ page.title }}</h1>
 
+<h2>前言</h2>
+之前看到一篇很好的关于视图渲染的文章（<a href="https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/?from=timeline&isappinstalled=0" target="_blank">Getting Pixels onto the Screen</a>），最近项目中遇到一些帧率优化的问题，想起来又阅读了一遍，并且抽时间进行了翻译，以便今后学习查阅。
+
+<h2>正文</h2>
+
 将内容显示到屏幕上，有许多方式可以实现。这个过程包含许多框架，依靠许多函数和方法的组合实现。本文讨论该过程的底层原理。当你需要考虑相关性能问题时，本文内容能够帮助挑选最优的 API。本文研究的对象是 iOS 系统，不过其中大部分内容也适用于 OS X。
 
 <h2 id="section_1">一、图形栈（Graphics Stack）</h2>
@@ -113,18 +118,42 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
 
 在你打开“Color Offscreen-Rendered Yellow”选项后，当你看到了黄色，这通常代表了一种警告。但是这并不一定是坏事，如果 Core Animation 能够重用离屏渲染的结果，这有可能带来性能的提升。当在离屏缓冲区中绘制的图层没有发生变化，重用便能发生。
 
+还需要注意的是，离屏缓冲区是有大小有限的。Apple 暗示，离屏缓冲区大约是屏幕空间大小的两倍。
 
+如果是你使用图层的方式导致了离屏渲染，你可能最好避免这种使用方式。使用遮罩、设置圆角、设置阴影，这些都会触发离屏渲染。
 
-<h3>2.5 More about Compositing</h3>
+以遮罩来说，如果希望设置圆角（一种特殊的遮罩）和 clipsToBounds / masksToBounds 属性，你可以通过事先设置内容来实现，比如使用带有圆角的图片。跟之前一样，你需要做一下权衡。如果你希望为图层添加一个矩形遮罩，你可以通过设置 contentsRect 来实现，而不是使用遮罩。
 
-
-
-<h3>2.6 OS X</h3>
-
+如果你的最终方案需要将 shouldRasterize 设为 YES，记住同时将 rasterizationScale 设为 contentScale。
 
 <h2 id="section_3">三、Core Animation & OpenGL ES</h2>
 
-<h2 id="section_4">四、Core Graphics / Quartz 2D</h2>
+顾名思义，Core Animation 就是用于让屏幕上的东西动起来。但是，我们会基本上跳过关于动画的讨论，而着重于绘制。需要知道的是，Core Animation 使你能够做非常高效的渲染，因此，你能够在每秒60帧的条件下进行动画。
+
+Core Animation 的核心是对 OpenGL ES 的一层抽象。简单来说，它让你能够使用 OpenGL ES 的强大功能，但是却不需要处理与 OpenGL ES 相关的复杂问题。上文中，当我们讨论合成时，我们混用了图层（layer）和 Texture 这两个词。他们不是完全相同的两样东西，但是相当类似。
+
+Core Animation 的图层可以有子图层，所以最终你得到的是一个图层树。Core Animation 需要做的繁重工作包括，判断哪些图层需要绘制或重绘制，需要调用 OpenGL ES 的哪些接口来将这些图层合成到屏幕上。
+
+例如，当你将一个图层的 contents 赋给一个 CGImageRef 时，Core Animation 会创建一个 OpenGL Texture，也就是保证这个位图上传到对应的 Texture。又或者，如果你重写了 -drawInContext，Core Animation 会分配一个 Texture，保证你调用的 Core Graphics 接口最终转换成这个 Texture 的位图数据。设置图层属性和继承 CALayer 能影响到 OpenGL 绘制的执行方式，许多 OpenGL ES 的底层行为都被很好的封装在易于理解的 CALayer 概念之中。
+
+Core Animation 在一端组织着通过 Core Graphics 实现的基于 CPU 的位图绘制，在另一端组织着 OpenGL ES。并且因为 Core Animation 在渲染流程中处于一个至关重要的位置，你怎样使用 Core Animation 会显著的影响到性能。
+
+<h3 id="section_3_1">3.1 CPU 受限与 GPU 受限（CPU bound vs. GPU bound）</h3>
+
+当你在屏幕上显示一些内容时，有许多部件参与了这个流程。其中主要的两个硬件部件是 CPU 和 GPU。它们名字中都包含了字母 P 和 U，表示处理单元（processing unit）。当需要在屏幕上绘制内容时，它们都需要进行处理。并且，二者都只有有限的资源。
+
+为了达到每秒60帧，你得确保 CPU 和 GPU 都不能过载。除此之外，即使你达到了60fps，你应该将尽量多的工作交给 GPU 完成，从而让 CPU 有更多的时间运行其它应用程序代码，而不是忙于绘制工作。并且通常来说，在绘制方面 GPU 比 CPU 更加高效，能降低系统整体的负载和能源消耗。
+
+既然绘制的性能同时依赖于 CPU 和 GPU，你需要弄清楚哪一部分正在限制你的绘制性能。如果你使用了全部的 GPU 资源，也就是说 GPU 正在限制你的性能，那这种情况称为 GPU 受限（GPU bound）。同样的，如果你正在最大限度的使用 CPU，这种情况就被称为 CPU 受限（CPU bound）。
+
+如果你是 GPU 受限的，你需要降低 GPU 的负载（比如将更多工作交给 CPU 完成）。如果你是 CPU 受限，那得降低 CPU 的负载。
+
+可以使用 OpenGL ES Driver instrument 来判断是否 GPU 受限。点击 i 按钮，然后进行配置，确保 Device Utilization % 被选中。现在，当你运行你的应用，你能够看到 GPU 的负载是多少。如果这个数值接近 100%，表明你正试着让 GPU 做非常多的工作。
+
+应用程序做了太多的工作这种更传统方面的原因通常导致 CPU 受限。Time Profiler instrument 能够帮助进行调试。
+
+<h2 id="section_4">四、Core Graphics 或 Quartz 2D（Core Graphics / Quartz 2D）</h2>
+
 
 <h2 id="section_5">五、Pixels</h2>
 
