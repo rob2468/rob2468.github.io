@@ -13,7 +13,7 @@ page_id: id-2018-01-14
 
 将内容显示到屏幕上，有许多方式可以实现。这个过程包含许多框架，依靠许多函数和方法的组合实现。本文讨论该过程的底层原理。当你需要考虑相关性能问题时，本文内容能够帮助挑选最优的 API。本文研究的对象是 iOS 系统，不过其中大部分内容也适用于 OS X。
 
-<h2 id="section_1">一、图形栈（Graphics Stack）</h2>
+<h2 id="section_1">1. 图形栈（Graphics Stack）</h2>
 
 内容显示到屏幕的过程有许多工作。但当内容显示到屏幕上后，当前的结构就很简单，每个像素都是由3个颜色单元组成：红色、绿色和蓝色。屏幕上某个像素点显示了特定颜色，本质上就是，组成该像素的红绿蓝这3个颜色单元被使用特定亮度点亮。在 iPhone 5上，屏幕有 1,136×640 = 727,040 个像素，因此有 2,181,120 个颜色单元。在拥有视网膜显示屏的 15" MacBook Pro 上，这个数值超过一千五百万。整个显示系统的软硬件通力合作，确保每个颜色单元使用了正确的亮度点亮。当你滑动视图时，百万数量级的亮点必须每秒钟更新60次。这是一个巨大的工作量。
 
@@ -47,7 +47,7 @@ OpenGL（<a href="https://en.wikipedia.org/wiki/OpenGL">Open Graphics Library</a
 
 上文描述了目前为止遇到的复杂问题，后面本文深入讲述其中涉及的技术。
 
-<h2 id="section_2">二、合成（Compositing）</h2>
+<h2 id="section_2">2. 合成（Compositing）</h2>
 
 合成是图像领域的术语，描述的是不同的位图是如何整合在一起并最终形成屏幕上看到的图像。从许多方面来看，这件事情是如此显而易见，以至于我们很容易忽略其中的复杂程度和计算。
 
@@ -126,7 +126,7 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
 
 如果你的最终方案需要将 shouldRasterize 设为 YES，记住同时将 rasterizationScale 设为 contentScale。
 
-<h2 id="section_3">三、Core Animation & OpenGL ES</h2>
+<h2 id="section_3">3. Core Animation & OpenGL ES</h2>
 
 顾名思义，Core Animation 就是用于让屏幕上的东西动起来。但是，我们会基本上跳过关于动画的讨论，而着重于绘制。需要知道的是，Core Animation 使你能够做非常高效的渲染，因此，你能够在每秒60帧的条件下进行动画。
 
@@ -150,18 +150,111 @@ Core Animation 在一端组织着通过 Core Graphics 实现的基于 CPU 的位
 
 可以使用 OpenGL ES Driver instrument 来判断是否 GPU 受限。点击 i 按钮，然后进行配置，确保 Device Utilization % 被选中。现在，当你运行你的应用，你能够看到 GPU 的负载是多少。如果这个数值接近 100%，表明你正试着让 GPU 做非常多的工作。
 
-应用程序做了太多的工作这种更传统方面的原因通常导致 CPU 受限。Time Profiler instrument 能够帮助进行调试。
+应用程序执行太多任务这种更传统方面的原因通常导致 CPU 受限。Time Profiler instrument 能够帮助进行调试。
 
-<h2 id="section_4">四、Core Graphics 或 Quartz 2D（Core Graphics / Quartz 2D）</h2>
+<h2 id="section_4">4. Core Graphics 或 Quartz 2D（Core Graphics / Quartz 2D）</h2>
+
+Quartz 2D 更多的是因为它被包含在 Core Graphics 框架中，而被人所知。
+
+与我们能覆盖到的内容相比，Quartz 2D 拥有更多的使用技巧。我们不会讨论和 PDF 创建、渲染、解析或打印相关的众多内容。只需要知道，打印和创建 PDF，在很大程度上和在屏幕上绘制位图是一样的，因为它们都是基于的 Quartz 2D。
+
+本文会比较简略的介绍 Quartz 2D 的主要概念。详细内容可以参考 Apple 的文章<a href="https://developer.apple.com/library/mac/#documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/Introduction/Introduction.html" target="_blank">Quartz 2D Programming Guide</a>。
+
+对于2D绘图，Quartz 2D 非常强大，比如，基于路径的绘图、抗锯齿渲染、透明图层、分辨率和设备无关性。它提供的是偏低层的基于 C 语言的 API，这些可能会让人望而却步。
+
+尽管如此，Quartz 2D 的主要概念相对比较简单。UIKit 将 Quartz 2D 的一些接口封装成了易于使用的 API，并且即使是原始的 C API 也是可以使用的。你得到的是一个几乎可以媲美 Photoshop 和 Illustrator 的绘制引擎。
+
+应用程序以某种方式基于 Quartz 2D 实现位图绘制。也就是说，CPU 部分的绘制工作是由 Quartz 2D 完成的。虽然 Quartz 也能够做其它的事情，我们这里关注的仍然是它的位图绘制能力，也就是说在一片内存区域中绘制包含 RGBA 数据的内容。
+
+比如我们希望绘制一个八边形，可以使用如下的 UIKit 代码：
+
+<div class="code"><pre><code>UIBezierPath *path = [UIBezierPath bezierPath];
+[path moveToPoint:CGPointMake(16.72, 7.22)];
+[path addLineToPoint:CGPointMake(3.29, 20.83)];
+[path addLineToPoint:CGPointMake(0.4, 18.05)];
+[path addLineToPoint:CGPointMake(18.8, -0.47)];
+[path addLineToPoint:CGPointMake(37.21, 18.05)];
+[path addLineToPoint:CGPointMake(34.31, 20.83)];
+[path addLineToPoint:CGPointMake(20.88, 7.22)];
+[path addLineToPoint:CGPointMake(20.88, 42.18)];
+[path addLineToPoint:CGPointMake(16.72, 42.18)];
+[path addLineToPoint:CGPointMake(16.72, 7.22)];
+[path closePath];
+path.lineWidth = 1;
+[[UIColor redColor] setStroke];
+[path stroke];
+</code></pre></div>
+
+如下使用 Core Graphics 的代码可以实现相同的效果：
+
+<div class="code"><pre><code>CGContextBeginPath(ctx);
+CGContextMoveToPoint(ctx, 16.72, 7.22);
+CGContextAddLineToPoint(ctx, 3.29, 20.83);
+CGContextAddLineToPoint(ctx, 0.4, 18.05);
+CGContextAddLineToPoint(ctx, 18.8, -0.47);
+CGContextAddLineToPoint(ctx, 37.21, 18.05);
+CGContextAddLineToPoint(ctx, 34.31, 20.83);
+CGContextAddLineToPoint(ctx, 20.88, 7.22);
+CGContextAddLineToPoint(ctx, 20.88, 42.18);
+CGContextAddLineToPoint(ctx, 16.72, 42.18);
+CGContextAddLineToPoint(ctx, 16.72, 7.22);
+CGContextClosePath(ctx);
+CGContextSetLineWidth(ctx, 1);
+CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);
+CGContextStrokePath(ctx);
+</code></pre></div>
+
+上述代码中，绘制在被称为 CGContext 的地方完成。我们传入的 ctx 参数，就是在这个上下文中。这个上下文定义了我们将要绘制的地方。如果实现了 CALayer 的 -drawInContext: 接口，那我们就会被传入一个上下文。在这个上下文的绘制会写入到该图层的缓冲区中。我们也可以创建自己的上下文，比如使用 CGBitmapContextCreate() 创建一个基于位图的上下文。这个函数返回一个上下文，然后我们可以把这个上下文传给需要 CGContext 的函数用于绘制。
+
+可以发现，UIKit 版本的代码没有往方法中传入上下文。因为，当使用 UIKit 时，上下文是隐式的。UIKit 维护一个包含上下文的栈，并且 UIKit 方法总是在栈顶的上下文中绘制。你可以使用 UIGraphicsGetCurrentContext() 函数获得这个上下文，使用 UIGraphicsPushContext() 和 UIGraphicsPopContext() 进行上下文的入栈和出栈。
+
+需要特别留意的是，UIKit 有两个便捷的方法 UIGraphicsBeginImageContextWithOptions() 和 UIGraphicsEndImageContext() 可以用来创建一个位图上下文，达到和 CGBitmapContextCreate() 一样的效果。混合进行 UIKit 和 Core Graphics 的调用非常简单：
+
+<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(CGSizeMake(45, 45), YES, 2);
+CGContextRef ctx = UIGraphicsGetCurrentContext();
+CGContextBeginPath(ctx);
+CGContextMoveToPoint(ctx, 16.72, 7.22);
+CGContextAddLineToPoint(ctx, 3.29, 20.83);
+...
+CGContextStrokePath(ctx);
+UIGraphicsEndImageContext();
+</code></pre></div>
+
+或者以另一种方式：
+
+<div class="code"><pre><code>CGContextRef ctx = CGBitmapContextCreate(NULL, 90, 90, 8, 90 * 4, space, bitmapInfo);
+CGContextScaleCTM(ctx, 0.5, 0.5);
+UIGraphicsPushContext(ctx);
+UIBezierPath *path = [UIBezierPath bezierPath];
+[path moveToPoint:CGPointMake(16.72, 7.22)];
+[path addLineToPoint:CGPointMake(3.29, 20.83)];
+...
+[path stroke];
+UIGraphicsPopContext(ctx);
+CGContextRelease(ctx);
+</code></pre></div>
+
+<h2 id="section_5">5. 像素（Pixels）</h2>
+
+屏幕上的像素由3个颜色单元组成，红色、绿色和蓝色。因此，位图数据有时又被称为 RGB 数据。你也许想问，这些数据在内存中是如何组织的。实际情况是，存在非常非常多不同的表示 RGB 位图数据的方式。
 
 
-<h2 id="section_5">五、Pixels</h2>
 
-<h2 id="section_6">六、Image Formats</h2>
 
-<h2 id="section_7">七、UIKit and Pixels</h2>
 
-<h2 id="section_8">八、CALayer Odds and Ends</h2>
+<h3 id="section_5_1">5.1 Default Pixel Layouts</h3>
+
+<h3 id="section_5_2">5.2 Esoteric Layouts</h3>
+
+<h3 id="section_5_3">5.3 Planar Data</h3>
+
+<h3>YCbCr</h3>
+
+<h2 id="section_6">6. Image Formats</h2>
+
+<h2 id="section_7">7. UIKit and Pixels</h2>
+
+<h2 id="section_8">8. CALayer Odds and Ends</h2>
 
 <h3>参考文献：</h3>
 
