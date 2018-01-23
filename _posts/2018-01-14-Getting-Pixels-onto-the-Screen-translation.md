@@ -260,21 +260,49 @@ iOS 和 OS X 系统上一种非常常见的格式是，32 bits-per-pixel（bpp�
 
 这种格式也为称为 xRGB。像素没有 alpha 值，也就是说是完全不透明的，但是内存布局仍然是和上面的相同。你也许会好奇为什么这种格式会变得流行。如果每个像素剔除那个未使用的字节，我们能节省下25%的空间。但实际证明，因为每个独立的像素和32位内存边界对齐，这种格式更易于被现代的 CPU 和图像算法处理。现代 CPU “不喜欢”读取不对齐的数据。处理不对齐的数据需要做很多的移位和映射，尤其是与上面那种有 alpha 值的像素混合的时候。
 
+当处理 RGB 数据时，Core Graphics 也支持将 alpha 值放在最后面，分别称为 RGBA 和 RGBx。同样的，满足 8bpc 和预乘 alpha 值。
 
+<h3 id="section_5_2">5.2 “深奥的”布局（Esoteric Layouts）</h3>
 
+大多数时候，当处理位图数据时，我们将要处理的是 Core Graphics / Quartz 2D。它支持一系列指定的格式。但是首先，我们先来看下剩下的 RGB 格式：
 
+另一种可选的格式是，16bpp，5bpc，没有 alpha 值。跟上文说的布局格式相比，这种格式只占用 50% 的内存（一个像素2个字节）。如果你需要将（未压缩的）RGB数据存储在内存或磁盘上，这可以派上用场。但是因为这种格式每个颜色单元只有5位，图片可能会出现<a href="https://zh.wikipedia.org/wiki/%E8%89%B2%E8%AA%BF%E5%88%86%E9%9B%A2" target="_blank">色调分离</a>。
 
-<h3 id="section_5_2">5.2 Esoteric Layouts</h3>
+从另一个角度出发，还存在64bpp，16bpc和128bpp，32bpc（都有有 alpha 和无 alpha 两种版本）的格式。这两种格式分别使用8字节和16字节存储一个像素，可以带来更高的保真度，代价就是更多的存储空间和计算成本。
 
-<h3 id="section_5_3">5.3 Planar Data</h3>
+Core Graphics 还支持一些灰度和 <a href="https://zh.wikipedia.org/wiki/%E5%8D%B0%E5%88%B7%E5%9B%9B%E5%88%86%E8%89%B2%E6%A8%A1%E5%BC%8F" target="_blank">CMYK</a> 格式，以及只包含 alpha 值的格式（为使用遮罩服务）。
 
-<h3>YCbCr</h3>
+<h3 id="section_5_3">5.3 平面数据（Planar Data）</h3>
 
-<h2 id="section_6">6. Image Formats</h2>
+大多数的框架，包括 Core Graphics，使用的像素数据的颜色单元（red，green，blue，alpha）都是混合在一起的。也存在另外一种情况，每个颜色单元存储在它自己的一片内存区域中，也就是说平面的。对于 RGB 数据来说，我们有三个独立的内存区域，一个区域包含所有像素的红色值，一个包含所有像素的绿色值，还有一个包含所有像素的蓝色值。
 
-<h2 id="section_7">7. UIKit and Pixels</h2>
+一些视频相关的框架在一些情况下，会使用平面数据。
 
-<h2 id="section_8">8. CALayer Odds and Ends</h2>
+<h3 id="section_5_4">5.4 YCbCr</h3>
+
+在处理视频数据时，YCbCr 是一个相对常见的格式。它同样也由三个部分组成（Y，Cb 和 Cr），能够表示出颜色数据。但是，简单来说，它更像人类视觉感知颜色的方式。人类视觉对两个色度分量 Cb 和 Cr 的保真度不太敏感，但对亮度信号 Y 的保真度非常敏感。当使用 YCbCr 格式存储数据时，为了获得相同的视觉感受质量，Cb 和 Cr 部分能够比 Y 部分进行更大程度的压缩。
+
+因为这个原因，JPEG 格式的图片有时会将 RGB 格式的像素数据转换成 YCbCr 格式。JPEG 独立的压缩每个颜色区域。当压缩针对 YCbCr 格式时，Cb 和 Cr 区域可以比 Y 区域压缩的更多。
+
+<h2 id="section_6">6. 图片格式（Image Formats）</h2>
+
+<h2 id="section_7">7. UIKit 和像素（UIKit and Pixels）</h2>
+
+UIKit 中的每个视图都有一个自己的图层 CALayer。这个图层通常有一个后台存储，这个后台存储有点像图片，是一个像素位图。实际被绘制到显示屏上的内容便是这个后台存储。
+
+<h3>7.1 使用 -drawRect:（With -drawRect:）</h3>
+
+<h3>7.2 不使用 -drawRect（Without -drawRect:）</h3>
+
+<h3>To -drawRect: or Not to -drawRect:</h3>
+
+<h3>Solid Colors</h3>
+
+<h3>Resizable Images</h3>
+
+<h3>Concurrent Drawing</h3>
+
+<h2 id="section_8">8. 其它 CALayer 相关内容(CALayer Odds and Ends)</h2>
 
 <h3>参考文献：</h3>
 
