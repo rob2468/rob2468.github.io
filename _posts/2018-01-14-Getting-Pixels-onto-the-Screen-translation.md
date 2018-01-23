@@ -238,11 +238,31 @@ CGContextRelease(ctx);
 
 屏幕上的像素由3个颜色单元组成，红色、绿色和蓝色。因此，位图数据有时又被称为 RGB 数据。你也许想问，这些数据在内存中是如何组织的。实际情况是，存在非常非常多不同的表示 RGB 位图数据的方式。
 
+待会儿我们将要讨论压缩数据，这又是一种完全不同的数据组织方式。现在，我们先考察 RGB 位图数据，红色、绿色和蓝色每个颜色单元都有一个值，并且经常还会有第四个值，透明度。最终，每个像素对应了四个独立的值。
+
+<h3 id="section_5_1">5.1 默认像素布局（Default Pixel Layouts）</h3>
+
+iOS 和 OS X 系统上一种非常常见的格式是，32 bits-per-pixel（bpp），8 bits-per-component（bpc），alpha premultiplied first。在内存中的表示如下所示：
+
+<div class="code"><pre><code>  A   R   G   B   A   R   G   B   A   R   G   B  
+| pixel 0       | pixel 1       | pixel 2   
+  0   1   2   3   4   5   6   7   8   9   10  11 ...
+</code></pre></div>
+
+这种格式经常被称为 ARGB。每个像素占用4个字节（32 bpp）。每个颜色单元占用1个字节（8 bpc）。每个像素有一个 alpha 值，并且排列在 RGB 值的前面。RGB 的值都已经事先和 alpha 值相乘过。预先相乘表明 alpha 值已经融入到 RGB 颜色单元之中。如果有一个橘色，8 bpc 的 RGB 值分别是240，99和24。完全不透明的橘色使用上面的内存布局方式，ARGB 值为 255，240，99，24。如果这个橘色有 33% 的透明度，那这个像素的值为 84，80，33，8。
+
+另一种常见的格式是，32 bpp，8 bpc，alpha-none-skip-first。在内存中的表示如下所示：
+
+<div class="code"><pre><code>  x   R   G   B   x   R   G   B   x   R   G   B  
+| pixel 0       | pixel 1       | pixel 2   
+  0   1   2   3   4   5   6   7   8   9   10  11 ...
+</code></pre></div>
+
+这种格式也为称为 xRGB。像素没有 alpha 值，也就是说是完全不透明的，但是内存布局仍然是和上面的相同。你也许会好奇为什么这种格式会变得流行。如果每个像素剔除那个未使用的字节，我们能节省下25%的空间。但实际证明，因为每个独立的像素和32位内存边界对齐，这种格式更易于被现代的 CPU 和图像算法处理。现代 CPU “不喜欢”读取不对齐的数据。处理不对齐的数据需要做很多的移位和映射，尤其是与上面那种有 alpha 值的像素混合的时候。
 
 
 
 
-<h3 id="section_5_1">5.1 Default Pixel Layouts</h3>
 
 <h3 id="section_5_2">5.2 Esoteric Layouts</h3>
 
