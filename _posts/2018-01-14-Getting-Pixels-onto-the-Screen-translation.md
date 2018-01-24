@@ -82,7 +82,7 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
 
 <h3 id="section_2_1">2.1 是否透明（Opaque vs. Transparent）</h3>
 
-如果即将添加的 Texture 是完全不透明的，那么最终屏幕上的像素和该 Texture 相同。GPU 可以节省大量的工作，因为只需要拷贝该 Texture 的像素，不再需要进行多个 Texture的混合。但是 GPU 无法知道 Texture 上的像素是否都是不透明的。Texture 对应着 Core Animation 中的 CALayer，CALayer 的 opaque 属性用于设置是否不透明。如果 opaque 设为 YES，那么 GPU 不再进行图层的混合，直接拷贝最上层图层的像素而忽略该图层下面的内容。这样可以为 GPU 节省相当多的工作量。Instruments 和 模拟器调试菜单下有 “color blended layers” 选项，能够标记出半透明的图层，也就是 GPU 需要进行图层混合的地方。
+如果即将添加的 Texture 是完全不透明的，那么最终屏幕上的像素和该 Texture 相同。GPU 可以节省大量的工作，因为只需要拷贝该 Texture 的像素，不再需要进行多个 Texture的混合。但是 GPU 无法知道 Texture 上的像素是否都是不透明的。Texture 对应着 Core Animation 中的 CALayer，CALayer 的 opaque 属性用于设置是否不透明。如果 opaque 设为 YES，那么 GPU 不再进行图层的混合，直接拷贝最上层图层的像素而忽略该图层下面的内容。这样可以为 GPU 节省相当多的工作量。Instruments 和模拟器调试菜单下有 “color blended layers” 选项，能够标记出半透明的图层，也就是 GPU 需要进行图层混合的地方。
 
 合成不透明的图层需要的计算更少，代价更小。所以，如果你知道你的图层是不透明的，确保将它的 opaque 属性设为 YES。如果你载入一个没有 Alpha 通道的图片，那该图层的 opaque 属性会自动设为 YES。需要注意的是，一张没有 Alpha 通道的图片和一张所有像素 Alpha 值为100%的图片是不同的。对于后者，Core Animation 必须假设可能有 Alpha 不是100％的像素存在。Finder 中，查看图片简介，在更多信息中会指出当前图片是否有 Alpha 通道。
 
@@ -286,23 +286,169 @@ Core Graphics 还支持一些灰度和 <a href="https://zh.wikipedia.org/wiki/%E
 
 <h2 id="section_6">6. 图片格式（Image Formats）</h2>
 
+iOS 和 OS X 系统上接触到的图片大多是 JPEG 和 PNG 格式，下面会讨论这两种格式。
+
+<h3 id="section_6_1">6.1 JPEG</h3>
+
+所有人都知道 JPEG。相机拍摄出来的图片就是 JPEG。照片存储在电脑上的方式就是 JPEG。即使你妈妈可能也听过 JPEG。
+
+许多人会认为 JPEG 文件只不过是另一种格式化像素数据的方式，也就是我们前文讨论的 RGB 像素的布局。但是，实际情况并不是这样。
+
+将 JPEG 数据转换成像素数据是一个非常复杂的过程。对于每个<a href="#section_5_3">颜色区域</a>，JPEG 压缩使用基于<a href="https://zh.wikipedia.org/wiki/%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2" target="_blank">离散余弦变换</a>的算法将空间信息转换到频域。然后使用<a href="https://zh.wikipedia.org/wiki/%E9%9C%8D%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81" target="_blank">霍夫曼编码</a>的变体，量化、排序和打包该信息。在最初的阶段，位图数据经常会从 RGB 转换成 YCbCr。当解码 JPEG 的时候，所有流程会反向执行一遍。
+
+因为 CPU 忙于解压 JPEG 文件，所以当你从 JPEG 文件创建 UIImage 并绘制到屏幕上，会出现一段延迟。如果你需要为 UITableView 的每个 cell 解压 JPEG 文件，那你视图的滑动就不会那么流畅。
+
+那为什么还要使用 JPEG 格式呢？原因是 JPEG 能够非常大程度的压缩照片。iPhone 5中一张未经压缩的照片差不多会占用 24MB 的空间。但是使用默认压缩设置，你的照片通常只有 2MB 到 3MB 大小。JPEG 压缩是有损压缩，它会将人眼不太敏感的信息丢弃，所以它的压缩效率能远远超过一般的压缩算法，比如 gzip。但是这种方式仅对照片比较适合，因为 JPEG 的高效压缩依赖照片中存在许多人眼不敏感的信息。如果你给一个大部分内容都是文本的网页截图，JPEG 工作的就不会那么好。压缩的空间会变得很少，并且你可能会看到 JPEG 压缩改变了这张图片。
+
+<h3 id="section_6_2">6.2 PNG</h3>
+
+与 JPEG 不同，PNG 是一种无损压缩格式。如果你将一张图片保存为 PNG，然后再解压打开，所有的像素数据都跟最初的时候一摸一样。因为这个限制，PNG 无法达到 JPEG 一样的压缩效率。但是作为应用程序的素材图片，比如按钮、图标等，它实际上工作的很好。更重要的是，PNG 解码的复杂度相比 JPEG 解码要低很多。
+
+在现实世界中，事情从来不是这么简单，实际上存在一堆不同的 PNG 格式。简单来说，PNG 同时支持包含和不包含 alpha 通道的图片。这也是另一个它适合做应用程序素材图片的原因。
+
+<h3 id="section_6_3">6.3 选择一种格式（Picking a Format）</h3>
+
+当你需要在应用中使用图片，你应该从 JPEG 和 PNG 中选择一种。对这两种格式的读取解压和写入压缩已经做过高度优化，更进一步说，支持并行化。并且，如果 Apple 在将来的系统更新中进一步优化解码器，你也将能从中获得收益。如果你打算使用另一种图片格式，你必须意识到这可能影响到应用的性能。因为图片解码器是黑客非常喜欢的一种目标，使用新的图片格式可能会带来安全漏洞。
+
+当 Xcode 优化 PNG 文件时，它会对 PNG 文件进行转换，从技术上讲，转换后的内容不再是合法的 PNG 格式。但是 iOS 系统能够读取这些文件，并且解压这些格式的文件会比通常的 PNG 文件更快。Xcode 调整了这些文件，使得 iOS 系统能够使用更高效的解压算法。需要知道的主要点是，它改变了像素布局。我们在<a href="#section_5">像素</a>章节中说过，RGB 数据存在许多种表示方式，如果图片格式不是 iOS 图形系统需要的，需要为每个像素进行移位操作。不再需要进行这些处理能够加快处理速度。
+
+再次强调：如果可以，你应该使用可调整图片作为图片素材。你的文件会更小，需要从文件系统读取并解压的数据会更少。
+
 <h2 id="section_7">7. UIKit 和像素（UIKit and Pixels）</h2>
 
 UIKit 中的每个视图都有一个自己的图层 CALayer。这个图层通常有一个后台存储，这个后台存储有点像图片，是一个像素位图。实际被绘制到显示屏上的内容便是这个后台存储。
 
-<h3>7.1 使用 -drawRect:（With -drawRect:）</h3>
+<h3 id="section_7_1">7.1 使用 -drawRect:（With -drawRect:）</h3>
 
-<h3>7.2 不使用 -drawRect（Without -drawRect:）</h3>
+如果你的视图类实现了 -drawRect: 接口，有如下的工作机制：
 
-<h3>To -drawRect: or Not to -drawRect:</h3>
+当你调用 -setNeedsDisplay，UIKit 会调用该视图对应图层的 -setNeedsDisplay。这会为图层设置一个标志位，将其标示成脏图层，也就是需要重新显示。这实际上不会做任何事情，所以即使你一次性调用了很多次 -setNeedsDisplay 接口也没有关系。
 
-<h3>Solid Colors</h3>
+接下来，当绘制系统准备好后，它会调用图层的 -display 接口。这时，图层会准备它的后台存储。然后，图层会准备一个基于后台存储内存区域的 Core Graphics 上下文（CGContextRef）。在这个 CGContextRef 上绘制就会保存到这片内存区域中。
 
-<h3>Resizable Images</h3>
+当你在你的 -drawRect: 方法中使用如 UIRectFill() 或 -[UIBezierPath fill] 这样的绘制方法时，它们会使用到这个上下文。工作机制如下，UIKit 会将这个 CGContextRef 压入 graphics context stack，也就是说，将这个上下文变成当前上下文。UIGraphicsGetCurrent() 函数的返回值正是这个当前上下文。UIKit 的绘制方法会使用 UIGraphicsGetCurrent()，也就是说绘制内容会保存到对应图层的后台存储中。如果你想直接使用 Core Graphics 的方法，你仍然可以通过调用 UIGraphicsGetCurrent() 获得这个上下文，然后将这个上下文传入 Core Graphics 函数中。
 
-<h3>Concurrent Drawing</h3>
+从现在开始，这个图层的后台存储将会被不停的绘制到屏幕上。直到视图的 -setNeedsDisplay 接口再次被调用，然后图层的后台存储相应的进行更新。
+
+<h3 id="section_7_2">7.2 不使用 -drawRect（Without -drawRect:）</h3>
+
+如果你使用 UIImageView，工作机制和上一小节有些不同。视图仍然有对应的 CALayer，但是这个图层不再分配后台存储。图层直接使用 CGImageRef 作为它的内容，并且绘制系统会将这个位图绘制到帧缓冲区中，也就是绘制到屏幕上。
+
+在这种情况下，将不会有绘画过程。我们只是简单的将图片格式的位图数据传递给 UIImageView，然后转发给 Core Animation，最后转发给绘制系统。
+
+<h3 id="section_7_3">7.3 是否使用 -drawRect（To -drawRect: or Not to -drawRect:）</h3>
+
+虽然听起来老套，但最快的绘画方式是不要绘画。
+
+大多数情况下，你不需要自己进行视图或图层的合成来获得自定义视图。UIKit 的视图已为此进行高度优化，因此这是比较推荐的方式。
+
+下面是两个比较好的手动绘画的例子。Apple 在 <a href="https://developer.apple.com/videos/play/wwdc2012/506/" target="_blank">WWDC 2012’s session 506</a>：Optimizing 2D Graphics and Animation Performance 中演示的“finger painting”App。
+
+另一个例子是 iOS 的股市 App，股票图形都是使用 Core Graphics 绘制在屏幕上的。你不是非得在 -drawRect: 方法中进行自定义绘画，有的时候，下面一种方式可能会更有意义。使用 UIGraphicsBeginImageContextWithOptions() 或者 CGBitmapContextCreate() 创建出一个位图，从中获取图片，再设置到 CALayer 的内容中。
+
+<h3 id="section_7_4">7.4 纯色（Solid Colors）</h3>
+
+看下面这个例子：
+
+<div class="code"><pre><code>// Don't do this
+- (void)drawRect:(CGRect)rect
+{
+    [[UIColor redColor] setFill];
+    UIRectFill([self bounds]);
+}
+</code></pre></div>
+
+我们现在知道这种做法是不好的。Core Animation 会创建一个后台存储，Core Graphics 使用纯色填充这个后台存储，再上传到 GPU。
+
+简单的设置视图图层的 backgroundColor，而不是实现 -drawRect:，我们能节省下所有这些工作。如果视图的图层是 CAGradientLayer，我们也可以用同样技术处理渐变。
+
+<h3 id="section_7_5">7.5 可调整的图片（Resizable Images）</h3>
+
+类似的，你可以使用可调整图片来降低图像系统的压力。比如你想为按钮设置一个 300 x 50 pt 的图片。对于2x屏幕来说，需要 600 x 100 = 60k 的像素，或者说 60k x 4 = 240kB 的内存，这些数据会上传到 GPU，占用 VRAM 空间。如果我们使用可调整图片，我们可能需要的是一个 54 x 12 pt 的图片，需要不到 2.6k 的像素，或者说 10kB 的内存空间。这样能获得更快的渲染速度。
+
+Core Animation 可以使用 CALayer 的 contentsCenter 属性调整图片，但是更常用的方法是使用 -[UIImage resizableImageWithCapInsets:resizingMode:]。
+
+同样需要留意的是，在上面说的按钮被首次渲染之前，你需要从文件系统载入图片，读取并解压 60k 像素的 PNG 的速度也相对较慢。使用可调整图片，你的应用程序在所有相关流程中都只需要做更少的事情，因此你的视图将获得更快的展现速度。
+
+<h3 id="section_7_6">7.6 并发绘图（Concurrent Drawing）</h3>
+
+正如你所知，UIKit 的线程模型非常简单：你只能在主线程中使用 UIKit 的类，比如视图。那并发绘图是什么意思呢？
+
+如果你实现了 -drawRect: 并且需要绘制一些复杂的内容，这将会耗费很多时间。但是你希望你的动画能够更加平滑，所以想要将这些任务放到子线程中执行。并发的实现很复杂，但是留意一些注意事项，并发绘图是能够轻松实现的。
+
+我们只能在主线程往 CALayer 的后台存储绘制内容，否则会出现一些无法预料的问题。但是我们可以在任意线程，往一个完全独立的位图上下文绘制内容。
+
+在 Core Graphics 章节我们提到，所有 Core Graphics 绘画方法都需要一个上下文参数，指明绘制在哪里发生。UIKit 有一个当前上下文的概念，指明绘制发生的地方。每个线程都有其自己的当前上下文。
+
+为了实现并发绘图，我们采用如下方案。我们在子线程中创建图片，一旦图片创建完成，我们切换到主线程，并且把这张图片设置给 UIImageView。在 <a href="https://developer.apple.com/videos/wwdc/2012/?id=211" target="_blank">WWDC 2012 session 211</a> 中讨论了这项技术。
+
+添加如下的绘制代码：
+
+<div class="code"><pre><code>- (UIImage *)renderInImageOfSize:(CGSize)size;
+{
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+
+    // do drawing here
+
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return result;
+}
+</code></pre></div>
+
+这个方法通过 UIGraphicsBeginImageContextWithOptions() 函数创建了一个新的位图 CGContextRef。这个函数同时将这个新的上下文设为当前上下文。现在，你可以跟通常在 -drawRect: 中一样进行绘图操作。然后，我们使用 UIGraphicsGetImageFromCurrentImageContext() 函数从这个上下文中获取 UIImage。最后，结束这个上下文。
+
+非常重要的是，你在这个绘图方法中调用的接口必须得是线程安全的，因为你将会在子线程中调用这个绘图方法。如果这个方法写在你的视图类中，这可能会存在隐患。另一个可选项是创建一个独立的绘制类，用于设置需要的属性，然后绘制图片。这样的话，你可能只需要一个原生的 UIImageView 或者 UITableViewCell 就可以了。
+
+UIKit 的所有绘制 API 都是可以在子线程中使用的。仅仅需要确保的是，UIGraphicsBeginImageContextWithOptions() 和 UIGraphicsEndIamgeContext() 这两个函数需要成对使用。
+
+你可以使用下面的代码使用上面绘图方法：
+
+<div class="code"><pre><code>UIImageView *view; // assume we have this
+NSOperationQueue *renderQueue; // assume we have this
+CGSize size = view.bounds.size;
+[renderQueue addOperationWithBlock:^(){
+    UIImage *image = [renderer renderInImageOfSize:size];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^(){
+        view.image = image;
+    }];
+}];
+</code></pre></div>
+
+我们在主线程中执行了 `view.image = image`。这是非常重要的一点，你不能在子线程中执行这条语句。
+
+同样的，使用并发会增加不少复杂度。你可能需要增加取消后台绘制的逻辑，并且为绘制队列设置一个合理的最大并发操作数。可能最简单的方法是在一个 NSOperation 的子类中实现 -renderInImageSize: 方法。
+
+最后需要指出的一点是，为 UITableViewCell 异步的设置内容可能会出现漏洞。当你在子线程完成内容绘制后，目标 cell 可能已经被重用了，此时内容会被设置到错误的地方。
 
 <h2 id="section_8">8. 其它 CALayer 相关内容(CALayer Odds and Ends)</h2>
+
+现在，你应该知道 CALayer 可以类比成 GPU 中的 Texture。图层有一个后台存储，里面的内容是将被绘制到屏幕的位图。
+
+在你使用 CALayer 时，你将图层的 contents 属性设置为一张图片。这种操作告诉 Core Animation，使用这张图片的位图数据作为 Texture。Core Animation 会解码图片（如果图片被压缩过），然后将像素数据上传到 GPU。
+
+如果你使用原生的 CALayer，没有设置 contents 属性，而是设置 backgroundColor，Core Animation 不会往 GPU 上传数据，GPU 自己能完成所有工作。类似的，对于渐变图层，GPU 能够创建渐变而 CPU 没有必要做任何工作，因此不需要往 GPU 上传任何数据。
+
+<h3 id="section_8_1">8.1 自定义绘画的图层（Layers with Custom Drawing）</h3>
+
+如果 CALayer 的子类实现了 -drawInContext:，或者它的 delegate 实现了 -drawLayer:inContext:，Core Animation 将为该图层分配一个后台存储，这个后台存储保存这些方法绘制出的位图。这些方法中的代码在 CPU 中执行，然后运算结果被上传到 GPU。
+
+<h3 id="section_8_2">8.2 形状和文本图层（Shape and Text Layers）</h3>
+
+图形和文本图层的工作方式有些差异。从概念上来说，它们的工作方式和上一节说的手动实现 -drawInContext: 很相似，并且性能也很相似。
+
+当你以一种方式改变了形状和文本图层，它的后台存储需要进行更新，Core Animation 将会重新绘制后台存储。比如说，如果需要动画改变一个形状图层的尺寸，Core Animation 需要在动画的每一帧中重绘形状。
+
+<h3 id="section_8_3">8.3 异步绘画（Asynchronous Drawing）</h3>
+
+CALayer 有一个 drawsAsynchronously 属性，这看起来是一个能解决所有问题的银弹。这有可能提升性能，但它也有可能使性能变得更差。
+
+当你将 drawsAsynchronously 属性设为 YES，你的 -drawRect: / -drawInContext: 方法仍然会在主线程中执行。但是所有的 Core Graphics 调用都不会立即执行，绘画命令会被延迟，并在子线程中被异步处理。
+
+从另一个角度来看，绘画命令首先被记录了下来，然后这些绘画命令在一个后台线程中被应用。为了完成这项工作，需要做更多额外的工作，也需要分配更多的内存空间。但是一部分工作还是从主线程中移除了，你需要做好测试和权衡。
+
+这种方法对复杂绘画的性能提升比较有用，但是不太可能提升简单绘画的性能。
+
 
 <h3>参考文献：</h3>
 
