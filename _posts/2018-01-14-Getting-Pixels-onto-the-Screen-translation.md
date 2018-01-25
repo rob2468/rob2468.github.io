@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 像素如何被绘制到屏幕上（Getting Pixels onto the Sceen）（译）
+title: 像素如何被绘制到屏幕上（Getting Pixels onto the Screen）（译）
 page_id: id-2018-01-14
 ---
 
