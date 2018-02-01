@@ -6,6 +6,20 @@ page_id: id-2016-12-29
 
 <h1 class="title">{{ page.title }}</h1>
 
+<h2>2018年2月1日更新：（Block 存储类型和 ARC 下的变化）</h2>
+
+_NSConcreteGlobalBlock：这种类型的 block 定义在全局存储区，它没有捕获任何上下文，在编译时就能完全定义。
+
+_NSConcreteStackBlock：这种类型的 block 定义在栈上。block 在被拷贝到堆上之前，都是存储在栈中。
+
+_NSConcreteMallocBlock：这种类型的 block 存储在堆上。和普通 OC 对象遵循同样的内存管理规则（引用计数）。
+
+MRC 和 ARC 的 block 存储有差异，“在 ARC 开启的情况下，将只会有 NSConcreteGlobalBlock 和 NSConcreteMallocBlock 类型的 block。”
+
+<hr>
+
+<h2>前言</h2>
+
 iOS Objective-C 开发中用到许多 block 语法。block 给开发带来了许多便利，但是相关的内存管理得加以小心，避免引入如循环引用这样的内存问题。在查阅相关资料的时候找到这本书，初读后颇有收获，现再读作本读书笔记以加深记忆与理解，并方便以后查阅。
 
 本书篇幅不多，可分为如下3部分，共8个章节。
@@ -887,5 +901,11 @@ GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要
 分发队列本身不遵循 OC 对象的内存管理规则，当创建了一个分发队列，使用完成后需手动释放。
 
 当创建了一个串行队列并向其中添加了任务，系统会创建一个对应的线程。如果创建了2000个串行队列，系统也会创建2000个线程。开发者需要了解这个特性，避免过多线程造成额外的开销。
+
+<h3>参考文献：</h3>
+
+<a href="http://www.galloway.me.uk/2012/10/a-look-inside-blocks-episode-2/" target="_blank">A look inside blocks: Episode 2</a>
+
+唐巧 . <a href="http://blog.devtang.com/2013/07/28/a-look-inside-blocks/#ARC-%E5%AF%B9-block-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%BD%B1%E5%93%8D" target="_blank">谈Objective-C block的实现 -- ARC 对 block 类型的影响</a>
 
 {{ page.date | date_to_string }}
