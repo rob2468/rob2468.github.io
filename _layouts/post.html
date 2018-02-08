@@ -32,7 +32,7 @@
         <!-- comments -->
         {% assign pageid = page.page_id %}
         {%if site.data.comments[pageid] %}
-            {% assign sorted_comments = (site.data.comments[pageid] | sort: 'date') %}
+            {% assign sorted_comments = site.data.comments[pageid] | sort: 'date' %}
         {% endif %}
         {% for c in sorted_comments reversed %}
           <div>
