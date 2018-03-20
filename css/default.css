@@ -1,13 +1,11 @@
 /* Global Reset */
 
-*
-{
+* {
     margin: 0;
     padding: 0;
 }
 
-body
-{
+body {
     background-color: white;
     font: 13.34px helvetica, arial, clean, sans-serif;
     font-size: small;
@@ -15,23 +13,35 @@ body
     width: auto;
 }
 
-ul
-{
+ul {
     list-style-type: none;
 }
 
-h1, h2, h3, h4, h5, h6
-{
+h1,
+h2 {
     font-size: 16px;
 }
 
-h1, h2, p
-{
+h3 {
+    font-size: 15px;
+}
+
+h4 {
+    font-size: 14px;
+}
+
+h5 {
+    font-size: 13px;
+}
+
+h1,
+h2,
+h5,
+p {
     margin-top: 10px;
 }
 
-div.main
-{
+div.main {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -39,27 +49,23 @@ div.main
     padding: 0 20px;
 }
 
-div.footer
-{
+div.footer {
     text-align: center;
 }
 
-div.code
-{
+div.code {
     background-color: #f0f0f0;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: pre;
 }
 
-a
-{
+a {
     word-wrap: break-word;
 }
 
 @media screen and (min-width: 768px) {
-    div.main
-    {
+    div.main {
         width: 610px;
     }
 }
