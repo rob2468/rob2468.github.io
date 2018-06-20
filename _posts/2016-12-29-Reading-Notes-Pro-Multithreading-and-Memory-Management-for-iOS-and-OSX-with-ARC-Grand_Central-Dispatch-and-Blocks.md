@@ -39,9 +39,9 @@ OC 使用引用计数来实现内存管理。引用计数是内存管理的基�
 * 当不再需要某个你拥有的对象时，你必须放弃对该对象的所有权。
 * 当不拥有某个对象时，你不能放弃对该对象的所有权。
 
-<h3 id="section_1_1">1. [GNUstep](http://gnustep.org/) 和 Apple 存储引用计数的不同方式</h3>
+<h3 id="section_1_1">1. GNUstep 和 Apple 存储引用计数的不同方式</h3>
 
-下面两幅图描述 GNUstep 和 Apple 存储对象引用计数的方式。
+下面两幅图描述 <a href="http://gnustep.org/" target="_blank">GNUstep</a> 和 Apple 存储对象引用计数的方式。
 
 <div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%" /></div>
 

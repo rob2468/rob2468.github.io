@@ -1,6 +1,6 @@
 ---
 layout: post
-title: iOS App在不同状态下收到push通知的行为
+title: iOS App 在不同状态下收到 push 通知的行为
 page_id: id-2015-08-14
 ---
 
