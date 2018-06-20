@@ -1,6 +1,6 @@
 ---
 layout: post
-title: UML中类及其关系的符号表示
+title: UML 中类及其关系的符号表示
 page_id: id-2015-05-24
 ---
 

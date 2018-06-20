@@ -10,7 +10,7 @@ page_id: id-2018-06-19
 
 本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 `dispatchEvent()` 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2018-06-19-eventflow.svg" alt="eventflow" width="70%" /></div>
+<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2018-06-19-eventflow.svg" alt="eventflow" width="90%" /></div>
 
 <p align="center">事件分发示意图</p>
 
