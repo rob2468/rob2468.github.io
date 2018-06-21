@@ -91,5 +91,3 @@ The address of the receiver’s implementation of the aSelector.</code></pre></d
 ## 四、总结
 
 OC消息传递经过一系列C函数处理，最终也转变成标准C语言函数调用方式。运行时系统给OC语言带来了极大的灵活性，但是万法归宗，其最终的执行方式与C语言并没有什么不同。
-
-{{ page.date | date_to_string }}

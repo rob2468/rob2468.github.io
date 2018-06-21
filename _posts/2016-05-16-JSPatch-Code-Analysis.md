@@ -161,5 +161,3 @@ b. 直接在待测试类中重载 methodSignatureForSelector 方法，手动构�
 [Method Swizzling](http://nshipster.cn/method-swizzling/)
 
 [JavaScriptCore](https://developer.apple.com/reference/javascriptcore?language=objc)
-
-{{ page.date | date_to_string }}

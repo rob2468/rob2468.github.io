@@ -57,5 +57,3 @@ ContainerView的子视图根据业务需要，相对于ContainerView进行布局
 ### 参考文献:
 
 "AutoLayout深入浅出三[相遇Scrollview]", [https://grayluo.github.io/WeiFocusIo/autolayout/2015/01/27/autolayout3/](https://grayluo.github.io/WeiFocusIo/autolayout/2015/01/27/autolayout3/)
-
-{{ page.date | date_to_string }}

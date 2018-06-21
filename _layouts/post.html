@@ -1,156 +1,158 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>{{ page.title }}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" type="text/css" href="/css/default.css" />
-        <link rel="stylesheet" type="text/css" href="/css/post.css" />
-        <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
-        <script type="text/javascript" src="/js/commentme.js"></script>
-        <script type="text/javascript" src="/js/post.js"></script>
-        <script type="text/javascript" src="/js/utility.js"></script>
-        <script type="text/javascript">$(document).ready(generateContentsTable);</script>
-    </head>
-    <body>
-        <div class="header"></div>
+<head>
+    <meta charset="utf-8">
+    <title>{{ page.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/default.css" />
+    <link rel="stylesheet" type="text/css" href="/css/post.css" />
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+    <script type="text/javascript" src="/js/commentme.js"></script>
+    <script type="text/javascript" src="/js/post.js"></script>
+    <script type="text/javascript" src="/js/utility.js"></script>
+    <script type="text/javascript">$(document).ready(generateContentsTable);</script>
+</head>
+<body>
+    <div class="header"></div>
 
-        <div class="main">
+    <div class="main">
         {{ content }}
+        <p>{{ page.date | date: "%Y-%m-%d" }}</p>
 
         <div class="comment_area">
-        <!-- comment form -->
-        <div class="comment_form">
-          <form>
-            <input type="text" name="display_name" class="input" placeholder="姓名"></input>
-            <input type="text" name="email" class="input" placeholder="电子邮箱"></input>
-            <textarea name="content" class="input" placeholder="请输入您的评论"></textarea>
-            <button type="button" class="submit submit_normal" onclick=submitForm()><img src="/resources/loading-bubbles.svg"/><span>提交评论</span></button>
-            <div class="prompt"></div>
-          </form>
-        </div>
-        <!-- comments -->
-        {% assign pageid = page.page_id %}
-        {%if site.data.comments[pageid] %}
-            {% assign sorted_comments = site.data.comments[pageid] | sort: 'date' %}
-        {% endif %}
-        {% for c in sorted_comments reversed %}
-          <div>
-              <p>{{ c.author.display_name }} on {{ c.date | date: "%Y-%m-%d" }}</p>
-              <p>{{ c.content | newline_to_br }}</p>
-          </div>
-        {% else %}
-            这篇文章暂没有评论。
-        {% endfor %}
-        </div>
+            <!-- comment form -->
+            <div class="comment_form">
+                <form>
+                <input type="text" name="display_name" class="input" placeholder="姓名"></input>
+                <input type="text" name="email" class="input" placeholder="电子邮箱"></input>
+                <textarea name="content" class="input" placeholder="请输入您的评论"></textarea>
+                <button type="button" class="submit submit_normal" onclick=submitForm()><img src="/resources/loading-bubbles.svg"/><span>提交评论</span></button>
+                <div class="prompt"></div>
+                </form>
+            </div>
 
-        <script>
+            <!-- comments -->
+            {% assign pageid = page.page_id %}
+            {%if site.data.comments[pageid] %}
+                {% assign sorted_comments = site.data.comments[pageid] | sort: 'date' %}
+            {% endif %}
+            {% for c in sorted_comments reversed %}
+                <div>
+                    <p>{{ c.author.display_name }} on {{ c.date | date: "%Y-%m-%d" }}</p>
+                    <p>{{ c.content | newline_to_br }}</p>
+                </div>
+            {% else %}
+                这篇文章暂没有评论。
+            {% endfor %}
+        </div>
+    </div><!-- main -->
+
+    <div class="footer">
+        <p>powered by github</p>
+    </div>
+
+    <script>
         var timeoutID;
         function submitForm() {
-          var displayNameEle = $(".comment_area .input[name='display_name']");
-          var emailEle = $(".comment_area .input[name='email']");
-          var contentEle = $(".comment_area .input[name='content']");
-          if ($(".comment_area .submit_normal").length > 0) {
-            var BRANCH_NAME = "comments";
-            var OWNER_NAME = "rob2468";
-            var REPO_NAME = "rob2468.github.io";
-            var pageID = "{{ pageid }}";
-            var email = emailEle.val().trim();
-            var date = new Date();
-            var display_name = displayNameEle.val().trim();
-            var content = contentEle.val().trim();
+            var displayNameEle = $(".comment_area .input[name='display_name']");
+            var emailEle = $(".comment_area .input[name='email']");
+            var contentEle = $(".comment_area .input[name='content']");
+            if ($(".comment_area .submit_normal").length > 0) {
+                var BRANCH_NAME = "comments";
+                var OWNER_NAME = "rob2468";
+                var REPO_NAME = "rob2468.github.io";
+                var pageID = "{{ pageid }}";
+                var email = emailEle.val().trim();
+                var date = new Date();
+                var display_name = displayNameEle.val().trim();
+                var content = contentEle.val().trim();
 
-            // 字段有效性检查
-            function validateDisplayName() {
-              var res;
-              if (display_name.length === 0) {
-                res = "姓名没有可见字符";
-              }
-              return res;
-            }
-            function validateEmail() {
-              var res;
-              var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
-              if (email.length === 0) {
-                res = "电子邮箱没有可见字符";
-              } else if (!reg.test(email)) {
-                res = "电子邮箱格式不正确";
-              }
-              return res;
-            }
-            function validateContent() {
-              var res;
-              if (content.length === 0) {
-                res = "评论内容没有可见字符";
-              }
-              return res;
-            }
-            // 显示反馈
-            function showPrompt(prompt) {
-              $(".comment_area .prompt").html(prompt);
+                // 字段有效性检查
+                function validateDisplayName() {
+                    var res;
+                    if (display_name.length === 0) {
+                        res = "姓名没有可见字符";
+                    }
+                    return res;
+                }
+                function validateEmail() {
+                    var res;
+                    var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
+                    if (email.length === 0) {
+                        res = "电子邮箱没有可见字符";
+                    } else if (!reg.test(email)) {
+                        res = "电子邮箱格式不正确";
+                    }
+                    return res;
+                }
+                function validateContent() {
+                    var res;
+                    if (content.length === 0) {
+                        res = "评论内容没有可见字符";
+                    }
+                    return res;
+                }
+                // 显示反馈
+                function showPrompt(prompt) {
+                    $(".comment_area .prompt").html(prompt);
 
-              // 延时清除
-              clearTimeout(timeoutID);
-              timeoutID = setTimeout(function() {
-                $(".comment_area .prompt").html("");
-              }, 3000);
-            }
-            var displayNameValidation = validateDisplayName();
-            var emailValidation = validateEmail();
-            var contentValidation = validateContent();
-            if (!displayNameValidation && !emailValidation && !contentValidation) {
-              $(".comment_area .submit").removeClass("submit_normal");
-              $(".comment_area .submit").addClass("submit_loading");
-              function finnalyCompleteLoading() {
-                $(".comment_area .submit").addClass("submit_normal");
-                $(".comment_area .submit").removeClass("submit_loading");
-              }
-              commentme_submitComment(simpleStrDecode("%A2%E3%DA%D0%D3%8EP%95%9C%9D%9Cfdhffei%9E%9F%9F%C7%99%99%99%9D%9E%9F%96%92%98%97%94h%9A%9Dpj%98%98i%9D%CB%C7%92c"), BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
-                // completionHandler
-                finnalyCompleteLoading();
+                    // 延时清除
+                    clearTimeout(timeoutID);
+                    timeoutID = setTimeout(function() {
+                        $(".comment_area .prompt").html("");
+                    }, 3000);
+                }
+                var displayNameValidation = validateDisplayName();
+                var emailValidation = validateEmail();
+                var contentValidation = validateContent();
+                if (!displayNameValidation && !emailValidation && !contentValidation) {
+                    $(".comment_area .submit").removeClass("submit_normal");
+                    $(".comment_area .submit").addClass("submit_loading");
+                    function finnalyCompleteLoading() {
+                        $(".comment_area .submit").addClass("submit_normal");
+                        $(".comment_area .submit").removeClass("submit_loading");
+                    }
+                    commentme_submitComment(simpleStrDecode("%A2%E3%DA%D0%D3%8EP%95%9C%9D%9Cfdhffei%9E%9F%9F%C7%99%99%99%9D%9E%9F%96%92%98%97%94h%9A%9Dpj%98%98i%9D%CB%C7%92c"), BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
+                        // completionHandler
+                        finnalyCompleteLoading();
 
-                $(".comment_area .input").removeClass("input_error");
-                $(".comment_area .input").val("");
+                        $(".comment_area .input").removeClass("input_error");
+                        $(".comment_area .input").val("");
 
-                showPrompt("评论已提交成功，可到<a href='https://github.com/" + OWNER_NAME + "/" + REPO_NAME + "/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
-              }, function(msg) {
-                // errorHandler
-                finnalyCompleteLoading();
-                showPrompt("内部错误（" + msg + "）");
-              });
+                        showPrompt("评论已提交成功，可到<a href='https://github.com/" + OWNER_NAME + "/" + REPO_NAME + "/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
+                    }, function(msg) {
+                        // errorHandler
+                        finnalyCompleteLoading();
+                        showPrompt("内部错误（" + msg + "）");
+                    });
+                } else {
+                    var prompt;
+                    // 存在字段无效情况
+                    prompt = displayNameValidation? displayNameValidation + "；": "";
+                    prompt += emailValidation? emailValidation + "；": "";
+                    prompt += contentValidation? contentValidation + "；": "";
+                    if (displayNameValidation) {
+                      displayNameEle.addClass("input_error");
+                    } else {
+                      displayNameEle.removeClass("input_error");
+                    }
+                    if (emailValidation) {
+                      emailEle.addClass("input_error");
+                    } else {
+                      emailEle.removeClass("input_error");
+                    }
+                    if (contentValidation) {
+                      contentEle.addClass("input_error");
+                    } else {
+                      contentEle.removeClass("input_error");
+                    }
+                    showPrompt(prompt);
+                }
             } else {
-              var prompt;
-              // 存在字段无效情况
-              prompt = displayNameValidation? displayNameValidation + "；": "";
-              prompt += emailValidation? emailValidation + "；": "";
-              prompt += contentValidation? contentValidation + "；": "";
-              if (displayNameValidation) {
-                displayNameEle.addClass("input_error");
-              } else {
-                displayNameEle.removeClass("input_error");
-              }
-              if (emailValidation) {
-                emailEle.addClass("input_error");
-              } else {
-                emailEle.removeClass("input_error");
-              }
-              if (contentValidation) {
-                contentEle.addClass("input_error");
-              } else {
-                contentEle.removeClass("input_error");
-              }
-              showPrompt(prompt);
+                // loading
+                console.log("loading");
             }
-          } else {
-            // loading
-            console.log("loading");
-          }
         }
-        </script>
-        </div><!-- main -->
-
-        <div class="footer">
-            <p>powered by github</p>
-        </div>
-    </body>
+    </script>
+</body>
 </html>

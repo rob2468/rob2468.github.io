@@ -59,5 +59,3 @@ else
 <div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%" /></div>
 
 <div align="center">demo截图</div>
-
-{{ page.date | date_to_string }}

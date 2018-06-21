@@ -35,5 +35,3 @@ Head Tab View的整体结构如图2所示。
 <div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></div>
 
 <div align="center">图3. BDPhoneHeadTabView的视图层次</div>
-
-{{ page.date | date_to_string }}

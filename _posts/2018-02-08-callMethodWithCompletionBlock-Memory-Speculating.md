@@ -189,5 +189,3 @@ Demo 3 与 Demo 2 的区别是 CustomUIView 中强引用了 block，此时 view0
 `[obj callMethodWithCompletionBlock:^{ [obj doSomething] }]` 这种写法，ARC 会自动负责 block 的内存管理，在上下文开始和结束的地方持有和释放。
 
 block 为开发带来了便利，ARC 又为 block 的内存管理带来了便利，但如果未遵守内存管理的基本原则，仍然会引入内存泄漏的问题。
-
-{{ page.date | date_to_string }}

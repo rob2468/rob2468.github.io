@@ -89,5 +89,3 @@ UIScrollView中有如下3个属性，通过设置这些属性，能够实现内�
 1. “不要重复造轮子”。UIScrollView的zoom特性能帮助实现了大部分的功能。
 
 2. 花点时间研究将要使用的控件能少走许多弯路。
-
-{{ page.date | date_to_string }}

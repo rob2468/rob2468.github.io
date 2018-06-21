@@ -907,5 +907,3 @@ GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要
 <a href="http://www.galloway.me.uk/2012/10/a-look-inside-blocks-episode-2/" target="_blank">A look inside blocks: Episode 2</a>
 
 唐巧 . <a href="http://blog.devtang.com/2013/07/28/a-look-inside-blocks/#ARC-%E5%AF%B9-block-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%BD%B1%E5%93%8D" target="_blank">谈Objective-C block的实现 -- ARC 对 block 类型的影响</a>
-
-{{ page.date | date_to_string }}
