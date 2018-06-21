@@ -5,7 +5,7 @@
     margin: 20px 0px;
 }
 .header {
-    background: #0C4B33;
+    background: #24292e;
     overflow: hidden;
     position: relative;
     z-index: 0;
@@ -23,7 +23,7 @@
 .header .self {
     display: block;
     float: left;
-    font-size: 1.3em;
+    font-size: 18px;
     width: 104px;
     color: #fff;
 }
@@ -37,10 +37,12 @@
     display: inline-block;
     text-align: center;
     width: 100%;
-    color: #fff;
+    color: rgba(255,255,255,0.75);
+    font-size: 18px;
 }
+.header .menu-button .icon:hover,
 .header .menu-button.active .icon {
-    color: #C9F0DD;
+    color: #fff;
 }
 .header .menu-navigation {
     display: block;
@@ -59,23 +61,23 @@
     clear: both;
 }
 .header .menu-navigation li {
-    font-size: 1.3em;
+    font-size: 18px;
     display: block;
     font-weight: 700;
-    line-height: 16px;
+    line-height: 18px;
     text-align: left;
     margin: 0px 10px;
     padding: 20px 0px;
-    border-top: 1px solid #106142;
+    border-top: 1px solid rgba(255,255,255,0.2);
 }
 .header .menu-navigation li a {
-    color: #fff;
+    color: rgba(255,255,255,0.75);
     text-decoration: none;
     display: block;
     width: 100%;
 }
 .header .menu-navigation li a:hover {
-    color: #C9F0DD;
+    color: #fff;
 }
 
 /* main */

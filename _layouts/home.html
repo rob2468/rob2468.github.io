@@ -1,22 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" type="text/css" href="/css/default.css" />
-        <link rel="stylesheet" type="text/css" href="/css/home.css" />
-        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
-        <script type="text/javascript">
-        $(document).ready(function() {
-            $(".menu-button").click(function() {
-                $(".menu-button, .menu-navigation").toggleClass("active");
-            });
-        });
-        </script>
-        <title>{{ page.title }}</title>
-    </head>
-    <body>
-        <div class="header">
+<head>
+    <meta charset="utf-8" />
+    <title>{{ page.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/css/default.css" />
+    <link rel="stylesheet" type="text/css" href="/css/home.css" />
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+</head>
+<body>
+    <div class="header">
         <div class="container">
             <div class="self">
                 <span>jam.chenjun</span>
@@ -35,13 +28,21 @@
                 </ul>
             </div>
         </div>
-        </div>
-        <div class="main">
+    </div>
+    <div class="main">
         {{ content }}
-        </div>
-        <div class="footer">
-            <p>powered by github</p>
-        </div>
-    </body>
+    </div>
+    <div class="footer">
+        <p>powered by github</p>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".menu-button").click(function() {
+                $(".menu-button, .menu-navigation").toggleClass("active");
+            });
+        });
+    </script>
+</body>
 </html>
 
