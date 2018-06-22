@@ -46,22 +46,6 @@ p {
     margin-top: 0;
     margin-bottom: 14px;
 }
-div.main {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-    padding: 0 20px;
-}
-div.footer {
-    text-align: center;
-}
-div.code {
-    background-color: #f0f0f0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: pre;
-}
 a {
     color: #0366d6;
     word-wrap: break-word;
@@ -69,6 +53,29 @@ a {
 }
 a:hover {
     text-decoration: underline;
+}
+div.main {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
+#footer {
+    text-align: center;
+    margin: 20px 0 14px 0;
+}
+#footer p {
+    font-size: 12px;
+}
+#footer a {
+    color: #000;
+}
+div.code {
+    background-color: #f0f0f0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: pre;
 }
 
 @media screen and (min-width: 768px) {
