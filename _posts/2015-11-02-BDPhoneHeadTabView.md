@@ -10,9 +10,9 @@ page_id: id-2015-11-02
 
 截图：如图1所示
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p>
 
-<div align="center">图1. 效果截图</div>
+<p class="post-image-title">图1. 效果截图</p>
 
 ## 一、前言
 
@@ -22,9 +22,9 @@ page_id: id-2015-11-02
 
 Head Tab View的整体结构如图2所示。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p>
 
-<div align="center">图2. HeadTabView的代码整体结构</div>
+<p class="post-image-title">图2. HeadTabView的代码整体结构</p>
 
 图2中圆角矩形表示各个模块，有向箭头表示数据通信，数据从弧尾流向弧头。Head Tab View的设计遵循MVC。外部只与BDPhoneHeadTabViewController实例打交道，从BDPhoneHeadTabViewController实例读取Head Tab View的信息，通过BDPhoneHeadTabViewController实例修改Head Tab View。
 
@@ -32,6 +32,6 @@ Head Tab View的整体结构如图2所示。
 
 在源代码中，BDPhoneHeadTabView表示Head Tab View的视图，其视图层次结构如图3所示。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p>
 
-<div align="center">图3. BDPhoneHeadTabView的视图层次</div>
+<p class="post-image-title">图3. BDPhoneHeadTabView的视图层次</p>

@@ -43,9 +43,9 @@ OC 使用引用计数来实现内存管理。引用计数是内存管理的基�
 
 下面两幅图描述 <a href="http://gnustep.org/" target="_blank">GNUstep</a> 和 Apple 存储对象引用计数的方式。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p>
 
-<div align="center">图 GNUstep 存储引用计数的方式</div>
+<p class="post-image-title">图 GNUstep 存储引用计数的方式</p>
 
 GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字段。struct obj_layout 的定义如下所示：
 
@@ -53,9 +53,10 @@ GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字
     NSUInteger retained;
 };
 </code></pre></div>
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%" /></div>
 
-<div align="center">图 Apple 存储引用计数的方式</div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
+
+<p class="post-image-title">图 Apple 存储引用计数的方式</p>
 
 Apple 实现，使用一个独立的哈希表存储对象实例的引用计数。
 
@@ -159,9 +160,9 @@ id obj = [[NSObject alloc] init];
 
 两种写法的对应关系如下图所示。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p>
 
-<div align="center">图 @autoreleasepool 和 __autoreleasing 描述符</div>
+<p class="post-image-title">图 @autoreleasepool 和 __autoreleasing 描述符</p>
 
 得益于编译器的自动化操作，简化了开发者的许多工作，在实际使用中，很少使用到 __autoreleasing 语法。下面分情况对背后的细节进行说明。(使用下面方法调试查看自动释放池状态，`extern void _objc_autoreleasePoolPrint(); /* 声明 */ _objc_autoreleasePoolPrint(); /* 调用 */`)
 
@@ -365,9 +366,9 @@ objc_release(obj);
 
 实际情况下，objc_autoreleaseReturnValue() 并不总会将对象注册到对象释放池。objc_autoreleaseReturnValue() 会检测调用者的执行代码，如果调用者接下来调用了 objc_retainAutoreleasedReturnValue() 函数，便跳过将对象注册到自动释放池的步骤，以提升性能。见下图。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p>
 
-<div align="center">图 跳过对象加入自动释放池步骤</div>
+<p class="post-image-title">图 跳过对象加入自动释放池步骤</p>
 
 <h3 id="section_1_7">7. _objc_rootRetainCount</h3>
 
@@ -472,9 +473,9 @@ OC 中的类使用 class_t 构造（class_t 本身基于 objc_class），也就�
 
 基于上面描述，下图描述 isa 值的含义。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%"></p>
 
-<div align="center">图 OC 对象和类中 isa 指针的指向</div>
+<p class="post-image-title">图 OC 对象和类中 isa 指针的指向</p>
 
 __main_block_impl_0 结构体基于 objc_object，表明 Block 本身即为 OC 对象。创建 Block 时执行语句 `impl.isa = &_NSConcreteStackBlock`。根据上文描述，_NSConcreteStackBlock 是 class_t 实例，保存了该 Block 对应的类的信息。
 
@@ -673,9 +674,9 @@ __Block_byref_val_0 实例和 __main_block_impl_0 实例是多对多的关系，
 
 上文可知 Block 本身也是 OC 对象，其在内存中的存储方式有三种：_NSConcreteStackBlock、_NSConcreteGlobalBlock、_NSConcreteMallocBlock，分别对应：栈、全局/静态存储区、堆。内存区域划分方式大致可用下图表示，下图同时描述了不同存储方式的 Block 对应的内存区域。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%"></p>
 
-<div align="center">图 Block 不同存储方式对应的内存区域</div>
+<p class="post-image-title">图 Block 不同存储方式对应的内存区域</p>
 
 Block 字面定义在全局作用域生成 _NSConcreteGlobalBlock 类型 Block 对象。
 
@@ -685,9 +686,9 @@ Block 字面定义在全局作用域生成 _NSConcreteGlobalBlock 类型 Block �
 
 堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。下图为 Block 从栈拷贝到堆的示意图，同样的，__block 变量也可以从栈拷贝到堆。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%"></p>
 
-<div align="center">图 Block 和 __block 变量从栈拷贝到堆</div>
+<p class="post-image-title">图 Block 和 __block 变量从栈拷贝到堆</p>
 
 在下列情况下，栈中的 Block 会拷贝到堆：
 
@@ -721,9 +722,9 @@ blk();
 
 Block 内部会修改堆上的 __block 变量，Block 外部会修改栈上的 __block 变量。转换后，这两种行为是一致的，即`++(val.__forwarding->val)`。栈和堆上 __block 变量中的 __forwarding 指针都指向堆上的 __block 变量，下图描述了这种机制。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%"></p>
 
-<div align="center">图 __block 变量拷贝到堆</div>
+<p class="post-image-title">图 __block 变量拷贝到堆</p>
 
 <h3 id="section_2_9">9. Block 捕获对象实例</h3>
 
@@ -883,9 +884,9 @@ GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要
 
 分发队列是先进先出的队列结构，可以分为串行队列和并发队列。加入到串行队列中的任务会依次有序执行，当前任务完成后再执行队列中下一个任务。并发队列中的任务执行不会等待前次任务执行完成。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p>
 
-<div align="center">图 串行队列、并发队列与线程的关系</div>
+<p class="post-image-title">图 串行队列、并发队列与线程的关系</p>
 
 上图描述了分发队列和线程的关系。XNU kernel 是 iOS 和 OS X 的核心部分，负责线程的管理，创建、销毁和调度线程。比如，8个任务添加至并发队列中，XNU kernel 提供了4个线程执行任务，可能有如下执行顺序。
 

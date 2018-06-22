@@ -1,27 +1,8 @@
 /* post custom css */
-
-h1 {
-    font-size: 1.25em;
+.post-image,
+.post-image-title {
+  text-align: center;
 }
-
-h2 {
-    font-size: 1.125em;
-    margin: 1em 0 0 0;
-}
-
-h3 {
-    font-size: 1.05em;
-    margin: 1em 0 0 0;
-}
-
-h4, h5, h6 {
-    font-size: 1em;
-    margin: 1em 0;
-}
-p {
-    line-height: 1.5em;
-}
-
 div.comment_area {
   background-color: #f5f5f5;
 }

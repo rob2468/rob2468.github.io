@@ -25,9 +25,9 @@ page_id: id-2016-01-16
 
 在开发过程中经历了三套设计方案。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png" alt="" width="80%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png" alt="" width="80%"></p>
 
-<div align="center">图1. 各设计方案的视图层级</div>
+<p class="post-image-title">图1. 各设计方案的视图层级</p>
 
 方案一：如图1所示，将所要展示的Image View添加到Content View中，再将Content View添加到Scroll View中。保持Content View的尺寸始终占满Scroll View的视图尺寸范围，并且设置Content View响应缩放操作。此方案通过添加额外的视图解决问题，但是需要在不同的坐标系下计算视图位置。计算Image View的位置和尺寸需要在Content View的坐标系下，计算Content View的位置和尺寸需要在Scroll View的坐标系下，同时Image View的位置和尺寸还必须相对于屏幕以最优的方式展现。这种方案使计算变得复杂，没有采纳。
 
@@ -60,9 +60,9 @@ UIScrollView中有如下3个属性，通过设置这些属性，能够实现内�
 
 图2是双击缩放图片时的处理流程图。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p>
 
-<div align="center">图2. 双击缩放图片处理流程</div>
+<p class="post-image-title">图2. 双击缩放图片处理流程</p>
 
 图片刚加载时，根据需求计算并设置Scroll View contentInset、contentSize和Image View frame。onDoubleTappedGestureRecognizer:是自定义的响应双击手势的方法，其中执行的操作如图2所示。
 
@@ -70,9 +70,9 @@ UIScrollView中有如下3个属性，通过设置这些属性，能够实现内�
 
 图3是手指捏合缩放图片时的处理流程。
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p>
 
-<div align="center">图3. 手指捏合缩放图片处理流程</div>
+<p class="post-image-title">图3. 手指捏合缩放图片处理流程</p>
 
 图3图片刚加载时的处理流程和图2相同。
 

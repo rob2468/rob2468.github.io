@@ -21,13 +21,13 @@ page_id: id-2018-01-14
 
 下面相关软件组件的简图：
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2018-01-14-pixels-software-stack.png" alt="" width="70%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2018-01-14-pixels-software-stack.png" alt="" width="90%"></p>
 
 紧靠着 Display 的是 GPU（graphics processing unit）。GPU 为图形并行计算量身定制，是一个高度并发的处理器单元。因此，它能够处理大量的像素计算并将处理结果显示到屏幕上。GPU 的并行计算能力也使得 Texture 的合成非常高效，本文后面会详细讨论。重点是，GPU 是非常专业的处理器，擅长处理这种类型的计算，比起 CPU，它计算更快，功耗更小。普通 CPU 的设计考虑的是一般性的计算，它可以做很多不同类型的事情，但是比如纹理合成这种工作，执行起来会比 GPU 慢一点。
 
 GPU Driver 是一些直接与 GPU 通信的代码。GPU Driver 可以看成是对各种复杂 GPU 的封装，为调用方提供标准化的接口。相邻 GPU Driver 的调用方通常是 OpenGL / OpenGL ES。
 
-OpenGL（<a href="https://en.wikipedia.org/wiki/OpenGL">Open Graphics Library</a>）是用来进行 2D 和 3D 图形绘制的 API。上文说到 GPU 是非常专业化的硬件，OpenGL 能够与 GPU 密切合作，释放 GPU 性能，实现硬件加速渲染。对很多人来说，OpenGL 似乎是非常底层的 API，但是1992年首次发布时，它是与 GPU 通信的第一个主要标准化方式。程序员不再需要为每一种 GPU 重写他们的代码，这个一个巨大的进步。
+OpenGL（<a href="https://en.wikipedia.org/wiki/OpenGL" target="_blank">Open Graphics Library</a>）是用来进行 2D 和 3D 图形绘制的 API。上文说到 GPU 是非常专业化的硬件，OpenGL 能够与 GPU 密切合作，释放 GPU 性能，实现硬件加速渲染。对很多人来说，OpenGL 似乎是非常底层的 API，但是1992年首次发布时，它是与 GPU 通信的第一个主要标准化方式。程序员不再需要为每一种 GPU 重写他们的代码，这个一个巨大的进步。
 
 上图中，OpenGL 再往后有些分散。当前的 iOS 系统中，几乎所有的事情都得经过 Core Animation，但是 OS X 系统中，Core Graphics 绕过 Core Animation 的情况并不罕见。对于一些专门的应用程序，尤其是游戏应用，可能会直接与 Open GL / OpenGL ES 通信。Core Animation 会利用 Core Graphics 来实现一些绘制，这让事情变的更加混乱。一些框架，比如 AVFoundation、Core Image，会用到其中的多种技术。
 
@@ -37,7 +37,7 @@ OpenGL（<a href="https://en.wikipedia.org/wiki/OpenGL">Open Graphics Library</a
 
 <h3 id="section_1_2">1.2 硬件组件（The Hardware Players）</h3>
 
-<div align="center"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2018-01-14-pixels,%20hardware.png" alt="" width="70%" /></div>
+<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2018-01-14-pixels,%20hardware.png" alt="" width="70%"></p>
 
 上文说的挑战一个非常简单的例子可能是这样的：GPU 有许多合成好的 Texture（位图），这些 Texture 是为每一帧（1秒钟60次）准备的。每一个 Texture 需要占用部分 VRAM（video RAM），GPU 能够持有的 Texture 总数存在上限。虽然 GPU 很擅长合成，但总有一些合成任务要比另一些任务更加复杂，GPU 在16.7毫秒（1/60秒）内能够完成的工作存在上限。
 
