@@ -7,7 +7,6 @@
     <link rel="stylesheet" type="text/css" href="/css/default.css" />
     <link rel="stylesheet" type="text/css" href="/css/post.css" />
     <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
-    <script type="text/javascript" src="/js/commentme.js"></script>
     <script type="text/javascript" src="/js/post.js"></script>
     <script type="text/javascript" src="/js/utility.js"></script>
     <script type="text/javascript">$(document).ready(generateContentsTable);</script>
@@ -110,19 +109,37 @@
                         $(".comment_area .submit").addClass("submit_normal");
                         $(".comment_area .submit").removeClass("submit_loading");
                     }
-                    commentme_submitComment(simpleStrDecode("%A2%E3%DA%D0%D3%8EP%95%9C%9D%9Cfdhffei%9E%9F%9F%C7%99%99%99%9D%9E%9F%96%92%98%97%94h%9A%9Dpj%98%98i%9D%CB%C7%92c"), BRANCH_NAME, OWNER_NAME, REPO_NAME, pageID, email, date, display_name, content, function(sha) {
-                        // completionHandler
-                        finnalyCompleteLoading();
+                    // 将评论请求发送给服务端，服务端负责跟 github 交互
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'http://207.148.118.121:8888/api/submitcomment');
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                finnalyCompleteLoading();
 
-                        $(".comment_area .input").removeClass("input_error");
-                        $(".comment_area .input").val("");
+                                var responseText = xhr.responseText;
+                                var responseJSON = JSON.parse(responseText);
+                                var error = responseJSON.error;
+                                var message = responseJSON.message;
+                                if (error === 0) {
+                                    $(".comment_area .input").removeClass("input_error");
+                                    $(".comment_area .input").val("");
 
-                        showPrompt("评论已提交成功，可到<a href='https://github.com/" + OWNER_NAME + "/" + REPO_NAME + "/commit/" + sha + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
-                    }, function(msg) {
-                        // errorHandler
-                        finnalyCompleteLoading();
-                        showPrompt("内部错误（" + msg + "）");
-                    });
+                                    var link = responseJSON.link;
+                                    showPrompt("评论已提交成功，可到<a href='" + link + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
+                                } else {
+                                    showPrompt("内部错误（" + message + "）");
+                                }
+                            }
+                        }
+                    };
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.send(JSON.stringify({'page_id': pageID,
+                        'email': email,
+                        'date': date,
+                        'display_name': display_name,
+                        'content': content
+                    }));
                 } else {
                     var prompt;
                     // 存在字段无效情况
