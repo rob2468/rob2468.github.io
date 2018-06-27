@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 事件分发和 DOM 事件流
+title: 事件分发和 DOM 事件流（译）
 page_id: id-2018-06-19
 ---
 

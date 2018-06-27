@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 读书笔记 - Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks
+title: Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks（读书笔记）
 page_id: id-2016-12-29
 ---
 
