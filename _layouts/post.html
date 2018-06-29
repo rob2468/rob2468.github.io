@@ -12,7 +12,13 @@
     <script type="text/javascript">$(document).ready(generateContentsTable);</script>
 </head>
 <body>
-    <div class="header"></div>
+    <header class="top">
+        <div class="container">
+            <div class="self">
+                <a href="/index.html">jam.chenjun</a>
+            </div>
+        </div>
+    </header>
 
     <div class="main">
         {{ content }}
@@ -46,7 +52,9 @@
         </div>
     </div><!-- main -->
 
-    <div class="footer"><p></p></div>
+    <footer class="bottom">
+        <p>Powered by <a href="https://pages.github.com/" target="_blank">GitHub</a> &copy; 2018 陈军</p>
+    </footer>
 
     <script>
         var timeoutID;

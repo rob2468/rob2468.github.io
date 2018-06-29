@@ -54,6 +54,38 @@ a {
 a:hover {
     text-decoration: underline;
 }
+/* header */
+header.top {
+    background: #24292e;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+    width: 100%;
+}
+header.top .container {
+    display: block;
+    margin: 0 20px;
+}
+header.top .self {
+    padding: 12px 0px;
+    line-height: 32px;
+    display: block;
+    float: left;
+    font-size: 18px;
+    width: 120px;
+}
+header.top .self a {
+    color: #fff;
+}
+header.top .self a:hover {
+    text-decoration: none;
+}
+header.top .container:after {
+    content: "";
+    display: block;;
+    clear: both;
+}
+/* main */
 div.main {
     width: 100%;
     margin-left: auto;
@@ -61,14 +93,15 @@ div.main {
     box-sizing: border-box;
     padding: 0 20px;
 }
-#footer {
+/* footer */
+footer.bottom {
     text-align: center;
     margin: 20px 0 14px 0;
 }
-#footer p {
+footer.bottom p {
     font-size: 12px;
 }
-#footer a {
+footer.bottom a {
     color: #000;
 }
 div.code {
@@ -79,6 +112,11 @@ div.code {
 }
 
 @media screen and (min-width: 768px) {
+    /* header */
+    header.top .container {
+        margin: 0 14% 0 25%;
+    }
+    /* main */
     div.main {
         width: 610px;
     }

@@ -1,50 +1,25 @@
 /* home custom css */
 
 /* header */
-.header .self, .header .menu-button {
-    margin: 20px 0px;
-}
-.header {
-    background: #24292e;
-    overflow: hidden;
-    position: relative;
-    z-index: 0;
-    width: 100%;
-}
-.header .container {
-    display: block;
-    margin: 0 20px;
-}
-.header .container:after {
-    content: "";
-    display: block;;
-    clear: both;
-}
-.header .self {
-    display: block;
-    float: left;
-    font-size: 18px;
-    width: 104px;
-    color: #fff;
-}
-.header .menu-button {
+header.top .menu-button {
+    padding: 12px 0px;
     display: block;
     float: right;
-    width: 45px;
     cursor: pointer;
 }
-.header .menu-button .icon {
+header.top .menu-button .icon {
     display: inline-block;
     text-align: center;
     width: 100%;
-    color: rgba(255,255,255,0.75);
+    color: rgba(255, 255, 255, 0.75);
     font-size: 18px;
+    line-height: 32px;
 }
-.header .menu-button .icon:hover,
-.header .menu-button.active .icon {
+header.top .menu-button .icon:hover,
+header.top .menu-button.active .icon {
     color: #fff;
 }
-.header .menu-navigation {
+header.top nav {
     display: block;
     overflow: hidden;
     width: 100%;
@@ -52,31 +27,31 @@
     margin: 0;
     max-height: 0;
 }
-.header .menu-navigation.active {
+header.top nav.active {
     max-height: 200px;
 }
-.header .menu-navigation ul:after {
+header.top nav ul:after {
     display: block;
     content: "";
     clear: both;
 }
-.header .menu-navigation li {
+header.top nav li {
     font-size: 18px;
     display: block;
     font-weight: 700;
-    line-height: 18px;
+    line-height: 32px;
     text-align: left;
     margin: 0px 10px;
-    padding: 20px 0px;
+    padding: 12px 0px;
     border-top: 1px solid rgba(255,255,255,0.2);
 }
-.header .menu-navigation li a {
+header.top nav li a {
     color: rgba(255,255,255,0.75);
     text-decoration: none;
     display: block;
     width: 100%;
 }
-.header .menu-navigation li a:hover {
+header.top nav li a:hover {
     color: #fff;
 }
 
@@ -90,18 +65,15 @@
 
 @media screen and (min-width: 768px) {
     /* header */
-    .header .container {
-        margin: 0 14% 0 25%;
-    }
-    .header .menu-button {
+    header.top .menu-button {
         display: none;
     }
-    .header .menu-navigation {
-        margin: 20px 0px;
+    header.top nav {
+        padding: 12px 0px;
         width: auto;
         max-height: none;
     }
-    .header .menu-navigation li {
+    header.top nav li {
         float: left;
         border: 0px;
         padding: 0px;
