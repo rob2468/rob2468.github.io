@@ -14,7 +14,8 @@ form:after {
     content: "";
     clear: both;
 }
-.comment_area input[type="text"] {
+.comment_area input[type="text"],
+.comment_area input[type="email"] {
   margin-bottom: 10px;
 }
 .comment_area textarea {

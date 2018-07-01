@@ -28,10 +28,12 @@
             <!-- comment form -->
             <div class="comment_form">
                 <form>
-                <input type="text" name="display_name" class="input" placeholder="姓名"></input>
-                <input type="text" name="email" class="input" placeholder="电子邮箱"></input>
-                <textarea name="content" class="input" placeholder="请输入您的评论"></textarea>
-                <button type="button" class="submit submit_normal" onclick=submitForm()><img src="/resources/loading-bubbles.svg"/><span>提交评论</span></button>
+                <input type="text" name="display_name" class="input" placeholder="姓名" required></input>
+                <input type="email" name="email" class="input" placeholder="电子邮箱" required></input>
+                <textarea name="content" class="input" placeholder="请输入您的评论" required></textarea>
+                <button type="button" class="submit submit_normal" onclick=submitForm()>
+                    <img src="/resources/loading-bubbles.svg"/><span>提交评论</span>
+                </button>
                 <div class="prompt"></div>
                 </form>
             </div>
