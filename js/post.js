@@ -1,3 +1,32 @@
+window.onload = function () {
+    // 更新博客图片链接，适配 LFS
+    updateImgElementsSRCIfNeeded();
+
+    // 生成目录
+    generateContentsTable();
+};
+
+/* git pages 不支持存储在 LFS 中的博客图片，调整引用链接 */
+function updateImgElementsSRCIfNeeded() {
+    var imgs = document.querySelectorAll('img');
+    for (var i = imgs.length - 1; i >= 0; i--) {
+        var imgEle = imgs[i];
+        var imgSRC = imgEle.src;
+        var imgSRCSplits = imgSRC.split('//');
+        var start = imgSRCSplits[1].indexOf('/');
+        var domain = imgSRCSplits[1].substring(0, start);
+        if (domain.indexOf('localhost') !== 0 &&
+            domain.indexOf('127.0.0.1') !== 0) {
+            // 不是本地服务
+            var path = imgSRCSplits[1].substring(start);
+            if (path.indexOf('/resources/figures') === 0) {
+                // 引用了 LFS 中的资源，更新 src
+                imgEle.src = 'https://github.com/rob2468/rob2468.github.io/raw/master' + path;
+            }
+        }
+    }
+}
+
 /* 生成目录 */
 function generateContentsTable() {
     // 创建目录
