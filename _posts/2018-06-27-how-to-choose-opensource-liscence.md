@@ -11,5 +11,5 @@ page_id: id-2018-06-27
 下图说明了如何选择一个合适的开源许可证书。
 
 <div class="post-image">
-    <img src="http://7xilqo.com1.z0.glb.clouddn.com/2018-06-27-opensource-liscences.png" alt="opensource liscences" width="100%">
+    <img src="/resources/figures/2018-06-27-opensource-liscences.png" alt="opensource liscences" width="100%">
 </div>
