@@ -110,7 +110,7 @@ JSPatch 通过运行时系统，将错误的 OC 代码逻辑替换为正确的 J
 
 <h3 id="section_3_1">1. 调用修改后方法</h3>
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/temp_JSPatch_MessageSend.png" alt="" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_MessageSend.png" alt="" width="80%"></p>
 
 上图描述了调用修改后方法的程序执行流程。
 
@@ -118,7 +118,7 @@ JSPatch 通过运行时系统，将错误的 OC 代码逻辑替换为正确的 J
 
 <h3 id="section_3_2">2. 调用原始方法</h3>
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-05-16-JSPatch_callSelector.png" alt="" width="100%"></p>
+<p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_callSelector.png" alt="" width="100%"></p>
 
 上图描述 JS 环境中调用 OC 方法是如何发生的，即 JS 如何调用 OC 类中的任意方法。
 

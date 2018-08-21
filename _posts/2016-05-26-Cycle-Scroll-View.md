@@ -56,6 +56,6 @@ else
 
 <p></p>
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p>
+<p class="post-image"><img src="/resources/figures/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p>
 
 <p class="post-image-title">demo截图</p>

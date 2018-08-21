@@ -14,13 +14,13 @@ page_id: id-2015-10-26
 
 当在 UIScrollView 中采用 Autolayout 方式布局时，情况变得有些复杂。UIScrollView 的 contentSize 依赖于其子视图的布局，而其子视图的布局依赖于 UIScrollView 的 contentSize。如图1所示。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-10-26-UIScrollView简单布局依赖示意图.png" alt="UIScrollView简单布局依赖示意图" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView简单布局依赖示意图.png" alt="UIScrollView简单布局依赖示意图" width="80%"></p>
 
 <p class="post-image-title">图1. UIScrollView 简单布局依赖示意图</p>
 
 图1中箭头代表布局的依赖关系，弧尾依赖弧头。如图所示，ScrollView\_ContentSize 和 ScrollView\_SubviewFrame 互相依赖，iOS 无法计算出控件的布局数据。这种简单的约束设置方案无法满足要求，Xcode 会出现约束无法满足的提醒，如图2所示。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-10-26-xib文件中UIScrollView简单布局.png" alt="xib文件中UIScrollView简单布局" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2015-10-26-xib文件中UIScrollView简单布局.png" alt="xib文件中UIScrollView简单布局" width="80%"></p>
 
 <p class="post-image-title">图2. xib 文件中 UIScrollView 简单布局</p>
 
@@ -30,7 +30,7 @@ page_id: id-2015-10-26
 
 ScrollView\_SubviewFrame 对应的是目标控件视图，它的布局可以不依赖 ScrollView\_ContentSize，而是依赖于 ParentViewFrame，如图3所示。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-10-26-UIScrollView布局依赖示意图.png" alt="UIScrollView布局依赖示意图" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView布局依赖示意图.png" alt="UIScrollView布局依赖示意图" width="80%"></p>
 
 <p class="post-image-title">图3. UIScrollView 布局依赖示意图</p>
 
@@ -38,7 +38,7 @@ ScrollView\_SubviewFrame 对应的是目标控件视图，它的布局可以不�
 
 上一节叙述了解决 UIScrollView 中布局问题的解决方案，这一节分享开发经验，如图4所示。图4对应的需求如下，UIScrollView 左右贴边，其中内容仅支持上下滚动，
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-10-26-xib文件中UIScrollView布局.png" alt="xib文件中UIScrollView布局" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2015-10-26-xib文件中UIScrollView布局.png" alt="xib文件中UIScrollView布局" width="80%"></p>
 
 <p class="post-image-title">图4. xib 文件中 UIScrollView 布局</p>
 

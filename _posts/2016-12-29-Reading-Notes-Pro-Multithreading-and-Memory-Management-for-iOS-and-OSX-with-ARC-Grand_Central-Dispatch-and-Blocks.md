@@ -43,7 +43,7 @@ OC 使用引用计数来实现内存管理。引用计数是内存管理的基�
 
 下面两幅图描述 <a href="http://gnustep.org/" target="_blank">GNUstep</a> 和 Apple 存储对象引用计数的方式。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p>
 
 <p class="post-image-title">图 GNUstep 存储引用计数的方式</p>
 
@@ -54,7 +54,7 @@ GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字
 };
 </code></pre></div>
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
+<p class="post-image"><img src="/resources/figures//2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
 
 <p class="post-image-title">图 Apple 存储引用计数的方式</p>
 
@@ -160,7 +160,7 @@ id obj = [[NSObject alloc] init];
 
 两种写法的对应关系如下图所示。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p>
 
 <p class="post-image-title">图 @autoreleasepool 和 __autoreleasing 描述符</p>
 
@@ -366,7 +366,7 @@ objc_release(obj);
 
 实际情况下，objc_autoreleaseReturnValue() 并不总会将对象注册到对象释放池。objc_autoreleaseReturnValue() 会检测调用者的执行代码，如果调用者接下来调用了 objc_retainAutoreleasedReturnValue() 函数，便跳过将对象注册到自动释放池的步骤，以提升性能。见下图。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p>
 
 <p class="post-image-title">图 跳过对象加入自动释放池步骤</p>
 
@@ -473,7 +473,7 @@ OC 中的类使用 class_t 构造（class_t 本身基于 objc_class），也就�
 
 基于上面描述，下图描述 isa 值的含义。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%"></p>
 
 <p class="post-image-title">图 OC 对象和类中 isa 指针的指向</p>
 
@@ -674,7 +674,7 @@ __Block_byref_val_0 实例和 __main_block_impl_0 实例是多对多的关系，
 
 上文可知 Block 本身也是 OC 对象，其在内存中的存储方式有三种：_NSConcreteStackBlock、_NSConcreteGlobalBlock、_NSConcreteMallocBlock，分别对应：栈、全局/静态存储区、堆。内存区域划分方式大致可用下图表示，下图同时描述了不同存储方式的 Block 对应的内存区域。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%"></p>
 
 <p class="post-image-title">图 Block 不同存储方式对应的内存区域</p>
 
@@ -686,7 +686,7 @@ Block 字面定义在全局作用域生成 _NSConcreteGlobalBlock 类型 Block �
 
 堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。下图为 Block 从栈拷贝到堆的示意图，同样的，__block 变量也可以从栈拷贝到堆。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%"></p>
 
 <p class="post-image-title">图 Block 和 __block 变量从栈拷贝到堆</p>
 
@@ -722,7 +722,7 @@ blk();
 
 Block 内部会修改堆上的 __block 变量，Block 外部会修改栈上的 __block 变量。转换后，这两种行为是一致的，即`++(val.__forwarding->val)`。栈和堆上 __block 变量中的 __forwarding 指针都指向堆上的 __block 变量，下图描述了这种机制。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%"></p>
 
 <p class="post-image-title">图 __block 变量拷贝到堆</p>
 
@@ -884,7 +884,7 @@ GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要
 
 分发队列是先进先出的队列结构，可以分为串行队列和并发队列。加入到串行队列中的任务会依次有序执行，当前任务完成后再执行队列中下一个任务。并发队列中的任务执行不会等待前次任务执行完成。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p>
 
 <p class="post-image-title">图 串行队列、并发队列与线程的关系</p>
 

@@ -10,7 +10,7 @@ page_id: id-2015-11-02
 
 截图：如图1所示
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p>
+<p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p>
 
 <p class="post-image-title">图1. 效果截图</p>
 
@@ -22,7 +22,7 @@ page_id: id-2015-11-02
 
 Head Tab View的整体结构如图2所示。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p>
+<p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p>
 
 <p class="post-image-title">图2. HeadTabView的代码整体结构</p>
 
@@ -32,6 +32,6 @@ Head Tab View的整体结构如图2所示。
 
 在源代码中，BDPhoneHeadTabView表示Head Tab View的视图，其视图层次结构如图3所示。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p>
+<p class="post-image"><img src="/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p>
 
 <p class="post-image-title">图3. BDPhoneHeadTabView的视图层次</p>

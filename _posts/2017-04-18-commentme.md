@@ -16,7 +16,7 @@ page_id: id-2017-04-18
 
 不考虑技术细节，整个评论系统可以分为三个部分。一是评论入口，由前端提供表单，可输入评论内容并提交。二是评论内容存储，实现评论内容持久化。三是评论展示，能够读取已持久化存储的评论内容。如下图所示。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2017-04-18-overall-architecture.png" alt="" width="60%"></p>
+<p class="post-image"><img src="/resources/figures/2017-04-18-overall-architecture.png" alt="" width="60%"></p>
 
 评论入口使用 HTML 和 JS 实现评论表单的展现和交互逻辑。评论内容采用约定组织结构，存储于同一个 Git 仓库中，由前端页面利用 GitHub API 实现。评论展示利用 Jekyll 实现，生成静态站点时解析有固定结构的评论内容，并将内容填充在网页中。
 
@@ -78,7 +78,7 @@ endfor
 
 下面描述客户端和 GitHub 通信的流程。
 
-<p class="post-image"><img src="http://7xilqo.com1.z0.glb.clouddn.com/2017-04-18-UA-and-GitHub-communication-process.png" alt="" width="70%"></p>
+<p class="post-image"><img src="/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png" alt="" width="70%"></p>
 
 如上图所示，提交评论需要进行5次客户端和 GitHub 的通信，并且后3次 POST 请求需要在请求中附加身份验证信息。
 
