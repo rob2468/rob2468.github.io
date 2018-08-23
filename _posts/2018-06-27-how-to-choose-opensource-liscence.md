@@ -10,6 +10,6 @@ page_id: id-2018-06-27
 
 下图说明了如何选择一个合适的开源许可证书。
 
-<div class="post-image">
+<p class="post-image">
     <img src="/resources/figures/2018-06-27-opensource-liscences.png" alt="opensource liscences" width="100%">
-</div>
+</p>
