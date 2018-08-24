@@ -4,11 +4,13 @@ title: iOS 图像解码和最佳实践
 page_id: id-2018-08-22
 ---
 
-<h1>{{ page.title }}</h1>
+<h1 class="title">{{ page.title }}</h1>
+
+<h2>前言</h2>
 
 最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。
 
-<h2>1. 三种 Buffer 和解码</h2>
+<h2 id="section_1">1. 三种 Buffer 和解码</h2>
 
 Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。
 
@@ -30,7 +32,7 @@ Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM
 
 <p class="post-image-title">图片渲染流程</p>
 
-<h2>2. UIImage 和 UIImageView</h2>
+<h2 id="section_2">2. UIImage 和 UIImageView</h2>
 
 UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图，如下图所示。
 
@@ -40,11 +42,58 @@ UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图
 
 <p class="post-image-title">UIImage 和 UIImageView 的角色</p>
 
-UIImage 是 iOS 中处理图片的高级类。创建一个 UIImage 实例只会加载 Data Buffer，将图片显示到屏幕上才会触发解码，也就是 Data Buffer 解码为 Image Buffer，Image Buffer 也关联在 UIImage 上。
+UIImage 是 iOS 中处理图片的高级类。创建一个 UIImage 实例只会加载 Data Buffer，将图片显示到屏幕上才会触发解码，也就是 Data Buffer 解码为 Image Buffer。Image Buffer 也关联在 UIImage 上。
 
-UIImage 关联的图片是否已解码对外部是透明的，没有办法判断（有判断方法的大牛求教告知）。
+UIImage 关联的图片是否已解码对外部是透明的（如本文最后的 Instruments 截图，调用栈中都是系统函数），没有办法判断（有判断方法的大牛求教告知）。
 
-<h2>3. 最佳实践</h2>
+<h2 id="section_3">3. 图片解码</h2>
+
+上面说到，UIImage 关联的图片是否已解码对外部是透明的，但是有许多操作会触发图片的解码，下面是一些例子。
+
+<h3>隐式解码</h3>
+
+将图片显示到屏幕上会触发隐式解码。（必须同时满足图片被设置到 UIImageView 中、UIImageView 添加到视图，才会触发图片解码。)
+
+<div class="code"><pre><code>UIImageView *imageView = [[UIImageView alloc] init];
+[self.view addSubview:imageView];
+[imageView setImage:image];
+</code></pre></div>
+
+<p></p>
+
+<h3>Core Graphics</h3>
+
+手动绘制图片能完成图片解码，下面代码中的 newImage 实例的图片已完成解码。
+
+<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
+[image drawAtPoint:CGPointZero];
+UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+UIGraphicsEndImageContext();
+</code></pre></div>
+
+下面的代码片段截取自 <a href="https://github.com/ibireme/YYKit.git" target="_blank">YYKit</a>，其中 newImage 实例的图片已完成解码。在测试工程中，该代码比上面直接绘制代码快约7倍。
+
+<div class="code"><pre><code>size_t width = CGImageGetWidth(imageRef);
+size_t height = CGImageGetHeight(imageRef);
+CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
+size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
+size_t bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
+size_t bytesPerRow = CGImageGetBytesPerRow(imageRef);
+CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+
+CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);
+CFDataRef data = CGDataProviderCopyData(dataProvider);      // 主要耗时操作（解码）
+
+CGDataProviderRef newProvider = CGDataProviderCreateWithCFData(data);
+CFRelease(data);
+
+CGImageRef newImageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, NULL, false, kCGRenderingIntentDefault);
+UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];
+CGImageRelease(newImageRef);
+CFRelease(newProvider);
+</code></pre></div>
+
+<h2 id="section_4">4. 最佳实践</h2>
 
 内存和 CPU 是 App 运行最宝贵的资源，我们处理和使用图片从减少内存占用和优化 CPU 使用入手。下面提供一些优化方案。
 
@@ -85,40 +134,18 @@ UIImage 关联的图片是否已解码对外部是透明的，没有办法判断
 
 <h3>优化 CPU 使用</h3>
 
-CPU 使用的优化我们考虑利用设备的多核芯片和预处理。CPU 的计算环节，我们考虑优化 Data Buffer 转 Image Buffer 这一过程，也就是解码过程。
+CPU 使用的优化我们考虑的是，利用设备的多核芯片（多线程）和采用预处理策略。
 
-利用设备多核芯片使用多线程方案便可以实现。预处理本身并没有减少 CPU 的工作量，但是在 CPU 空闲时提前完成图片解码，能间接达到优化用户体验的效果。
+值得关注的 CPU 计算工作是，Data Buffer 转 Image Buffer 这一过程，也就是解码过程。在一个测试工程中，大量的设置了图片的 UIImageView 被显示到屏幕上，图片解码是性能瓶颈。如下图所示。
 
-多线程和预处理，再结合上面的 Downsample 接口，便能形成一套优化方案。
+<p class="post-image">
+    <img src="/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png" alt="" width="100%">
+</p>
 
-<h2>4. 解码</h2>
-
-前面说到，UIImage 关联的图片是否已解码对外部是透明的，但是有许多操作会触发图片的解码，下面是一些例子。
-
-<h3>[imageView setImage:] 隐式解码</h3>
-
-将图片显示到屏幕上会触发隐式解码。
-
-<div class="code"><pre><code>UIImageView *imageView = [[UIImageView alloc] init];
-[self.view addSubview:imageView];
-[imageView setImage:image];
-</code></pre></div>
-
-<p></p>
-
-<h3>Core Graphics 绘制</h3>
-
-手动绘制图片能完成图片解码，下面代码中的 newImage 实例的图片已完成解码。
-
-<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
-[image drawAtPoint:CGPointZero];
-UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-UIGraphicsEndImageContext();
-</code></pre></div>
-
-<h3>显示读取</h3>
-
+预处理本身并没有减少 CPU 的工作量，但是在 CPU 空闲时提前完成图片解码，能间接达到优化用户体验的效果。
 
 <h3>参考文献：</h3>
 
 WWDC2018. <a href="https://developer.apple.com/videos/play/wwdc2018/219/" target="_blank">Image and Graphics Best Practices</a>
+
+Luke Parham. <a href="http://www.lukeparham.com/blog/2018/3/14/decoding-jpegs-with-the-best" target="_blank">JPEG Decoding with the Best</a>
