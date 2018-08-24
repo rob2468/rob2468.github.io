@@ -54,6 +54,13 @@ a {
 a:hover {
     text-decoration: underline;
 }
+div.code {
+    background-color: #f0f0f0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: pre;
+    margin-bottom: 14px;
+}
 /* header */
 header.top {
     background: #24292e;
@@ -103,12 +110,6 @@ footer.bottom p {
 }
 footer.bottom a {
     color: #000;
-}
-div.code {
-    background-color: #f0f0f0;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: pre;
 }
 
 @media screen and (min-width: 768px) {
