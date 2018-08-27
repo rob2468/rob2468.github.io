@@ -44,7 +44,7 @@ UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图
 
 UIImage 是 iOS 中处理图像的高级类。创建一个 UIImage 实例只会加载 Data Buffer，将图像显示到屏幕上才会触发解码，也就是 Data Buffer 解码为 Image Buffer。Image Buffer 也关联在 UIImage 上。
 
-UIImage 关联的图像是否已解码对外部是透明的（如本文最后的 Instruments 截图，调用栈中都是系统函数），没有办法判断（有判断方法的大牛求教告知）。
+UIImage 关联的图像是否已解码对外部是透明的（如本文最后的 Instruments 截图，调用栈中都是系统函数），没有办法判断。
 
 <h2 id="section_3">3. 图像解码</h2>
 
@@ -92,6 +92,10 @@ UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];
 CGImageRelease(newImageRef);
 CFRelease(newProvider);
 </code></pre></div>
+
+<h3>Image I/O</h3>
+
+Image I/O 提供了多种处理图像的接口，但是我并没有找到一个可以直观的触发图像解码的实现方案。（简单的使用 CGImageSourceCreateWith... / CGImageSourceCreateImageAtIndex 这对函数并不会触发解码。）（下文中引用的 WWDC 提供的代码段算是一种解码的方案。）
 
 <h2 id="section_4">4. 最佳实践</h2>
 
