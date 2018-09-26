@@ -54,7 +54,7 @@ GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字
 };
 </code></pre></div>
 
-<p class="post-image"><img src="/resources/figures//2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
 
 <p class="post-image-title">图 Apple 存储引用计数的方式</p>
 
