@@ -8,7 +8,7 @@ page_id: id-2018-02-08
 
 开发中不时会遇到 `[obj callMethodWithCompletionBlock:^{ [obj doSomething] }]` 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。
 
-本文的讨论都是基于 ARC，一般性的 block 内存管理说明可以参考之前的<a href="https://rob2468.github.io/2016/12/29/Reading-Notes-Pro-Multithreading-and-Memory-Management-for-iOS-and-OSX-with-ARC-Grand_Central-Dispatch-and-Blocks.html" target="_blank">这篇文章</a>。
+本文的讨论都是基于 ARC，并且一般性的 block 内存管理说明可以参考<a href="/2018/09/30/block.html">这篇文章</a>。
 
 <h2>Demo 1</h2>
 
