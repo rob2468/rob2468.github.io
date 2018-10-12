@@ -24,10 +24,10 @@ h3 {
 }
 h4,
 h5 {
-    font-size: 14px;
+    font-size: 15px;
 }
 p {
-    font-size: 14px;
+    font-size: 15px;
 }
 h1,
 h2,
@@ -115,10 +115,10 @@ footer.bottom a {
 @media screen and (min-width: 768px) {
     /* header */
     header.top .container {
-        margin: 0 14% 0 25%;
+        margin: 0 25% 0 25%;
     }
     /* main */
     div.main {
-        width: 610px;
+        width: 710px;
     }
 }
