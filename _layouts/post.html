@@ -27,7 +27,7 @@
             <!-- comment form -->
             <div class="comment_form">
                 <form>
-                <input type="text" name="display_name" class="input" placeholder="姓名" required></input>
+                <input type="text" name="display_name" class="input" placeholder="昵称" required></input>
                 <input type="email" name="email" class="input" placeholder="电子邮箱" required></input>
                 <textarea name="content" class="input" placeholder="请输入您的评论" required></textarea>
                 <button type="button" class="submit submit_normal" onclick=submitForm()>
@@ -38,145 +38,25 @@
             </div>
 
             <!-- comments -->
-            {% assign pageid = page.page_id %}
-            {%if site.data.comments[pageid] %}
-                {% assign sorted_comments = site.data.comments[pageid] | sort: 'date' %}
-            {% endif %}
-            {% for c in sorted_comments reversed %}
-                <div>
-                    <p>{{ c.author.display_name }} on {{ c.date | date: "%Y-%m-%d" }}</p>
-                    <p>{{ c.content | newline_to_br }}</p>
-                </div>
-            {% else %}
-                这篇文章暂没有评论。
-            {% endfor %}
+            <div class="comments">
+                {% assign pageid = page.page_id %}
+                {%if site.data.comments[pageid] %}
+                    {% assign sorted_comments = site.data.comments[pageid] | sort: 'date' %}
+                {% endif %}
+                {% for c in sorted_comments reversed %}
+                    <div>
+                        <p>{{ c.author.display_name }} {{ c.date | date: "%Y-%m-%d" }}</p>
+                        <p>{{ c.content | newline_to_br }}</p>
+                    </div>
+                {% else %}
+                    这篇文章暂没有评论。
+                {% endfor %}
+            </div>
         </div>
     </div><!-- main -->
 
     <footer class="bottom">
         <p>Powered by <a href="https://pages.github.com/" target="_blank">GitHub</a> &copy; 2018 陈军</p>
     </footer>
-
-    <script>
-        var timeoutID;
-        function submitForm() {
-            var displayNameEle = $(".comment_area .input[name='display_name']");
-            var emailEle = $(".comment_area .input[name='email']");
-            var contentEle = $(".comment_area .input[name='content']");
-            if ($(".comment_area .submit_normal").length > 0) {
-                var BRANCH_NAME = "comments";
-                var OWNER_NAME = "rob2468";
-                var REPO_NAME = "rob2468.github.io";
-                var pageID = "{{ pageid }}";
-                var email = emailEle.val().trim();
-                var date = new Date();
-                var display_name = displayNameEle.val().trim();
-                var content = contentEle.val().trim();
-
-                // 字段有效性检查
-                function validateDisplayName() {
-                    var res;
-                    if (display_name.length === 0) {
-                        res = "姓名没有可见字符";
-                    }
-                    return res;
-                }
-                function validateEmail() {
-                    var res;
-                    var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
-                    if (email.length === 0) {
-                        res = "电子邮箱没有可见字符";
-                    } else if (!reg.test(email)) {
-                        res = "电子邮箱格式不正确";
-                    }
-                    return res;
-                }
-                function validateContent() {
-                    var res;
-                    if (content.length === 0) {
-                        res = "评论内容没有可见字符";
-                    }
-                    return res;
-                }
-                // 显示反馈
-                function showPrompt(prompt) {
-                    $(".comment_area .prompt").html(prompt);
-
-                    // 延时清除
-                    clearTimeout(timeoutID);
-                    timeoutID = setTimeout(function() {
-                        $(".comment_area .prompt").html("");
-                    }, 3000);
-                }
-                var displayNameValidation = validateDisplayName();
-                var emailValidation = validateEmail();
-                var contentValidation = validateContent();
-                if (!displayNameValidation && !emailValidation && !contentValidation) {
-                    $(".comment_area .submit").removeClass("submit_normal");
-                    $(".comment_area .submit").addClass("submit_loading");
-                    function finnalyCompleteLoading() {
-                        $(".comment_area .submit").addClass("submit_normal");
-                        $(".comment_area .submit").removeClass("submit_loading");
-                    }
-                    // 将评论请求发送给服务端，服务端负责跟 github 交互
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'http://207.148.118.121:8888/api/submitcomment');
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                                finnalyCompleteLoading();
-
-                                var responseText = xhr.responseText;
-                                var responseJSON = JSON.parse(responseText);
-                                var error = responseJSON.error;
-                                var message = responseJSON.message;
-                                if (error === 0) {
-                                    $(".comment_area .input").removeClass("input_error");
-                                    $(".comment_area .input").val("");
-
-                                    var link = responseJSON.link;
-                                    showPrompt("评论已提交成功，可到<a href='" + link + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
-                                } else {
-                                    showPrompt("内部错误（" + message + "）");
-                                }
-                            }
-                        }
-                    };
-                    xhr.setRequestHeader("Content-Type", "application/json");
-                    xhr.send(JSON.stringify({'page_id': pageID,
-                        'email': email,
-                        'date': date,
-                        'display_name': display_name,
-                        'content': content
-                    }));
-                } else {
-                    var prompt;
-                    // 存在字段无效情况
-                    prompt = displayNameValidation? displayNameValidation + "；": "";
-                    prompt += emailValidation? emailValidation + "；": "";
-                    prompt += contentValidation? contentValidation + "；": "";
-                    if (displayNameValidation) {
-                      displayNameEle.addClass("input_error");
-                    } else {
-                      displayNameEle.removeClass("input_error");
-                    }
-                    if (emailValidation) {
-                      emailEle.addClass("input_error");
-                    } else {
-                      emailEle.removeClass("input_error");
-                    }
-                    if (contentValidation) {
-                      contentEle.addClass("input_error");
-                    } else {
-                      contentEle.removeClass("input_error");
-                    }
-                    showPrompt(prompt);
-                }
-            } else {
-                // loading
-                console.log("loading");
-            }
-        }
-    </script>
 </body>
 </html>
