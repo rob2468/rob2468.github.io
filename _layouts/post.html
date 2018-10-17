@@ -30,7 +30,7 @@
                 <input type="text" name="display_name" class="input" placeholder="昵称" required></input>
                 <input type="email" name="email" class="input" placeholder="电子邮箱" required></input>
                 <textarea name="content" class="input" placeholder="请输入您的评论" required></textarea>
-                <button type="button" class="submit submit_normal" onclick=submitForm()>
+                <button type="button" class="submit submit_normal" onclick="submitForm('{{ page.page_id }}')">
                     <img src="/resources/loading-bubbles.svg"/><span>提交评论</span>
                 </button>
                 <div class="prompt"></div>

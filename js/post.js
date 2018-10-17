@@ -82,7 +82,7 @@ function generateContentsTable() {
 
 /* 评论 */
 var timeoutID;
-function submitForm() {
+function submitForm(pageID) {
     var displayNameEle = $(".comment_area .input[name='display_name']");
     var emailEle = $(".comment_area .input[name='email']");
     var contentEle = $(".comment_area .input[name='content']");
@@ -90,7 +90,6 @@ function submitForm() {
         var BRANCH_NAME = "comments";
         var OWNER_NAME = "rob2468";
         var REPO_NAME = "rob2468.github.io";
-        var pageID = "{{ pageid }}";
         var email = emailEle.val().trim();
         var date = new Date();
         var display_name = displayNameEle.val().trim();
