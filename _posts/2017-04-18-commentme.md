@@ -6,7 +6,16 @@ page_id: id-2017-04-18
 
 <h1>{{ page.title }}</h1>
 
-本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 [Jekyll](https://jekyllrb.com/) 将当前提交内容编译成静态站点，实现网站发布。
+<h2>前言</h2>
+
+2018-10-29 更新：
+
+最近买了个虚拟主机，可以简化前端工作，而且服务端使用命令行工具，也不会像前端实现这么复杂。旧的使用 GitHub API 方式的实现，可以访问
+<a href="https://github.com/rob2468/BlogServer/tree/v0.1" target="_blank">这个链接</a>。
+
+<hr>
+
+本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> 将当前提交内容编译成静态站点，实现网站发布。
 
 我希望通过提供评论系统实现和读者的沟通。最开始使用 Disqus 作为评论系统，无奈国内已无法使用，并且当时没有找到好的替代品，便打算自己实现。
 
