@@ -4,6 +4,9 @@ window.onload = function () {
 
     // 生成目录
     generateContentsTable();
+
+    // 更新评论时间的显示格式
+    updateCommentDate();
 };
 
 /* git pages 不支持存储在 LFS 中的博客图片，调整引用链接 */
@@ -91,7 +94,7 @@ function submitForm(pageID) {
         var OWNER_NAME = "rob2468";
         var REPO_NAME = "rob2468.github.io";
         var email = emailEle.val().trim();
-        var date = new Date();
+        var date = new Date().getTime();
         var display_name = displayNameEle.val().trim();
         var content = contentEle.val().trim();
 
@@ -197,5 +200,20 @@ function submitForm(pageID) {
     } else {
         // loading
         console.log("loading");
+    }
+}
+
+function updateCommentDate() {
+    // 获取所有评论日期
+    const dateEles = document.querySelectorAll('.comment-date');
+    const commentsNum = dateEles.length;
+    for (var i = 0; i < commentsNum; i++) {
+        const dateEle = dateEles.item(i);
+        const seconds = parseInt(dateEle.innerHTML, 10);
+
+        // 重新格式化
+        const date = new Date(seconds);
+        const dateStr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        dateEle.innerHTML = dateStr;
     }
 }
