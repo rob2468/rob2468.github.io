@@ -1,6 +1,6 @@
 ---
 layout: post
-title: （利用GitHub API）实现GitHub Pages的评论系统
+title: 实现 GitHub Pages 的评论系统
 page_id: id-2017-04-18
 ---
 

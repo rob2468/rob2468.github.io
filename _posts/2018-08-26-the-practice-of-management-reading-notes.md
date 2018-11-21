@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 管理的实践（读书笔记）
+title: 管理的实践，读书笔记
 page_id: id-2018-08-26
 ---
 

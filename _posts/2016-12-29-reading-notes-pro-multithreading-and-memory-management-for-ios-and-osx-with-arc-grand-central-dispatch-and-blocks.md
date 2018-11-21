@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ARC 内存管理和 GCD（读书笔记）
+title: ARC 内存管理和 GCD
 page_id: id-2016-12-29
 ---
 
