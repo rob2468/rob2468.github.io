@@ -13,3 +13,5 @@ page_id: id-2018-11-21
 <h3>参考文献：</h3>
 
 <a href="http://www.mollypages.org/tutorials/js.mp" target="_blank">http://www.mollypages.org/tutorials/js.mp</a>
+
+Vjeux. <a href="http://blog.vjeux.com/2011/javascript/how-prototypal-inheritance-really-works.html" target="_blank">Javascript – How Prototypal Inheritance really works</a>.
