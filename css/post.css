@@ -16,7 +16,7 @@ form:after {
     content: "";
     clear: both;
 }
-.comment_area input[name="display_name"] {
+.comment_area input[name="display-name"] {
     width: 150px;
     margin-bottom: 10px;
 }
