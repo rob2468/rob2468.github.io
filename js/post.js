@@ -88,94 +88,93 @@ function generateContentsTable() {
 /* 评论 */
 var timeoutID;
 function submitForm(pageID) {
-  var displayNameEle = $(".comment_area .input[name='display_name']");
+  var displayNameEle = $(".comment_area .input[name='display-name']");
   var emailEle = $(".comment_area .input[name='email']");
   var contentEle = $(".comment_area .input[name='content']");
   if ($(".comment_area .submit_normal").length > 0) {
-      var BRANCH_NAME = "comments";
-      var OWNER_NAME = "rob2468";
-      var REPO_NAME = "rob2468.github.io";
       var email = emailEle.val().trim();
-      var date = new Date().getTime();
-      var display_name = displayNameEle.val().trim();
+      var time = new Date().getTime();
+      var displayName = displayNameEle.val().trim();
       var content = contentEle.val().trim();
 
       // 字段有效性检查
       function validateDisplayName() {
-          var res;
-          if (display_name.length === 0) {
-              res = "姓名没有可见内容";
-          }
-          return res;
+        var res;
+        if (displayName.length === 0) {
+          res = "姓名没有可见内容";
+        }
+        return res;
       }
       function validateEmail() {
-          var res;
-          var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
-          if (email.length === 0) {
-              res = "电子邮箱没有可见内容";
-          } else if (!reg.test(email)) {
-              res = "电子邮箱格式不正确";
-          }
-          return res;
+        var res;
+        var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
+        if (email.length === 0) {
+          res = "电子邮箱没有可见内容";
+        } else if (!reg.test(email)) {
+          res = "电子邮箱格式不正确";
+        }
+        return res;
       }
       function validateContent() {
-          var res;
-          if (content.length === 0) {
-              res = "评论内容没有可见内容";
-          }
-          return res;
+        var res;
+        if (content.length === 0) {
+          res = "评论内容没有可见内容";
+        }
+        return res;
       }
       // 显示反馈
       function showPrompt(prompt) {
-          $(".comment_area .prompt").html(prompt);
+        $(".comment_area .prompt").html(prompt);
 
-          // 延时清除
-          clearTimeout(timeoutID);
-          timeoutID = setTimeout(function() {
-              $(".comment_area .prompt").html("");
-          }, 3000);
+        // 延时清除
+        clearTimeout(timeoutID);
+        timeoutID = setTimeout(function() {
+          $(".comment_area .prompt").html("");
+        }, 3000);
       }
       var displayNameValidation = validateDisplayName();
       var emailValidation = validateEmail();
       var contentValidation = validateContent();
       if (!displayNameValidation && !emailValidation && !contentValidation) {
-          $(".comment_area .submit").removeClass("submit_normal");
-          $(".comment_area .submit").addClass("submit_loading");
-          function finnalyCompleteLoading() {
-              $(".comment_area .submit").addClass("submit_normal");
-              $(".comment_area .submit").removeClass("submit_loading");
+        $(".comment_area .submit").removeClass("submit_normal");
+        $(".comment_area .submit").addClass("submit_loading");
+        function finnalyCompleteLoading() {
+          $(".comment_area .submit").addClass("submit_normal");
+          $(".comment_area .submit").removeClass("submit_loading");
+        }
+        // 将评论请求发送给服务端
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://vps.jamchenjun.com:8888/api/submitcomment');
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            finnalyCompleteLoading();
+
+            // 解析返回值
+            const responseText = xhr.responseText;
+            const responseJSON = JSON.parse(responseText);
+            const success = responseJSON.success;
+            const comment = responseJSON.result;
+            if (success) {
+              $(".comment_area .input").removeClass("input_error");
+              $(".comment_area .input").val("");
+
+              // 显示新评论
+              const commentEle = createCommentElement(comment);
+              const commentsEle = document.getElementsByClassName('comments')[0];
+              commentsEle.insertBefore(commentEle, commentsEle.firstChild);
+            } else {
+              showPrompt('内部错误');
+            }
           }
-          // 将评论请求发送给服务端，服务端负责跟 github 交互
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', 'http://207.148.118.121:8888/api/submitcomment');
-          xhr.onreadystatechange = function() {
-              if (xhr.readyState === 4) {
-                  if (xhr.status === 200) {
-                      finnalyCompleteLoading();
-
-                      var responseText = xhr.responseText;
-                      var responseJSON = JSON.parse(responseText);
-                      var error = responseJSON.error;
-                      var message = responseJSON.message;
-                      if (error === 0) {
-                          $(".comment_area .input").removeClass("input_error");
-                          $(".comment_area .input").val("");
-
-                          var link = responseJSON.link;
-                          showPrompt("评论已提交成功，可到<a href='" + link + "' target='_blank'>这里</a>临时查看（该信息3秒后消失）");
-                      } else {
-                          showPrompt("内部错误（" + message + "）");
-                      }
-                  }
-              }
-          };
-          xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.send(JSON.stringify({'page_id': pageID,
-              'email': email,
-              'time': date,
-              'display_name': display_name,
-              'content': content
-          }));
+        };
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify({
+          pageID,
+          email,
+          time,
+          displayName,
+          content,
+        }));
       } else {
           var prompt;
           // 存在字段无效情况
@@ -211,7 +210,7 @@ function submitForm(pageID) {
  */
 function initComments(pageID) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://vps.jamchenjun.com:8888/api/comments?page_id=' + pageID);
+  xhr.open('GET', 'http://vps.jamchenjun.com:8888/api/comments?page_id=' + pageID);
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
       var responseText = xhr.responseText;
@@ -219,25 +218,7 @@ function initComments(pageID) {
 
       const commentsEle = document.getElementsByClassName('comments')[0];
       comments.forEach(element => {
-        // 解析字段
-        const displayName = element.displayName;
-        let time = element.time;
-        time = getFormattedTime(time);
-        const content = element.content;
-
-        const commentEle = document.createElement('div');
-        commentEle.setAttribute('class', 'comment');
-
-        const infoEle = document.createElement('p');
-        infoEle.setAttribute('class', 'display-name');
-        infoEle.innerHTML = `${displayName} <span class="comment-date">${time}</span>`;
-        commentEle.appendChild(infoEle);
-
-        const contentEle = document.createElement('p');
-        contentEle.setAttribute('class', 'content');
-        contentEle.innerHTML = content;
-        commentEle.appendChild(contentEle);
-
+        const commentEle = createCommentElement(element);
         commentsEle.appendChild(commentEle);
       });
     }
@@ -245,19 +226,30 @@ function initComments(pageID) {
   xhr.send();
 }
 
-function updateCommentDate() {
-  // 获取所有评论日期
-  const dateEles = document.querySelectorAll('.comment-date');
-  const commentsNum = dateEles.length;
-  for (var i = 0; i < commentsNum; i++) {
-      const dateEle = dateEles.item(i);
-      const seconds = parseInt(dateEle.innerHTML, 10);
+/**
+ * 根据评论内容创建 dom 元素
+ * @param {object} comment
+ */
+function createCommentElement(comment) {
+  // 解析字段
+  const displayName = comment.displayName;
+  let time = comment.time;
+  time = getFormattedTime(time);
+  const content = comment.content;
 
-      // 重新格式化
-      const date = new Date(seconds);
-      const dateStr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-      dateEle.innerHTML = dateStr;
-  }
+  const commentEle = document.createElement('div');
+  commentEle.setAttribute('class', 'comment');
+
+  const infoEle = document.createElement('p');
+  infoEle.setAttribute('class', 'display-name');
+  infoEle.innerHTML = `${displayName} <span class="comment-date">${time}</span>`;
+  commentEle.appendChild(infoEle);
+
+  const contentEle = document.createElement('p');
+  contentEle.setAttribute('class', 'content');
+  contentEle.innerHTML = content;
+  commentEle.appendChild(contentEle);
+  return commentEle;
 }
 
 /**
