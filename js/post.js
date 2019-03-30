@@ -146,7 +146,7 @@ function submitForm(pageID) {
         }
         // 将评论请求发送给服务端
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', `http://${kCommentServiceHost}:8888/api/submitcomment`);
+        xhr.open('POST', `https://${kCommentServiceHost}:443/api/submitcomment`);
         xhr.onreadystatechange = function() {
           if (xhr.readyState === 4 && xhr.status === 200) {
             finnalyCompleteLoading();
@@ -212,7 +212,7 @@ function submitForm(pageID) {
  */
 function initComments(pageID) {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', `http://${kCommentServiceHost}:8888/api/comments?page_id=` + pageID);
+  xhr.open('GET', `https://${kCommentServiceHost}:443/api/comments?page_id=` + pageID);
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
       var responseText = xhr.responseText;
