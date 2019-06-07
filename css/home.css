@@ -2,80 +2,86 @@
 
 /* header */
 header.top .menu-button {
-    padding: 12px 0px;
-    display: block;
-    float: right;
-    cursor: pointer;
+  padding: 12px 0px;
+  display: block;
+  float: right;
+  cursor: pointer;
 }
 header.top .menu-button .icon {
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 18px;
-    line-height: 32px;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 18px;
+  line-height: 32px;
 }
 header.top .menu-button .icon:hover,
 header.top .menu-button.active .icon {
-    color: #fff;
+  color: #fff;
 }
 header.top nav {
-    display: block;
-    overflow: hidden;
-    width: 100%;
-    float: right;
-    margin: 0;
-    max-height: 0;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  float: right;
+  margin: 0;
+  max-height: 0;
 }
 header.top nav.active {
-    max-height: 200px;
+  max-height: 200px;
 }
 header.top nav ul:after {
-    display: block;
-    content: "";
-    clear: both;
+  display: block;
+  content: "";
+  clear: both;
 }
 header.top nav li {
-    font-size: 18px;
-    display: block;
-    font-weight: 700;
-    line-height: 32px;
-    text-align: left;
-    margin: 0px 10px;
-    padding: 12px 0px;
-    border-top: 1px solid rgba(255,255,255,0.2);
+  font-size: 18px;
+  display: block;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: left;
+  margin: 0px 10px;
+  padding: 12px 0px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 header.top nav li a {
-    color: rgba(255,255,255,0.75);
-    text-decoration: none;
-    display: block;
-    width: 100%;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  display: block;
+  width: 100%;
 }
 header.top nav li a:hover {
-    color: #fff;
+  color: #fff;
 }
 
 /* main */
 .main ul h2 {
-    font-size: 14px;
-    margin-top: 0;
-    margin-bottom: 14px;
-    padding-bottom: 0px;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 14px;
+  padding-bottom: 0px;
+}
+.main ul h2 .date {
+  font-weight: normal;
+}
+.main ul .abstract {
+  margin-bottom: 28px;
 }
 
 @media screen and (min-width: 768px) {
-    /* header */
-    header.top .menu-button {
-        display: none;
-    }
-    header.top nav {
-        padding: 12px 0px;
-        width: auto;
-        max-height: none;
-    }
-    header.top nav li {
-        float: left;
-        border: 0px;
-        padding: 0px;
-    }
+  /* header */
+  header.top .menu-button {
+    display: none;
+  }
+  header.top nav {
+    padding: 12px 0px;
+    width: auto;
+    max-height: none;
+  }
+  header.top nav li {
+    float: left;
+    border: 0px;
+    padding: 0px;
+  }
 }
