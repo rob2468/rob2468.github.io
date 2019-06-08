@@ -1,5 +1,9 @@
+var returnCitySN; // 访问者信息
+
 window.onload = function () {
-  const pageID = document.getElementById('page-id').innerText;
+  const pageId = document.getElementById('page-id').innerText;
+  const headEle = document.getElementsByTagName('h1');
+  const title = headEle && headEle[0] && headEle[0].innerText || '';
 
   // 更新博客图片链接，适配 LFS
   updateImgElementsSRCIfNeeded();
@@ -8,7 +12,19 @@ window.onload = function () {
   generateContentsTable();
 
   // 获取并显示评论
-  initComments(pageID);
+  initComments(pageId);
+
+  // 初始化统计服务
+  initStatistic();
+
+  // initStatistic 中需要通过网络获取访问者信息，延时 500ms 执行
+  setTimeout(() => {
+    // 曝光统计
+    exposure({
+      pageId,
+      title,
+    });
+  }, 500);
 };
 
 const kCommentServiceHost = 'vps.jamchenjun.com';  // 评论服务 host
