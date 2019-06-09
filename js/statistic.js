@@ -6,12 +6,7 @@ async function initStatistic() {
   document.getElementsByTagName('body')[0].appendChild(script);
 
   // 初始化 LeanCloud 的服务
-  var APP_ID = 'hp8Ka9CYnCligvMrF1PHVpRP-gzGzoHsz';
-  var APP_KEY = 'S4l5k49pr8jkzHmmuaekqFAN';
-  AV.init({
-    appId: APP_ID,
-    appKey: APP_KEY
-  });
+  initLeadCloud();
 }
 
 /**
@@ -34,11 +29,13 @@ function exposure(params = {
   acl.setPublicReadAccess(true);
   acl.setPublicWriteAccess(true);
 
+  const date = new Date();
   counter.save({
     pageId,
     title,
     behaviorId: 'exposure',
-    time: Date.now(),
+    createTime: date.getTime(),
+    createDate: getFormattedDateString(date),
     cityName: returnCitySN && returnCitySN['cname'] || '',
     ipAddr: returnCitySN && returnCitySN['cip'] || '',
   }).then(function (todo) {

@@ -30,6 +30,40 @@ function getHttpDataPromise(params = {
   });
 }
 
+/**
+ *
+ * @param {Date} date
+ * @return 2019-06-09
+ */
+function getFormattedDateString(date) {
+  const year = `${date.getFullYear()}`;
+  let month;
+  if (date.getMonth() + 1 < 10) {
+    month = `0${date.getMonth() + 1}`;
+  } else {
+    month = `${date.getMonth() + 1}`;
+  }
+  let day;
+  if (date.getDate() < 10) {
+    day = `0${date.getDate()}`;
+  } else {
+    day = `${date.getDate()}`;
+  }
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * 初始化 LeanCloud 的服务
+ */
+function initLeadCloud() {
+  var APP_ID = 'hp8Ka9CYnCligvMrF1PHVpRP-gzGzoHsz';
+  var APP_KEY = 'S4l5k49pr8jkzHmmuaekqFAN';
+  AV.init({
+    appId: APP_ID,
+    appKey: APP_KEY
+  });
+}
+
 function simpleStrEncode(code) {
   var c = String.fromCharCode(code.charCodeAt(0) + code.length);
   for(var i = 1; i < code.length; i++) {
