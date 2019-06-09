@@ -1,4 +1,11 @@
 /* home custom css */
+.hidden-entry {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+}
 
 /* header */
 header.top .menu-button {
