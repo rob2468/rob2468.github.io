@@ -40,6 +40,7 @@ function exposure(params = {
     behaviorId: 'exposure',
     time: Date.now(),
     cityName: returnCitySN && returnCitySN['cname'] || '',
+    ipAddr: returnCitySN && returnCitySN['cip'] || '',
   }).then(function (todo) {
     // 成功保存记录
   }, function (error) {
