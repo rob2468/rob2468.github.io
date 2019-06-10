@@ -56,6 +56,24 @@ function getFormattedDateString(date) {
   return `${year}-${month}-${day}`;
 }
 
+function getFormattedBeijingDateString(timestamp) {
+  const utcDate = new Date(timestamp + 8 * 60 * 60 * 1000);
+  const year = `${utcDate.getUTCFullYear()}`;
+  let month;
+  if (utcDate.getUTCMonth() + 1 < 10) {
+    month = `0${utcDate.getUTCMonth() + 1}`;
+  } else {
+    month = `${utcDate.getUTCMonth() + 1}`;
+  }
+  let day;
+  if (utcDate.getUTCDate() < 10) {
+    day = `0${utcDate.getUTCDate()}`;
+  } else {
+    day = `${utcDate.getUTCDate()}`;
+  }
+  return `${year}-${month}-${day}`;
+}
+
 /**
  * 初始化 LeanCloud 的服务
  */

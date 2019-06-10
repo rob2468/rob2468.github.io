@@ -111,7 +111,7 @@ async function submitForm(pageID) {
   var contentEle = $(".comment_area .input[name='content']");
   if ($(".comment_area .submit_normal").length > 0) {
     var email = emailEle.val().trim();
-    var time = new Date().getTime();
+    const timestamp = Date.now();
     var displayName = displayNameEle.val().trim();
     var content = contentEle.val().trim();
 
@@ -170,9 +170,10 @@ async function submitForm(pageID) {
         param: {
           pageID,
           email,
-          time,
           displayName,
           content,
+          timestamp,
+          displayTime: getFormattedBeijingDateString(timestamp),
         },
       });
       if (result) {
@@ -246,8 +247,7 @@ async function initComments(pageID) {
 function createCommentElement(comment) {
   // 解析字段
   const displayName = comment.displayName;
-  let time = comment.time;
-  time = getFormattedTime(time);
+  const time = getFormattedBeijingDateString(comment.timestamp);
   const content = comment.content;
 
   const commentEle = document.createElement('div');
@@ -263,13 +263,4 @@ function createCommentElement(comment) {
   contentEle.innerHTML = content;
   commentEle.appendChild(contentEle);
   return commentEle;
-}
-
-/**
- * 将时间戳转换为用于显示的字符串
- */
-function getFormattedTime(timestamp) {
-  const date = new Date(timestamp);
-  const formattedTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-  return formattedTime;
 }
