@@ -5,16 +5,17 @@
  */
 function getHttpDataPromise(params = {
   url: '',
-  method: 'GET',
+  method: '',
+  head: {},
   param: {},
 }) {
+  const {
+    url = '',
+    method = 'GET',
+    head = {},
+    param = {},
+  } = params;
   return new Promise((resolve) => {
-    const {
-      url,
-      method,
-      param
-    } = params;
-
     const xhr = new XMLHttpRequest();
     xhr.open(method, url);
     xhr.onload = function() {
@@ -26,6 +27,9 @@ function getHttpDataPromise(params = {
         resolve();
       }
     };
+    Object.keys(head).forEach(key => {
+      xhr.setRequestHeader(key, head[key]);
+    });
     xhr.send(JSON.stringify(param));
   });
 }

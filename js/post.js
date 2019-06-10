@@ -105,120 +105,120 @@ function generateContentsTable() {
 
 /* 评论 */
 var timeoutID;
-function submitForm(pageID) {
+async function submitForm(pageID) {
   var displayNameEle = $(".comment_area .input[name='display-name']");
   var emailEle = $(".comment_area .input[name='email']");
   var contentEle = $(".comment_area .input[name='content']");
   if ($(".comment_area .submit_normal").length > 0) {
-      var email = emailEle.val().trim();
-      var time = new Date().getTime();
-      var displayName = displayNameEle.val().trim();
-      var content = contentEle.val().trim();
+    var email = emailEle.val().trim();
+    var time = new Date().getTime();
+    var displayName = displayNameEle.val().trim();
+    var content = contentEle.val().trim();
 
-      // 字段有效性检查
-      function validateDisplayName() {
-        var res;
-        if (displayName.length === 0) {
-          res = "姓名没有可见内容";
-        }
-        return res;
+    // 字段有效性检查
+    function validateDisplayName() {
+      var res;
+      if (displayName.length === 0) {
+        res = "姓名没有可见内容";
       }
-      function validateEmail() {
-        var res;
-        var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
-        if (email.length === 0) {
-          res = "电子邮箱没有可见内容";
-        } else if (!reg.test(email)) {
-          res = "电子邮箱格式不正确";
-        }
-        return res;
+      return res;
+    }
+    function validateEmail() {
+      var res;
+      var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
+      if (email.length === 0) {
+        res = "电子邮箱没有可见内容";
+      } else if (!reg.test(email)) {
+        res = "电子邮箱格式不正确";
       }
-      function validateContent() {
-        var res;
-        if (content.length === 0) {
-          res = "评论内容没有可见内容";
-        }
-        return res;
+      return res;
+    }
+    function validateContent() {
+      var res;
+      if (content.length === 0) {
+        res = "评论内容没有可见内容";
       }
-      // 显示反馈
-      function showPrompt(prompt) {
-        $(".comment_area .prompt").html(prompt);
+      return res;
+    }
+    // 显示反馈
+    function showPrompt(prompt) {
+      $(".comment_area .prompt").html(prompt);
 
-        // 延时清除
-        clearTimeout(timeoutID);
-        timeoutID = setTimeout(function() {
-          $(".comment_area .prompt").html("");
-        }, 3000);
+      // 延时清除
+      clearTimeout(timeoutID);
+      timeoutID = setTimeout(function() {
+        $(".comment_area .prompt").html("");
+      }, 3000);
+    }
+    var displayNameValidation = validateDisplayName();
+    var emailValidation = validateEmail();
+    var contentValidation = validateContent();
+    if (!displayNameValidation && !emailValidation && !contentValidation) {
+      $(".comment_area .submit").removeClass("submit_normal");
+      $(".comment_area .submit").addClass("submit_loading");
+      function finnalyCompleteLoading() {
+        $(".comment_area .submit").addClass("submit_normal");
+        $(".comment_area .submit").removeClass("submit_loading");
       }
-      var displayNameValidation = validateDisplayName();
-      var emailValidation = validateEmail();
-      var contentValidation = validateContent();
-      if (!displayNameValidation && !emailValidation && !contentValidation) {
-        $(".comment_area .submit").removeClass("submit_normal");
-        $(".comment_area .submit").addClass("submit_loading");
-        function finnalyCompleteLoading() {
-          $(".comment_area .submit").addClass("submit_normal");
-          $(".comment_area .submit").removeClass("submit_loading");
-        }
-        // 将评论请求发送给服务端
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', `https://${kCommentServiceHost}:443/api/submitcomment`);
-        xhr.onreadystatechange = function() {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            finnalyCompleteLoading();
-
-            // 解析返回值
-            const responseText = xhr.responseText;
-            const responseJSON = JSON.parse(responseText);
-            const success = responseJSON.success;
-            const comment = responseJSON.result;
-            if (success) {
-              $(".comment_area .input").removeClass("input_error");
-              $(".comment_area .input").val("");
-
-              // 显示新评论
-              const commentEle = createCommentElement(comment);
-              const commentsEle = document.getElementsByClassName('comments')[0];
-              commentsEle.insertBefore(commentEle, commentsEle.firstChild);
-            } else {
-              showPrompt('内部错误');
-            }
-          }
-        };
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(JSON.stringify({
+      // 将评论请求发送给服务端
+      const result = await getHttpDataPromise({
+        url: `https://${kCommentServiceHost}:443/api/submitcomment`,
+        method: 'POST',
+        head: {
+          'Content-Type': 'application/json',
+        },
+        param: {
           pageID,
           email,
           time,
           displayName,
           content,
-        }));
-      } else {
-          var prompt;
-          // 存在字段无效情况
-          prompt = displayNameValidation? displayNameValidation + "；": "";
-          prompt += emailValidation? emailValidation + "；": "";
-          prompt += contentValidation? contentValidation + "；": "";
-          if (displayNameValidation) {
-            displayNameEle.addClass("input_error");
-          } else {
-            displayNameEle.removeClass("input_error");
-          }
-          if (emailValidation) {
-            emailEle.addClass("input_error");
-          } else {
-            emailEle.removeClass("input_error");
-          }
-          if (contentValidation) {
-            contentEle.addClass("input_error");
-          } else {
-            contentEle.removeClass("input_error");
-          }
-          showPrompt(prompt);
+        },
+      });
+      if (result) {
+        finnalyCompleteLoading();
+
+        // 解析返回值
+        const success = result.success;
+        const comment = result.result;
+        if (success) {
+          $(".comment_area .input").removeClass("input_error");
+          $(".comment_area .input").val("");
+
+          // 显示新评论
+          const commentEle = createCommentElement(comment);
+          const commentsEle = document.getElementsByClassName('comments')[0];
+          commentsEle.insertBefore(commentEle, commentsEle.firstChild);
+        } else {
+          showPrompt('内部错误');
+        }
       }
+    } else {
+      var prompt;
+      // 存在字段无效情况
+      prompt = displayNameValidation? displayNameValidation + "；": "";
+      prompt += emailValidation? emailValidation + "；": "";
+      prompt += contentValidation? contentValidation + "；": "";
+      if (displayNameValidation) {
+        displayNameEle.addClass("input_error");
+      } else {
+        displayNameEle.removeClass("input_error");
+      }
+      if (emailValidation) {
+        emailEle.addClass("input_error");
+      } else {
+        emailEle.removeClass("input_error");
+      }
+      if (contentValidation) {
+        contentEle.addClass("input_error");
+      } else {
+        contentEle.removeClass("input_error");
+      }
+      showPrompt(prompt);
+    }
   } else {
-      // loading
-      console.log("loading");
+    // loading
+    console.log("loading");
   }
 }
 
@@ -226,22 +226,17 @@ function submitForm(pageID) {
  * 获取并显示评论内容
  * @param {string} pageID
  */
-function initComments(pageID) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://${kCommentServiceHost}:443/api/comments?page_id=` + pageID);
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      var responseText = xhr.responseText;
-      var comments = JSON.parse(responseText);
+async function initComments(pageID) {
+  const url = `https://${kCommentServiceHost}:443/api/comments?page_id=` + pageID;
+  const comments = await getHttpDataPromise({
+    url,
+  });
 
-      const commentsEle = document.getElementsByClassName('comments')[0];
-      comments.forEach(element => {
-        const commentEle = createCommentElement(element);
-        commentsEle.appendChild(commentEle);
-      });
-    }
-  };
-  xhr.send();
+  const commentsEle = document.getElementsByClassName('comments')[0];
+  comments.forEach(element => {
+    const commentEle = createCommentElement(element);
+    commentsEle.appendChild(commentEle);
+  });
 }
 
 /**
