@@ -66,7 +66,7 @@ function generateContentsTable() {
     // 创建一级标题目录
     tmpEle = document.createElement("a");
     tmpEle.setAttribute("href", "#" + loopID);
-    tmpEle.innerHTML = loopEle.innerHTML;
+    tmpEle.innerHTML = loopEle.innerText;
     contentTableEle.appendChild(tmpEle);
     // 换行
     var br = document.createElement("br");
@@ -79,7 +79,7 @@ function generateContentsTable() {
       // 创建二级标题目录
       tmpEle = document.createElement("a");
       tmpEle.setAttribute("href", "#" + innerLoopID);
-      tmpEle.innerHTML = innerLoopEle.innerHTML;
+      tmpEle.innerHTML = innerLoopEle.innerText;
       contentTableEle.appendChild(tmpEle);
       // 换行
       br = document.createElement("br");
