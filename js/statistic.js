@@ -4,9 +4,6 @@ async function initStatistic() {
   const script = document.createElement('script');
   script.setAttribute('src', 'https://pv.sohu.com/cityjson?ie=utf-8');
   document.getElementsByTagName('body')[0].appendChild(script);
-
-  // 初始化 LeanCloud 的服务
-  initLeadCloud();
 }
 
 /**
@@ -21,26 +18,22 @@ function exposure(params = {
     pageId,
     title,
   } = params;
+  const timestamp = Date.now();
 
-  const CounterClass = AV.Object.extend('counter');
-  const counter = new CounterClass();
-
-  var acl = new AV.ACL();
-  acl.setPublicReadAccess(true);
-  acl.setPublicWriteAccess(true);
-
-  const date = new Date();
-  counter.save({
-    pageId,
-    title,
-    behaviorId: 'exposure',
-    createTime: date.getTime(),
-    createDate: getFormattedDateString(date),
-    cityName: returnCitySN && returnCitySN['cname'] || '',
-    ipAddr: returnCitySN && returnCitySN['cip'] || '',
-  }).then(function (todo) {
-    // 成功保存记录
-  }, function (error) {
-    // 异常错误
+  getHttpDataPromise({
+    url: `https://${kCommentServiceHost}:443/api/addstat`,
+    method: 'POST',
+    head: {
+      'Content-Type': 'application/json',
+    },
+    param: {
+      pageID: pageId,
+      title,
+      behaviorId: 'exposure',
+      cityName: returnCitySN && returnCitySN['cname'] || '',
+      ipAddr: returnCitySN && returnCitySN['cip'] || '',
+      timestamp,
+      displayTime: getFormattedBeijingDateString(timestamp),
+    },
   });
 }

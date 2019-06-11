@@ -1,4 +1,5 @@
 var returnCitySN; // 访问者信息
+const kCommentServiceHost = 'vps.jamchenjun.com';  // 评论服务 host
 
 window.onload = function () {
   const pageId = document.getElementById('page-id').innerText;
@@ -27,7 +28,6 @@ window.onload = function () {
   }, 500);
 };
 
-const kCommentServiceHost = 'vps.jamchenjun.com';  // 评论服务 host
 
 /* git pages 不支持存储在 LFS 中的博客图片，调整引用链接 */
 function updateImgElementsSRCIfNeeded() {
