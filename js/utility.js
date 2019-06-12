@@ -56,6 +56,11 @@ function getFormattedDateString(date) {
   return `${year}-${month}-${day}`;
 }
 
+/**
+ * 北京时间格式化显示
+ * @param {number} timestamp time interval since 1970
+ * @return {string} 如，2019-06-12
+ */
 function getFormattedBeijingDateString(timestamp) {
   const utcDate = new Date(timestamp + 8 * 60 * 60 * 1000);
   const year = `${utcDate.getUTCFullYear()}`;
@@ -72,18 +77,6 @@ function getFormattedBeijingDateString(timestamp) {
     day = `${utcDate.getUTCDate()}`;
   }
   return `${year}-${month}-${day}`;
-}
-
-/**
- * 初始化 LeanCloud 的服务
- */
-function initLeadCloud() {
-  var APP_ID = 'hp8Ka9CYnCligvMrF1PHVpRP-gzGzoHsz';
-  var APP_KEY = 'S4l5k49pr8jkzHmmuaekqFAN';
-  AV.init({
-    appId: APP_ID,
-    appKey: APP_KEY
-  });
 }
 
 function simpleStrEncode(code) {
