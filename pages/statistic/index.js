@@ -140,6 +140,14 @@ function renderDailySectorChart(displayTime, dayData) {
         radius : '80%',
         center: ['50%', '50%'],
         data,
+        label: {
+          normal: {
+            show: false,
+          },
+          emphasis: {
+            show: false,
+          }
+        },
         itemStyle: {
           emphasis: {
             shadowBlur: 10,
