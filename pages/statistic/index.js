@@ -1,10 +1,17 @@
 const kServerServiceHost = 'vps.jamchenjun.com';
+let summaryChart; // 总览图 echarts 实例
+let dailySectorChart; // 扇形图 echarts 实例
 
 window.onload = function () {
   init();
 };
 
 async function init() {
+  summaryChart = echarts.init(document.getElementById('summary'));
+  summaryChart.showLoading();
+  dailySectorChart = echarts.init(document.getElementById('daily-sector'));
+  dailySectorChart.showLoading();
+
   // 查询行为数据
   const now = Date.now();
   const displayTime = getFormattedBeijingDateString(now);
@@ -18,9 +25,11 @@ async function init() {
     const result = responseJSON.result;
 
     // 显示总览图
+    summaryChart.hideLoading();
     renderSummaryChart(now, result);
 
     // 显示当天的访问比例图
+    dailySectorChart.hideLoading();
     renderDailySectorChart(displayTime, result[displayTime]);
   }
 }
@@ -58,9 +67,6 @@ function renderSummaryChart(now, sourceData) {
     i++;
   }
 
- // 基于准备好的dom，初始化echarts实例
-  const myChart = echarts.init(document.getElementById('summary'));
-
   // 指定图表的配置项和数据
   const option = {
     title: {
@@ -87,10 +93,10 @@ function renderSummaryChart(now, sourceData) {
   };
 
   // 使用刚指定的配置项和数据显示图表。
-  myChart.setOption(option);
+  summaryChart.setOption(option);
 
   // 响应点击事件
-  myChart.on('click', param => {
+  summaryChart.on('click', param => {
     if (param.name) {
       renderDailySectorChart(param.name, sourceData[param.name]);
     }
@@ -114,9 +120,6 @@ function renderDailySectorChart(displayTime, dayData) {
       value: count,
     };
   });
-
-  // 基于准备好的dom，初始化echarts实例
-  const myChart = echarts.init(document.getElementById('daily-sector'));
 
   // 指定图表的配置项和数据
   const option = {
@@ -160,5 +163,5 @@ function renderDailySectorChart(displayTime, dayData) {
   };
 
   // 使用刚指定的配置项和数据显示图表。
-  myChart.setOption(option);
+  dailySectorChart.setOption(option);
 }
