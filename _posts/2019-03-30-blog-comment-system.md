@@ -44,7 +44,7 @@ page_id: id-2019-03-30
 服务器使用的证书来自 <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a>。Let's Encrypt 的证书有效期为60天，可以在 crontab 中配置定时任务，定期更新。
 
 <div class="code"><pre><code># 定时更新证书，每个月15号执行
-0 0 15 */1 * certbot renew >> /xxx/renew-cert.log 2>&1
+0 0 15 */1 * certbot renew --standalone --pre-hook "pm2 stop server" --post-hook "pm2 start server"
 </code></pre></div>
 
 <h3>参考文献</h3>
