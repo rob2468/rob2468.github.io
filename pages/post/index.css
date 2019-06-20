@@ -78,3 +78,6 @@ form:after {
   float: left;
   color: gray;
 }
+.comment_area .comment .content {
+  margin-bottom: 30px;
+}
