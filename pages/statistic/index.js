@@ -87,7 +87,13 @@ function renderSummaryChart(now, sourceData) {
     yAxis: {},
     series: [{
       name: 'pv',
-      type: 'bar',
+      type: 'line',
+      label: {
+        normal: {
+          show: true,
+          position: 'top',
+        }
+      },
       data: yAxis,
     }],
   };
