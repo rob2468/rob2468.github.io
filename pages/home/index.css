@@ -1,10 +1,12 @@
 /* home custom css */
 .hidden-entry {
+  display: block;
   position: fixed;
   left: 0;
   bottom: 0;
   width: 20px;
   height: 20px;
+  cursor: default;
 }
 
 /* header */
