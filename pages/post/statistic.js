@@ -27,7 +27,7 @@ function exposure(params = {
       'Content-Type': 'application/json',
     },
     param: {
-      pageID: pageId,
+      pageId,
       title,
       behaviorId: 'exposure',
       cityName: returnCitySN && returnCitySN['cname'] || '',

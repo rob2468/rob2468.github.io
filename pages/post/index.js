@@ -105,7 +105,12 @@ function generateContentsTable() {
 
 /* 评论 */
 var timeoutID;
-async function submitForm(pageID) {
+/**
+ * 提交评论
+ * @param {string} pageId 文章 id
+ * @param {string} title 文章标题
+ */
+async function submitForm(pageId, title) {
   var displayNameEle = $(".comment_area .input[name='display-name']");
   var emailEle = $(".comment_area .input[name='email']");
   var contentEle = $(".comment_area .input[name='content']");
@@ -168,7 +173,8 @@ async function submitForm(pageID) {
           'Content-Type': 'application/json',
         },
         param: {
-          pageID,
+          pageId,
+          title,
           email,
           displayName,
           content,
@@ -225,10 +231,10 @@ async function submitForm(pageID) {
 
 /**
  * 获取并显示评论内容
- * @param {string} pageID
+ * @param {string} pageId 文章 id
  */
-async function initComments(pageID) {
-  const url = `https://${kCommentServiceHost}:443/api/comments?page_id=` + pageID;
+async function initComments(pageId) {
+  const url = `https://${kCommentServiceHost}:443/api/comments?page_id=` + pageId;
   const comments = await getHttpDataPromise({
     url,
   });
