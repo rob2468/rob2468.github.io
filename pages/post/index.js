@@ -53,50 +53,52 @@ function updateImgElementsSRCIfNeeded() {
 /* 生成目录 */
 function generateContentsTable() {
   // 创建目录
-  var contentTableEle = document.createElement("div");
-  var tmpEle = document.createElement("p");
-  tmpEle.innerHTML = "目录";
+  const contentTableEle = document.createElement('div');
+  var tmpEle = document.createElement('p');
+  tmpEle.innerHTML = '目录';
   contentTableEle.appendChild(tmpEle);
 
-  var identifier = "section";
+  const identifier = 'section';
   var firstLevelNum = 1;
-  var loopID = identifier + "_" + firstLevelNum;
+  var loopID = identifier + '_' + firstLevelNum;
   var loopEle = document.getElementById(loopID);
   while (loopEle) {
     // 创建一级标题目录
-    tmpEle = document.createElement("a");
-    tmpEle.setAttribute("href", "#" + loopID);
+    tmpEle = document.createElement('a');
+    tmpEle.setAttribute('href', '#' + loopID);
+    tmpEle.setAttribute('class', 'first-level');
     tmpEle.innerHTML = loopEle.innerText;
     contentTableEle.appendChild(tmpEle);
     // 换行
-    var br = document.createElement("br");
+    var br = document.createElement('br');
     contentTableEle.appendChild(br);
 
     var secondLevelNum = 1;
-    var innerLoopID = loopID + "_" + secondLevelNum;
+    var innerLoopID = loopID + '_' + secondLevelNum;
     var innerLoopEle = document.getElementById(innerLoopID);
     while (innerLoopEle) {
       // 创建二级标题目录
-      tmpEle = document.createElement("a");
-      tmpEle.setAttribute("href", "#" + innerLoopID);
+      tmpEle = document.createElement('a');
+      tmpEle.setAttribute('href', '#' + innerLoopID);
+      tmpEle.setAttribute('class', 'second-level');
       tmpEle.innerHTML = innerLoopEle.innerText;
       contentTableEle.appendChild(tmpEle);
       // 换行
-      br = document.createElement("br");
+      br = document.createElement('br');
       contentTableEle.appendChild(br);
 
       secondLevelNum++;
-      innerLoopID = loopID + "_" + secondLevelNum;
+      innerLoopID = loopID + '_' + secondLevelNum;
       innerLoopEle = document.getElementById(innerLoopID);
     }
 
     firstLevelNum++;
-    loopID = identifier + "_" + firstLevelNum;
+    loopID = identifier + '_' + firstLevelNum;
     loopEle = document.getElementById(loopID);
   }
 
   // 插入到标题后面
-  var titleEle = document.querySelectorAll(".title");
+  var titleEle = document.querySelectorAll('.title');
   if (titleEle.length > 0) {
     titleEle = titleEle[0];
     titleEle.parentNode.insertBefore(contentTableEle, titleEle.nextSibling);
@@ -111,10 +113,10 @@ var timeoutID;
  * @param {string} title 文章标题
  */
 async function submitForm(pageId, title) {
-  var displayNameEle = $(".comment_area .input[name='display-name']");
+  var displayNameEle = $('.comment_area .input[name="display-name"]');
   var emailEle = $(".comment_area .input[name='email']");
   var contentEle = $(".comment_area .input[name='content']");
-  if ($(".comment_area .submit_normal").length > 0) {
+  if ($('.comment_area .submit_normal').length > 0) {
     var email = emailEle.val().trim();
     const timestamp = Date.now();
     var displayName = displayNameEle.val().trim();
@@ -124,7 +126,7 @@ async function submitForm(pageId, title) {
     function validateDisplayName() {
       var res;
       if (displayName.length === 0) {
-        res = "姓名没有可见内容";
+        res = '姓名没有可见内容';
       }
       return res;
     }
