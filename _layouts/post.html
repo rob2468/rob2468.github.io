@@ -48,5 +48,12 @@
   <footer class="bottom">
     <p>Powered by <a href="https://pages.github.com/" target="_blank">GitHub</a> &copy; 2019 陈军</p>
   </footer>
+
+  <script>
+  {% if jekyll.environment == "development" %}
+    // 设置当前运行环境
+    window.JEKYLL_ENV = 'development';
+  {% endif %}
+  </script>
 </body>
 </html>

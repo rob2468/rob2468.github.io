@@ -15,19 +15,21 @@ window.onload = function () {
   // 获取并显示评论
   initComments(pageId);
 
-  // 初始化统计服务
-  initStatistic();
+  // 开发环境不进行访问量统计
+  if (JEKYLL_ENV && JEKYLL_ENV !== 'development') {
+    // 初始化统计服务
+    initStatistic();
 
-  // initStatistic 中需要通过网络获取访问者信息，延时 500ms 执行
-  setTimeout(() => {
-    // 曝光统计
-    exposure({
-      pageId,
-      title,
-    });
-  }, 500);
+    // initStatistic 中需要通过网络获取访问者信息，延时 500ms 执行
+    setTimeout(() => {
+      // 曝光统计
+      exposure({
+        pageId,
+        title,
+      });
+    }, 500);
+  }
 };
-
 
 /* git pages 不支持存储在 LFS 中的博客图片，调整引用链接 */
 function updateImgElementsSRCIfNeeded() {
