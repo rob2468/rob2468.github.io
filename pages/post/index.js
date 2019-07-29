@@ -16,7 +16,7 @@ window.onload = function () {
   initComments(pageId);
 
   // 开发环境不进行访问量统计
-  if (JEKYLL_ENV && JEKYLL_ENV !== 'development') {
+  if (!window.JEKYLL_ENV || window.JEKYLL_ENV !== 'development') {
     // 初始化统计服务
     initStatistic();
 
