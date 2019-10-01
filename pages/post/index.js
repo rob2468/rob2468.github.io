@@ -56,17 +56,20 @@ function updateImgElementsSRCIfNeeded() {
 function generateContentsTable() {
   // 创建目录
   const contentTableEle = document.createElement('div');
-  var tmpEle = document.createElement('p');
-  tmpEle.innerHTML = '目录';
-  contentTableEle.appendChild(tmpEle);
 
   const identifier = 'section';
   var firstLevelNum = 1;
   var loopID = identifier + '_' + firstLevelNum;
   var loopEle = document.getElementById(loopID);
   while (loopEle) {
+    if (firstLevelNum === 1) {
+      const tmpEle = document.createElement('p');
+      tmpEle.innerHTML = '目录';
+      contentTableEle.appendChild(tmpEle);
+    }
+
     // 创建一级标题目录
-    tmpEle = document.createElement('a');
+    const tmpEle = document.createElement('a');
     tmpEle.setAttribute('href', '#' + loopID);
     tmpEle.setAttribute('class', 'first-level');
     tmpEle.innerHTML = loopEle.innerText;
