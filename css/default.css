@@ -46,7 +46,8 @@ p {
   margin-top: 0;
   margin-bottom: 14px;
   color: #262626;
-  line-height: 24px;
+  line-height: 1.74;
+  letter-spacing: 0.05em;
 }
 a {
   color: #0366d6;
