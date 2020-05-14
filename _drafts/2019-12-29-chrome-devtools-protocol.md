@@ -14,6 +14,7 @@ Domains.Methods
 DOM
 
 
+<pre>
 {
   "id": 28,
   "result": {
@@ -28,7 +29,7 @@ DOM
           "class",
           "UIWindow",
           "frame",
-          "{{0, 0}, {320, 568}}",
+          "{\{0, 0}, {320, 568}}",
           "hidden",
           "NO",
           "alpha",
@@ -41,3 +42,4 @@ DOM
   },
   "error": null
 }
+</pre>

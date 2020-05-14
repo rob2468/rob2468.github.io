@@ -63,6 +63,7 @@ div.code {
   overflow-y: hidden;
   white-space: pre;
   margin-bottom: 14px;
+  padding: 5px 10px;
 }
 /* header */
 header.top {
