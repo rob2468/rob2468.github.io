@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>{{ page.title }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" type="text/css" href="/css/default.css" />
+  <link rel="stylesheet" type="text/css" href="/pages/common/default.css" />
   <link rel="stylesheet" type="text/css" href="/pages/home/index.css" />
   <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
 </head>
@@ -31,12 +31,32 @@
       </nav>
     </div>
   </header>
+
   <div class="main">
-    {{ content }}
+    <div class="leading-panel">
+      <div class="timeline">
+        <div class="line"></div>
+        <div>
+          {% assign guard_year = "" %}
+          {% for post in site.posts %}
+            {% assign cur_year = post.date | date: "%Y" %}
+            {% if cur_year != guard_year %}
+              <a class="dot" href="#{{ post.date | date: 'id-%Y-%m-%d' }}">{{ cur_year }}</a>
+              {% assign guard_year = cur_year %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="content">{{ content }}</div>
+    <div class="trailing-panel"></div>
   </div>
+
   <footer class="bottom">
     <p>Powered by <a href="https://pages.github.com/" target="_blank">GitHub</a> &copy; 2019 陈军</p>
   </footer>
+
+
 
   <script type="text/javascript">
     $(document).ready(function() {

@@ -7,7 +7,7 @@ title: jam.chenjun
 
 <ul>
   {% for post in site.posts %}
-    <li>
+    <li id="{{ post.date | date: 'id-%Y-%m-%d' }}">
       <h2>
         <span class="date">{{ post.date | date: "%Y-%m-%d" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
       </h2>

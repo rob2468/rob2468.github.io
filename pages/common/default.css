@@ -97,12 +97,21 @@ header.top .container:after {
   clear: both;
 }
 /* main */
-div.main {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+.main {
+  display: flex;
+  justify-content: space-between;
   box-sizing: border-box;
   padding: 0 20px;
+}
+.main .leading-panel,
+.main .trailing-panel {
+  display: none;
+  position: relative;
+  flex-grow: 1;
+}
+.main .content {
+  flex-grow: 0;
+  width: 100%;
 }
 /* footer */
 footer.bottom {
@@ -122,7 +131,11 @@ footer.bottom a {
     margin: 0 25% 0 25%;
   }
   /* main */
-  div.main {
+  .main .content {
     width: 710px;
+  }
+  .main .leading-panel,
+  .main .trailing-panel {
+    display: block;
   }
 }

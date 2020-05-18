@@ -78,6 +78,33 @@ header.top nav li a:hover {
   margin-bottom: 28px;
 }
 
+.timeline {
+  position: absolute;
+  top: 50px;
+  right: 20%;
+}
+
+.timeline .line {
+  position: absolute;
+  width: 4px;
+  margin-left: 50%;
+  height: 100%;
+  background-image: -webkit-linear-gradient(top,#FFF 0%,#C1C1C1 8%,#C1C1C1 92%,#FFF 100%);
+}
+
+.timeline .dot {
+  display: block;
+  position: relative;
+  background-color: #fff;
+  margin-bottom: 50px;
+}
+.timeline .dot:first-child {
+  margin-top: 80px;
+}
+.timeline .dot:last-child {
+  margin-bottom: 80px;
+}
+
 @media screen and (min-width: 768px) {
   /* header */
   header.top .menu-button {

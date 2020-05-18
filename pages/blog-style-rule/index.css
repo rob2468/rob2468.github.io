@@ -1,0 +1,20 @@
+.color-def {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pair {
+  margin-right: 40px;
+  margin-bottom: 10px;
+
+  display: flex;
+  align-items: center;
+}
+.label {
+  width: 80px;
+}
+.color-block {
+  margin-left: 2px;
+  width: 90px;
+  height: 25px;
+}

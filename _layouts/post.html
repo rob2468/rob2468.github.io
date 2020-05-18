@@ -1,16 +1,24 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>{{ page.title }}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" type="text/css" href="/css/default.css" />
-  <link rel="stylesheet" type="text/css" href="/pages/post/index.css" />
-  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
-  <script src="/js/utility.js"></script>
-  <script src="/pages/post/index.js"></script>
-  <script src="/pages/post/statistic.js"></script>
+<meta charset="utf-8">
+<title>{{ page.title }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" type="text/css" href="/pages/common/default.css" />
+<link rel="stylesheet" type="text/css" href="/pages/post/index.css" />
+{% if page.custom_css %}
+  {% assign page_full_path = page.id | split: "/" %}
+  {% for stylesheet in page.custom_css %}
+    <link rel="stylesheet" href="{{ site.baseurl }}pages/{{ page_full_path.last }}/{{ stylesheet }}">
+  {% endfor %}
+{% endif %}
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+<script src="/pages/common/utility.js"></script>
+<script src="/pages/post/index.js"></script>
+<script src="/pages/post/statistic.js"></script>
 </head>
+
 <body>
   <header class="top">
     <div class="container">
@@ -21,28 +29,33 @@
   </header>
 
   <div class="main">
-    {{ content }}
-    <p>{{ page.date | date: "%Y-%m-%d" }}</p>
+    <div class="leading-panel"></div>
 
-    <div class="comment_area">
-      <!-- comment form -->
-      <div class="comment_form">
-        <form>
-        <input type="text" name="display-name" class="input" placeholder="昵称" required></input>
-        <input type="email" name="email" class="input" placeholder="电子邮箱" required></input>
-        <textarea name="content" class="input" placeholder="请输入您的评论" required></textarea>
-        <button type="button" class="submit submit_normal" onclick="submitForm('{{ page.page_id }}', '{{ page.title }}')">
-            <img src="/resources/loading-bubbles.svg"/><span>提交评论</span>
-        </button>
-        <div class="prompt"></div>
-        </form>
-      </div>
+    <div class="content">
+      {{ content }}
+      <p>{{ page.date | date: "%Y-%m-%d" }}</p>
 
-      <!-- comments -->
-      <div class="comments">
+      <div class="comment_area">
+        <!-- comment form -->
+        <div class="comment_form">
+          <form>
+          <input type="text" name="display-name" class="input" placeholder="昵称" required></input>
+          <input type="email" name="email" class="input" placeholder="电子邮箱" required></input>
+          <textarea name="content" class="input" placeholder="请输入你的评论" required></textarea>
+          <button type="button" class="submit submit_normal" onclick="submitForm('{{ page.page_id }}', '{{ page.title }}')">
+              <img src="/resources/loading-bubbles.svg"/><span>提交评论</span>
+          </button>
+          <div class="prompt"></div>
+          </form>
+        </div>
+
+        <!-- comments -->
+        <div class="comments"></div>
       </div>
+      <div id="page-id" style="display:none;">{{ page.page_id }}</div>
     </div>
-    <div id="page-id" style="display:none;">{{ page.page_id }}</div>
+
+    <div class="trailing-panel"></div>
   </div><!-- main -->
 
   <footer class="bottom">
