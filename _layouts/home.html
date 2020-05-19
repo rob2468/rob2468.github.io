@@ -22,8 +22,11 @@
       <nav>
         <ul>
           <li>
-            <a href="/pages/resume/index.html" target="_blank">简历</a>
+            <a href="/pages/archive/index.html">归档</a>
           </li>
+          <!-- <li>
+            <a href="/pages/resume/index.html" target="_blank">简历</a>
+          </li> -->
           <li>
             <a href="/pages/about/index.html">关于</a>
           </li>
@@ -48,7 +51,21 @@
         </div>
       </div>
     </div>
-    <div class="content">{{ content }}</div>
+    <div class="content">
+      <h1>最新文章</h1>
+      <ul>
+        {% for post in site.posts %}
+          <li id="{{ post.date | date: 'id-%Y-%m-%d' }}">
+            <h2>
+              <span class="date">{{ post.date | date: "%Y-%m-%d" }}</span> <a href="{{ post.url }}">{{ post.title }}</a>
+            </h2>
+            <div class="abstract">
+              {{ post.content | strip_html | strip_newlines | truncate: 150 | remove_first: post.title }}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
     <div class="trailing-panel"></div>
   </div>
 
