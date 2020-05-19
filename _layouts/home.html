@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" type="text/css" href="/pages/common/default.css" />
   <link rel="stylesheet" type="text/css" href="/pages/home/index.css" />
-  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
 </head>
 <body>
   <a class="hidden-entry" href="/pages/hidden/index.html" target="_blank"></a>
@@ -76,11 +75,13 @@
 
 
   <script type="text/javascript">
-    $(document).ready(function() {
-      $(".menu-button").click(function() {
-        $(".menu-button, header.top nav").toggleClass("active");
-      });
-    });
+    window.onload = function() {
+      const menuButtonEle = document.querySelector('.menu-button');
+      menuButtonEle.addEventListener('click', function() {
+        menuButtonEle.classList.toggle('active');
+        document.querySelector('.top nav').classList.toggle('active');
+      }, false);
+    };
   </script>
 </body>
 </html>

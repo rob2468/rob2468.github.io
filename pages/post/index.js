@@ -1,5 +1,10 @@
 var returnCitySN; // 访问者信息
+const kCommentServiceProtocol = 'https';
 const kCommentServiceHost = 'vps.jamchenjun.com';  // 评论服务 host
+const kCommentServicePort = '443';
+// const kCommentServiceProtocol = 'http';
+// const kCommentServiceHost = 'localhost';  // 评论服务 host
+// const kCommentServicePort = '80';
 
 window.onload = function () {
   const pageId = document.getElementById('page-id').innerText;
@@ -118,14 +123,14 @@ var timeoutID;
  * @param {string} title 文章标题
  */
 async function submitForm(pageId, title) {
-  var displayNameEle = $('.comment_area .input[name="display-name"]');
-  var emailEle = $(".comment_area .input[name='email']");
-  var contentEle = $(".comment_area .input[name='content']");
-  if ($('.comment_area .submit_normal').length > 0) {
-    var email = emailEle.val().trim();
+  var displayNameEle = document.querySelector('.comment_area .input[name="display-name"]');
+  var emailEle = document.querySelector('.comment_area .input[name="email"]');
+  var contentEle = document.querySelector('.comment_area .input[name="content"]');
+  if (document.querySelector('.comment_area .submit_normal')) {
+    var email = emailEle.value.trim();
     const timestamp = Date.now();
-    var displayName = displayNameEle.val().trim();
-    var content = contentEle.val().trim();
+    var displayName = displayNameEle.value.trim();
+    var content = contentEle.value.trim();
 
     // 字段有效性检查
     function validateDisplayName() {
@@ -154,27 +159,27 @@ async function submitForm(pageId, title) {
     }
     // 显示反馈
     function showPrompt(prompt) {
-      $(".comment_area .prompt").html(prompt);
+      document.querySelector('.comment_area .prompt').innerHTML = prompt;
 
       // 延时清除
       clearTimeout(timeoutID);
       timeoutID = setTimeout(function() {
-        $(".comment_area .prompt").html("");
+        document.querySelector('.comment_area .prompt').innerHTML = '';
       }, 3000);
     }
     var displayNameValidation = validateDisplayName();
     var emailValidation = validateEmail();
     var contentValidation = validateContent();
     if (!displayNameValidation && !emailValidation && !contentValidation) {
-      $(".comment_area .submit").removeClass("submit_normal");
-      $(".comment_area .submit").addClass("submit_loading");
+      document.querySelector('.comment_area .submit').classList.remove('submit_normal');
+      document.querySelector('.comment_area .submit').classList.add('submit_loading');
       function finnalyCompleteLoading() {
-        $(".comment_area .submit").addClass("submit_normal");
-        $(".comment_area .submit").removeClass("submit_loading");
+        document.querySelector('.comment_area .submit').classList.add('submit_normal');
+        document.querySelector('.comment_area .submit').classList.remove('submit_loading');
       }
       // 将评论请求发送给服务端
       const result = await getHttpDataPromise({
-        url: `https://${kCommentServiceHost}:443/api/submitcomment`,
+        url: `${kCommentServiceProtocol}://${kCommentServiceHost}:${kCommentServicePort}/api/submitcomment`,
         method: 'POST',
         head: {
           'Content-Type': 'application/json',
@@ -196,8 +201,10 @@ async function submitForm(pageId, title) {
         const success = result.success;
         const comment = result.result;
         if (success) {
-          $(".comment_area .input").removeClass("input_error");
-          $(".comment_area .input").val("");
+          document.querySelectorAll('.comment_area .input').forEach(function(ele) {
+            ele.classList.remove('input_error');
+            ele.value = '';
+          });
 
           // 显示新评论
           const commentEle = createCommentElement(comment);
@@ -214,19 +221,19 @@ async function submitForm(pageId, title) {
       prompt += emailValidation? emailValidation + "；": "";
       prompt += contentValidation? contentValidation + "；": "";
       if (displayNameValidation) {
-        displayNameEle.addClass("input_error");
+        displayNameEle.classList.add("input_error");
       } else {
-        displayNameEle.removeClass("input_error");
+        displayNameEle.classList.remove("input_error");
       }
       if (emailValidation) {
-        emailEle.addClass("input_error");
+        emailEle.classList.add("input_error");
       } else {
-        emailEle.removeClass("input_error");
+        emailEle.classList.remove("input_error");
       }
       if (contentValidation) {
-        contentEle.addClass("input_error");
+        contentEle.classList.add("input_error");
       } else {
-        contentEle.removeClass("input_error");
+        contentEle.classList.remove("input_error");
       }
       showPrompt(prompt);
     }
@@ -241,7 +248,7 @@ async function submitForm(pageId, title) {
  * @param {string} pageId 文章 id
  */
 async function initComments(pageId) {
-  const url = `https://${kCommentServiceHost}:443/api/comments?page_id=` + pageId;
+  const url = `${kCommentServiceProtocol}://${kCommentServiceHost}:${kCommentServicePort}/api/comments?page_id=` + pageId;
   const comments = await getHttpDataPromise({
     url,
   });
