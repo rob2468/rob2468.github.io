@@ -6,31 +6,29 @@
 function getHttpDataPromise(params = {
   url: '',
   method: '',
-  head: {},
+  headers: {},
   param: {},
 }) {
-  const {
-    url = '',
-    method = 'GET',
-    head = {},
-    param = {},
-  } = params;
-  return new Promise((resolve) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open(method, url);
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        const responseText = xhr.responseText;
-        const responseJSON = JSON.parse(responseText);
-        resolve(responseJSON);
-      } else {
+  return new Promise(resolve => {
+    const {
+      url = '',
+      method,
+      headers,
+      param,
+    } = params;
+    fetch(url, {
+      method: method || 'GET',
+      headers,
+      body: param ? JSON.stringify(param) : undefined,
+    }).then(response => {
+      response.json().then(json => {
+        resolve(json);
+      }).catch(err => {
         resolve();
-      }
-    };
-    Object.keys(head).forEach(key => {
-      xhr.setRequestHeader(key, head[key]);
+      });
+    }).catch(err => {
+      resolve();
     });
-    xhr.send(JSON.stringify(param));
   });
 }
 

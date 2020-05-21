@@ -181,7 +181,7 @@ async function submitForm(pageId, title) {
       const result = await getHttpDataPromise({
         url: `${kCommentServiceProtocol}://${kCommentServiceHost}:${kCommentServicePort}/api/submitcomment`,
         method: 'POST',
-        head: {
+        headers: {
           'Content-Type': 'application/json',
         },
         param: {
@@ -249,9 +249,10 @@ async function submitForm(pageId, title) {
  */
 async function initComments(pageId) {
   const url = `${kCommentServiceProtocol}://${kCommentServiceHost}:${kCommentServicePort}/api/comments?page_id=` + pageId;
-  const comments = await getHttpDataPromise({
-    url,
-  });
+  const comments = await getHttpDataPromise({ url });
+  if (!comments || comments.length === 0) {
+    return;
+  }
 
   const commentsEle = document.getElementsByClassName('comments')[0];
   comments.forEach(element => {

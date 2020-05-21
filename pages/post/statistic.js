@@ -23,7 +23,7 @@ function exposure(params = {
   getHttpDataPromise({
     url: `https://${kCommentServiceHost}:443/api/addstat`,
     method: 'POST',
-    head: {
+    headers: {
       'Content-Type': 'application/json',
     },
     param: {
