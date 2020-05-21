@@ -74,7 +74,7 @@ function generateContentsTable() {
     }
 
     // 创建一级标题目录
-    const tmpEle = document.createElement('a');
+    let tmpEle = document.createElement('a');
     tmpEle.setAttribute('href', '#' + loopID);
     tmpEle.setAttribute('class', 'first-level');
     tmpEle.innerHTML = loopEle.innerText;
