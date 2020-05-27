@@ -10,28 +10,43 @@
 <body>
   <a class="hidden-entry" href="/pages/hidden/index.html" target="_blank"></a>
 
-  <header class="top">
-    <div class="container">
+  <header class="header">
+    <div class="top">
       <div class="self">
         <a href="/index.html">jam.chenjun</a>
       </div>
-      <div class="menu-button">
-        <span class="icon">Menu</span>
+      <div class="action">
+        <div class="menu-button">
+          <span class="icon">Menu</span>
+        </div>
+        <nav class="nav">
+          <ul>
+            <li>
+              <div class="search">
+                <input class="input"></input>
+                <button class="go" onclick="onNavSearchButtonClick()">&#x1F50D;</button>
+              </div>
+            </li>
+            <li><a href="/pages/archive/index.html">归档</a></li>
+            <!-- <li><a href="/pages/resume/index.html" target="_blank">简历</a></li> -->
+            <li><a href="/pages/about/index.html">关于</a></li>
+          </ul>
+        </nav>
       </div>
-      <nav>
-        <ul>
-          <li>
-            <a href="/pages/archive/index.html">归档</a>
-          </li>
-          <!-- <li>
-            <a href="/pages/resume/index.html" target="_blank">简历</a>
-          </li> -->
-          <li>
-            <a href="/pages/about/index.html">关于</a>
-          </li>
-        </ul>
-      </nav>
     </div>
+    <nav class="extra-nav">
+      <ul>
+        <li>
+          <div class="search">
+            <input class="input"></input>
+            <button class="go" onclick="onExtraNavSearchButtonClick()">&#x1F50D;</button>
+          </div>
+        </li>
+        <li><a href="/pages/archive/index.html">归档</a></li>
+        <!-- <li><a href="/pages/resume/index.html" target="_blank">简历</a></li> -->
+        <li><a href="/pages/about/index.html">关于</a></li>
+      </ul>
+    </nav>
   </header>
 
   <div class="main">
@@ -79,9 +94,26 @@
       const menuButtonEle = document.querySelector('.menu-button');
       menuButtonEle.addEventListener('click', function() {
         menuButtonEle.classList.toggle('active');
-        document.querySelector('.top nav').classList.toggle('active');
+        document.querySelector('.extra-nav').classList.toggle('active');
       }, false);
     };
+
+    function onNavSearchButtonClick() {
+      const inputEle = document.querySelector('.nav .search .input');
+      doSearch(inputEle.value.trim());
+    }
+    function onExtraNavSearchButtonClick() {
+      const inputEle = document.querySelector('.extra-nav .search .input');
+      doSearch(inputEle.value.trim());
+    }
+    function doSearch(text) {
+      if (!text) {
+        return;
+      }
+      encodeURIComponent(text)
+      const link = `https://www.google.com/search?q=${encodeURIComponent(text)}+site%3Ablog.jamchenjun.com`;
+      window.open(link);
+    }
   </script>
 </body>
 </html>

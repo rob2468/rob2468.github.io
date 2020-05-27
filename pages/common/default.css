@@ -66,18 +66,25 @@ div.code {
   padding: 5px 10px;
 }
 /* header */
-header.top {
+.header {
   background: #24292e;
   overflow: hidden;
   position: relative;
   z-index: 0;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-header.top .container {
-  display: block;
+.header .top {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
   margin: 0 20px;
+  width: 100%;
 }
-header.top .self {
+.top .self {
   padding: 12px 0px;
   line-height: 32px;
   display: block;
@@ -85,13 +92,13 @@ header.top .self {
   font-size: 18px;
   width: 120px;
 }
-header.top .self a {
+.top .self a {
   color: #fff;
 }
-header.top .self a:hover {
+.top .self a:hover {
   text-decoration: none;
 }
-header.top .container:after {
+.top .container:after {
   content: "";
   display: block;;
   clear: both;
@@ -127,8 +134,8 @@ footer.bottom a {
 
 @media screen and (min-width: 768px) {
   /* header */
-  header.top .container {
-    margin: 0 25% 0 25%;
+  .header .top {
+    width: 710px;
   }
   /* main */
   .main .content {

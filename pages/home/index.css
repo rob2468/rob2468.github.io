@@ -10,13 +10,36 @@
 }
 
 /* header */
-header.top .menu-button {
-  padding: 12px 0px;
-  display: block;
-  float: right;
+.top .action {
+  display: flex;
+  flex-wrap: wrap;
+}
+.search {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+.search .input {
+  width: 140px;
+  height: 22px;
+  padding: 0 3px;
+  border-width: 0;
+  border-radius: 3px;
+}
+.search .go {
+  margin-left: 3px;
+  height: 22px;
+  border-width: 0;
+  padding: 0 5px;
+  border-radius: 3px;
+}
+
+.top .menu-button {
+  padding: 12px 0;
+  width: 80px;
   cursor: pointer;
 }
-header.top .menu-button .icon {
+.top .menu-button .icon {
   display: inline-block;
   text-align: center;
   width: 100%;
@@ -24,27 +47,31 @@ header.top .menu-button .icon {
   font-size: 18px;
   line-height: 32px;
 }
-header.top .menu-button .icon:hover,
-header.top .menu-button.active .icon {
+.top .menu-button .icon:hover,
+.top .menu-button.active .icon {
   color: #fff;
 }
-header.top nav {
-  display: block;
+.top .nav {
+  display: none;
   overflow: hidden;
   width: 100%;
   float: right;
   margin: 0;
   max-height: 0;
 }
-header.top nav.active {
-  max-height: 200px;
+.extra-nav {
+  display: none;
+  width: 100%;
 }
-header.top nav ul:after {
+.extra-nav.active {
+  display: block;
+}
+.top .nav ul:after {
   display: block;
   content: "";
   clear: both;
 }
-header.top nav li {
+.header li {
   font-size: 18px;
   display: block;
   font-weight: 700;
@@ -54,13 +81,13 @@ header.top nav li {
   padding: 12px 0px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
-header.top nav li a {
+.header li a {
   color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   display: block;
   width: 100%;
 }
-header.top nav li a:hover {
+.header li a:hover {
   color: #fff;
 }
 
@@ -107,17 +134,21 @@ header.top nav li a:hover {
 
 @media screen and (min-width: 768px) {
   /* header */
-  header.top .menu-button {
+  .top .menu-button {
     display: none;
   }
-  header.top nav {
+  .top .nav {
+    display: block;
     padding: 12px 0px;
     width: auto;
     max-height: none;
   }
-  header.top nav li {
+  .top .nav li {
     float: left;
     border: 0px;
     padding: 0px;
+  }
+  .header .extra-nav {
+    display: none;
   }
 }
