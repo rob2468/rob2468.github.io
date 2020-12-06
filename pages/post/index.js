@@ -17,21 +17,18 @@ window.onload = function () {
   // 生成目录
   generateContentsTable();
 
-  // 获取并显示评论
-  initComments(pageId);
-
   // 开发环境不进行访问量统计
   if (!window.JEKYLL_ENV || window.JEKYLL_ENV !== 'development') {
     // 初始化统计服务
-    initStatistic();
+    // initStatistic();
 
     // initStatistic 中需要通过网络获取访问者信息，延时 500ms 执行
     setTimeout(() => {
       // 曝光统计
-      exposure({
-        pageId,
-        title,
-      });
+      // exposure({
+      //   pageId,
+      //   title,
+      // });
     }, 500);
   }
 };
@@ -113,175 +110,4 @@ function generateContentsTable() {
     titleEle = titleEle[0];
     titleEle.parentNode.insertBefore(contentTableEle, titleEle.nextSibling);
   }
-}
-
-/* 评论 */
-var timeoutID;
-/**
- * 提交评论
- * @param {string} pageId 文章 id
- * @param {string} title 文章标题
- */
-async function submitForm(pageId, title) {
-  var displayNameEle = document.querySelector('.comment_area .input[name="display-name"]');
-  var emailEle = document.querySelector('.comment_area .input[name="email"]');
-  var contentEle = document.querySelector('.comment_area .input[name="content"]');
-  if (document.querySelector('.comment_area .submit_normal')) {
-    var email = emailEle.value.trim();
-    const timestamp = Date.now();
-    var displayName = displayNameEle.value.trim();
-    var content = contentEle.value.trim();
-
-    // 字段有效性检查
-    function validateDisplayName() {
-      var res;
-      if (displayName.length === 0) {
-        res = '姓名没有可见内容';
-      }
-      return res;
-    }
-    function validateEmail() {
-      var res;
-      var reg = /^[.a-zA-Z0-9_-]+@[.a-zA-Z0-9_-]+$/;
-      if (email.length === 0) {
-        res = "电子邮箱没有可见内容";
-      } else if (!reg.test(email)) {
-        res = "电子邮箱格式不正确";
-      }
-      return res;
-    }
-    function validateContent() {
-      var res;
-      if (content.length === 0) {
-        res = "评论内容没有可见内容";
-      }
-      return res;
-    }
-    // 显示反馈
-    function showPrompt(prompt) {
-      document.querySelector('.comment_area .prompt').innerHTML = prompt;
-
-      // 延时清除
-      clearTimeout(timeoutID);
-      timeoutID = setTimeout(function() {
-        document.querySelector('.comment_area .prompt').innerHTML = '';
-      }, 3000);
-    }
-    var displayNameValidation = validateDisplayName();
-    var emailValidation = validateEmail();
-    var contentValidation = validateContent();
-    if (!displayNameValidation && !emailValidation && !contentValidation) {
-      document.querySelector('.comment_area .submit').classList.remove('submit_normal');
-      document.querySelector('.comment_area .submit').classList.add('submit_loading');
-      function finnalyCompleteLoading() {
-        document.querySelector('.comment_area .submit').classList.add('submit_normal');
-        document.querySelector('.comment_area .submit').classList.remove('submit_loading');
-      }
-      // 将评论请求发送给服务端
-      const result = await getHttpDataPromise({
-        url: `${kCommentServiceProtocol}://${kCommentServiceHost}:${kCommentServicePort}/api/submitcomment`,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        param: {
-          pageId,
-          title,
-          email,
-          displayName,
-          content,
-          timestamp,
-          displayTime: getFormattedBeijingDateString(timestamp),
-        },
-      });
-      if (result) {
-        finnalyCompleteLoading();
-
-        // 解析返回值
-        const success = result.success;
-        const comment = result.result;
-        if (success) {
-          document.querySelectorAll('.comment_area .input').forEach(function(ele) {
-            ele.classList.remove('input_error');
-            ele.value = '';
-          });
-
-          // 显示新评论
-          const commentEle = createCommentElement(comment);
-          const commentsEle = document.getElementsByClassName('comments')[0];
-          commentsEle.insertBefore(commentEle, commentsEle.firstChild);
-        } else {
-          showPrompt('内部错误');
-        }
-      }
-    } else {
-      var prompt;
-      // 存在字段无效情况
-      prompt = displayNameValidation? displayNameValidation + "；": "";
-      prompt += emailValidation? emailValidation + "；": "";
-      prompt += contentValidation? contentValidation + "；": "";
-      if (displayNameValidation) {
-        displayNameEle.classList.add("input_error");
-      } else {
-        displayNameEle.classList.remove("input_error");
-      }
-      if (emailValidation) {
-        emailEle.classList.add("input_error");
-      } else {
-        emailEle.classList.remove("input_error");
-      }
-      if (contentValidation) {
-        contentEle.classList.add("input_error");
-      } else {
-        contentEle.classList.remove("input_error");
-      }
-      showPrompt(prompt);
-    }
-  } else {
-    // loading
-    console.log("loading");
-  }
-}
-
-/**
- * 获取并显示评论内容
- * @param {string} pageId 文章 id
- */
-async function initComments(pageId) {
-  const url = `${kCommentServiceProtocol}://${kCommentServiceHost}:${kCommentServicePort}/api/comments?page_id=` + pageId;
-  const comments = await getHttpDataPromise({ url });
-  if (!comments || comments.length === 0) {
-    return;
-  }
-
-  const commentsEle = document.getElementsByClassName('comments')[0];
-  comments.forEach(element => {
-    const commentEle = createCommentElement(element);
-    commentsEle.appendChild(commentEle);
-  });
-}
-
-/**
- * 根据评论内容创建 dom 元素
- * @param {object} comment
- */
-function createCommentElement(comment) {
-  // 解析字段
-  const displayName = comment.displayName;
-  const time = getFormattedBeijingDateString(comment.timestamp);
-  const content = comment.content;
-
-  const commentEle = document.createElement('div');
-  commentEle.setAttribute('class', 'comment');
-
-  const infoEle = document.createElement('p');
-  infoEle.setAttribute('class', 'display-name');
-  infoEle.innerHTML = `${displayName} <span class="comment-date">${time}</span>`;
-  commentEle.appendChild(infoEle);
-
-  const contentEle = document.createElement('p');
-  contentEle.setAttribute('class', 'content');
-  contentEle.innerHTML = content;
-  commentEle.appendChild(contentEle);
-  return commentEle;
 }

@@ -34,23 +34,23 @@
       {{ content }}
       <p>{{ page.date | date: "%Y-%m-%d" }}</p>
 
-      <div class="comment_area">
-        <!-- comment form -->
-        <div class="comment_form">
-          <form>
-          <input type="text" name="display-name" class="input" placeholder="昵称" required></input>
-          <input type="email" name="email" class="input" placeholder="电子邮箱" required></input>
-          <textarea name="content" class="input" placeholder="请输入你的评论" required></textarea>
-          <button type="button" class="submit submit_normal" onclick="submitForm('{{ page.page_id }}', '{{ page.title }}')">
-              <img src="/resources/loading-bubbles.svg"/><span>提交评论</span>
-          </button>
-          <div class="prompt"></div>
-          </form>
-        </div>
-
-        <!-- comments -->
-        <div class="comments"></div>
-      </div>
+      <div id="disqus_thread"></div>
+      <script>
+          /**
+          *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+          *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+          var disqus_config = function () {
+          this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = '{{ page.page_id }}'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+          };
+          (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+          s.src = 'https://jamchenjun.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
       <div id="page-id" style="display:none;">{{ page.page_id }}</div>
     </div>
 
