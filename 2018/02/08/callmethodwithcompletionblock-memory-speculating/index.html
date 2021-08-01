@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>callMethodWithCompletionBlock&amp;#58; 中 Block 的内存管理 | jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="开发中不时会遇到 [obj callMethodWithCompletionBlock:^&amp;#123; [obj doSomething] &amp;#125;] 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。 本文的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="callMethodWithCompletionBlock&amp;#58; 中 Block 的内存管理">
+<meta property="og:url" content="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:description" content="开发中不时会遇到 [obj callMethodWithCompletionBlock:^&amp;#123; [obj doSomething] &amp;#125;] 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。 本文的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-02-08-Memory-Leak.png">
+<meta property="article:published_time" content="2018-02-08T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-01T08:45:03.247Z">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-02-08-Memory-Leak.png">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-callmethodwithcompletionblock-memory-speculating" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/" class="article-date">
+  <time class="dt-published" datetime="2018-02-08T00:00:00.000Z" itemprop="datePublished">2018-02-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      callMethodWithCompletionBlock&amp;#58; 中 Block 的内存管理
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>开发中不时会遇到 <code>[obj callMethodWithCompletionBlock:^&#123; [obj doSomething] &#125;]</code> 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。</p>
+<p>本文的讨论都是基于 ARC，并且一般性的 block 内存管理说明可以参考<a href="/2018/09/30/block.html">这篇文章</a>。</p>
+<h2>Demo 1</h2>
+
+<div class="code"><pre><code>@interface CustomUIView : UIView
+@end
+@implementation CustomUIView
+- (void)doSomeThing:(void(^)(void))block &#123;
+    block();
+&#125;
+- (void)emptyMethod &#123;&#125;
+- (void)dealloc &#123;
+    NSLog(@"CustomUIView dealloc");
+&#125;
+@end
+
+<p>@interface ViewController ()<br>@end<br>@implementation ViewController</p>
+<ul>
+<li>(void)viewDidLoad &#123;<br>  [super viewDidLoad];<br>  CustomUIView *customView = [[CustomUIView alloc] init];<br>  [customView doSomeThing:^&#123;<pre><code>  [customView emptyMethod];
+</code></pre>
+  }];<br>}<br>@end<br></code></pre></div></li>
+</ul>
+<p>运行结果：</p>
+<div class="code"><pre><code>2018-02-08 15:56:53.638344+0800 Test[41287:2545568] CustomUIView dealloc
+</code></pre></div>
+
+<p>Demo 1 演示的即是本文开头说的情况，运行结果显示没有产生循环引用，customView 正常释放。</p>
+<p>结论：block 引用了 customView，但是 customView 没有引用 block。见 Demo 2。</p>
+<h2>Demo 2</h2>
+
+<div class="code"><pre><code>@interface CustomUIView0 : UIView
+@end
+@implementation CustomUIView0
+- (void)emptyMethod &#123;&#125;
+- (void)dealloc &#123;
+    NSLog(@"CustomUIView0 dealloc");
+&#125;
+@end
+
+<p>@interface CustomUIView : UIView<br>@end<br>@implementation CustomUIView</p>
+<ul>
+<li>(void)doSomeThing:(void(^)(void))block &#123;<br>  block();<br>&#125;</li>
+<li>(void)emptyMethod &#123;&#125;</li>
+<li>(void)dealloc &#123;<br>  NSLog(@”CustomUIView dealloc”);<br>&#125;<br>@end</li>
+</ul>
+<p>@interface ViewController ()<br>@property (strong, nonatomic) CustomUIView *customView;<br>@end<br>@implementation ViewController</p>
+<ul>
+<li>(void)viewDidLoad &#123;<br>  [super viewDidLoad];<br>  CustomUIView0 *view0 = [[CustomUIView0 alloc] init];<br>  self.customView = [[CustomUIView alloc] init];<br>  [self.customView doSomeThing:^&#123;<pre><code>  [view0 emptyMethod];
+</code></pre>
+  }];<br>}<br>@end<br></code></pre></div></li>
+</ul>
+<p>运行结果：</p>
+<div class="code"><pre><code>2018-02-08 15:58:54.662221+0800 Test[41318:2553382] CustomUIView0 dealloc
+</code></pre></div>
+
+<p>该示例中 customView 被强引用，不会释放。因为 block 引用了 view0，如果 customView 引用 block，那么 view0 便不会被释放。但是实际上 view0 正常释放，说明 Demo 1 的结论是正确的。</p>
+<h2>Demo 3</h2>
+
+<div class="code"><pre><code>@interface CustomUIView0 : UIView
+@end
+@implementation CustomUIView0
+- (void)emptyMethod &#123;&#125;
+- (void)dealloc &#123;
+    NSLog(@"CustomUIView0 dealloc");
+&#125;
+@end
+
+<p>@interface CustomUIView : UIView<br>@property (strong, nonatomic) void(^strongBlock)(void);<br>@end<br>@implementation CustomUIView</p>
+<ul>
+<li>(void)doSomeThing:(void(^)(void))block &#123;<br>  self.strongBlock = block;<br>  block();<br>&#125;</li>
+<li>(void)emptyMethod &#123;&#125;</li>
+<li>(void)dealloc &#123;<br>  NSLog(@”CustomUIView dealloc”);<br>&#125;<br>@end</li>
+</ul>
+<p>@interface ViewController ()<br>@property (strong, nonatomic) CustomUIView *customView;<br>@end<br>@implementation ViewController</p>
+<ul>
+<li>(void)viewDidLoad &#123;<br>  [super viewDidLoad];<br>  CustomUIView0 *view0 = [[CustomUIView0 alloc] init];<br>  self.customView = [[CustomUIView alloc] init];<br>  [self.customView doSomeThing:^&#123;<pre><code>  [view0 emptyMethod];
+</code></pre>
+  }];<br>}<br>@end<br></code></pre></div></li>
+</ul>
+<p>Demo 3 与 Demo 2 的区别是 CustomUIView 中强引用了 block，此时 view0 不会释放，存在 self -&gt; customView -&gt; block -&gt; view0 这样的强引用关系。</p>
+<p>这样的强引用关系是单向的，只要打破其中一个环节便能释放，比如作如下修改：</p>
+<div class="code"><pre><code>    CustomUIView0 *view0 = [[CustomUIView0 alloc] init];
+    CustomUIView *customView = [[CustomUIView alloc] init];
+    [customView doSomeThing:^&#123;
+        [view0 emptyMethod];
+    &#125;];
+</code></pre></div>
+
+<p>运行结果：</p>
+<div class="code"><pre><code>2018-02-08 16:48:27.802266+0800 Test[41900:2865267] CustomUIView dealloc
+2018-02-08 16:48:27.802428+0800 Test[41900:2865267] CustomUIView0 dealloc
+</code></pre></div>
+
+<p>此时 customView 成为局部变量，上下文结束便释放。被引用的 block 和 view0 也会依次释放。</p>
+<h2>Demo 4</h2>
+
+<div class="code"><pre><code>@interface CustomUIView : UIView
+@property (strong, nonatomic) void(^strongBlock)(void);
+@end
+@implementation CustomUIView
+- (void)doSomeThing:(void(^)(void))block &#123;
+    self.strongBlock = block;
+    block();
+&#125;
+- (void)emptyMethod &#123;&#125;
+- (void)dealloc &#123;
+    NSLog(@"CustomUIView dealloc");
+&#125;
+@end
+
+<p>@interface ViewController ()<br>@property (strong, nonatomic) CustomUIView *customView;<br>@end<br>@implementation ViewController</p>
+<ul>
+<li>(void)viewDidLoad &#123;<br>  [super viewDidLoad];<br>  CustomUIView *customView = [[CustomUIView alloc] init];<br>  [customView doSomeThing:^&#123;<pre><code>  [customView emptyMethod];
+</code></pre>
+  }];<br>}<br>@end<br></code></pre></div></li>
+</ul>
+<p>最后，我们来看一个会产生循环引用的例子。Demo 4 和 Demo 1 的区别是 CustomUIView 中强引用了 block。此时存在 customView -&gt; block -&gt; customView 这样的循环引用，除非显式打破这个环状引用（比如 customView 中有逻辑能解除对 block 的引用），否则便产生了内存泄漏。</p>
+<p class="post-image"><img src="/resources/figures/2018-02-08-Memory-Leak.png" alt="" width="70%"></p>
+
+<h2>总结</h2>
+
+<p><code>[obj callMethodWithCompletionBlock:^&#123; [obj doSomething] &#125;]</code> 这种写法，ARC 会自动负责 block 的内存管理，在上下文开始和结束的地方持有和释放。</p>
+<p>block 为开发带来了便利，ARC 又为 block 的内存管理带来了便利，但如果未遵守内存管理的基本原则，仍然会引入内存泄漏的问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="ckrsyk6uk000haqnb1735gzuq" data-title="callMethodWithCompletionBlock&amp;#58; 中 Block 的内存管理" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/12/pod-trunk-push-without-validation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          如何在验证失败的情况下发布 Pod
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/14/getting-pixels-onto-the-screen-translation/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">像素如何被绘制到屏幕上（译）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

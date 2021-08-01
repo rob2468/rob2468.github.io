@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Objective-C Block | jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言  本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考这篇文章。 Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C Block">
+<meta property="og:url" content="https://rob2468.github.io/2018/09/30/block/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:description" content="前言  本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考这篇文章。 Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Objective-C-class-and-object.png">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Memory-segments-for-Blocks.png">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Copying-a-__block-variable.png">
+<meta property="article:published_time" content="2018-09-30T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-01T08:45:03.247Z">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Objective-C-class-and-object.png">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-block" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/30/block/" class="article-date">
+  <time class="dt-published" datetime="2018-09-30T00:00:00.000Z" itemprop="datePublished">2018-09-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Objective-C Block
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2>前言</h2>
+
+<p>本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考<a href="/2016/12/29/Reading-Notes-Pro-Multithreading-and-Memory-Management-for-iOS-and-OSX-with-ARC-Grand_Central-Dispatch-and-Blocks.html">这篇文章</a>。</p>
+<p>Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions together with automatic (local) variables）”。本文不多说 Block 的使用方法，着重讨论 Block 的实现机制。</p>
+<h2 id="section_1">一、Block 的基本实现</h2>
+
+<p>可以使用指令 <code>clang -rewrite-objc file_name_of_the_source_code</code>，将 OC 源代码转换成对应的 C++ 实现，从而探究 Block 的实现原理。</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>int main()
+&#123;
+    void (^blk)(void) = ^&#123;printf("Block\n");&#125;;
+    blk();
+    return 0;
+&#125;
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>struct __block_impl &#123;
+    void *isa;
+    int Flags;
+    int Reserved;
+    void *FuncPtr;
+&#125;;
+
+<p>struct __main_block_impl_0 &#123;<br>    struct __block_impl impl;<br>    struct __main_block_desc_0 *Desc;<br>    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int flags=0) &#123;<br>        impl.isa = &amp;_NSConcreteStackBlock;<br>        impl.Flags = flags;<br>        impl.FuncPtr = fp;<br>        Desc = desc;<br>    &#125;<br>&#125;;</p>
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself)<br>&#123;<br>    printf(“Block\n”);<br>&#125;</p>
+<p>static struct __main_block_desc_0<br>&#123;<br>    unsigned long reserved;<br>    unsigned long Block_size;<br>&#125; __main_block_desc_0_DATA = &#123;<br>    0,<br>    sizeof(struct __main_block_impl_0)<br>&#125;;</p>
+<p>int main() &#123;<br>    void (<em>blk)(void) =<br>        (void (</em>)(void))&amp;__main_block_impl_0((void <em>)__main_block_func_0, &amp;__main_block_desc_0_DATA);<br>    ((void (</em>)(struct __block_impl *))((struct __block_impl *)blk)-&gt;FuncPtr)((struct __block_impl *)blk);<br>    return 0;<br>&#125;<br></code></pre></div></p>
+<p>对比原始代码，转换后的代码增加了三个结构体和一个函数的定义。结构体：__block_impl、__main_block_impl_0、__main_block_desc_0；函数：__main_block_func_0。__main_block_func_0 对应原始代码中的 Block 实现，函数命名的规则是取原始方法名（main）和该 Block 在原始方法中的次序（第0个），结构体的命名规则也是如此。</p>
+<h2 id="section_2">二、isa 和 _NSConcreteStackBlock</h2>
+
+<p>上小节 __main_block_impl_0 的构造函数中有赋值语句 <code>impl.isa = &amp;_NSConcreteStackBlock</code>，本小节简述 isa 和 _NSConcreteStackBlock 的含义。</p>
+<p>OC 中的对象实例和类编译后都有其对应的结构体定义，如下所示。</p>
+<p>对象实例对应的结构体：</p>
+<div class="code"><pre><code>/* declared in /usr/include/objc/objc.h */
+struct objc_object &#123;
+    Class isa;
+&#125;
+</code></pre></div>
+
+<p>类对应的结构体：</p>
+<div class="code"><pre><code>/* declared in /usr/include/objc/runtime.h */
+struct objc_class &#123;
+    Class isa;
+&#125;;
+
+<p>typedef struct objc_class *Class;</p>
+<p>/* declared at runtime/objc-runtime-new.h in the objc4 runtime library */<br>struct class_t &#123;<br>    struct class_t *isa;<br>    struct class_t *superclass;<br>    Cache cache;<br>    IMP *vtable;<br>    uintptr_t data_NEVER_USE;<br>&#125;;<br></code></pre></div></p>
+<p>OC 中的类使用 class_t 构造（class_t 本身基于 objc_class），也就是说 OC 中的每个类都使用 class_t 创建了实例。比如，NSObject 有其对应的 class_t 实例，NSMutableArray 有其对应的 class_t 实例。class_t 实例保存了类的信息，如方法名、方法实现、指向父类的指针等，提供给 OC 运行时库使用。</p>
+<p>基于上面描述，下图描述 isa 值的含义。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图 OC 对象和类中 isa 指针的指向</p>
+
+<p>__main_block_impl_0 结构体基于 objc_object，表明 Block 本身即为 OC 对象。创建 Block 时执行语句 <code>impl.isa = &amp;_NSConcreteStackBlock</code>。根据上文描述，_NSConcreteStackBlock 是 class_t 实例，保存了该 Block 对应的类的信息。</p>
+<h2 id="section_3">三、Block 捕获自动变量</h2>
+
+<p>Block 能够捕获自动变量。下面使用 <code>clang -rewrite-objc file_name_of_the_source_code</code> 指令转换代码，描述了在这种情况下 Block 实现方式的变化。（__block_impl、__main_block_desc_0、__main_block_desc_0_DATA的声明和定义与上文相同，不再描述）</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>int main() &#123;
+    int dmy = 256;
+    int val = 10;
+    const char *fmt = "val = %d\n";
+    void (^blk)(void) = ^&#123;printf(fmt, val);&#125;;
+    return 0;
+&#125;
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>struct __main_block_impl_0 &#123;
+    struct __block_impl impl;
+    struct __main_block_desc_0* Desc;
+    const char *fmt;
+    int val;
+
+<pre><code>__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, const char *_fmt, int _val, int flags=0)
+    : fmt(_fmt), val(_val) &#123;
+    impl.isa = &amp;_NSConcreteStackBlock;
+    impl.Flags = flags;
+    impl.FuncPtr = fp;
+    Desc = desc;
+&#125;
+</code></pre>
+<p>};</p>
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself)<br>{<br>    const char *fmt = __cself-&gt;fmt;<br>    int val = __cself-&gt;val;<br>    printf(fmt, val);<br>}</p>
+<p>int main() {<br>    int dmy = 256;<br>    int val = 10;<br>    const char *fmt = “val = %d\n”;<br>    void (*blk)(void) = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, fmt, val);<br>  return 0;<br>}<br></code></pre></div></p>
+<p>__main_block_impl_0 为 Block 对象的定义，在这种情况下，其中增加了两个成员变量（fmt 和 val）用来存储捕获的自动变量。Block 不会捕获未使用的自动变量（dmy）。</p>
+<h2 id="section_4">四、Block 中修改静态变量、静态全局变量和全局变量</h2>
+
+<p>Block 中能够修改静态变量、静态全局变量和全局变量的值，但是底层实现机制存在差异。下面给出转换前后的代码，并给出说明。</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>int global_val = 1;
+static int static_global_val = 2;
+int main()
+&#123;
+    static int static_val = 3;
+    void (^blk)(void) = ^&#123;
+        global_val *= 1;
+        static_global_val *= 2;
+        static_val *= 3;
+    &#125;;
+    return 0;
+&#125;
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>int global_val = 1;
+static int static_global_val = 2;
+
+<p>struct __main_block_impl_0 &#123;<br>    struct __block_impl impl;<br>    struct __main_block_desc_0 *Desc;<br>    int *static_val;<br>    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int *_static_val, int flags=0)<br>        : static_val(_static_val) &#123;<br>        impl.isa = &amp;_NSConcreteStackBlock;<br>        impl.Flags = flags;<br>        impl.FuncPtr = fp;<br>        Desc = desc;<br>    &#125;<br>&#125;;</p>
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself) &#123;<br>    int *static_val = __cself-&gt;static_val;</p>
+<pre><code>global_val *= 1;
+static_global_val *= 2;
+(*static_val) *= 3;
+</code></pre>
+<p>}</p>
+<p>int main()<br>{<br>    static int static_val = 3;</p>
+<pre><code>blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, &amp;static_val);
+return 0;
+</code></pre>
+<p>}<br></code></pre></div></p>
+<p>静态全局变量和全局变量的处理方式是一致的，Block 能够直接对其进行读写。</p>
+<p>静态变量的可见性只是当前函数内，转换后的代码中 __main_block_func_0 无法访问。在 __main_block_impl_0 中增加指向静态变量指针的成员变量，通过该成员变量实现读写静态变量。</p>
+<p>前文说到 Block 能够捕获自动变量，但是不能修改其值。自动变量的生命周期跟随其所在的作用域，离开作用域即销毁。Block 的生命周期可能会长于自动变量的生命周期，所以无法采用读写静态变量的实现方案。</p>
+<h2 id="section_5">五、Block 中修改 __block 变量</h2>
+
+<p>原始代码：</p>
+<div class="code"><pre><code>int main() &#123;
+    __block int val = 10;
+    void (^blk)(void) = ^&#123;val = 1;&#125;;
+    return 0;
+&#125;
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>struct __Block_byref_val_0 &#123;
+    void *__isa;
+    __Block_byref_val_0 *__forwarding;
+    int __flags;
+    int __size;
+    int val;
+&#125;;
+
+<p>struct __main_block_impl_0 &#123;<br>    struct __block_impl impl;<br>    struct __main_block_desc_0 *Desc;<br>    __Block_byref_val_0 *val;<br>    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, __Block_byref_val_0 *_val, int flags=0)<br>        : val(_val-&gt;__forwarding) &#123;<br>        impl.isa = &amp;_NSConcreteStackBlock;<br>        impl.Flags = flags;<br>        impl.FuncPtr = fp;<br>        Desc = desc;<br>    &#125;<br>&#125;;</p>
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself)<br>&#123;<br>    __Block_byref_val_0 *val = __cself-&gt;val;<br>    (val-&gt;__forwarding-&gt;val) = 1;<br>&#125;</p>
+<p>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_assign(&amp;dst-&gt;val, src-&gt;val, BLOCK_FIELD_IS_BYREF);<br>&#125;</p>
+<p>static void __main_block_dispose_0(struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_dispose(src-&gt;val, BLOCK_FIELD_IS_BYREF);<br>&#125;</p>
+<p>static struct __main_block_desc_0 &#123;<br>    unsigned long reserved;<br>    unsigned long Block_size;<br>    void (<em>copy)(struct __main_block_impl_0</em>, struct __main_block_impl_0*);<br>    void (<em>dispose)(struct __main_block_impl_0</em>);<br>&#125; __main_block_desc_0_DATA = &#123;<br>    0,<br>    sizeof(struct __main_block_impl_0),<br>    __main_block_copy_0,<br>    __main_block_dispose_0<br>&#125;;</p>
+<p>int main()<br>&#123;<br>    __Block_byref_val_0 val = &#123;<br>        0,<br>        &amp;val,<br>        0,<br>        sizeof(__Block_byref_val_0),<br>        10<br>    &#125;;<br>    blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, &amp;val, 0x22000000);<br>    return 0;<br>&#125;<br></code></pre></div></p>
+<p>转换后的代码中，原始 __block 变量转换成了 __Block_byref_val_0 结构体类型。__Block_byref_val_0 的成员变量 val 存储原始值。</p>
+<p>__Block_byref_val_0 实例和 __main_block_impl_0 实例是多对多的关系，即一个 __Block_byref_val_0 实例可以在多个 __main_block_impl_0 实例中使用，一个 __main_block_impl_0 实例也可以使用多个 __Block_byref_val_0 实例。</p>
+<h2 id="section_6">六、Block 的存储类型</h2>
+
+<p>上文可知 Block 本身也是 OC 对象，其在内存中的存储方式有三种：_NSConcreteStackBlock、_NSConcreteGlobalBlock、_NSConcreteMallocBlock，分别对应：栈、全局/静态存储区、堆。内存区域划分方式大致可用下图表示，下图同时描述了不同存储方式的 Block 对应的内存区域。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%"></p>
+
+<p class="post-image-title">图 Block 不同存储方式对应的内存区域</p>
+
+<p>Block 字面定义在全局作用域生成 _NSConcreteGlobalBlock 类型 Block 对象。</p>
+<p>存储类型为 _NSConcreteStackBlock 的 Block 以及 __block 修饰的变量的生命周期与普通自动变量相同，离开作用域后即销毁。</p>
+<h2 id="section_7">七、Block 的存储类型 -- 堆上的 Block</h2>
+
+<p>堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。下图为 Block 从栈拷贝到堆的示意图，同样的，__block 变量也可以从栈拷贝到堆。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图 Block 和 __block 变量从栈拷贝到堆</p>
+
+<p>在下列情况下，栈中的 Block 会拷贝到堆：</p>
+<p>a. 调用 Block 对象的 copy 方法；</p>
+<p>b. 函数返回值为 Block 对象；</p>
+<p>c. Block 对象赋给 __strong 所有权描述符修饰的变量；</p>
+<p>d. Block 对象被 Cocoa 框架中的 “usingBlock” 方法使用，或者被 GCD 中的函数使用。</p>
+<p>不同存储类型的 Block 对象调用 copy 方法的效果不同：</p>
+<p> a. _NSConcreteStackBlock 类型的 Block 对象，从栈拷贝到堆；</p>
+<p> b. _NSConcreteGlobalBlock 类型的 Block 对象，不发生作用；</p>
+<p> c. _NSConcreteMallocBlock 类型的 Block 对象，引用计数加一。（在 ARC 开启的情况下，多次调用 copy 方法也没有问题。）</p>
+<h2 id="section_8">八、__block 变量</h2>
+
+<p>当 Block 使用了 __block 变量并且 Block 从栈拷贝到堆时：如果 __block 变量存储在栈上，__block 变量会被拷贝到堆上，并且 Block 对象拥有 __block 变量的所有权；如果 __block 变量本来即存储在堆上，Block 也会拥有 __block 变量的所有权。</p>
+<p>__block 变量编译后也是普通的结构体实例，其中有个特别的成员变量 __forwarding。通过 __forwarding 成员变量保证访问 __block 变量的一致性。如下代码片段，__block 变量随着 Block 从栈拷贝到堆上。</p>
+<div class="code"><pre><code>__block int val = 0;
+void (^blk)(void) = [^&#123;++val;&#125; copy];
+++val;
+blk();
+</code></pre></div>
+
+<p>Block 内部会修改堆上的 __block 变量，Block 外部会修改栈上的 __block 变量。转换后，这两种行为是一致的，即<code>++(val.__forwarding-&gt;val)</code>。栈和堆上 __block 变量中的 __forwarding 指针都指向堆上的 __block 变量，下图描述了这种机制。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图 __block 变量拷贝到堆</p>
+
+<h2 id="section_9">九、Block 捕获对象实例</h2>
+
+<p>前文讲述的 Block 捕获自动变量，自动变量的类型为整型变量。当 Block 捕获的自动变量为 OC 对象时：</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>blk_t blk;
+&#123;
+    id array = [[NSMutableArray alloc] init];
+    blk = [^(id obj) &#123;
+        [array addObject:obj];
+        NSLog(@"array count = %ld", [array count]);
+    &#125; copy];
+&#125;
+blk([[NSObject alloc] init]);
+blk([[NSObject alloc] init]);
+blk([[NSObject alloc] init]);
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>/* a struct for the Block and some functions */
+struct __main_block_impl_0 &#123;
+    struct __block_impl impl;
+    struct __main_block_desc_0 *Desc;
+    id __strong array;
+    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, id __strong _array, int flags=0)
+        : array(_array) &#123;
+        impl.isa = &_NSConcreteStackBlock;
+        impl.Flags = flags;
+        impl.FuncPtr = fp;
+        Desc = desc;
+    &#125;
+&#125;;
+
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself, id obj)<br>&#123;<br>    id __strong array = __cself-&gt;array;<br>    [array addObject:obj];<br>    NSLog(@”array count = %ld”, [array count]);<br>&#125;</p>
+<p>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_assign(&amp;dst-&gt;array, src-&gt;array, BLOCK_FIELD_IS_OBJECT);<br>&#125;</p>
+<p>static void __main_block_dispose_0(struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_dispose(src-&gt;array, BLOCK_FIELD_IS_OBJECT);<br>&#125;</p>
+<p>static struct __main_block_desc_0 &#123;<br>    unsigned long reserved;<br>    unsigned long Block_size;<br>    void (<em>copy)(struct __main_block_impl_0</em>, struct __main_block_impl_0*);<br>    void (<em>dispose)(struct __main_block_impl_0</em>);<br>&#125; __main_block_desc_0_DATA = &#123;<br>    0,<br>    sizeof(struct __main_block_impl_0),<br>    __main_block_copy_0,<br>    __main_block_dispose_0<br>&#125;;</p>
+<p>/* Block literal and executing the Block */<br>blk_t blk;<br>&#123;<br>    id __strong array = [[NSMutableArray alloc] init];<br>    blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, array, 0x22000000);<br>    blk = [blk copy];<br>&#125;<br>(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);<br>(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);<br>(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);<br></code></pre></div></p>
+<h2 id="section_10">十、内存管理</h2>
+
+<p>前文讲述到 Block 内存管理时提到对象之间的所有权关系，但是转换后的 C 代码是无法利用 ARC 机制的。本小节说明相关的内存管理是如何实现的。</p>
+<h4>10.1 Block 内的内存管理实现</h4>
+
+<p>在前文中，当 Block 对象需要引用对象时，比如捕获 __block 变量、捕获 OC 对象实例，__main_block_desc_0 结构体中多了两个成员变量 copy 和 dispose，他们都为函数指针，函数实现如下代码所示。copy 和 dispose 分别对应对象的初始化和销毁，OC 运行时检测到 Block 从栈拷贝到堆或者 Block 对象被销毁时，能够适时调用 copy 和 dispose 实现 Block 内的内存管理。</p>
+<p>Block 捕获 __block 变量内存管理相关代码：</p>
+ <div class="code"><pre><code>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+&#123;
+    _Block_object_assign(&dst->val, src->val, BLOCK_FIELD_IS_BYREF);
+&#125;
+
+<p>static void __main_block_dispose_0(struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_dispose(src-&gt;val, BLOCK_FIELD_IS_BYREF);<br>&#125;<br></code></pre></div></p>
+<p>Block 捕获对象实例内存管理相关代码：</p>
+<div class="code"><pre><code>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+&#123;
+    _Block_object_assign(&dst->array, src->array, BLOCK_FIELD_IS_OBJECT);
+&#125;
+
+<p>static void __main_block_dispose_0(struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_dispose(src-&gt;array, BLOCK_FIELD_IS_OBJECT);<br>&#125;<br></code></pre></div></p>
+<h4>10.2 __block 变量内的内存管理实现</h4>
+
+<p>当 __block 修饰的变量为 OC 对象实例时，__block 内部需要负责该对象实例的内存管理。如下代码所示。__block 变量内的内存管理实现和 Block 内的内存管理类似。该情况下，__Block_byref_obj_0 结构体中多了两个成员变量 __Block_byref_id_object_copy 和 __Block_byref_id_object_dispose，都为函数指针，作用与上小节的 copy 和 dispose 相同，OC 运行时检测到 __block 变量从栈拷贝到堆或者 __block 变量被销毁时，适时调用这对方法，实现 __block 变量内的内存管理。</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>__block id obj = [[NSObject alloc] init];
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>/* struct for __block variable */
+struct __Block_byref_obj_0 &#123;
+    void *__isa;
+    __Block_byref_obj_0 *__forwarding;
+    int __flags;
+    int __size;
+    void (*__Block_byref_id_object_copy)(void*, void*);
+    void (*__Block_byref_id_object_dispose)(void*);
+    __strong id obj;
+&#125;;
+
+<p>static void __Block_byref_id_object_copy_131(void *dst, void <em>src) &#123;<br>    _Block_object_assign((char</em>)dst + 40, *(void * <em>) ((char</em>)src + 40), 131);<br>&#125;</p>
+<p>static void __Block_byref_id_object_dispose_131(void <em>src) &#123;<br>    _Block_object_dispose(</em>(void * <em>) ((char</em>)src + 40), 131);<br>&#125;</p>
+<p>/* __block variable declaration */<br>__Block_byref_obj_0 obj = &#123;<br>    0,<br>    &amp;obj,<br>    0x2000000,<br>    sizeof(__Block_byref_obj_0),<br>    __Block_byref_id_object_copy_131,<br>    __Block_byref_id_object_dispose_131,<br>    [[NSObject alloc] init]<br>&#125;;<br></code></pre></div></p>
+<h2 id="section_11">十一、ARC 下 Block 得存储类型变化</h2>
+
+<p>_NSConcreteGlobalBlock：这种类型的 block 定义在全局存储区，它没有捕获任何上下文，在编译时就能完全定义。</p>
+<p>_NSConcreteStackBlock：这种类型的 block 定义在栈上。block 在被拷贝到堆上之前，都是存储在栈中。</p>
+<p>_NSConcreteMallocBlock：这种类型的 block 存储在堆上。和普通 OC 对象遵循同样的内存管理规则（引用计数）。</p>
+<p>MRC 和 ARC 的 block 存储有差异，“在 ARC 开启的情况下，将只会有 NSConcreteGlobalBlock 和 NSConcreteMallocBlock 类型的 block。”</p>
+<h2 id="section_12">十二、案例分析</h2>
+
+<h3>案例</h3>
+
+<p>下面的代码显然存在内存泄漏，有 self -&gt; blk -&gt; self 这样的循环引用。那内存泄漏是哪个环节导致的，是位置 A，还是位置 B？</p>
+<div class="code"><pre><code>@interface TestObject : NSObject
+@property (nonatomic, copy) dispatch_block_t blk;
+@end
+@implementation TestObject
+- (instancetype)init &#123;
+    self = [super init];
+    if (self) &#123;
+        self.blk = ^&#123;               // A
+            [self emptyMethod];
+        &#125;;
+        self.blk();                 // B
+    &#125;
+    return self;
+&#125;
+- (void)emptyMethod &#123;
+    NSLog(@"hello");
+&#125;
+@end
+</code></pre></div>
+
+<p>使用 Instruments 能够分析出位置 A 便引入了循环引用。参考 <a href="#section_9">九、Block 捕获对象实例</a>，Block 实例化的时候，外部对象实例在其构造函数中就被强引用。所以 Block 定义的时候就已经产生了循环引用，而不用等到执行的时候。</p>
+<h3>参考文献：</h3>
+
+<p>Sakamoto, Kazuki, and Tomohiko Furumoto. Pro Multithreading and Memory Management for IOS and OS X. Apress, 2012.</p>
+<p><a href="http://www.galloway.me.uk/2012/10/a-look-inside-blocks-episode-2/" target="_blank">A look inside blocks: Episode 2</a></p>
+<p>唐巧 . <a href="http://blog.devtang.com/2013/07/28/a-look-inside-blocks/#ARC-%E5%AF%B9-block-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%BD%B1%E5%93%8D" target="_blank">谈Objective-C block的实现 – ARC 对 block 类型的影响</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="ckrsyk6v60018aqnbe0qc7zez" data-title="Objective-C Block" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/12/clipped-content/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          视图裁剪
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/17/sort/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">排序算法，伪代码实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

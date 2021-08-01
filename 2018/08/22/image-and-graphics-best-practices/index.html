@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>iOS 图像解码和最佳实践 | jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言  最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。 1. 三种 Buffer 和解码  Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。 有三种 Buffer：Data Buffer、Image Buffer、Frame Buffer。 Data Buffer 是存储在内存中的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 图像解码和最佳实践">
+<meta property="og:url" content="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:description" content="前言  最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。 1. 三种 Buffer 和解码  Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。 有三种 Buffer：Data Buffer、Image Buffer、Frame Buffer。 Data Buffer 是存储在内存中的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-image-rendering-pipeline.png">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-uiimage-uiimageview.png">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png">
+<meta property="article:published_time" content="2018-08-22T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-01T08:45:03.247Z">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-08-22-image-rendering-pipeline.png">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-image-and-graphics-best-practices" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/08/22/image-and-graphics-best-practices/" class="article-date">
+  <time class="dt-published" datetime="2018-08-22T00:00:00.000Z" itemprop="datePublished">2018-08-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      iOS 图像解码和最佳实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2>前言</h2>
+
+<p>最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。</p>
+<h2 id="section_1">1. 三种 Buffer 和解码</h2>
+
+<p>Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。</p>
+<p>有三种 Buffer：Data Buffer、Image Buffer、Frame Buffer。</p>
+<p>Data Buffer 是存储在内存中的原始数据，图像可以使用不同的格式保存，如 jpg、png。Data Buffer 的信息不能用来描述图像的像素信息。</p>
+<p>Image Buffer 是图像在内存中的存在方式，其中每个元素描述了一个像素点。Image Buffer 的大小和图像的大小成正比。</p>
+<p>Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM）中，而 Image Buffer 存储在 RAM 中。</p>
+<p>解码就是从 Data Buffer 生成 Image Buffer 的过程。Image Buffer 会上传到 GPU 成为 Frame Buffer，GPU 以每秒60次的速度使用 Frame Buffer 更新屏幕。</p>
+<p>下图描述了图像从文件到渲染到屏幕上的流程。</p>
+<p class="post-image">
+    <img src="/resources/figures/2018-08-22-image-rendering-pipeline.png" alt="图像渲染流程" width="90%">
+</p>
+
+<p class="post-image-title">图像渲染流程</p>
+
+<h2 id="section_2">2. UIImage 和 UIImageView</h2>
+
+<p>UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图，如下图所示。</p>
+<p class="post-image">
+    <img src="/resources/figures/2018-08-22-uiimage-uiimageview.png" alt="UIImage 和 UIImageView" width="90%">
+</p>
+
+<p class="post-image-title">UIImage 和 UIImageView 的角色</p>
+
+<p>UIImage 是 iOS 中处理图像的高级类。创建一个 UIImage 实例只会加载 Data Buffer，将图像显示到屏幕上才会触发解码，也就是 Data Buffer 解码为 Image Buffer。Image Buffer 也关联在 UIImage 上。</p>
+<p>UIImage 关联的图像是否已解码对外部是透明的（如本文最后的 Instruments 截图，调用栈中都是系统函数），没有办法判断。</p>
+<h2 id="section_3">3. 图像解码</h2>
+
+<p>上面说到，UIImage 关联的图像是否已解码对外部是透明的，但是有许多操作会触发图像的解码，下面是一些例子。</p>
+<h3>隐式解码</h3>
+
+<p>将图像显示到屏幕上会触发隐式解码。（必须同时满足图像被设置到 UIImageView 中、UIImageView 添加到视图，才会触发图像解码。)</p>
+<div class="code"><pre><code>UIImageView *imageView = [[UIImageView alloc] init];
+[self.view addSubview:imageView];
+[imageView setImage:image];
+</code></pre></div>
+
+<p></p>
+
+<h3>Core Graphics</h3>
+
+<p>手动绘制图像能完成图像解码，下面代码中的 newImage 实例的图像已完成解码。</p>
+<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
+[image drawAtPoint:CGPointZero];
+UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+UIGraphicsEndImageContext();
+</code></pre></div>
+
+<p>下面的代码片段截取自 <a href="https://github.com/ibireme/YYKit.git" target="_blank">YYKit</a>，其中 newImage 实例的图像已完成解码。在测试工程中，该代码比上面直接绘制代码快约7倍。</p>
+<div class="code"><pre><code>size_t width = CGImageGetWidth(imageRef);
+size_t height = CGImageGetHeight(imageRef);
+CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
+size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
+size_t bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
+size_t bytesPerRow = CGImageGetBytesPerRow(imageRef);
+CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+
+<p>CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);<br>CFDataRef data = CGDataProviderCopyData(dataProvider);      // 主要耗时操作（解码）</p>
+<p>CGDataProviderRef newProvider = CGDataProviderCreateWithCFData(data);<br>CFRelease(data);</p>
+<p>CGImageRef newImageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, NULL, false, kCGRenderingIntentDefault);<br>UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];<br>CGImageRelease(newImageRef);<br>CFRelease(newProvider);<br></code></pre></div></p>
+<h3>Image I/O</h3>
+
+<p>Image I/O 提供了多种处理图像的接口，但是我并没有找到一个可以直观的触发图像解码的实现方案。（简单的使用 CGImageSourceCreateWith… / CGImageSourceCreateImageAtIndex 这对函数并不会触发解码。）（下文中引用的 WWDC 提供的代码段算是一种解码的方案。）</p>
+<h2 id="section_4">4. 最佳实践</h2>
+
+<p>内存和 CPU 是 App 运行最宝贵的资源，我们处理和使用图像从减少内存占用和优化 CPU 使用入手。下面提供一些优化方案。</p>
+<h3>减少内存占用</h3>
+
+<p>大的图像会占用较多的内存资源，解码和传输到 GPU 也会耗费较多时间。实际需要显示的图像尺寸可能并不是很大，如果能将大图缩小，便能达到优化的目的。</p>
+<p>下面的代码片段来自 WWDC 2018，功能是缩小图像并解码。原始代码为 Swift，这里转成了 Objective-C。</p>
+<div class="code"><pre><code>// 大图缩小为显示尺寸的图
+- (UIImage *)downsampleImageAt:(NSURL *)imageURL to:(CGSize)pointSize scale:(CGFloat)scale &#123;
+    // 利用图像文件地址创建 image source
+    NSDictionary *imageSourceOptions =
+  @&#123;
+    (__bridge NSString *)kCGImageSourceShouldCache: @NO // 原始图像不要解码
+    &#125;;
+    CGImageSourceRef imageSource =
+    CGImageSourceCreateWithURL((__bridge CFURLRef)imageURL, (__bridge CFDictionaryRef)imageSourceOptions);
+
+<pre><code>// 下采样
+CGFloat maxDimensionInPixels = MAX(pointSize.width, pointSize.height) * scale;
+NSDictionary *downsampleOptions =
+@&#123;
+  (__bridge NSString *)kCGImageSourceCreateThumbnailFromImageAlways: @YES,
+  (__bridge NSString *)kCGImageSourceShouldCacheImmediately: @YES,  // 缩小图像的同时进行解码
+  (__bridge NSString *)kCGImageSourceCreateThumbnailWithTransform: @YES,
+  (__bridge NSString *)kCGImageSourceThumbnailMaxPixelSize: @(maxDimensionInPixels)
+   &#125;;
+CGImageRef downsampledImage =
+CGImageSourceCreateThumbnailAtIndex(imageSource, 0, (__bridge CFDictionaryRef)downsampleOptions);
+UIImage *image = [[UIImage alloc] initWithCGImage:downsampledImage];
+CGImageRelease(downsampledImage);
+CFRelease(imageSource);
+
+return image;
+</code></pre>
+<p>}<br></code></pre></div></p>
+<h3>优化 CPU 使用</h3>
+
+<p>CPU 使用的优化我们考虑的是，利用设备的多核芯片（多线程）和采用预处理策略。</p>
+<p>值得关注的 CPU 计算工作是，Data Buffer 转 Image Buffer 这一过程，也就是解码过程。在一个测试工程中，大量的设置了图像的 UIImageView 被显示到屏幕上，图像解码是性能瓶颈。如下图所示。</p>
+<p class="post-image">
+    <img src="/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png" alt="" width="100%">
+</p>
+
+<p>预处理本身并没有减少 CPU 的工作量，但是在 CPU 空闲时提前完成图像解码，能间接达到优化用户体验的效果。</p>
+<h3>参考文献：</h3>
+
+<p>WWDC2018. <a href="https://developer.apple.com/videos/play/wwdc2018/219/" target="_blank">Image and Graphics Best Practices</a></p>
+<p>Luke Parham. <a href="http://www.lukeparham.com/blog/2018/3/14/decoding-jpegs-with-the-best" target="_blank">JPEG Decoding with the Best</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="ckrsyk6um000laqnb4w3khl48" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/26/the-practice-of-management-reading-notes/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          管理的实践，读书笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/27/how-to-choose-opensource-liscence/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">如何选择开源许可证？（转）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

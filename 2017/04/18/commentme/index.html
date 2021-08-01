@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>实现 GitHub Pages 的评论系统 | jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言  2018-10-29 更新： 最近买了个虚拟主机，可以简化前端工作，而且服务端使用命令行工具，也不会像前端实现这么复杂。旧的使用 GitHub API 方式的实现，可以访问这个链接。   本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 Jekyll 将当前提交内容编译成静">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现 GitHub Pages 的评论系统">
+<meta property="og:url" content="https://rob2468.github.io/2017/04/18/commentme/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:description" content="前言  2018-10-29 更新： 最近买了个虚拟主机，可以简化前端工作，而且服务端使用命令行工具，也不会像前端实现这么复杂。旧的使用 GitHub API 方式的实现，可以访问这个链接。   本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 Jekyll 将当前提交内容编译成静">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2017-04-18-overall-architecture.png">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png">
+<meta property="article:published_time" content="2017-04-18T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-01T08:45:03.247Z">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2017-04-18-overall-architecture.png">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-commentme" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/04/18/commentme/" class="article-date">
+  <time class="dt-published" datetime="2017-04-18T00:00:00.000Z" itemprop="datePublished">2017-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      实现 GitHub Pages 的评论系统
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<h2>前言</h2>
+
+<p>2018-10-29 更新：</p>
+<p>最近买了个虚拟主机，可以简化前端工作，而且服务端使用命令行工具，也不会像前端实现这么复杂。旧的使用 GitHub API 方式的实现，可以访问<br><a href="https://github.com/rob2468/BlogServer/tree/v0.1" target="_blank">这个链接</a>。</p>
+<hr>
+
+<p>本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> 将当前提交内容编译成静态站点，实现网站发布。</p>
+<p>我希望通过提供评论系统实现和读者的沟通。最开始使用 Disqus 作为评论系统，无奈国内已无法使用，并且当时没有找到好的替代品，便打算自己实现。</p>
+<p>我预想的评论系统使用现有的构建博客的技术便能实现，即静态站点，无需额外的后端计算和存储成本。查阅一番资料并加以实践，目前已实现一套可用的评论系统，本文对该解决方案加以记录说明。</p>
+<h2>一、整体架构</h2>
+
+<p>不考虑技术细节，整个评论系统可以分为三个部分。一是评论入口，由前端提供表单，可输入评论内容并提交。二是评论内容存储，实现评论内容持久化。三是评论展示，能够读取已持久化存储的评论内容。如下图所示。</p>
+<p class="post-image"><img src="/resources/figures/2017-04-18-overall-architecture.png" alt="" width="60%"></p>
+
+<p>评论入口使用 HTML 和 JS 实现评论表单的展现和交互逻辑。评论内容采用约定组织结构，存储于同一个 Git 仓库中，由前端页面利用 GitHub API 实现。评论展示利用 Jekyll 实现，生成静态站点时解析有固定结构的评论内容，并将内容填充在网页中。</p>
+<h2>二、Git 底层原理与 GitHub API</h2>
+
+<p>整个评论系统得益于 Git 以及 GitHub 提供的 API。</p>
+<p>Git 本质上是一个内容寻址文件系统，它以特定方式存储文件，并提供访问这些文件的能力。Git 主要包含如下几种对象（blob、tree、commit、ref、tag），这些对象使用长度为40个字符的 SHA-1 标示。</p>
+<p>Git 中的文件内容以 blob 类型存储，blob 对象只存储文件的内容，不包含文件的名称。tree 类型能够存储文件名，同时也允许存储一组文件。所有内容以 tree 或 blob 对象存储，其中 tree 对象对应于 UNIX 中的目录，blob 对象则大致对应于 inodes 或文件内容。一个单独的 tree 对象包含一条或多条记录，每一条记录含有一个指向 blob 或子 tree 对象的 SHA-1 指针，并附有该对象的权限模式、类型和文件名信息。</p>
+<p>仅使用 blob 和 tree 便能实现文件的存储和访问，但是还需要更多的信息才能成为版本控制系统。commit 对象对应 Git 管理下的所有文件一个版本快照，包含了提交时的 tree 对象、前次提交的 commit 对象、提交时间等信息。Git 中的所有对象都是根据40个字符的 SHA-1 值索引访问的，但是更方便的做法是使用 ref。ref 是一个指针，指向 commit 对象，方便使用者以已于理解的方式操作。tag 对象用于创建里程碑，类似于分支引用，但是永远不会变化。tag 可以标记任何 Git 对象，比如，blob、tree、commit。</p>
+<p>由上述内容可知，只要构造好 blob、tree 和 commit 对象，并将指针指向新创建的 commit，便能达到类似使用 Git 命令行工具提交文件内容的效果。GitHub 提供了实现该功能的 API，需要如下5个接口：<a href="https://developer.github.com/v3/git/refs/#get-a-reference" target="_blank">获取引用</a>、<a href="https://developer.github.com/v3/git/commits/#get-a-commit" target="_blank">获取提交</a>、<a href="https://developer.github.com/v3/git/trees/#create-a-tree" target="_blank">创建 tree</a>、<a href="https://developer.github.com/v3/git/commits/#create-a-commit" target="_blank">创建提交</a>、<a href="https://developer.github.com/v3/git/refs/#update-a-reference" target="_blank">更新引用</a>。</p>
+<h2>三、实现细节</h2>
+
+<h3>1. 评论信息存储方式</h3>
+
+<p>所有评论以纯文本方式存储，置于 _data/comments.json 文件中。单条评论信息的结构如下所示：</p>
+<div class="code"><pre><code>&#123;
+  "email": <# email #>,
+  "date": <# date #>,
+  "author": &#123;
+    "display_name": <# display_name #>,
+  &#125;,
+  "content": content
+&#125;
+</code></pre></div>
+
+<p>_data/comments.json 中所有评论信息的结构如下所示。每篇文章使用键 page_id 唯一标示，page_id 的值为该篇文章的所有评论。</p>
+<div class="code"><pre><code>&#123;
+  <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
+  <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
+  ...
+&#125;</code></pre></div>
+
+<h3>2. 评论信息的获取</h3>
+
+<p>根据上一小节说明的评论的存储结构，使用如下代码获取评论内容。Jekyll 将内容编译成静态站点时执行下面代码的逻辑，将评论填充到网页中。</p>
+<div class="code"><pre><code>assign pageid = page.page_id    # 获取文章标识符
+if site.data.comments[pageid]   # 如果该文章有评论
+  assign sorted_comments = (site.data.comments[pageid] | sort: 'date') # 获取评论并按时间排序
+endif
+for c in sorted_comments reversed # 按时间倒序遍历
+  c.author.display_name on c.date | date: "%Y-%m-%d"  # 显示评论者和评论时间
+  c.content | newline_to_br       # 显示评论内容
+else
+  这篇文章暂没有评论。
+endfor
+</code></pre></div>
+
+<h3>3. 提交评论</h3>
+
+<p>提交评论是整个评论系统的核心操作。利用 GitHub API，使用 XMLHttpRequest 实现客户端和 GitHub 的通信。提交评论操作的本质是在博客代码库的 comments 分支基于当前最新提交创建一次提交，并将分支引用指向该次提交。新创建提交的内容是，_data/raw_comments/ 下创建的一个临时文件，保存评论者提交的评论信息。</p>
+<p>下面描述客户端和 GitHub 通信的流程。</p>
+<p class="post-image"><img src="/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png" alt="" width="70%"></p>
+
+<p>如上图所示，提交评论需要进行5次客户端和 GitHub 的通信，并且后3次 POST 请求需要在请求中附加身份验证信息。</p>
+<p>a）首先获取目标分支的最新提交，取得 commit id；</p>
+<p>b）获取最新提交对应的 tree，取得 tree id；</p>
+<p>c）基于取得的 tree id，创建新的 tree 对象，并取得该对象的 id；</p>
+<p>POST 请求发送的数据格式如下所示。path 字段指明评论信息存储的临时文件，content 字段是评论信息，base_tree 字段是最新提交对应的 tree 对象的 id。</p>
+<div class="code"><pre><code>&#123;
+  "tree": [&#123;
+    "path": "_data/raw_comments/comment_" + new Date().getTime(),
+    "mode": "100644",
+    "type": "blob",
+    "content": JSON.stringify(comment),
+  &#125;],
+  "base_tree": treeID,
+&#125;
+</code></pre></div>
+
+<p>d）基于新创建的 tree 对象，创建提交，并取得提交对象的 id；</p>
+<p>POST 请求发送的数据格式如下所示。message 字段为提交日志，tree 字段为新创建的 tree 对象的 id，parents 字段是最新提交的 id。服务端接受到这个请求后创建新的提交对象，并返回该对象的 id。</p>
+<div class="code"><pre><code>&#123;
+  "message": "comment by " + display_name + " on " + date,
+  "tree": newTreeID,
+  "parents": [lastCommitID]
+&#125;
+</code></pre></div>
+
+<p>e）修改分支引用为最新提交。</p>
+<h3>4. 评论整合</h3>
+
+<p>前面说到，评论者提交的评论信息是存储在 _data/raw_comments/ 下的临时文件。评论提交成功后，前端页面会显示几秒钟的查看评论的跳转链接。这种实现方式既提供了评论者查看自己评论的方法，也让我有机会先查看一下评论内容，再合入 _data/comments.json 中。（其实是没有想到方法可以直接将评论的内容整合到 _data/comments.json 中。）</p>
+<p>评论信息以 json 格式存储，使用 JS 脚本便能方便的处理。读取 _data/comments.json 获得所有评论，遍历所有临时评论文件并合入所有评论，写回 _data/comments.json 文件，最后删除所有临时评论文件。</p>
+<h2>四、后记</h2>
+
+<p>在前人思考的基础上开发一套可用的评论系统，当然问题是存在的（比如高并发情况、通信次数多、token 管理等），但也算是满足我的要求。</p>
+<p>专业的评论系统还是有不少的，比如前段时间有个同事提到<a target="_blank" rel="noopener" href="https://livere.com/">来必力</a>，看起来挺不错。</p>
+<h3>参考文献：</h3>
+1. <a href="https://mdswanson.com/blog/2011/07/23/digging-around-the-github-api-take-2.html" target="_blank">Making a commit with the Github API</a>
+2. <a href="https://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86" target="_blank">Git 内部原理</a>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2017/04/18/commentme/" data-id="ckrsyk6uh000eaqnbdrxa8cv0" data-title="实现 GitHub Pages 的评论系统" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/27/code-obfuscation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          代码混淆
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ARC 内存管理和 GCD</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>代码混淆 | jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。 一、基本原理  利用宏，将敏感类名、方法名替换成其它字符串。 可以在预编译头文件中(.pch)将希望替换的字符串定义为其它值，如 #define SensitiveMetho">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码混淆">
+<meta property="og:url" content="https://rob2468.github.io/2017/07/27/code-obfuscation/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:description" content="class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。 一、基本原理  利用宏，将敏感类名、方法名替换成其它字符串。 可以在预编译头文件中(.pch)将希望替换的字符串定义为其它值，如 #define SensitiveMetho">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-07-27T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-01T08:45:03.247Z">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-code-obfuscation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/07/27/code-obfuscation/" class="article-date">
+  <time class="dt-published" datetime="2017-07-27T00:00:00.000Z" itemprop="datePublished">2017-07-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      代码混淆
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<p>class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。</p>
+<h2 id="section_1">一、基本原理</h2>
+
+<p>利用宏，将敏感类名、方法名替换成其它字符串。</p>
+<p>可以在预编译头文件中(.pch)将希望替换的字符串定义为其它值，如 <code>#define SensitiveMethod AMMAzmGDxKvDXlxI</code>。在程序预编译环节，所有希望被替换的字符串会被替换，对生成的包进行 class-dump 只能看到替换后的毫无意义的内容。</p>
+<p>这种方法非常简单，人工操作也能完成。当需要替换的方法比较多，并且经常需要维护时，一些实用脚本就很重要。</p>
+<h2 id="section_2">二、实用工具</h2>
+
+<p>下面的脚本片段从参考文献[1]中拷贝而来，并作了部分调整，增加了随机字符串去重的功能。</p>
+<div class="code"><pre><code>#!/usr/bin/env bash
+TABLENAME="symbols"
+SYMBOL_DB_FILE="symbols"
+STRING_SYMBOL_FILE="obfuscation.list"
+HEAD_FILE="CodeObfuscation.h"
+export LC_CTYPE=C
+createTable() &#123;
+    echo "create table $TABLENAME (src text, des text);" | sqlite3 $SYMBOL_DB_FILE
+&#125;
+insertValue() &#123;
+    echo "insert into $TABLENAME values('$1' ,'$2');" | sqlite3 $SYMBOL_DB_FILE
+&#125;
+isUnique() &#123;
+    echo "select count(*) from $TABLENAME where des='$1';" | sqlite3 $SYMBOL_DB_FILE
+&#125;
+randomString() &#123;
+    random=`openssl rand -base64 64 | tr -cd 'a-zA-Z' |head -c 16`
+    count=`isUnique $random`
+    if [[ $count -eq 0 ]]; then
+        echo $random
+    else
+        randomString
+    fi
+&#125;
+
+<p>rm -f $SYMBOL_DB_FILE<br>rm -f $HEAD_FILE<br>touch $HEAD_FILE<br>createTable<br>echo ‘#ifndef CodeObfuscation_h<br>#define CodeObfuscation_h’ &gt;&gt; $HEAD_FILE<br>echo “// obfuscate string at <code>date</code>“ &gt;&gt; $HEAD_FILE<br>cat “$STRING_SYMBOL_FILE” | while read -ra line; do<br>    if [[ -n “$line” ]]; then<br>        random=<code>randomString</code><br>        insertValue $line $ramdom<br>        res=”#define $line $random”<br>        echo $res<br>        echo “$res” &gt;&gt; $HEAD_FILE<br>    fi<br>done<br>echo “#endif” &gt;&gt; $HEAD_FILE<br>rm -f $SYMBOL_DB_FILE<br></code></pre></div></p>
+<p>STRING_SYMBOL_FILE 为文件名，文件内容为希望替换的字符串列表。HEAD_FILE 为文件名，文件内容为脚本生成的包含宏定义的头文件。randomString 函数用于生成一段随机字符串。脚本主体功能是不断读取 STRING_SYMBOL_FILE 中的行，每行一个原始字符串，然后生成一个随机字符串，将原始字符串和随机字符串组成一行 #define 语句。</p>
+<p>脚本文件、资源文件和生成的文件都在同一个文件夹内，将生成的头文件加入 Xcode 工程运行即可。</p>
+<h2 id="section_3">三、对 JSPatch 进行代码混淆</h2>
+
+<p>出于某些原因希望对 JSPatch 进行代码混淆，下面是一个供参考的需要进行宏替换的字符串列表。</p>
+<div class="code"><pre><code>/* obfuscation.list 文件 */
+startEngine
+evaluateScriptWithPath
+handleException
+handleMemoryWarning
+defineStruct
+addExtensions
+formatOCToJS
+formatJSToOC
+formatPointerOCToJS
+formatRetainedCFTypeOCToJS
+formatPointerJSToOC
+includedScriptPaths
+getStructDataWidthDict
+boxAssignObj
+boxWeakObj
+boxClass
+boxPointer
+boxObj
+sizeOfStructTypes
+getDictOfStruct
+structDefine
+registeredStruct
+overideMethods
+unboxPointer
+unboxClass
+jp_methodSignatureForSelector
+jp_fixMethodSignature
+JPBoxing
+JPBlock
+JPBlockWrapper
+JPCFunction
+JPMemory
+JPStructPointer
+JPCGBitmapContext
+JPCGColor
+JPCGContext
+JPCGGeometry
+JPCGImage
+JPCGPath
+JPCGTransform
+JPCoreGraphics
+JPUIGeometry
+JPUIGraphics
+JPUIImage
+JPUIKit
+JPCleaner
+JPDispatch
+JPMethodSignature
+JPLocker
+JPNumber
+JPKeyCommands
+SGDirWatchdog
+JPProtocol
+JPSpecialInit
+JPEngine
+JPLoader
+JPLoaderInclude
+JPLoaderTestInclude
+JPExtension
+JPPlayground
+JPDevErrorView
+JPDevMenu
+JPDevMenuItem
+JPDevTipView
+JPDevMenuDelegate
+</code></pre></div>
+
+<p>将上述文件和脚本文件置于同一目录下，运行脚本，下面是某次脚本运行生成的文件。</p>
+<div class="code"><pre><code>/* CodeObfuscation.h 文件 */
+#ifndef CodeObfuscation_h
+#define CodeObfuscation_h
+// obfuscate string at Fri Jul 28 12:45:21 CST 2017
+#define startEngine rdJNwMkstxAdgTFL
+#define evaluateScriptWithPath yAvecLQuTiEMeNsT
+#define handleException WAkEkJAxYsLykKyv
+#define handleMemoryWarning oaXLPKCxCtfKGJeW
+#define defineStruct GjiZQiIMtEwyWWVS
+#define addExtensions GEmkGoxUmbPzRdmt
+#define formatOCToJS YpiwrHcArsBpJXTS
+#define formatJSToOC climBocqWpttGVau
+#define formatPointerOCToJS utvGIZGVpNptzCWk
+#define formatRetainedCFTypeOCToJS gkRDszHNVSlMLXwV
+#define formatPointerJSToOC KeXMzRZhXokwBLTD
+#define includedScriptPaths iyykkqiuXTyyfIkx
+#define getStructDataWidthDict iWZcEmoDMsCwByFA
+#define boxAssignObj nKwYjPgxqvoaHDPA
+#define boxWeakObj LWBChawEsBPFeklf
+#define boxClass dOyxzqPxWYRyaDmA
+#define boxPointer wbgOZodlBvuTfkLV
+#define boxObj ZgZiiUrfdcWfrFkf
+#define sizeOfStructTypes ygfGusyduZNVRhoW
+#define getDictOfStruct qjpYzeGFXvfMMiNx
+#define structDefine OFiaPHkJGWtfcMqf
+#define registeredStruct NMITSMUVqKSKuZfz
+#define overideMethods fSWuuGIvDeqvqiAg
+#define unboxPointer eWpIDRkJqcoHnlrJ
+#define unboxClass ySOroUGrmstYxbmM
+#define jp_methodSignatureForSelector kuSFemPscuSWfJbh
+#define jp_fixMethodSignature GIznNCivsWkDKewL
+#define JPBoxing TXTqOtxDcUfdeDSe
+#define JPBlock yCTmqKUAuJjUyuRJ
+#define JPBlockWrapper UtCZyrKfUUnHIejz
+#define JPCFunction hOWwPgWCLfytAZvs
+#define JPMemory cYaMhKFCQBAHNBok
+#define JPStructPointer yJfJQULYadRquRyu
+#define JPCGBitmapContext goeAMuEjGJCbOEQk
+#define JPCGColor flwdaxODQRxQaPvb
+#define JPCGContext TOQTnOZzwTSUtRou
+#define JPCGGeometry mGsrezEWgSmzjeFI
+#define JPCGImage QviOtnBSzUNMpveN
+#define JPCGPath KLmUdVIAakeyUezz
+#define JPCGTransform GUDelQLyPwrrZJgW
+#define JPCoreGraphics zKgCkjSJyVSOPMcG
+#define JPUIGeometry lrqHnPjIoieSpLqV
+#define JPUIGraphics gSvvRPOPcAtPzhFj
+#define JPUIImage aIttbDdtBoLRtzeE
+#define JPUIKit ysqZAerLSNZmXHQH
+#define JPCleaner njxcYnrkovoAnHiJ
+#define JPDispatch ahheTIqQJQdkZfuJ
+#define JPMethodSignature BglmbmbWOAxnsxPt
+#define JPLocker hTrTdNjiDteJlyRF
+#define JPNumber BBqHFoyRMmIoZsoy
+#define JPKeyCommands DtonkkviiFOmUWGF
+#define SGDirWatchdog GeZXQoLkXjtthFqi
+#define JPProtocol hjCmzMnZkipIoAdb
+#define JPSpecialInit YVfTaIikxNoVsRnn
+#define JPEngine gQRfVmvoSaJQLWgr
+#define JPLoader fPokckGFbrsbvFWz
+#define JPLoaderInclude IqxChVAKgXBAmLDi
+#define JPLoaderTestInclude dzcNcynhBPuHmpkK
+#define JPExtension MNlpCgwoLMNckrxC
+#define JPPlayground NGWTxKtFPeZehpwD
+#define JPDevErrorView DbRtEPhGORiWeMEP
+#define JPDevMenu WHSuUQPiGUDfsSjG
+#define JPDevMenuItem wJUoJRgOlKUIQlfE
+#define JPDevTipView ZOEYPkhWyVaoiRqE
+#define JPDevMenuDelegate DHhfMzdeghLzvggm
+#endif
+</code></pre></div>
+
+<p>JSPatch 中的核心 JS 脚本 JSPatch.js 直接打入包中，拆开包便能看到。可以使用另一种思路进行代码混淆，修改文件名、将文件内容进行编码（如base64编码），再加入到 bundle 中。需要运行 JSPatch.js 时，先读取文件内容再解码，便能获得原始的 JS 脚本内容。</p>
+<h3>参考文献：</h3>
+
+<ol>
+<li><p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/29201699" target="_blank">iOS安全攻防（二十三）：Objective-C代码混淆</a></p>
+</li>
+<li><p><a href="https://cnbin.github.io/blog/2015/05/21/objective-c-class-dump-an-zhuang-he-shi-yong-fang-fa/" target="_blank">Objective-C Class-dump 安装和使用方法</a></p>
+</li>
+<li><p><a href="https://github.com/bang590/JSPatch" target="_blank">JSPatch</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="ckrsyk6ui000faqnb32a4eiue" data-title="代码混淆" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/30/git-revert-multiple-commit-best-practice/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Git 回滚多次提交最佳实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/18/commentme/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">实现 GitHub Pages 的评论系统</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

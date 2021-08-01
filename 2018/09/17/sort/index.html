@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>排序算法，伪代码实现 | jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="一、插入排序  1. 直接插入排序  &#x2F;**  * 使用插入排序算法，将目标数组从小到大排列  * @param array  待排序的目标数组  * @param n  数组长度  *&#x2F; void InsertSort(int array[], int n) &amp;#123;     int i, j;     int tmp;     for (i &#x3D; 1; i &lt; n; i++) &amp;#123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法，伪代码实现">
+<meta property="og:url" content="https://rob2468.github.io/2018/09/17/sort/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:description" content="一、插入排序  1. 直接插入排序  &#x2F;**  * 使用插入排序算法，将目标数组从小到大排列  * @param array  待排序的目标数组  * @param n  数组长度  *&#x2F; void InsertSort(int array[], int n) &amp;#123;     int i, j;     int tmp;     for (i &#x3D; 1; i &lt; n; i++) &amp;#123">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-09-17T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-01T08:45:03.247Z">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-sort" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/17/sort/" class="article-date">
+  <time class="dt-published" datetime="2018-09-17T00:00:00.000Z" itemprop="datePublished">2018-09-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      排序算法，伪代码实现
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2 id="section_1">一、插入排序</h2>
+
+<h3 id="section_1_1">1. 直接插入排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用插入排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param n  数组长度
+ */
+void InsertSort(int array[], int n) &#123;
+    int i, j;
+    int tmp;
+    for (i = 1; i < n; i++) &#123;
+        // 遍历待排序元素
+        tmp = array[i];
+        for (j = i - 1; j >= 0 && array[j] > tmp; j--) &#123;
+            // 遍历已排序元素
+            array[j + 1] = array[j];
+        &#125;
+        array[j + 1] = tmp;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>时间复杂度 O(n^2)，空间复杂度 O(1)。直接插入排序是稳定的排序算法。</p>
+<h3 id="section_1_2">2. 希尔排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用希尔排序算法，将目标数组从小到大排列
+ * @param arrray  待排序的目标数组
+ * @param n  数组长度
+ */
+void ShellSort(int array[], int n) &#123;
+    int dk, i, j;
+    int tmp;
+    for (dk = n / 2; dk >= 1; dk = dk / 2) &#123;
+        // 步长变化
+        for (i = dk; i < n; i++) &#123;
+            // 遍历待排序元素
+            if (array[i] < array[i - dk]) &#123;
+                tmp = array[i];
+                for (j = i - dk; j >= 0 && tmp < array[j]; j -= dk) &#123;
+                    // 遍历已排序元素
+                    array[j + dk] = array[j];
+                &#125;
+                array[j + dk] = tmp;
+            &#125; // if
+        &#125;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>由于希尔排序的时间复杂度依赖于增量序列的函数，这涉及数学上尚未解决的难题，所以其时间复杂度分析比较困难。当 n 在某个特定范围时，希尔排序的时间复杂度约为 O(n^1.3)。在最坏情况下希尔排序的时间复杂度为 O(n^2)。</p>
+<p>空间复杂度 O(1)。</p>
+<p>希尔排序是不稳定的排序算法。</p>
+<h2 id="section_2">二、交换排序</h2>
+
+<h3 id="section_2_1">1. 冒泡排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用冒泡排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param n  数组长度
+ */
+void BubbleSort(int array[], int n) &#123;
+    for (int i = 0; i < n - 1; i++) &#123;
+        bool flag = false;     // 本趟冒泡是否发生交换的标志
+        for (int j = n - 1; j > i; j--) &#123;
+            if (array[j - 1] > array[j]) &#123;
+                // 交换
+                int tmp = array[j - 1];
+                array[j - 1] = array[j];
+                array[j] = tmp;
+
+<pre><code>            flag = true;
+         &#125;
+     &#125;
+     if (!flag) &#123;
+         // 本趟遍历没有发生交换，说明已有序
+         break;
+     &#125;
+ &#125;
+</code></pre>
+<p> }<br></code></pre></div></p>
+<p>时间复杂度 O(n^2)，空间复杂度 O(1)。冒泡排序是稳定的排序算法。</p>
+<h3 id="section_2_2">2. 快速排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用快速排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param low  起始下标
+ * @param high  结束下标
+ */
+void QuickSort(int array[], int low, int high) &#123;
+    if (low < high) &#123;
+        int pivotPos = Partition(array, low, high); // 划分
+        QuickSort(array, low, pivotPos - 1);
+        QuickSort(array, pivotPos + 1, high);
+    &#125;
+&#125;
+/**
+ *  将数组划分成两个部分
+ *  @param array  待排序的目标数组
+ *  @param low  起始下标
+ *  @param high  结束下标
+ *  @return  已在最终位置元素的下标
+ */
+int Partition(int array[], int low, int high) &#123;
+    int pivot = array[low];             // 将第一个元素设为枢轴值，对表进行划分
+    while (low < high) &#123;
+        while (low < high && array[high] >= pivot) &#123;
+            --high;
+        &#125;
+        array[low] = array[high];       // 将比枢轴值小的元素移动到左端
+        while (low < high && array[low] <= pivot) &#123;
+            ++low;
+        &#125;
+        array[high] = array[low];       // 将比枢轴值大的元素移动到右端
+    &#125;
+    array[low] = pivot;                 // 枢轴值存放到最终位置
+    return low;
+&#125;
+</code></pre></div>
+
+<p>时间复杂度 O(nlogn)，空间复杂度 O(logn)。快速排序是不稳定的排序算法。</p>
+<h2 id="section_3">三、选择排序</h2>
+
+<h3 id="section_3_1">1. 简单选择排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用简单选择排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param n  数组长度
+ */
+void SelectSort(int array[], int n) &#123;
+    for (int i = 0; i < n - 1; i++) &#123;
+        // 遍历所有待排序元素，每一轮遍历，找出最小元素并交换到最终位置
+        int min = i;
+        for (int j = i + 1; j < n; j++) &#123;
+            if (array[j] < array[min]) &#123;
+                min = j;
+            &#125;
+        &#125;
+        if (min != i) &#123;
+            // 交换
+            int tmp = array[min];
+            array[min] = array[i];
+            array[i] = tmp;
+        &#125;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>时间复杂度 O(n^2)，空间复杂度 O(1)。简单选择排序是不稳定的排序算法。</p>
+<h3 id="section_3_2">2. 堆排序</h3>
+
+<p>堆的定义如下：n 个关键字序列 L[1…n] 称为堆，当且仅当该序列满足：</p>
+<p>(1) L(i) &lt;= L(2i) 且 L(i) &lt;= L(2i + 1) 或 (2) L(i) &gt;= L(2i) 且 L(i) &gt;= L(2i + 1)</p>
+<p>（1 &lt;= i &lt;= n/2）</p>
+<p>满足第(1)种情况的堆称为小根堆（小顶堆），满足第(2)种情况的堆称为大根堆（大顶堆）。</p>
+<p>下面代码都是构造和维护大根堆。</p>
+<div class="code"><pre><code>/**
+ * 使用堆排序算法，将目标数组从小到大排列
+ */
+void HeapSort(int A[], int len) &#123;
+    BuildMaxHeap(A, len);       // 初始建堆
+    for (i = len; i > 1; i--) &#123;
+        // n - 1 趟的交换和建堆过程
+        // 输出堆顶元素（和堆底元素交换）
+        int tmp = A[i];
+        A[i] = A[1];
+        A[1] = tmp;
+
+<pre><code>    // 整理，把剩余的 i - 1 个元素整理成堆
+    AdjustDown(A, 1, i - 1);
+&#125; // for
+</code></pre>
+<p>}<br>/**</p>
+<ul>
+<li>建立大根堆，注意 A[0] 中不存储元素，实际存储从 A[1] 开始</li>
+<li>/<br>void BuildMaxHeap(int A[], int len) {<br>  for (int i = len/2; i &gt; 0; i–) {   // 从 len/2 ~ 1，反复调整堆<pre><code>  AdjustDown(A, i, len);
+</code></pre>
+  }<br>}<br>/**</li>
+<li>将元素 k 向下进行调整</li>
+<li>/<br>void AdjustDown(int A[], int k, int len) {<br>  A[0] = A[k];            // A[0] 暂存<br>  for (i = 2 * k; i &lt;= len; i*= 2) {<pre><code>  // 沿 key 较大的子结点向下筛选
+  if (i &lt; len &amp;&amp; A[i] &lt; A[i + 1]) &#123;
+      // 取 key 较大的子结点的下标
+      i++;
+  &#125;
+  if (A[0] &gt;= A[i]) &#123;
+      // 筛选结束
+      break;
+  &#125; else &#123;
+      A[k] = A[i];    // 将 A[i] 调整到双亲结点上
+      k = i;          // 修改 k 值，以便继续向下筛选
+  &#125;
+</code></pre>
+  } // for<br>  A[k] = A[0];            // 被筛选结点的值放入最终位置<br>}<br></code></pre></div></li>
+</ul>
+<div class="code"><pre><code>/**
+ * 参数 k 为向上调整的结点，也为堆的元素个数
+ */
+void AdjustUp(int A[], int k) &#123;
+    A[0] = A[k];
+    int i = k / 2;  // 若结点值大于双亲结点，则将双亲结点向下调，并继续向上比较
+    while (i > 0 && A[i] < A[0]) &#123;
+        A[k] = A[i];
+        k = i;
+        i = k / 2;
+    &#125; // while
+    A[k] = A[0];
+&#125;
+</code></pre></div>
+
+<p>注意：堆最重要的操作就是函数 AdjustDown 和 AdjustUp，其余操作均通过这两个操作完成。</p>
+<p>时间复杂度 O(nlogn)，空间复杂度 O(1)。堆排序是不稳定的排序算法。</p>
+<h2 id="section_4">四、归并排序</h2>
+
+<h3 id="section_4_1">1. 二路归并排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用二路归并排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param low  起始下标
+ * @param high  结束下标
+ */
+void MergeSort(int array[], int low, int high) &#123;
+    if (low < high) &#123;
+        int mid = (low + high) / 2;
+        MergeSort(array, low, mid);        // 对左侧子序列进行递归排序
+        MergeSort(array, mid + 1, high);   // 对右侧子序列进行递归排序
+        Merge(array, low, mid, high);          // 归并
+    &#125;
+&#125;
+int *B = (int *)malloc((n) * sizeof(int));  // 辅助数组
+void Merge(int array[], int low, int mid, int high) &#123;
+    int i, j, k;
+    for (k = low; k <= high; k++) &#123;
+        // 将 array 中元素拷贝到 B 中
+        B[k] = array[k];
+    &#125;
+    for (i = low, j = mid + 1, k = i; i <= mid && j <= high; k++) &#123;
+        // 比较 B 中左右两段中的元素，将较小值拷贝到 array 中
+        if (B[i] < B[j]) &#123;
+            array[k] = B[i++];
+        &#125; else &#123;
+            array[k] = B[j++];
+        &#125;
+    &#125; // for
+    // 下面两个 while 循环只有一个会执行
+    while (i <= mid) &#123;
+        // 第一个表未检测完
+        array[k++] = B[i++];
+    &#125;
+    while (j <= high) &#123;
+        // 第二个表未检测完
+        array[k++] = B[j++];
+    &#125;
+ &#125;
+</code></pre></div>
+
+<p>时间复杂度 O(nlogn)，空间复杂度 O(n)。二路归并排序是稳定的排序算法。</p>
+<p>原地归并排序不需要辅助数组即可归并，空间复杂度 O(1)。关键在于 Merge 函数，如下所示。</p>
+<div class="code"><pre><code>/**
+ * 将长度为 n 的数组逆序
+ */
+void reverse(int array[], int n) &#123;
+    int i = 0;
+    int j = n - 1;
+    while (i < j) &#123;
+        int tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+
+<pre><code>    i++;
+    j--;
+&#125;
+</code></pre>
+<p>}<br>/**</p>
+<ul>
+<li>将含有 n 个元素的数组向左循环移位 i 个位置</li>
+<li>/<br>void exchange(int array[], int n, int i) {<br>  reverse(array, i);<br>  reverse(array + i, n - i);<br>  reverse(array, n);<br>}<br>void Merge(int array[], int low, int mid, int high) {<br>  int i = low;<br>  int j = mid + 1;<br>  while (i &lt; j &amp;&amp; j &lt;= high) {<pre><code>  int step = 0;
+  while (i &lt; j &amp;&amp; array[i] &lt;= array[j]) &#123;
+      i++;
+  &#125;
+  while (j &lt;= high &amp;&amp; array[j] &lt;= array[i]) &#123;
+      j++;
+      step++;
+  &#125;
+  // array + i 为子数组首地址，j - i 为子数组元素个数，j - i - step 为左循环移位的个数
+  exchange(array + i, j - i, j - i - step);
+  i += step;
+</code></pre>
+  }<br>}<br></code></pre></div></li>
+</ul>
+<h3 id="section_4_2">2. 多路归并排序</h3>
+
+<p>外部排序指的是大文件的排序，即待排序的记录存储在外部存储器上，待排序的文件无法一次装入内存，需要在内存和外部存储器之间进行多次数据交换，以达到排序整个文件的目的。</p>
+<p>外部排序最常用的算法是多路归并排序，即将原文件分解成多个能够一次性装入内存的部分，分别把每一部分调入内存完成排序。然后，对已经排序的子文件进行归并排序。</p>
+<h3>参考文献：</h3>
+
+<p>王道论坛. 程序员求职宝典. 电子工业出版社.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="ckrsyk6uo000naqnbcadv9goi" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/09/30/block/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Objective-C Block
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/16/binary-tree-traverse/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">二叉树的遍历，伪代码实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

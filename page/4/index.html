@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="jam.chenjun blog">
+<meta property="og:url" content="https://rob2468.github.io/page/4/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-code-obfuscation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/07/27/code-obfuscation/" class="article-date">
+  <time class="dt-published" datetime="2017-07-27T00:00:00.000Z" itemprop="datePublished">2017-07-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/07/27/code-obfuscation/">代码混淆</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<p>class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。</p>
+<h2 id="section_1">一、基本原理</h2>
+
+<p>利用宏，将敏感类名、方法名替换成其它字符串。</p>
+<p>可以在预编译头文件中(.pch)将希望替换的字符串定义为其它值，如 <code>#define SensitiveMethod AMMAzmGDxKvDXlxI</code>。在程序预编译环节，所有希望被替换的字符串会被替换，对生成的包进行 class-dump 只能看到替换后的毫无意义的内容。</p>
+<p>这种方法非常简单，人工操作也能完成。当需要替换的方法比较多，并且经常需要维护时，一些实用脚本就很重要。</p>
+<h2 id="section_2">二、实用工具</h2>
+
+<p>下面的脚本片段从参考文献[1]中拷贝而来，并作了部分调整，增加了随机字符串去重的功能。</p>
+<div class="code"><pre><code>#!/usr/bin/env bash
+TABLENAME="symbols"
+SYMBOL_DB_FILE="symbols"
+STRING_SYMBOL_FILE="obfuscation.list"
+HEAD_FILE="CodeObfuscation.h"
+export LC_CTYPE=C
+createTable() &#123;
+    echo "create table $TABLENAME (src text, des text);" | sqlite3 $SYMBOL_DB_FILE
+&#125;
+insertValue() &#123;
+    echo "insert into $TABLENAME values('$1' ,'$2');" | sqlite3 $SYMBOL_DB_FILE
+&#125;
+isUnique() &#123;
+    echo "select count(*) from $TABLENAME where des='$1';" | sqlite3 $SYMBOL_DB_FILE
+&#125;
+randomString() &#123;
+    random=`openssl rand -base64 64 | tr -cd 'a-zA-Z' |head -c 16`
+    count=`isUnique $random`
+    if [[ $count -eq 0 ]]; then
+        echo $random
+    else
+        randomString
+    fi
+&#125;
+
+<p>rm -f $SYMBOL_DB_FILE<br>rm -f $HEAD_FILE<br>touch $HEAD_FILE<br>createTable<br>echo ‘#ifndef CodeObfuscation_h<br>#define CodeObfuscation_h’ &gt;&gt; $HEAD_FILE<br>echo “// obfuscate string at <code>date</code>“ &gt;&gt; $HEAD_FILE<br>cat “$STRING_SYMBOL_FILE” | while read -ra line; do<br>    if [[ -n “$line” ]]; then<br>        random=<code>randomString</code><br>        insertValue $line $ramdom<br>        res=”#define $line $random”<br>        echo $res<br>        echo “$res” &gt;&gt; $HEAD_FILE<br>    fi<br>done<br>echo “#endif” &gt;&gt; $HEAD_FILE<br>rm -f $SYMBOL_DB_FILE<br></code></pre></div></p>
+<p>STRING_SYMBOL_FILE 为文件名，文件内容为希望替换的字符串列表。HEAD_FILE 为文件名，文件内容为脚本生成的包含宏定义的头文件。randomString 函数用于生成一段随机字符串。脚本主体功能是不断读取 STRING_SYMBOL_FILE 中的行，每行一个原始字符串，然后生成一个随机字符串，将原始字符串和随机字符串组成一行 #define 语句。</p>
+<p>脚本文件、资源文件和生成的文件都在同一个文件夹内，将生成的头文件加入 Xcode 工程运行即可。</p>
+<h2 id="section_3">三、对 JSPatch 进行代码混淆</h2>
+
+<p>出于某些原因希望对 JSPatch 进行代码混淆，下面是一个供参考的需要进行宏替换的字符串列表。</p>
+<div class="code"><pre><code>/* obfuscation.list 文件 */
+startEngine
+evaluateScriptWithPath
+handleException
+handleMemoryWarning
+defineStruct
+addExtensions
+formatOCToJS
+formatJSToOC
+formatPointerOCToJS
+formatRetainedCFTypeOCToJS
+formatPointerJSToOC
+includedScriptPaths
+getStructDataWidthDict
+boxAssignObj
+boxWeakObj
+boxClass
+boxPointer
+boxObj
+sizeOfStructTypes
+getDictOfStruct
+structDefine
+registeredStruct
+overideMethods
+unboxPointer
+unboxClass
+jp_methodSignatureForSelector
+jp_fixMethodSignature
+JPBoxing
+JPBlock
+JPBlockWrapper
+JPCFunction
+JPMemory
+JPStructPointer
+JPCGBitmapContext
+JPCGColor
+JPCGContext
+JPCGGeometry
+JPCGImage
+JPCGPath
+JPCGTransform
+JPCoreGraphics
+JPUIGeometry
+JPUIGraphics
+JPUIImage
+JPUIKit
+JPCleaner
+JPDispatch
+JPMethodSignature
+JPLocker
+JPNumber
+JPKeyCommands
+SGDirWatchdog
+JPProtocol
+JPSpecialInit
+JPEngine
+JPLoader
+JPLoaderInclude
+JPLoaderTestInclude
+JPExtension
+JPPlayground
+JPDevErrorView
+JPDevMenu
+JPDevMenuItem
+JPDevTipView
+JPDevMenuDelegate
+</code></pre></div>
+
+<p>将上述文件和脚本文件置于同一目录下，运行脚本，下面是某次脚本运行生成的文件。</p>
+<div class="code"><pre><code>/* CodeObfuscation.h 文件 */
+#ifndef CodeObfuscation_h
+#define CodeObfuscation_h
+// obfuscate string at Fri Jul 28 12:45:21 CST 2017
+#define startEngine rdJNwMkstxAdgTFL
+#define evaluateScriptWithPath yAvecLQuTiEMeNsT
+#define handleException WAkEkJAxYsLykKyv
+#define handleMemoryWarning oaXLPKCxCtfKGJeW
+#define defineStruct GjiZQiIMtEwyWWVS
+#define addExtensions GEmkGoxUmbPzRdmt
+#define formatOCToJS YpiwrHcArsBpJXTS
+#define formatJSToOC climBocqWpttGVau
+#define formatPointerOCToJS utvGIZGVpNptzCWk
+#define formatRetainedCFTypeOCToJS gkRDszHNVSlMLXwV
+#define formatPointerJSToOC KeXMzRZhXokwBLTD
+#define includedScriptPaths iyykkqiuXTyyfIkx
+#define getStructDataWidthDict iWZcEmoDMsCwByFA
+#define boxAssignObj nKwYjPgxqvoaHDPA
+#define boxWeakObj LWBChawEsBPFeklf
+#define boxClass dOyxzqPxWYRyaDmA
+#define boxPointer wbgOZodlBvuTfkLV
+#define boxObj ZgZiiUrfdcWfrFkf
+#define sizeOfStructTypes ygfGusyduZNVRhoW
+#define getDictOfStruct qjpYzeGFXvfMMiNx
+#define structDefine OFiaPHkJGWtfcMqf
+#define registeredStruct NMITSMUVqKSKuZfz
+#define overideMethods fSWuuGIvDeqvqiAg
+#define unboxPointer eWpIDRkJqcoHnlrJ
+#define unboxClass ySOroUGrmstYxbmM
+#define jp_methodSignatureForSelector kuSFemPscuSWfJbh
+#define jp_fixMethodSignature GIznNCivsWkDKewL
+#define JPBoxing TXTqOtxDcUfdeDSe
+#define JPBlock yCTmqKUAuJjUyuRJ
+#define JPBlockWrapper UtCZyrKfUUnHIejz
+#define JPCFunction hOWwPgWCLfytAZvs
+#define JPMemory cYaMhKFCQBAHNBok
+#define JPStructPointer yJfJQULYadRquRyu
+#define JPCGBitmapContext goeAMuEjGJCbOEQk
+#define JPCGColor flwdaxODQRxQaPvb
+#define JPCGContext TOQTnOZzwTSUtRou
+#define JPCGGeometry mGsrezEWgSmzjeFI
+#define JPCGImage QviOtnBSzUNMpveN
+#define JPCGPath KLmUdVIAakeyUezz
+#define JPCGTransform GUDelQLyPwrrZJgW
+#define JPCoreGraphics zKgCkjSJyVSOPMcG
+#define JPUIGeometry lrqHnPjIoieSpLqV
+#define JPUIGraphics gSvvRPOPcAtPzhFj
+#define JPUIImage aIttbDdtBoLRtzeE
+#define JPUIKit ysqZAerLSNZmXHQH
+#define JPCleaner njxcYnrkovoAnHiJ
+#define JPDispatch ahheTIqQJQdkZfuJ
+#define JPMethodSignature BglmbmbWOAxnsxPt
+#define JPLocker hTrTdNjiDteJlyRF
+#define JPNumber BBqHFoyRMmIoZsoy
+#define JPKeyCommands DtonkkviiFOmUWGF
+#define SGDirWatchdog GeZXQoLkXjtthFqi
+#define JPProtocol hjCmzMnZkipIoAdb
+#define JPSpecialInit YVfTaIikxNoVsRnn
+#define JPEngine gQRfVmvoSaJQLWgr
+#define JPLoader fPokckGFbrsbvFWz
+#define JPLoaderInclude IqxChVAKgXBAmLDi
+#define JPLoaderTestInclude dzcNcynhBPuHmpkK
+#define JPExtension MNlpCgwoLMNckrxC
+#define JPPlayground NGWTxKtFPeZehpwD
+#define JPDevErrorView DbRtEPhGORiWeMEP
+#define JPDevMenu WHSuUQPiGUDfsSjG
+#define JPDevMenuItem wJUoJRgOlKUIQlfE
+#define JPDevTipView ZOEYPkhWyVaoiRqE
+#define JPDevMenuDelegate DHhfMzdeghLzvggm
+#endif
+</code></pre></div>
+
+<p>JSPatch 中的核心 JS 脚本 JSPatch.js 直接打入包中，拆开包便能看到。可以使用另一种思路进行代码混淆，修改文件名、将文件内容进行编码（如base64编码），再加入到 bundle 中。需要运行 JSPatch.js 时，先读取文件内容再解码，便能获得原始的 JS 脚本内容。</p>
+<h3>参考文献：</h3>
+
+<ol>
+<li><p><a href="http://blog.csdn.net/yiyaaixuexi/article/details/29201699" target="_blank">iOS安全攻防（二十三）：Objective-C代码混淆</a></p>
+</li>
+<li><p><a href="https://cnbin.github.io/blog/2015/05/21/objective-c-class-dump-an-zhuang-he-shi-yong-fang-fa/" target="_blank">Objective-C Class-dump 安装和使用方法</a></p>
+</li>
+<li><p><a href="https://github.com/bang590/JSPatch" target="_blank">JSPatch</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="ckrsyk6ui000faqnb32a4eiue" data-title="代码混淆" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-commentme" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/04/18/commentme/" class="article-date">
+  <time class="dt-published" datetime="2017-04-18T00:00:00.000Z" itemprop="datePublished">2017-04-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/04/18/commentme/">实现 GitHub Pages 的评论系统</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<h2>前言</h2>
+
+<p>2018-10-29 更新：</p>
+<p>最近买了个虚拟主机，可以简化前端工作，而且服务端使用命令行工具，也不会像前端实现这么复杂。旧的使用 GitHub API 方式的实现，可以访问<br><a href="https://github.com/rob2468/BlogServer/tree/v0.1" target="_blank">这个链接</a>。</p>
+<hr>
+
+<p>本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> 将当前提交内容编译成静态站点，实现网站发布。</p>
+<p>我希望通过提供评论系统实现和读者的沟通。最开始使用 Disqus 作为评论系统，无奈国内已无法使用，并且当时没有找到好的替代品，便打算自己实现。</p>
+<p>我预想的评论系统使用现有的构建博客的技术便能实现，即静态站点，无需额外的后端计算和存储成本。查阅一番资料并加以实践，目前已实现一套可用的评论系统，本文对该解决方案加以记录说明。</p>
+<h2>一、整体架构</h2>
+
+<p>不考虑技术细节，整个评论系统可以分为三个部分。一是评论入口，由前端提供表单，可输入评论内容并提交。二是评论内容存储，实现评论内容持久化。三是评论展示，能够读取已持久化存储的评论内容。如下图所示。</p>
+<p class="post-image"><img src="/resources/figures/2017-04-18-overall-architecture.png" alt="" width="60%"></p>
+
+<p>评论入口使用 HTML 和 JS 实现评论表单的展现和交互逻辑。评论内容采用约定组织结构，存储于同一个 Git 仓库中，由前端页面利用 GitHub API 实现。评论展示利用 Jekyll 实现，生成静态站点时解析有固定结构的评论内容，并将内容填充在网页中。</p>
+<h2>二、Git 底层原理与 GitHub API</h2>
+
+<p>整个评论系统得益于 Git 以及 GitHub 提供的 API。</p>
+<p>Git 本质上是一个内容寻址文件系统，它以特定方式存储文件，并提供访问这些文件的能力。Git 主要包含如下几种对象（blob、tree、commit、ref、tag），这些对象使用长度为40个字符的 SHA-1 标示。</p>
+<p>Git 中的文件内容以 blob 类型存储，blob 对象只存储文件的内容，不包含文件的名称。tree 类型能够存储文件名，同时也允许存储一组文件。所有内容以 tree 或 blob 对象存储，其中 tree 对象对应于 UNIX 中的目录，blob 对象则大致对应于 inodes 或文件内容。一个单独的 tree 对象包含一条或多条记录，每一条记录含有一个指向 blob 或子 tree 对象的 SHA-1 指针，并附有该对象的权限模式、类型和文件名信息。</p>
+<p>仅使用 blob 和 tree 便能实现文件的存储和访问，但是还需要更多的信息才能成为版本控制系统。commit 对象对应 Git 管理下的所有文件一个版本快照，包含了提交时的 tree 对象、前次提交的 commit 对象、提交时间等信息。Git 中的所有对象都是根据40个字符的 SHA-1 值索引访问的，但是更方便的做法是使用 ref。ref 是一个指针，指向 commit 对象，方便使用者以已于理解的方式操作。tag 对象用于创建里程碑，类似于分支引用，但是永远不会变化。tag 可以标记任何 Git 对象，比如，blob、tree、commit。</p>
+<p>由上述内容可知，只要构造好 blob、tree 和 commit 对象，并将指针指向新创建的 commit，便能达到类似使用 Git 命令行工具提交文件内容的效果。GitHub 提供了实现该功能的 API，需要如下5个接口：<a href="https://developer.github.com/v3/git/refs/#get-a-reference" target="_blank">获取引用</a>、<a href="https://developer.github.com/v3/git/commits/#get-a-commit" target="_blank">获取提交</a>、<a href="https://developer.github.com/v3/git/trees/#create-a-tree" target="_blank">创建 tree</a>、<a href="https://developer.github.com/v3/git/commits/#create-a-commit" target="_blank">创建提交</a>、<a href="https://developer.github.com/v3/git/refs/#update-a-reference" target="_blank">更新引用</a>。</p>
+<h2>三、实现细节</h2>
+
+<h3>1. 评论信息存储方式</h3>
+
+<p>所有评论以纯文本方式存储，置于 _data/comments.json 文件中。单条评论信息的结构如下所示：</p>
+<div class="code"><pre><code>&#123;
+  "email": <# email #>,
+  "date": <# date #>,
+  "author": &#123;
+    "display_name": <# display_name #>,
+  &#125;,
+  "content": content
+&#125;
+</code></pre></div>
+
+<p>_data/comments.json 中所有评论信息的结构如下所示。每篇文章使用键 page_id 唯一标示，page_id 的值为该篇文章的所有评论。</p>
+<div class="code"><pre><code>&#123;
+  <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
+  <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
+  ...
+&#125;</code></pre></div>
+
+<h3>2. 评论信息的获取</h3>
+
+<p>根据上一小节说明的评论的存储结构，使用如下代码获取评论内容。Jekyll 将内容编译成静态站点时执行下面代码的逻辑，将评论填充到网页中。</p>
+<div class="code"><pre><code>assign pageid = page.page_id    # 获取文章标识符
+if site.data.comments[pageid]   # 如果该文章有评论
+  assign sorted_comments = (site.data.comments[pageid] | sort: 'date') # 获取评论并按时间排序
+endif
+for c in sorted_comments reversed # 按时间倒序遍历
+  c.author.display_name on c.date | date: "%Y-%m-%d"  # 显示评论者和评论时间
+  c.content | newline_to_br       # 显示评论内容
+else
+  这篇文章暂没有评论。
+endfor
+</code></pre></div>
+
+<h3>3. 提交评论</h3>
+
+<p>提交评论是整个评论系统的核心操作。利用 GitHub API，使用 XMLHttpRequest 实现客户端和 GitHub 的通信。提交评论操作的本质是在博客代码库的 comments 分支基于当前最新提交创建一次提交，并将分支引用指向该次提交。新创建提交的内容是，_data/raw_comments/ 下创建的一个临时文件，保存评论者提交的评论信息。</p>
+<p>下面描述客户端和 GitHub 通信的流程。</p>
+<p class="post-image"><img src="/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png" alt="" width="70%"></p>
+
+<p>如上图所示，提交评论需要进行5次客户端和 GitHub 的通信，并且后3次 POST 请求需要在请求中附加身份验证信息。</p>
+<p>a）首先获取目标分支的最新提交，取得 commit id；</p>
+<p>b）获取最新提交对应的 tree，取得 tree id；</p>
+<p>c）基于取得的 tree id，创建新的 tree 对象，并取得该对象的 id；</p>
+<p>POST 请求发送的数据格式如下所示。path 字段指明评论信息存储的临时文件，content 字段是评论信息，base_tree 字段是最新提交对应的 tree 对象的 id。</p>
+<div class="code"><pre><code>&#123;
+  "tree": [&#123;
+    "path": "_data/raw_comments/comment_" + new Date().getTime(),
+    "mode": "100644",
+    "type": "blob",
+    "content": JSON.stringify(comment),
+  &#125;],
+  "base_tree": treeID,
+&#125;
+</code></pre></div>
+
+<p>d）基于新创建的 tree 对象，创建提交，并取得提交对象的 id；</p>
+<p>POST 请求发送的数据格式如下所示。message 字段为提交日志，tree 字段为新创建的 tree 对象的 id，parents 字段是最新提交的 id。服务端接受到这个请求后创建新的提交对象，并返回该对象的 id。</p>
+<div class="code"><pre><code>&#123;
+  "message": "comment by " + display_name + " on " + date,
+  "tree": newTreeID,
+  "parents": [lastCommitID]
+&#125;
+</code></pre></div>
+
+<p>e）修改分支引用为最新提交。</p>
+<h3>4. 评论整合</h3>
+
+<p>前面说到，评论者提交的评论信息是存储在 _data/raw_comments/ 下的临时文件。评论提交成功后，前端页面会显示几秒钟的查看评论的跳转链接。这种实现方式既提供了评论者查看自己评论的方法，也让我有机会先查看一下评论内容，再合入 _data/comments.json 中。（其实是没有想到方法可以直接将评论的内容整合到 _data/comments.json 中。）</p>
+<p>评论信息以 json 格式存储，使用 JS 脚本便能方便的处理。读取 _data/comments.json 获得所有评论，遍历所有临时评论文件并合入所有评论，写回 _data/comments.json 文件，最后删除所有临时评论文件。</p>
+<h2>四、后记</h2>
+
+<p>在前人思考的基础上开发一套可用的评论系统，当然问题是存在的（比如高并发情况、通信次数多、token 管理等），但也算是满足我的要求。</p>
+<p>专业的评论系统还是有不少的，比如前段时间有个同事提到<a target="_blank" rel="noopener" href="https://livere.com/">来必力</a>，看起来挺不错。</p>
+<h3>参考文献：</h3>
+1. <a href="https://mdswanson.com/blog/2011/07/23/digging-around-the-github-api-take-2.html" target="_blank">Making a commit with the Github API</a>
+2. <a href="https://git-scm.com/book/zh/v1/Git-%E5%86%85%E9%83%A8%E5%8E%9F%E7%90%86" target="_blank">Git 内部原理</a>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2017/04/18/commentme/" data-id="ckrsyk6uh000eaqnbdrxa8cv0" data-title="实现 GitHub Pages 的评论系统" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" class="article-date">
+  <time class="dt-published" datetime="2016-12-29T00:00:00.000Z" itemprop="datePublished">2016-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/">ARC 内存管理和 GCD</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2>前言</h2>
+
+<p>Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书篇幅不多，可分为如下3部分，共8个章节。</p>
+<p>内存管理基础知识：第一章、Life Before Automatic Reference Counting；第二章、ARC Rules；第三章、ARC Implementation。</p>
+<p>Block：第四章、Getting Started with Blocks；第五章、Blocks Implementation。</p>
+<p>GCD：第六章、Grand Central Dispatch；第七章、GCD Basics；第八章、GCD Implementation。</p>
+<p>本文为该本书的读书笔记，Block 相关的内容比较多，参考<a href="/2018/09/30/block.html">这篇文章</a>。</p>
+<h2 id="section_1">一、内存管理</h2>
+
+<p>OC 使用引用计数来实现内存管理。引用计数是内存管理的基本原理，与是否采用 ARC 开发没有关系。开发者不必亲自记录每个对象的引用计数，遵循如下规则即可。</p>
+<ul>
+<li>当 create 对象，你对该对象拥有所有权。</li>
+<li>当 retain 对象，你对该对象拥有所有权。</li>
+<li>当不再需要某个你拥有的对象时，你必须放弃对该对象的所有权。</li>
+<li>当不拥有某个对象时，你不能放弃对该对象的所有权。</li>
+</ul>
+<h3 id="section_1_1">1. GNUstep 和 Apple 存储引用计数的不同方式</h3>
+
+<p>下面两幅图描述 <a href="http://gnustep.org/" target="_blank">GNUstep</a> 和 Apple 存储对象引用计数的方式。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p>
+
+<p class="post-image-title">图 GNUstep 存储引用计数的方式</p>
+
+<p>GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字段。struct obj_layout 的定义如下所示：</p>
+<div class="code"><pre><code>struct obj_layout &#123;
+    NSUInteger retained;
+&#125;;
+</code></pre></div>
+
+<p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
+
+<p class="post-image-title">图 Apple 存储引用计数的方式</p>
+
+<p>Apple 实现，使用一个独立的哈希表存储对象实例的引用计数。</p>
+<p>GNUstep 实现方式的优点：</p>
+<ul>
+<li>更少的代码。</li>
+<li>简单的生命周期管理（引用计数和对象实例处于同一块内存区域）。</li>
+</ul>
+<p>Apple 实现方式的优点：</p>
+<ul>
+<li>对象实例不包含额外的头部，不必考虑因为存在头部而引入的内存对齐问题。</li>
+<li>可以简单的通过遍历哈希表，访问到所有对象实例的内存空间。（尤其便于调试）</li>
+</ul>
+<h3 id="section_1_2">2. autorelease</h3>
+
+<p>当采用 ARC 方式开发时，很少用到 autorelease 语法，但是其相关的知识点值得了解一下。</p>
+<p>autorelease 可以类比 C 语言中的自动变量。如下代码，花括号指定了一片作用域，在该作用域中声明了变量a，离开该作用域后，变量a被自动释放。autorelease 的工作方式与此类似，指定一片代码块，在该代码块中向目标对象发送 autorelease 消息，当执行超出该代码块后，目标对象被自动释放。</p>
+<div class="code"><pre><code>&#123;
+    int a;
+&#125;</code></pre></div>
+
+<p>autorelease 中，该指定的代码块称为自动释放池。在自动释放池内向目标对象发送 autorelease 消息即注册了该目标对象，表明离开自动释放池后需要被释放。</p>
+<p>通常，自动释放池在 Cocoa 框架中广泛存在，不要手动创建、持有和释放。比如，在 NSRunLoop 的每次 loop 中，都伴随着自动释放池的创建、持有和释放。</p>
+<p>在某些时候，默认存在的自动释放池不能满足需求。比如，在某个循环体内创建了许多对象，分配了大量内存，如果等到循环体执行完毕，最后离开自动释放池的时候才整体释放这些对象，会带来严重的内存问题。这时候可以通过手动创建和释放自动释放池解决。（可以看出，自动释放池是可以嵌套使用的，最内层的为当前自动释放池。）</p>
+<h3 id="section_1_3">3. ARC 中的所有权修饰符（Ownership Qualifiers）</h3>
+
+<p>开启 ARC 后，编译器会承担内存管理的工作，开发者不必再手动调用 retain 和 release。ARC 引入了如下4个所有权描述符，开发者需要合理的使用所有权描述符，才能正确实现 ARC 下的内存管理。</p>
+<ul>
+<li>__strong</li>
+<li>__weak</li>
+<li>__unsafe_unretained</li>
+<li>__autoreleasing</li>
+</ul>
+<p>OC 中的每个对象实例都有类型，或者是具体的类的指针，或者是 id（类似于 C 语言中的 void*）。当 ARC 开启后，所有对象实例必须有一个所有权描述符。</p>
+<p>所有使用 __strong、__weak 和 __autoreleasing 所有权描述符的对象实例都会被初始化为nil，如下两处代码块的效果相同。</p>
+<div class="code"><pre><code>id __strong obj0;
+id __weak obj1;
+id __autoreleasing obj2;
+</code></pre></div>
+
+<p></p>
+
+<div class="code"><pre><code>id __strong obj0 = nil;
+id __weak obj1 = nil;
+id __autoreleasing obj2 = nil;
+</code></pre></div>
+
+<p>本章节开头所述的内存管理的4条规则仍然适用。将对象赋给 __strong 变量即满足了前两条规则。第三条规则在不同的情况下自动满足，比如，离开变量的作用域；将值赋给变量；持有成员变量的对象实例被释放。因为不再需要手动调用 release，第四条规则显然满足。</p>
+<h4 id="3-1-strong-所有权描述符"><a href="#3-1-strong-所有权描述符" class="headerlink" title="3.1. __strong 所有权描述符"></a>3.1. __strong 所有权描述符</h4><p>__strong 所有权描述符是默认描述符。即如果描述符缺失，编译器默认使用 __strong。使用 __strong 所有权描述符修饰变量，表明该变量对目标对象具有强引用（该变量对目标对象有所有权）。</p>
+<h4 id="3-2-weak-所有权描述符"><a href="#3-2-weak-所有权描述符" class="headerlink" title="3.2. __weak 所有权描述符"></a>3.2. __weak 所有权描述符</h4><p>使用 __weak 所有权描述符修饰变量，表明该变量对目标对象具有弱引用（该变量对目标对象没有所有权）。__weak 所有权描述符的重要用途就是避免产生循环引用导致内存泄漏。</p>
+<div class="code"><pre><code>id __weak obj = [[NSObject alloc] init];</code></pre></div>
+
+<p>编译这段代码编译器有可能给出编译警告。该段代码创建了一个 NSObject 对象并赋给 obj 变量，obj 使用 __weak 修饰，对该 NSObject 对象没有所有权。当编译器开启编译优化后，该 NSObject 对象刚创建出来就被销毁。下面的写法能解决这个问题。</p>
+<div class="code"><pre><code>id __strong obj0 = [[NSObject alloc] init];
+id __weak obj1 = obj0;
+</code></pre></div>
+
+<p>__weak 所有权描述符还存在如下一个重要特性。当对象实例销毁后，所有引用该对象实例的 __weak 变量会自动设置为 nil。</p>
+<h4 id="3-3-unsafe-unretained-所有权描述符"><a href="#3-3-unsafe-unretained-所有权描述符" class="headerlink" title="3.3. __unsafe_unretained 所有权描述符"></a>3.3. __unsafe_unretained 所有权描述符</h4><p>__unsafe_unretained 的行为和 __weak 类似，使用该所有权描述符修饰的变量对目标对象具有弱引用（该变量对目标对象没有所有权）。</p>
+<p>__unsafe_unretained 和 __weak 的区别在于，当对象实例销毁后，引用该对象实例的 __unsafe_unretained 变量不会自动设置为 nil。</p>
+<p>除非有特殊需求（比如需要支持iOS 5 和 OSX Lion 之前版本的系统），否则尽量使用 __weak 代替 __unsafe_unretained。</p>
+<h4 id="3-4-autoreleasing-所有权描述符"><a href="#3-4-autoreleasing-所有权描述符" class="headerlink" title="3.4. __autoreleasing 所有权描述符"></a>3.4. __autoreleasing 所有权描述符</h4><p>autorelease 的相关知识见上文介绍，ARC 和 non-ARC 下的原理相同。ARC 引入新的语法让操作变得简单直观。如下两处代码段分别是 non-ARC 和 ARC 下 autorelease 的使用方式。</p>
+<div class="code"><pre><code>/* non-ARC */
+NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+id obj = [[NSObject alloc] init];
+[obj autorelease];
+[pool drain];
+</code></pre></div>
+
+<p></p>
+
+<div class="code"><pre><code>/* ARC */
+@autoreleasepool &#123;
+    id __autoreleasing obj = [[NSObject alloc] init];
+&#125;
+</code></pre></div>
+
+<p>两种写法的对应关系如下图所示。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p>
+
+<p class="post-image-title">图 @autoreleasepool 和 __autoreleasing 描述符</p>
+
+<p>得益于编译器的自动化操作，简化了开发者的许多工作，在实际使用中，很少使用到 __autoreleasing 语法。下面分情况对背后的细节进行说明。(使用下面方法调试查看自动释放池状态，<code>extern void _objc_autoreleasePoolPrint(); /* 声明 */ _objc_autoreleasePoolPrint(); /* 调用 */</code>)</p>
+<h5 id="情况分析一"><a href="#情况分析一" class="headerlink" title="情况分析一"></a>情况分析一</h5><p>在 non-ARC 下创建对象实例有如下规则，通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权。在各种情况下，需要配合使用 autorelease、retain 和 release 方法才能合理的管理内存。</p>
+<p>通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权，这条规则在 ARC 下仍然成立。在 ARC 下开发时情况变的简单，虽然引入了所有权描述符，但是编译器默认做了许多工作，开发者需要考虑的问题减少了许多。后面以如下代码段说明 ARC 下，__autoreleasing 是如何发生作用的。</p>
+<div class="code"><pre><code>@implementation NSMutableArray
++ (id)array
+&#123;
+    id obj = [[NSMutableArray alloc] init];     // part 1
+    return obj;                                 // part 2
+&#125;
+@end
+
+<p>@autoreleasepool &#123;<br>    id obj = [NSMutableArray array];            // part 3<br>&#125;<br></code></pre></div></p>
+<p>查看 @autoreleasepool 中的代码，part 3 语句以 [NSMutableArray array] 的方式创建了对象实例，方法的名称不符合以 alloc/new/copy/mutableCopy 开头的规则，所以调用者没有该对象实例的所有权，该对象实例注册在自动释放池中。因为 obj 变量使用 __strong 所有权描述符修饰，其会持有该对象实例。</p>
+<p>深入 NSMutableArray 的 array 方法中查看。part 1 语句创建了对象实例，并由变量 obj 持有。part 2 将 obj 持有的对象实例返回给调用者。part 2 语句执行之后，obj 持有的对象实例会被释放。在此之前，编译器检测到该对象实例会被返回给调用者，会将该对象实例注册到自动释放池中。</p>
+<h5 id="情况分析二"><a href="#情况分析二" class="headerlink" title="情况分析二"></a>情况分析二</h5><p>当使用 __weak 所有权描述符修饰的变量时，该变量引用的对象实例总是会被注册到自动释放池中。</p>
+<div class="code"><pre><code>id __weak obj1 = obj0;
+NSLog(@"class=%@", [obj1 class]);
+</code></pre></div>
+
+<p>上述代码等同于如下代码段。</p>
+<div class="code"><pre><code>id __weak obj1 = obj0;
+id __autoreleasing tmp = obj1;
+NSLog(@"class=%@", [tmp class]);
+</code></pre></div>
+
+<p>因为使用 __weak 所有权描述符修饰的变量不持有对象实例，该对象实例可能会在任一时刻被释放，为了能安全的使用该对象实例，编译器总是会先将该对象实例注册到自动释放池中再使用。</p>
+<p>由于每次使用 __weak 变量都会导致对象实例注册到自动释放池，为了提升性能，可先将 __weak 变量赋给 __strong 变量再使用。</p>
+<p>我使用 <code>_objc_autoreleasePoolPrint();</code> 方法调试验证时，并未发现该行为（使用 __weak 变量导致对象实例自动注册自动释放池）。</p>
+<h5 id="情况分析三"><a href="#情况分析三" class="headerlink" title="情况分析三"></a>情况分析三</h5><p><code>&quot;id obj&quot;</code> 的默认行为是 <code>&quot;id __strong obj&quot;</code>，但是 <code>&quot;id *obj&quot;</code> 的默认行为却是 <code>&quot;id __autoreleasing *obj&quot;</code>，同样的，<code>&quot;NSObject **obj&quot;</code> 的默认行为是 <code>&quot;NSObject * __autoreleasing *obj&quot;</code>。这种方式的默认行为是由该种语法的通常用途决定的，即方法调用通过参数返回值，如下代码所示。</p>
+<div class="code"><pre><code>NSError *error = nil;
+BOOL result = [obj performOperationWithError:&error];
+</code></pre></div>
+
+<p>因为只有通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权。上述通过参数返回调用结果的方式不属于规则中约定的条件，所以应该使用 __autoreleasing 所有权修饰符。</p>
+<p>给对象实例的指针赋值还有一个要求，即声明的对象实例指针的所有权描述符必须与赋值给该对象实例指针的所有权描述符相同。如下代码。</p>
+<div class="code"><pre><code>/* 错误示例 */
+NSError *error =nil;
+NSError **error = &error;   // __strong 赋给 __autoreleasing
+
+<p>/* 正确示例 */<br>NSError *error =nil;<br>NSError * __strong *error = &error;</p>
+<p>NSError __weak *error =nil;<br>NSError * __weak *error = &error;</p>
+<p>NSError __unsafe_unretained *error =nil;<br>NSError * __unsafe_unretained *error = &error;<br></code></pre></div></p>
+<p>在实际开发中经常书写本小节开头的那段示例代码，但是并不会报错，原因是编译器自动做了处理，实际转化后的代码如下所示。</p>
+<div class="code"><pre><code>NSError __strong *error = nil;
+NSError __autoreleasing *tmp = error;
+BOOL result = [obj performOperationWithError:&tmp];
+error = tmp;
+</code></pre></div>
+
+<h3 id="section_1_4">4. 类型转换与内存管理</h3>
+
+<p>OC 环境下开发会遇到多种类型的对象实例，而且对象实例可能需要在不同的类型之间转换。比如有如下对象实例类型，Foundation 框架下的对象实例，原生 C 语言下的对象实例，Core Foundation 框架下的对象实例。本小节描述这三种类型的对象实例之间的转换以及内存管理。</p>
+<p>在 non-ARC 环境下，所有的内存管理都是开发者手动操作的，对象实例可以轻易的在这三种类型之间转换。</p>
+<p>在 ARC 环境下，编译器不再允许对象实例直接在这三种类型之间转换，但是可以通过 <code>__bridge</code> 转换符实现类型转换，如下代码所示。</p>
+<div class="code"><pre><code>id obj = [[NSObject alloc] init];
+void *p = (__bridge void *)obj;
+id o = (__bridge id)p;
+</code></pre></div>
+
+<p><code>__bridge</code> 只能使得对象实例在不同的类型之间转换，若要实现内存管理，需要使用 <code>__bridge_retained</code> 和 <code>__bridge_transfer</code> 这两个转换符。下面用两段示例代码说明。</p>
+<div class="code"><pre><code>/* ARC */
+id obj = [[NSObject alloc] init];
+void *p = (__bridge_retained void *)obj;
+
+<p>/* 等效的 non-ARC 实现*/<br>id obj = [[NSObject alloc] init];<br>void *p = obj;<br>[(id)p retain];<br></code></pre></div></p>
+<p><code>__bridge_retained</code> 使得被赋值的变量拥有对象实例的所有权。</p>
+<div class="code"><pre><code>/* ARC */
+id obj = (__bridge_transfer id)p;
+
+<p>/* 等效的 non-ARC 实现*/<br>id obj = (id)p;<br>[obj retain];<br>[(id)p release];<br></code></pre></div></p>
+<p><code>__bridge_transfer</code> 将赋值变量对对象实例的所有权转交给被赋值变量。</p>
+<p>Core Foundation 框架主要使用 C 语言实现，其中创建的对象实例和 Foundation 框架下创建的对象实例差异很小，可以在没有任何资源损耗的情况下实现二者的转换，但是开发者需要关心二者转换之间的内存管理。</p>
+<p>除了上面所述的 <code>__bridge_retained</code> 和 <code>__bridge_transfer</code> 转换符，Core Foundation 框架引入了两个函数实现相同的功能，分别是 <code>CFBridgingRetain</code> 和 <code>CFBridgingRelease</code>。见如下代码示例。</p>
+<div class="code"><pre><code>CFMutableArrayRef cfObject = NULL;
+&#123;
+    id obj = [[NSMutableArray alloc] init];
+    cfObject = CFBridgingRetain(obj);   // 等同于 cfObject = (__bridge_retained CFMutableArrayRef)obj;
+&#125;
+CFRelease(cfObject);
+</code></pre></div>
+
+<p></p>
+
+<div class="code"><pre><code>CFMutableArrayRef cfObject = CFArrayCreateMutable(kCFAllocatorDefault, 0, NULL);
+id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer id)cfObject;
+</code></pre></div>
+
+<h3 id="section_1_5">5. 属性</h3>
+
+<p>ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二者存在对应关系，如下表所示。</p>
+<div class="code"><pre><code>----------------------------------------------------------------------------
+|  属性修饰符            |  所有权描述符                                       |
+|----------------------|---------------------------------------------------|
+|  assign              |  __unsafe_unretained                              |
+|  copy                |  __strong (note: new copied object is assigned.)  |
+|  retain              |  __strong                                         |
+|  strong              |  __strong                                         |
+|  unsafe_unretained   |  __unsafe_unretained                              |
+|  weak                |  __weak                                           |
+----------------------------------------------------------------------------
+</code></pre></div>
+
+<h3 id="section_1_6">6. ARC 的实现方式</h3>
+
+<p>这一小节揭示 ARC 的实现方式和部分底层机制。编译器会将 OC 代码翻译成机器码，为了方便理解，本小节使用伪代码进行描述。</p>
+<h4 id="6-1-strong所有权描述符"><a href="#6-1-strong所有权描述符" class="headerlink" title="6.1. __strong所有权描述符"></a>6.1. __strong所有权描述符</h4><p>下面三组代码示例展示 OC 源代码与翻译后的对应伪代码。</p>
+<p>示例1</p>
+<div class="code"><pre><code>&#123;
+    id __strong obj = [[NSObject alloc] init];
+&#125;
+
+<p>/* pseudo code by the compiler */<br>id obj = objc_msgSend(NSObject, @selector(alloc));<br>objc_msgSend(obj, @selector(init));<br>objc_release(obj);<br></code></pre></div></p>
+<p>示例2</p>
+<div class="code"><pre><code>&#123;
+    id __strong obj = [NSMutableArray array];
+&#125;
+
+<p>/* pseudo code by the compiler */<br>id obj = objc_msgSend(NSMutableArray, @selector(array));<br>objc_retainAutoreleasedReturnValue(obj);<br>objc_release(obj);<br></code></pre></div></p>
+<p>示例3</p>
+<div class="code"><pre><code>+ (id)array
+&#123;
+    return [[NSMutableArray alloc] init];
+&#125;
+
+<p>/* pseudo code by the compiler */</p>
+<ul>
+<li>(id) array<br>&#123;<br>  id obj = objc_msgSend(NSMutableArray, @selector(alloc));<br>  objc_msgSend(obj, @selector(init));<br>  return objc_autoreleaseReturnValue(obj);<br>&#125;<br></code></pre></div></li>
+</ul>
+<p>示例3和示例2的伪代码中调用了一对函数，objc_autoreleaseReturnValue() 和 objc_retainAutoreleasedReturnValue()，这对函数调用对应“3.4. 情况分析一”小节的解释。objc_autoreleaseReturnValue() 的作用是将对象注册到自动释放池中，objc_retainAutoreleasedReturnValue() 的作用是持有目标对象。</p>
+<p>实际情况下，objc_autoreleaseReturnValue() 并不总会将对象注册到对象释放池。objc_autoreleaseReturnValue() 会检测调用者的执行代码，如果调用者接下来调用了 objc_retainAutoreleasedReturnValue() 函数，便跳过将对象注册到自动释放池的步骤，以提升性能。见下图。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p>
+
+<p class="post-image-title">图 跳过对象加入自动释放池步骤</p>
+
+<h3 id="section_1_7">7. _objc_rootRetainCount</h3>
+
+<p>iOS 提供了查看对象实例引用计数的函数，<code>uintptr_t _objc_rootRetainCount(id obj)</code>。该函数可在调试时使用，但是其返回的值也并不总是正确的，需慎用。在 ARC 下只要遵循各所有权描述符的规则即可实现内存管理，不需要关注引用计数的数值。</p>
+<h2 id="section_2">二、GCD</h2>
+
+<p>GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要定义好任务并加入到分发队列中，线程管理的相关工作由系统完成。</p>
+<p>分发队列是先进先出的队列结构，可以分为串行队列和并发队列。加入到串行队列中的任务会依次有序执行，当前任务完成后再执行队列中下一个任务。并发队列中的任务执行不会等待前次任务执行完成。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图 串行队列、并发队列与线程的关系</p>
+
+<p>上图描述了分发队列和线程的关系。XNU kernel 是 iOS 和 OS X 的核心部分，负责线程的管理，创建、销毁和调度线程。比如，8个任务添加至并发队列中，XNU kernel 提供了4个线程执行任务，可能有如下执行顺序。</p>
+<div class="code"><pre><code>--------------------------------------------------
+|  Thread0  |  Thread1  |  Thread 2  |  Thread3  |
+|-----------|-----------|------------|-----------|
+|  blk0     |  blk1     |  blk2      |  blk3     |
+|  blk4     |  blk6     |  blk5      |           |
+|  blk7     |           |            |           |
+--------------------------------------------------
+</code></pre></div>
+
+<p>在非 ARC 情况下，分发队列创建后需手动释放。</p>
+<p>当创建了一个串行队列并向其中添加了任务，系统会创建一个对应的线程。如果创建了2000个串行队列，系统也会创建2000个线程。开发者需要了解这个特性，避免过多线程造成额外的开销。</p>
+<h3>参考文献：</h3>
+
+<p>Sakamoto, Kazuki, and Tomohiko Furumoto. Pro Multithreading and Memory Management for IOS and OS X. Apress, 2012.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="ckrsyk6v50017aqnbaa8b3jb5" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-uti" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/09/20/uti/" class="article-date">
+  <time class="dt-published" datetime="2016-09-20T00:00:00.000Z" itemprop="datePublished">2016-09-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/09/20/uti/">UTI，Uniform Type Identifier</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>文本文件可以使用文本编辑器打开，图片可以使用图片查看软件打开，这些操作都包含文件类型的判断。文件类型的表示方式很多，本文介绍的UTI（Uniform Type Identifier）是 Apple 提出的一种表示文件类型的方法。其它的文件类型表示方法还有OSType、文件名后缀、MIME等。</p>
+<h2 id="一、UTI-的结构"><a href="#一、UTI-的结构" class="headerlink" title="一、UTI 的结构"></a>一、UTI 的结构</h2><p>UTI 为表示文件类型提供了统一的方式，它的写法采用 reverse-DNS 格式，如：com.apple.quicktime-movie、public.html、public.jpeg。</p>
+<p>UTI 的组织结构类似于网络中域名系统的层次结构。</p>
+<p>“public”域表示一些常见的或标准的类型。许多软件能够处理的文件类型都属于“public”域。“public”域是保留的，目前只有 Apple 能够声明该域下的类型。</p>
+<p>“dyn”域也是保留的。某个缺少 UTI 信息并且其它类型信息（如文件名后缀、MIME）未知的文件需要获取 UTI 信息时，“dyn”域用来处理该情况。</p>
+<p>所有其它的域允许第三方定义，比如企业定义的类型通常在“com”域下，如：com.apple.quicktime-movie。</p>
+<h2 id="二、UTI-的“继承”"><a href="#二、UTI-的“继承”" class="headerlink" title="二、UTI 的“继承”"></a>二、UTI 的“继承”</h2><p>下面两张图均来自 Apple 官方文档，UTI 的层次结构类似于面向对象编程语言中的“继承“特性。比如，某个文件的类型为“public.image”，该文件类型同样也属于“public.data”。</p>
+<p></p>
+
+<p class="post-image"><img src="/resources/figures/2016-09-20-conformance_hierarchy.gif" alt="" width="100%"></p>
+
+<p class="post-image-title">图 A conformance hierarchy</p>
+
+<p>可以从两个角度对文件类型进行分类。物理特性：文件类型、文件夹类型等。功能特性：图片类型、视频类型等。如下图所示。</p>
+<p></p>
+
+<p class="post-image"><img src="/resources/figures/2016-09-20-physical_vs_functional.gif" alt="" width="70%"></p>
+
+<p class="post-image-title">图 Physical and functional hierarchies</p>
+
+<h2 id="三、在-iOS-中使用-UTI"><a href="#三、在-iOS-中使用-UTI" class="headerlink" title="三、在 iOS 中使用 UTI"></a>三、在 iOS 中使用 UTI</h2><p>MobileCoreServices.framework 中定义了使用 UTI 的一些常量和方法。该框架主要包含 UTCoreTypes.h 和 UTType.h 这两个头文件。</p>
+<p>UTCoreTypes.h 头文件中声明了系统定义的常量。如果要表示某个文件的类型，最好使用该文件中声明的常量，而不是直接使用字符串。比如 kUTTypeItem 表示 “public.item”。</p>
+<p>UTType.h 头文件中声明了操作 UTI 的方法。一些常用方法如下。</p>
+<div class="code"><pre><code>
+// 1
+Boolean UTTypeEqual(CFStringRef inUTI1, CFStringRef inUTI2)                 // 两个 UTI 是否相同
+Boolean UTTypeConformsTo(CFStringRef inUTI, CFStringRef inConformsToUTI)    // inUTI 是否“继承”自 inConformsToUTI
+
+<p>// 2<br>CFStringRef UTTypeCreatePreferredIdentifierForTag(CFStringRef inTagClass, CFStringRef inTag, CFStringRef inConformingToUTI) // 将其它的类型表示方法（如文件名后缀、MIME）转换为 UTI<br>CFArrayRef UTTypeCreateAllIdentifiersForTag(CFStringRef inTagClass, CFStringRef inTag, CFStringRef inConformingToUTI)       // 将其它的类型表示方法（如文件名后缀、MIME）转换为 UTI</p>
+<p>// 3. 下面两个方法为上面两个方法的逆操作，即将 UTI 转换为其它的类型表示方法<br>CFStringRef UTTypeCopyPreferredTagWithClass(CFStringRef inUTI, CFStringRef inTagClass)<br>CFArrayRef UTTypeCopyAllTagsWithClass(CFStringRef inUTI, CFStringRef inTagClass)</p>
+<p></code></pre></div></p>
+<h2 id="四、其它"><a href="#四、其它" class="headerlink" title="四、其它"></a>四、其它</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_declare/understand_utis_declare.html">声明新的 UTI</a>。</p>
+<p></p>
+
+<h3 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h3><ol>
+<li><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Uniform_Type_Identifier">https://en.wikipedia.org/wiki/Uniform_Type_Identifier</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_intro/understand_utis_intro.html">https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_intro/understand_utis_intro.html</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2016/09/20/uti/" data-id="ckrsyk6uh000daqnbau1q2qfk" data-title="UTI，Uniform Type Identifier" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-cycle-scroll-view" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/05/26/cycle-scroll-view/" class="article-date">
+  <time class="dt-published" datetime="2016-05-26T00:00:00.000Z" itemprop="datePublished">2016-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/05/26/cycle-scroll-view/">可循环滚动的 ScrollView</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>代码：<a target="_blank" rel="noopener" href="https://github.com/rob2468/CycleScrollView">CycleScrollView</a></p>
+<p>上述代码实现可循环滚动的 ScrollView。具体需求有如下2点：</p>
+<p>1、支持分页滚动；</p>
+<p>2、支持循环滚动。</p>
+<p>实现参考了网上搜到的一些方案，经过几次优化，形成最终的版本。许多实现存在一些缺陷，比如，快速滑动时会卡住，等 ScrollView 停止滑动后再滑动就可以了。最初的版本也存在这个问题，因为布局调整是在 scrollViewDidEndDecelerating 中实现的，快速滑动时不会调用到该方法中。</p>
+<p>下面讲述实现原理。</p>
+<p>使用的 ScrollView 为 UICollectionView，每个分页为一个 cell，这样能够利用到 UICollectionView 的 cell 重用特性，降低内存消耗。</p>
+<p>使用 UIScrollView 原生的分页功能，即，将 pagingEnalbed 属性设为 YES。</p>
+<p>在 ScrollView 的头尾分别增加一页。搜索到许多这种实现方案，即复制最后一页的内容添加为第一页，复制原始第一页的内容添加为最后一页。这样，比如当滑到原始最后一页时，下一页的内容为原始的第一页，此时再作一些布局调整，便能模拟循环滚动的效果。</p>
+<p>下面说的就是如何进行布局调整。开头说过，由于最初的实现是在 scrollViewDidEndDecelerating 中调整布局，因此 ScrollView 快速滑动时会卡住，因为没有触发到该方法。为了修复该问题，将布局调整改为在 scrollViewDidScroll 中实现，下面是核心代码。</p>
+<p></p>
+
+<div class="code"><pre><code>if (currentOffsetX < pageWidth && currentOffsetX < lastContentOffsetX) // 右划
+&#123;
+    // 修改布局
+    lastContentOffsetX = currentOffsetX + offset;
+    bounds.origin.x = lastContentOffsetX;
+    scrollView.bounds = bounds;
+&#125;
+else if (currentOffsetX > offset && currentOffsetX > lastContentOffsetX) // 左划
+&#123;
+    // 修改布局
+    lastContentOffsetX = currentOffsetX - offset;
+    bounds.origin.x = lastContentOffsetX;
+    scrollView.bounds = bounds;
+&#125;
+else
+&#123;
+    lastContentOffsetX = currentOffsetX;
+&#125;
+</code></pre></div>
+
+<p>以第一个 if 判断分支为例，ScrollView 展示的是原始第一页并开始滑入复制在开头的原始最后一页。此时需要调整布局，调整后的状态是 ScrollView 展示复制在最后的原始第一页并开始滑入原始最后一页。</p>
+<p>还有一个需要注意的是修改 ScrollView 的 contentOffset 的方式<code>scrollView.bounds = bounds</code>，这种方式不会触发 ScrollView 的 delegate 方法。最初的实现是<code>[scrollView setContentOffset: animated:NO]</code>，在 scrollViewDidScroll 中这样修改 contentOffset 又会触发到 scrollViewDidScroll，引起连锁反映。如果慢慢的滑动 ScrollView，会出现分页错误，ScrollView 停留在一页的中间。</p>
+<p>下面是 demo 截图，ScrollView 展示3页视图，左滑和右滑能够无限循环。</p>
+<p></p>
+
+<p class="post-image"><img src="/resources/figures/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p>
+
+<p class="post-image-title">demo截图</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2016/05/26/cycle-scroll-view/" data-id="ckrsyk6ug000caqnb5d15au5y" data-title="可循环滚动的 ScrollView" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-project-management-summary" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/05/20/project-management-summary/" class="article-date">
+  <time class="dt-published" datetime="2016-05-20T00:00:00.000Z" itemprop="datePublished">2016-05-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/05/20/project-management-summary/">初试项目管理，个人经验小结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>加入百度时间不长，一直参与百度浏览器 iPhone 版的开发。开发组里每位同事会轮流负责新版本的管理工作，在试用期转正的1个月后，我承担了一次重大更新版本的项目管理工作。</p>
+<p>这次重大更新版本从进入开发到 App Store 发布，将近2个月时间。本文是对这段经历的总结，包括管理经验、个人感受、个人思考。</p>
+<h2 id="一、管理经验"><a href="#一、管理经验" class="headerlink" title="一、管理经验"></a>一、管理经验</h2><p>开发工作需要掌握一些工作技能，比如编程语言、开发框架、设计模式，并在项目排期内高效的输出。项目管理意味着从直接贡献者向一线经理人的转变，需要在工作技能、时间管理和工作理念方面做出改变。</p>
+<p>项目管理所需的工作技能大多来自于平时的观察，比如工作邮件和其他项目管理者的工作方式。在分配开发任务时，我给自己分配相对较少的工作，开发工时约为负责直接开发工作的同事的一半，以便有足够的时间和精力执行项目管理的工作。</p>
+<p>根据前人经验和自己的想法，我在项目管理中执行的例行工作包括：每日早晨通报、每日站会、项目周报、Code Review。</p>
+<p>每个工作日早晨到公司，我会在开发同事的群中给大家发送消息，大致是如下的模版，“今天是开发第x天，有x个story需要进入待测试状态”，“今天是开发第x天，距离开发结束还剩x天”，“今天需要进入待测试状态的story共有x条，其中包含x条昨天需提测story”，“按原计划今天分功能测试结束，大家关注下面三件事情”，再视实际情况提醒大家需关注的事情。投入开发时，没有足够的时间精力关注项目整体状态。我希望为开发者服务，帮助他们处理其他杂乱的事务。</p>
+<p>站会是团队的传统，每个工作日下午5:00会在白板前同步项目相关事情，所有项目相关的同事都会参加，包括PM、UE、RD、QA，确保所有同事了解当前项目进展，并商讨部分棘手问题的处理方案。</p>
+<p>我在印象笔记中有个叫每日进展的笔记，站会时需要同步的事情都会事先做好记录。作为项目管理者，我会负责站会的主持，首先会同步白板上记录的昨天的问题，然后同步自己笔记中记录的问题。</p>
+<p>站会不会像代码一样始终按照约定流程执行，随时会有同事抛出问题。如果该问题为今日重点同步问题，并且剩余的其他问题可以快速同步完，我会说明还剩几件小事，稍后会同步该问题。一般情况下，我会在白板中记录并引导大家同步该问题，自己不会太深入到讨论中，在合适的时机引导大家同步下一个问题。</p>
+<p>站会后需要发送沟通纪要及进展邮件，站会邮件不会耗费太多精力，将站会前的记录、站会时的记录和相关问题的同步结果加以整理即可。</p>
+<p>项目周报为每周结束后向经理发送的项目状态邮件。一周内发生的事情非常多，写好项目周报是件费力的事情。平时做好的记录对写周报有很大帮助，我会从站会邮件、笔记记录中摘抄内容并加以整理，删除一些不需要关注小问题，将部分相同主题的内容加以归类，按时间顺序加以描述，将一些需重点关注的问题突出展示。</p>
+<p>平时能看到项目中存在一些问题，一个便是灰度和发版前夕的 bug 数量大爆发，从开发角度看存在开发质量不高的问题。我在项目管理的过程中想要推行的一个事情便是 Code Review，希望能在开发时便能解决潜在的问题，保证高质量的产出，而不是依赖后期 QA 的测试。我做了一些调研说明 Code Review 的好处和方法，以便说服各位同事参与其中。</p>
+<p>Code Review 确实举行了几次，但是现在也已不再进行。第一次 Code Review 的报告人便是自己，我希望自己能做一个好的开始，报告前在白板上画好代码结构图，并准备好代码投影。我把自己编码时的思考与大家分享，并对大家的疑问作出解答，代码中存在的一个低级错误也被同事指出，还有同事还从线程的角度提出修改意见。还有一次是前辈做的 Code Review 分享，抱着学习的态度参加，了解到一些框架的作用和用法，并学到了一些编程技巧，我最近在写代码时也用到了该编程技巧。</p>
+<p>执行项目管理时的时间分配不同于开发人员，大多数时候需要将注意力从代码转移到跟进项目状态上。</p>
+<p>首先是需要与各种角色的同事沟通，以推进项目往前发展。在项目开发的不同阶段，需要面对的也不一样。项目初期协助 PM 同步需求，与 UX/UE 沟通交互与视觉排期，并督促按时输出。进入开发时关注各开发人员的开发状态，确保各个 story 按时开发完成。督促 QA 抓紧测试，沟通版本状态。</p>
+<p>项目管理还有一项重要工作便是任务分配。项目管理的成功来自于各个直接贡献者的成功，需要让每个人各司其职，做其最擅长的事，才能取得最终的成功。我要关注的是大家都在做正确的事情，遇到问题时不会直接投入进去调研，而是转移给相应的负责人。</p>
+<p>工作理念的转变是最重要的。开发是我擅长的工作方式，但是项目管理不允许只关注擅长的事情，要相信所有的同事，调动大家的力量来完成项目。</p>
+<p>我在此次版本管理中遇到的最大挑战出现在开发阶段末期，并且让我狼狈不堪。一位同事离职，其名下不少 story 处于不可测的状态，结果我承担起了这部分 story 的开发工作。我评估后，在站会与大家保证在下周二站会时开发完成。但是开发压力和繁杂的项目管理，让我焦头烂额。在深入代码逻辑时还要响应其他同事对项目资源的请求、反馈项目状态、整理和分配任务。在此之后的许多项目跟进工作都是由我的经理完成的，当工作需要上级亲自完成，这是一种不好的信号。</p>
+<p>项目前期，自我感觉管理的还不错，但是项目末期的时候却总是感觉心里没底，真是只能在挫折中收获经验了。印象深刻的是发灰度和 App Store 发版。发一次灰度，然后需要两三天观察，但是数据总不理想，修改后，再发一次灰度。每发一次灰度都需要几天时间，不断拖延发版的时间，跟PM、QA同步的时候，都不知道同步什么。大部分的沟通都是靠的前辈和经理，最后同步结果是数据正在好转、灰度环境存在限制和对线上的良好预期才得以发版。</p>
+<h2 id="二、个人感受"><a href="#二、个人感受" class="headerlink" title="二、个人感受"></a>二、个人感受</h2><p>参加工作不久便体验了一把项目管理，非常感谢经理和同事的信任。这次项目管理初体验感受到许多，有让人沮丧的地方，更多的是收获。</p>
+<p>在项目初期的时候非常紧张，会感到孤立无援。有一个让我非常感动的事情，我在工位上抓耳挠腮想着给大家分配开发任务，询问了一些同事的看法，然后好几位同事都聚到我工位上，给我意见和建议。也许对旁人而言这不算什么，对我来说却是受到了极大的鼓励，增强了信心。</p>
+<p>主持站会也是一件特别的事情，需要在许多人的面前发言。刚开始的时候非常紧张，说话声音发抖，在白板上写字也紧张的弯弯曲曲，但是心里没有退缩的意思。平常注意到站会存在一些问题，经常几个人聚在一起讨论问题，大家的注意力并没有集中在同步项目状态上。在主持站会的时候，我会想一些办法解决这些问题。比如，当大家都到的时候，不会着急马上开始，稍等片刻再宣布站会，将大家注意力都转移到我身上。当有人私下讨论时，会看向讨论者的方向，或者适当加以提醒。特别需要避免的问题是自己在具体问题的讨论中陷入太深。</p>
+<p>项目管理需要与许多人打交道，难免会起冲突。与别人沟通时，甚至直接受到恶言相向。这些都是不可避免的，虽然生气，但是会调整好自己情绪，站在别人的角度思考，并就事论事说服别人。</p>
+<h2 id="三、个人思考与总结"><a href="#三、个人思考与总结" class="headerlink" title="三、个人思考与总结"></a>三、个人思考与总结</h2><p>1、项目管理者的成功来自于团队直接贡献者的成功，需要让他们做最擅长的事，帮助他们成功。</p>
+<p>2、冲突来源于对对方的不理解，要从对方的角度思考，消除对方顾虑才能达到自己目的。</p>
+<p>3、遇到问题时思考分配任务给合适的人，而不是深入到具体工作内容中。</p>
+<p>4、数据很重要，是作决策的依据。比如崩溃率数据直接影响到是否发布新版本。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2016/05/20/project-management-summary/" data-id="ckrsyk6ue000baqnb8r7s1q7d" data-title="初试项目管理，个人经验小结" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-objc-message-send" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/05/17/objc-message-send/" class="article-date">
+  <time class="dt-published" datetime="2016-05-17T00:00:00.000Z" itemprop="datePublished">2016-05-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/05/17/objc-message-send/">Objective-C 消息传递</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>OC 为动态运行时语言，其将许多决策从编译和链接时延迟到运行时执行。OC 中的方法调用本质为消息传递，[receiver message] 可以解释为向 receiver 对象发送 message 消息。今天阅读了 Apple 开发文档的 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html#//apple_ref/doc/uid/TP40008048-CH104-SW1]">Messaging 章节</a>，利用运行时系统提供的相关方法，OC 消息传递式的方法调用最终转换成了标准 C 语言函数调用方式，实现了统一。</p>
+<p>本文以 Apple 开发文档为基础，讲述 OC 以消息传递方式实现方法调用的执行流程。第一节介绍执行消息解析的函数；第二节讲述消息解析过程中，消息对应的方法实现是如何寻找的；第三节讲述方法实现找到后，如何执行。</p>
+<h2 id="一、objc-msgSend-函数"><a href="#一、objc-msgSend-函数" class="headerlink" title="一、objc_msgSend 函数"></a>一、objc_msgSend 函数</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ObjCRuntimeRef/index.html#//apple_ref/c/func/objc_msgSend">objc_msgSend</a> 为 OC 运行时系统提供的函数。</p>
+<p></p>
+
+<div class="code"><pre><code>Declaration
+id objc_msgSend(id self, SEL op, ...)
+
+<p>Parameters<br>self<br>A pointer that points to the instance of the class that is to receive the message.<br>op<br>The selector of the method that handles the message.<br>…<br>A variable argument list containing the arguments to the method.</p>
+<p>Return Value<br>The return value of the method.<br></code></pre></div></p>
+<p>编译后，OC 中的消息传递实现将转换为 objc_msgSend 函数调用。比如，[receiver message] 会转换成相应的 objc_msgSend(receiver, selector)。selector 的类型是 SEL，为要执行方法的名称，objc_msgSend 的重要工作就是找到 selector 对应的方法实现。</p>
+<h2 id="二、寻找方法实现"><a href="#二、寻找方法实现" class="headerlink" title="二、寻找方法实现"></a>二、寻找方法实现</h2><p>上节说到 selector 为要执行方法的名称，但是真正的方法实现还需进一步寻找。</p>
+<p>OC 类结构体中有两个属性：指向父类的指针；分发表（dispatch table）。</p>
+<p>分发表中保存的是方法名和相应的方法实现的对应关系。若已取得某个方法的方法名，查询分发表即可获得相应的方法实现。</p>
+<p>如果在分发表中未找到某个方法的实现，通过 OC 类结构体中的指向父类的指针获取到父类的分发表，在父类的分发表中寻找。若未找到，再获取父类的父类，以此类推，直到找到为止。</p>
+<p>如果执行完所有的查找操作后，仍未找到，运行时系统会继续转发消息，最终调用到 forwardInvocation。具体参考<a href="http://rob2468.github.io/2016/05/16/JSPatch-Code-Analysis.html">上一篇博客</a>。</p>
+<p>此外，运行时系统为寻找方法实现提供了缓存机制，如果缓存命中，就直接从缓存中取方法实现。</p>
+<h2 id="三、方法执行"><a href="#三、方法执行" class="headerlink" title="三、方法执行"></a>三、方法执行</h2><p>objc_msgSend 获取到方法实现后，便调用该方法实现。该方法实现为普通 C 函数，objc_msgSend 会传入所需的参数。传递的参数除了最初发送消息时传入的参数，还有两个隐藏参数，分别是接收消息的对象和相应的 selector。</p>
+<p>下面的代码片段说明了如何主动调用消息传递解析后的函数。</p>
+<div class="code"><pre><code>void (*setter)(id, SEL, BOOL);
+setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
+setter(target, @selector(setFilled:), YES);
+</code></pre></div>
+
+<p>objc_msgSend 自动调用函数时，会自动传如两个隐藏参数，但是主动调用需要显式的传入。</p>
+<p>主动调用函数能够节省消息传递与解析的时间，比如上面的代码段在如下的一个 for 循环中。</p>
+<div class="code"><pre><code>void (*setter)(id, SEL, BOOL);
+setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
+for (int i = 0 ; i < 1000 ; i++ )
+    setter(targetList[i], @selector(setFilled:), YES);
+</code></pre></div>
+
+<p>附 methodForSelector: 方法的<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/objectivec/nsobject/1418863-methodforselector?language=objc">说明</a>：</p>
+<p></p>
+
+<div class="code"><pre><code>Locates and returns the address of the receiver’s implementation of a method so it can be called as a function.
+
+<p>Declaration</p>
+<ul>
+<li>(IMP)methodForSelector:(SEL)aSelector;</li>
+</ul>
+<p>Parameters<br>aSelector<br>A Selector that identifies the method for which to return the implementation address. The selector must be a valid and non-NULL. If in doubt, use the respondsToSelector: method to check before passing the selector to methodForSelector:.</p>
+<p>Return Value<br>The address of the receiver’s implementation of the aSelector.</p>
+<p>Discussion<br>If the receiver is an instance, aSelector should refer to an instance method; if the receiver is a class, it should refer to a class method.<br></code></pre></div></p>
+<p></p>
+
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>OC 消息传递经过一系列 C 函数处理，最终也转变成标准 C 语言函数调用方式。运行时系统给 OC 语言带来了极大的灵活性，但最终的执行方式与 C 语言并没有什么不同。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="ckrsyk6ue000aaqnb0xpl5r26" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-jspatch-code-analysis" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/05/16/jspatch-code-analysis/" class="article-date">
+  <time class="dt-published" datetime="2016-05-16T00:00:00.000Z" itemprop="datePublished">2016-05-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/05/16/jspatch-code-analysis/">JSPatch 代码分析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<p>“<a target="_blank" rel="noopener" href="https://github.com/bang590/JSPatch">JSPatch</a> 是一个 iOS 动态更新框架，只需在项目中引入极小的引擎，就可以使用 JavaScript 调用任何 Objective-C 原生接口，获得脚本语言的优势：为项目动态添加模块，或替换项目原生代码动态修复 bug。”</p>
+<p>JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。</p>
+<h2 id="section_1">一、OC (Objective-C) 运行时</h2>
+
+<p>OC 是运行时语言，即能够在程序运行的时候执行编译后的代码。OC 中的方法调用通过消息转发（objc_msgSend）实现，即先根据方法名寻找到方法实现，再调用方法实现。并且，通过 Method Swizzling 技术，可以动态修改方法名和方法实现的对应关系。</p>
+<h3>1. 消息转发</h3>
+
+<p>objc_msgSend 函数的重要工作是根据某个方法的 selector 找到相应的方法实现(IMP)。IMP 类型即为函数指针。</p>
+<p>_objc_msgForward 是 IMP 类型，当 objc_msgSend 未找到某个 selector 的 IMP，会使用该 IMP 替代。_objc_msgForward 会做消息转发的工作。</p>
+<p>_objc_msgForward 消息转发会依次调用如下的方法。</p>
+<div class="code"><pre><code>+ (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
+- (id)forwardingTargetForSelector:(SEL)aSelector;
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;
+- (void)forwardInvocation:(NSInvocation *)anInvocation;
+- (void)doesNotRecognizeSelector:(SEL)aSelector;
+</code></pre></div>
+
+<h3>2. Method Swizzling</h3>
+
+<p>Method Swizzling 用于修改目标类的方法名和方法实现的对应关系，比如可以增加新方法、替换已有方法的方法实现。</p>
+<p>常用函数如下所示：</p>
+<div class="code"><pre><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);
+IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types);
+void method_exchangeImplementations(Method m1, Method m2);
+</code></pre></div>
+
+<p>下面代码片段是一种情况下的使用示例：</p>
+<div class="code"><pre><code>SEL originalSelector = @selector(viewWillAppear:);
+SEL swizzledSelector = @selector(xxx_viewWillAppear:);
+
+<p>Method originalMethod = class_getInstanceMethod(class, originalSelector);<br>Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);</p>
+<p>// When swizzling a class method, use the following:<br>// Class class = object_getClass((id)self);<br>// …<br>// Method originalMethod = class_getClassMethod(class, originalSelector);<br>// Method swizzledMethod = class_getClassMethod(class, swizzledSelector);</p>
+<p>BOOL didAddMethod = class_addMethod(class, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));</p>
+<p>if (didAddMethod) &#123;<br>    class_replaceMethod(class, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));<br>&#125; else &#123;<br>    method_exchangeImplementations(originalMethod, swizzledMethod);<br>&#125;<br></code></pre></div></p>
+<h2 id="section_2">二、JavaScriptCore.framework</h2>
+
+<p>JSCore 是从 UIWebView 提取出的 JS 解析引擎，封装了 JS 和 OC 桥接的 OC API，使得不依赖于 UIWebView 便能实现 JS 环境和 OC 环境的通信。JSCore 提供不同运行环境之间方法互调的接口，并对不同类型的数据格式进行封装。</p>
+<h3>1. 方法互调</h3>
+
+<p>JSCore 提供了多种方式实现 JS 和 OC 的通信，最常用的方式是使用 Block，如下代码所示：</p>
+<div class="code"><pre><code>JSContext *context = [[JSContext alloc] init];
+context[@"log"] = ^() &#123;
+    NSLog(@"-------Log-------");
+&#125;;
+[context evaluateScript:@"log()"];
+</code></pre></div>
+
+<p>JSContext 是 JS 的运行环境。上述代码中，在 JSContext 中声明了名为 log 的函数，该函数的实现是 OC block，实现了在 JS 环境中调用 OC 方法。</p>
+<p><code>[context evaluateScript:@&quot;log()&quot;]</code> 是调用名为 log 的 JS 函数，实现了在 OC 环境中调用 JS 函数。</p>
+<p>除了通过 Block 通信，JSCore 还提供 JSExport。JSExport 是协议，JS 能方便的操纵实现了该协议的 OC 对象。</p>
+<h3>2. 类型转换关系</h3>
+
+<p>JS 和 OC 环境通信还伴随着数据的传递，下表是各类型数据的对应关系。</p>
+<div class="code"><pre><code>-----------------------------------------------------------------------------
+|  Objective-C Types                                    |  Javascript Types |
+|-------------------------------------------------------|-------------------|
+|  nil                                                  |  undefined        |
+|  NSNull                                               |  null             |
+|  NSString                                             |  String           |
+|  NSNumber                                             |  Number, Boolean  |
+|  NSDictionary                                         |  Object           |
+|  NSArray                                              |  Array            |
+|  NSDate                                               |  Date             |
+|  object (id or AnyObject) / class (Class or AnyClass) |  Object           |
+|  Structure types: NSRange, CGRect, CGPoint, CGSize    |  Object           |
+|  Objective-C Block                                    |  Function         |
+-----------------------------------------------------------------------------
+</code></pre></div>
+
+<h2 id="section_3">三、方法调用</h2>
+
+<p>JSPatch 通过运行时系统，将错误的 OC 代码逻辑替换为正确的 JS 代码逻辑。本小节描述 OC 方法被替换后，方法调用流程如何发生，包括如下两种情况，调用修改后的方法（即 JS 函数）和调用原始方法（即 JS 环境中调用 OC 方法）。</p>
+<h3 id="section_3_1">1. 调用修改后方法</h3>
+
+<p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_MessageSend.png" alt="" width="80%"></p>
+
+<p>上图描述了调用修改后方法的程序执行流程。</p>
+<p>每个方法可以看作两部分组成，selector 和 IMP，分别表示方法的名称和方法的实现。JSPatch 希望将类中错误方法实现修改为 JS 实现时，会执行两处方法修改。一是，将错误方法的实现修改为 _objc_msgForward；二是，将该类的 forwardInvocation 实现替换为自定义的方法实现（JPForwardInvocation）。这样，在调用该错误方法时便会执行到该类的 forwardInvocation 方法中，而 JPForwardInvocation 会判断是否执行相应的 JS 实现。</p>
+<h3 id="section_3_2">2. 调用原始方法</h3>
+
+<p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_callSelector.png" alt="" width="100%"></p>
+
+<p>上图描述 JS 环境中调用 OC 方法是如何发生的，即 JS 如何调用 OC 类中的任意方法。</p>
+<p>JSPatch 通过 __c 元函数实现 JS 调用 OC 方法。如上图所示，整个流程可以分为三个环节，JSPatch 引擎开始、注入修复脚本和程序运行。</p>
+<p>开始 JSPatch 引擎时，在 OC 中定义通用回调接口，并在 JS 环境中定义元函数 __c，__c 负责调用通用回调接口。</p>
+<p>注入修复脚本时，JSPatch 会修改脚本中 JS 函数的调用方式。使用正则表达式，将所有函数调用交由元函数 __c 解析。</p>
+<p>程序运行时，当调用某个元函数 __c 时，__c 会转发到 OC 的通用回调接口，通用回调接口通过类名、方法名和参数实现调用流程，并将结果反馈给 JS 环境。</p>
+<h2 id="section_4">四、问题发现与解释</h2>
+
+<p>在项目中引入了 JSPatch，利用其能力实现了不少针对 app 线上问题的热修复。在使用过程中发现一些问题，并做了调研。</p>
+<h3>1. 在 OC 中使用快速遍历访问NSArray 中的元素，转换为 JS 后，快速遍历无法得到数组元素。</h3>
+
+<p>JSPatch 对 OC 中的数组、字典、字符串进行了封装，在 JS 中被封装成 JPBoxing 对象，而不是原生的 JS 数组、字典、字符串。这种处理使得对应的数据对象在 OC 和 JS 之间传输时，仍能保持其在 OC 中的特性。具体原因见<a href="https://github.com/bang590/JSPatch/wiki/JSPatch-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3#4jpboxing" target="_blank">JSPatch-实现原理详解-JPBoxing</a>。因此，在JS中快速遍历时，访问的是相应的JPBoxing对象的可枚举属性。</p>
+<p>JS中的数组 JPBoxing 对象可调用方法 toJS()，获取相应的原生 JS 数组。但此时快速遍历的元素是 JS 数组的下标，不同于 OC 中的快速遍历，仍然需要额外的操作才能获得数组元素。</p>
+<p>JS中快速遍历的顺序依赖于具体实现，不能保证永远按照索引顺序访问。因此最好使用for(;;)语法访问数组。</p>
+<h3>2. 通过调用未实现方法以测试自定义的 forwardInvocation 时，在一些情况下直接抛出方法未实现错误，而不是执行 forwardInvocation 中逻辑。</h3>
+
+<p>Objective-C 的消息转发会调用一系列方法。在调用 forwardInvocation 之前，methodSignatureForSelector 会被调用。如果 methodSignatureForSelector 能够返回有效的 NSMethodSignature 对象，forwardInvocation 会在后续步骤中被调用，否则 forwardInvocation 将不会被调用（因为 forwardInvocation 的 NSInvocation 参数的形成依赖于 methodSignatureForSelector 返回的 NSMethondSignature 对象）。</p>
+<p>所以有两种方法解决这个问题。</p>
+<p>a. 在待测试的类中添加方法，并将该方法的实现设置为空（_objc_msgForward）。此时 methodSignatureForSelector 能够基于该方法生成合适的 NSMethodSignature 对象。</p>
+<p>b. 直接在待测试类中重载 methodSignatureForSelector 方法，手动构造并返回一个有效的 NSMethodSignature 对象。</p>
+<h3>参考文献:</h3>
+
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtForwarding.html">Message Forwarding</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/watchos/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/#//apple_ref/occ/clm/NSObject/resolveClassMethod:">NSObject Class Reference</a></p>
+<p><a target="_blank" rel="noopener" href="http://nshipster.cn/method-swizzling/">Method Swizzling</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/reference/javascriptcore?language=objc">JavaScriptCore</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="ckrsyk6ud0009aqnb9cdi6hl9" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-image-browser-implementation-and-optimization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2016/01/16/image-browser-implementation-and-optimization/" class="article-date">
+  <time class="dt-published" datetime="2016-01-16T00:00:00.000Z" itemprop="datePublished">2016-01-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2016/01/16/image-browser-implementation-and-optimization/">图片查看器中单张图片浏览的实现与优化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h2><p>百度浏览器3.1版本引入了图片查看器。我在3.2版本接手该模块，并修改与优化。百度浏览器中的图片查看器效果和微信中查看本人已发布照片调起的图片查看器功能类似。百度浏览器中许多模块能够调起图片查看器，如下载页面、趣星球、网页，以提供用户一致的图片浏览体验。</p>
+<p>图片查看器的整体设计不必多说。在图片查看器中浏览单张图片时，为了实现最优的浏览体验，自己花了不少时间调试。本文对该部分功能中的知识和经验做记录。</p>
+<h2 id="二、开发与调试记录"><a href="#二、开发与调试记录" class="headerlink" title="二、开发与调试记录"></a>二、开发与调试记录</h2><p>图片尺寸千差万别，设备屏幕有限，并且可以横竖屏旋转。和PM、UX讨论，制定了一些策略，使图片刚打开时显示的比较美观，比如，短图片竖屏时要左右贴边、竖直方向居中显示，长图片竖屏时要左右贴边、竖直方向头部贴边显示。</p>
+<p>图片静态展示时的显示策略通过分情况处理，能够达到最优效果。图片查看器还支持用户浏览单张图片时与其交互，支持双击图片实现缩小和放大，支持双指捏合图片实现缩小和放大。</p>
+<p>经过初期调研，确定了一些基本原则。</p>
+<ol>
+<li>图片置于UIScrollView中，并且缩小和放大的实现由UIScrollView的zoom功能支持。</li>
+<li>UIScrollView的内容视图尺寸需占满UIScrollView的视图尺寸范围，否则UIScrollView无法正确的响应用户的手势，如拖动、缩放。</li>
+</ol>
+<p>在开发过程中经历了三套设计方案。</p>
+<p class="post-image"><img src="/resources/figures/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图1. 各设计方案的视图层级</p>
+
+<p>方案一：如图1所示，将所要展示的Image View添加到Content View中，再将Content View添加到Scroll View中。保持Content View的尺寸始终占满Scroll View的视图尺寸范围，并且设置Content View响应缩放操作。此方案通过添加额外的视图解决问题，但是需要在不同的坐标系下计算视图位置。计算Image View的位置和尺寸需要在Content View的坐标系下，计算Content View的位置和尺寸需要在Scroll View的坐标系下，同时Image View的位置和尺寸还必须相对于屏幕以最优的方式展现。这种方案使计算变得复杂，没有采纳。</p>
+<p>方案二：如图1所示，首先添加了Background View，Background View作为其它视图的容器，不会发生位置和尺寸的变化。在Backgroud View上添加了Scroll View，在Scroll View上添加了Image View。不同于方案一，在本方案中Scroll View的位置和尺寸会根据Image View的变化而改变。为了能在全屏幕而不是Scroll View的视图范围内显示Image View，需设置Scroll View的clipsToBounds属性为NO。为了能在全屏幕响应对Scroll View的操作，需继承UIScrollView，并设置pointInside:withEvent:方法始终返回YES。</p>
+<p>在scrollViewDidEndZooming:withView:atScale:方法中，也就是Scroll View缩放结束后，计算Scroll View的最佳位置和尺寸，使用动画给Scroll View重新布局。但是，最终效果还是不太符合自己的意图。比如，将放大的图片捏合成缩小的图片，松手后，图片向屏幕上部反弹放大，然后再动画下移到屏幕中间。在后期的调试中总结出来，对于布局的计算要在Scroll View缩放之前完成，当设置好Scroll View的布局并调整Image View的布局后，再由Scroll View本身完成缩放。</p>
+<p>考虑到方案二也使用了额外的层级，并且对UIScrollView的属性和方法做了投机取巧的修改，在优化出方案三后，也废弃了方案二。</p>
+<p>方案三：如图1所示，该方案将视图层级简化，只使用到Scroll View和Image View。Scroll View的位置和尺寸不用发生变化，Image View响应缩放操作。通过为Scroll View设置contentInset，使内容占满Scroll View视图范围。下文针对方案三进行详细介绍。</p>
+<h2 id="三、UIScrollView的zoom特性"><a href="#三、UIScrollView的zoom特性" class="headerlink" title="三、UIScrollView的zoom特性"></a>三、UIScrollView的zoom特性</h2><p>UIScrollView通过代理获取和发送缩放发生时的信息，相关的代理方法有4个。</p>
+<ol>
+<li>viewForZoomingInScrollView:：返回值一个UIView对象，该视图对象响应缩放操作。</li>
+<li>scrollViewWillBeginZooming:withView:：当UIScrollView中的视图即将发生缩放时，该方法被调用。</li>
+<li>scrollViewDidZoom:：当UIScrollView中的视图的缩放比例发生变化时，该方法被调用。通过手指捏合的方式缩放视图时，该方法会被持续不断的调用。当通过代码的方式缩放视图时，该方法只被调用一次。比如，通过setZoomScale:animated:方法或zoomToRect:animated:方法缩放视图时，该方法只会在缩放刚开始时被调用一次。虽然视图的缩放动画仍在进行，该方法也不会再被调用。</li>
+<li>scrollViewDidEndZooming:：当视图的缩放结束后，该方法被调用。当手指捏合缩放视图超过缩放比例极限时，手指离开后，视图缩放会有反弹动画。在这种情况下，在最终反弹动画结束后，该方法才会被调用。</li>
+</ol>
+<p>UIScrollView中有如下3个属性，通过设置这些属性，能够实现内容视图的布局。</p>
+<ol>
+<li>contentInset：该属性的数据类型为UIEdgeInsets，表明UIScrollView的内容视图离UIScrollView上、左、下、右边沿的距离。该值不会随着视图的缩放发生变化。</li>
+<li>contentSize：该属性的数据类型为GGSize。当contentSize的值加上contentInset的值超过UIScrollView的尺寸时，UIScrollView的内容视图可以滚动。该值随着视图的缩放而发生变化。</li>
+<li>contentOffset：该属性的数据类型为CGPoint。该值表示contentSize相对于UIScrollView的位置，不包含contentInset。该值反应了UIScrollView中内容视图的位置。</li>
+</ol>
+<h2 id="四、经验分享"><a href="#四、经验分享" class="headerlink" title="四、经验分享"></a>四、经验分享</h2><p>图片查看器支持两种方式缩放图片，双击和手指捏合。在scrollViewWillBeginZooming:withView:方法中通过语句<code>scrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateBegan</code>判断缩放操作是由代码执行的，还是由用户捏合执行的。</p>
+<p>图2是双击缩放图片时的处理流程图。</p>
+<p class="post-image"><img src="/resources/figures/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图2. 双击缩放图片处理流程</p>
+
+<p>图片刚加载时，根据需求计算并设置Scroll View contentInset、contentSize和Image View frame。onDoubleTappedGestureRecognizer:是自定义的响应双击手势的方法，其中执行的操作如图2所示。</p>
+<p>通过此种方式缩放图片，在图片缩放的过程中不会有其它事件的干预，因此在缩放操作刚开始时便已知道缩放结束后的最终状态。如图2所示，在用户双击图片后计算出图片缩放最终状态下的Scroll View的contentInset，并修改Scroll View的contentInset。因为修改Scroll View的contentInset会导致contentOffset发生改变，所以需要先存储contentOffset，设置好contentInset后再恢复contentOffset。将Scroll View的属性修改为其最终状态的值后，通过setZoomScale:animated:方法或者zoomToRect:animated:方法缩放图片。</p>
+<p>图3是手指捏合缩放图片时的处理流程。</p>
+<p class="post-image"><img src="/resources/figures/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图3. 手指捏合缩放图片处理流程</p>
+
+<p>图3图片刚加载时的处理流程和图2相同。</p>
+<p>如上文“三、UIScrollView的zoom特性”中介绍，scrollViewDidZoom:方法在用户捏合缩放图片的过程中会被持续不断的调用，对应图3中的第1部分。第1部分的处理是确保图片在缩放时，边缘的空白能够始终被contentInset填充。否则用户捏合图片结束后，获取出的contentOffset值有时会不正确。</p>
+<p>图3中的第2部分和第3部分执行相同的处理代码。用户捏合图片松手后，图片所处的位置可能不是最佳位置，该部分代码负责最后的布局操作。首先计算出最佳的Scroll View contentInset和contentOffset，然后在动画block中设置contentInset和contentOffset。</p>
+<p>图3第2部分处理分支对应的情况是，用户捏合图片松手，并且此时图片的缩放程度超过了图片缩放极限。图3第3部分对应的情况是，用户捏合图片松手，并且此时图片的缩放程度没有超过图片的缩放极限。</p>
+<h2 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h2><p>最后是自己的两点总结。</p>
+<ol>
+<li><p>“不要重复造轮子”。UIScrollView的zoom特性能帮助实现了大部分的功能。</p>
+</li>
+<li><p>花点时间研究将要使用的控件能少走许多弯路。</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2016/01/16/image-browser-implementation-and-optimization/" data-id="ckrsyk6uc0008aqnbdqs426xq" data-title="图片查看器中单张图片浏览的实现与优化" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-bdphoneheadtabview" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/02/bdphoneheadtabview/" class="article-date">
+  <time class="dt-published" datetime="2015-11-02T00:00:00.000Z" itemprop="datePublished">2015-11-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/02/bdphoneheadtabview/">Head Tab View</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>源代码：<a target="_blank" rel="noopener" href="https://github.com/rob2468/HeadTabView">BDPhoneHeadTabView</a></p>
+<p>截图：如图1所示</p>
+<p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p>
+
+<p class="post-image-title">图1. 效果截图</p>
+
+<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了Head Tab View，使用autolayout方式实现布局。</p>
+<h2 id="二、代码结构"><a href="#二、代码结构" class="headerlink" title="二、代码结构"></a>二、代码结构</h2><p>Head Tab View的整体结构如图2所示。</p>
+<p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p>
+
+<p class="post-image-title">图2. HeadTabView的代码整体结构</p>
+
+<p>图2中圆角矩形表示各个模块，有向箭头表示数据通信，数据从弧尾流向弧头。Head Tab View的设计遵循MVC。外部只与BDPhoneHeadTabViewController实例打交道，从BDPhoneHeadTabViewController实例读取Head Tab View的信息，通过BDPhoneHeadTabViewController实例修改Head Tab View。</p>
+<h2 id="三、视图层次"><a href="#三、视图层次" class="headerlink" title="三、视图层次"></a>三、视图层次</h2><p>在源代码中，BDPhoneHeadTabView表示Head Tab View的视图，其视图层次结构如图3所示。</p>
+<p class="post-image"><img src="/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p>
+
+<p class="post-image-title">图3. BDPhoneHeadTabView的视图层次</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="ckrsyk6ub0007aqnb0d363gnk" data-title="Head Tab View" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

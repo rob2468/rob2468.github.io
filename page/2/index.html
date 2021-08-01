@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="jam.chenjun blog">
+<meta property="og:url" content="https://rob2468.github.io/page/2/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-hsb-practitioners-primer" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/07/06/hsb-practitioners-primer/" class="article-date">
+  <time class="dt-published" datetime="2019-07-06T00:00:00.000Z" itemprop="datePublished">2019-07-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/07/06/hsb-practitioners-primer/">HSB 颜色系统实践入门（译）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2>前言</h2>
+
+<p>本文翻译自 <a href="https://learnui.design/blog/the-hsb-color-system-practicioners-primer.html" target="_blank">The HSB Color System: A Practitioner’s Primer</a>。</p>
+<p>为什么网上没有一篇好的解释 HSB 颜色系统的文章，我觉得这很蠢。Google 有 250 万的 HSB 搜索结果，但是实际使用这套系统的人有多少呢？我必须自己做这件事吗？</p>
+<p>好的方面是，现在在我喝完这杯啤酒的时候，我有了事情可做。</p>
+<p>我们将要讲解 H、S、B 是什么。然后，我会告诉你，为什么这是广泛使用的最好的颜色系统。最后，我会讲解在日常数字设计中使用它的一些复杂问题。</p>
+<p>如果你已经熟悉了 H、S、B，你可以直接跳到 <a href="#section_2">HSB 实践</a>。</p>
+<h2 id="section_1">依次解释各个字母</h2>
+
+<p>你的电脑内部都是由 0 和 1 组成，对于你的电脑来说，颜色只不过是一个个的比特位。如果你认为颜色是由空灵的魔法生成的神秘彩虹，那你知道事实可能会变得沮丧。实际上，这个星球上的每一台电脑呈现的任意一种颜色，只不过需要3个数字就能表示。</p>
+<p>不过，这3个数字的差别很大。</p>
+<p>如果你曾今使用 HTML 和 CSS 写过代码，你可能对 RGB 比较熟悉。每一种颜色由3个数字表示：(1)红色的程度用 R 表示，(2)绿色的程度用 G 表示，(3)蓝色的程度用 B 表示。这听起来像是某个人在他喝高的时候编出来的，实际上，RGB 非常简单可靠，它是计算机处理颜色的默认方式。</p>
+<p>但是，只是因为计算机容易理解 RGB，并不表示人类也容易理解。这里就引出了 HSB。</p>
+<p>HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是对人类非常友好的描述颜色的方法。为什么它这么棒？因为它的思想基于我们平常使用的描述颜色的想法。接下来，我会讲给你听。</p>
+<h3 id="section_1_1">色调 = “彩虹的颜色”</h3>
+
+<p>色调是一个 0 到 360 的数字。它的单位是度，就像一个圆的度数。记得色彩环吗？色调就是色彩环上的某个值。</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-color-wheel.png" alt="The color wheel" width="35%"></p>
+
+<p class="post-image-title">The color wheel – AKA the hue wheel</p>
+
+<p>现在，这忽略了颜色有多暗、明亮、丰富或者苍白。我们待会儿就会讲到这些。现在只要知道，要找到色调，想想它在色彩轮上最接近的颜色。</p>
+<p>如果你想对 HSB 有一个直观的理解，你应该考虑几个固定点。我使用红色、绿色和蓝色，因为它们在色彩轮上的距离各自相等。</p>
+<ul>
+<li>红色是 0°</li>
+<li>绿色是 120°</li>
+<li>蓝色是 240°</li>
+<li>红色也是 360°，跟 0° 相同</li>
+</ul>
+
+<p>因此，当我考虑要添加什么颜色时，我可以快速地输入一个数字。通过考虑这三个点的位置，我可以非常接近正确的色调。</p>
+<h3 id="section_1_2">饱和度 = “丰富度”</h3>
+
+<p>饱和度是一个介于 0 和 100 之间的数字。所以，无论你选择了什么色调，100% 的饱和度是该颜色最丰富的版本，0% 的饱和度是该颜色的灰色版本（也就是说，如果颜色较浅，则为浅灰色；如果颜色较暗，则为深灰色）。</p>
+<p>想要看看吗？</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-saturation.png" alt="saturation" width="80%"></p>
+
+<p>饱和度很简单。我有时会把它想象成向灰色中注入的颜色的数量。所以，0% 是纯灰色，100% 是你的显示器能做出的最多彩的颜色。</p>
+<h3 id="section_1_3">亮度 = 亮度，额...</h3>
+
+<p>亮度是介于 0 和 100 之间的数字。像饱和度一样，它有时被写成一个百分比。亮度的含义显而易见，但很快会有下面的发现。</p>
+<ul>
+<li>0% 亮度的颜色是黑色，无论色调和饱和度是多少。</li>
+<li>只有当饱和度为 0%，100% 亮度的颜色才为白色。否则，100% 的亮度只是…非常明亮的颜色。</li>
+</ul>
+
+<p>听起来很困惑？可以这样想。想象一下亮度是个有色灯泡。0% 表示灯泡关闭（房间内变黑）。100% 表示光的强度最大，亮度最大的灯泡是一种明亮的颜色。如果光已经是白色的，那么 100% 的亮度是纯白色的。</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-brightness.png" alt="brightness" width="80%"></p>
+
+<p>好了，回顾一下，我们可以用三个合理的数字来描述一种颜色：</p>
+<ul>
+<li>色调：色彩轮上最接近的颜色，取值范围是 0° 到 360°</li>
+<li>饱和度：如何注入色彩，取值范围是 0% 到 100%</li>
+<li>亮度：“灯泡”开了多少，取值范围是 0% 到 100%</li>
+</ul>
+
+<h2 id="section_2">HSB 实践</h2>
+
+<p>如果你还在，我想开始讨论使用这个系统的实用性。如果你从未使用过 HSB，不要对即将出现的细节感到太多恐惧……先试一下吧。把事情搞得一团糟，然后再回来。使用一段时间后，一切会更有意义。</p>
+<h3 id="section_2_1">随色调变化的颜色</h3>
+
+<p>首先，色调是一种创造色彩变化的绝佳方式。因为从 0° 到 360° 你有很多的选择，而不是简单地把蓝色设为“蓝色”。你可以稍微向下或向上改变一下色调，很容易就能得到漂亮的变体。</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-blue-color-variations.png" alt="blue-color-variations" width="80%"></p>
+
+<p>我们从一个标准的蓝色开始，它在色彩环 240° 的位置。但是，我们不会选择最无聊的颜色，而是决定稍微加点变化。</p>
+<p>即使只是把色调调低 30° 变成 210°，也能营造出一种凉爽的氛围，更轻，更有趣，更随意。有点像来到 Twitter 的页面，但这只是第一步。</p>
+<p>把色调调到 260°，得到了靛蓝。仅仅 20 度的变化，就带来一种完全不同的感觉 —— 一些更酷的东西，可能适用于霓虹灯颜色或者深色背景；给一些东西带来微妙的女性气息。等等之类。你明白的。</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-red-color-variations.png" alt="color-variations" width="80%"></p>
+
+<p>同样的，红色。这是相当棘手的颜色，出门时很难搭配。超级大胆，超级强势。但是，根据我们想要做的，比如说这是我们的错误信息颜色或者其他什么，我们可以通过注入少量的粉色（将色调降低 10°），使其更友好。或者，我们可以通过添加一些橙色，来获得一种更稳重的变体。</p>
+<p>所以，使用色调可以给自己很多选择。帮自己一个忙：不要把你的调色板限定在你在幼儿园学到的颜色上。多玩玩它。</p>
+<h3 id="section_2_2">使用饱和度来调整可见性</h3>
+
+<p>调整饱和度关乎很多技术和技巧，但是，我一直来回关注的是关于可见性的调整。</p>
+<p>如果有一种颜色压倒了你用户界面中的所有东西，那么一个快速修复它的方法就是减少饱和度。</p>
+<p>比如，看看 Google Logo 上的这种变化。我把蓝色的饱和度调整到了 90%，你会发现它变得非常引入注目。</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-google-saturated.png" alt="google-saturated" width="50%"></p>
+
+<p>留意一下蓝色有多突出。如果你看不到它，试着放松你的眼睛，然后盯着 Logo 几秒钟。几乎立刻，你就会看到 “G” 和 “g” 从其他颜色中弹出。</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-google-normal.png" alt="google-normal" width="50%"></p>
+
+<p>在正常的 Google Logo 中，不同颜色之间有着更好的平衡。</p>
+<p>你会使用饱和度来处理各种各样的事情，包括修复冲突颜色和丰富你的暗色。这里，我只是想给出一个快速的例子。现在，让我们继续讨论 HSB 的一个更有趣的事实 —— 以及它的含义。</p>
+<h2 id="section_3">白色的对立面不是黑色</h2>
+
+<p>在 HSB 中，我们使用如下方法构造出黑色和白色：</p>
+<ul>
+<li>黑色：将亮度设为 0%。色调和饱和度可以为任意值。</li>
+<li>白色：将亮度设为 100%，并且饱和度设为 0%。色调仍然可以为任意值。</li>
+</ul>
+
+<p>有趣的是，这意味着（在 HSB 系统中）黑色不是白色的反义词。</p>
+<p>另一种向你自己证明这一点的方法是思考在一种颜色中添加黑色或白色意味着什么。</p>
+<p>要添加白色，必须在颜色选择器上将颜色移到白色。白色在左上角，可以肯定的是，增加白色包括降低饱和度（向左移动）和增加亮度（向上移动）。</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-adding-white.png" alt="adding-white" width="30%"></p>
+
+<p class="post-image-title">Going from one red to a whiter red.</p>
+
+<p>增加白色看起来像下面这样：</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-adding-white-swatches.png" alt="adding-white-swatches" width="80%"></p>
+
+<p>但是添加黑色？好吧，因为黑色是颜色选择器矩形的整个底部，添加黑色只需要降低亮度。饱和度的值与此无关。</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-adding-black.png" alt="adding-black" width="30%"></p>
+
+<p class="post-image-title">Going from one red to a blackr red.</p>
+
+<p>这两种情况的箭头不能互相抵消！在 HSB 中，黑白不是对立的。</p>
+<p>从实用的角度来看，与较浅的版本相比，通过添加黑色得到的暗色非常乏味：</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-adding-black-swatches.png" alt="adding-black-swatches" width="80%"></p>
+
+<p>需要特别说明的是：我希望你去掉白色，而不是增加黑色。换句话说，同时：</p>
+<ul>
+<li>增加饱和度</li>
+<li>降低亮度</li>
+</ul>
+
+<p>或者，如果您更喜欢图表的话：</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-removing-white.png" alt="removing-white" width="30%"></p>
+
+<p class="post-image-title">Going from one red to a less white red.</p>
+
+<p>这将给你更丰富的暗色：</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-removing-white-swatches.png" alt="removing-white-swatches" width="80%"></p>
+
+<p>去除白色 —— 也就是说，让你的暗色调更丰富 —— 是产生 95% 以上颜色的暗变化的“正确”方法。</p>
+<h2 id="section_4">额外说明：HSL 和 HSB 有什么不同？</h2>
+
+<p>你们中间的前端开发者可能知道 CSS 使用了一个颜色系统 HSL，色调（hue）、饱和度（saturation）、亮度（lightness）。这听起来有点耳熟。HSB 和 HSL 是一样的吗？</p>
+<p>简短的回答：不一样，但它们是相似的。</p>
+<p>既然你已经是 HSB 的专家，我可以很简单地解释：HSL 和 HSB 完全一样，除了 HSL 的黑白是对立的这一点。</p>
+<p>所以，在 HSL 中：</p>
+<ul>
+<li>获得黑色：将亮度设为 0%（色调和饱和度无关）</li>
+<li>获得白色：将亮度设为 100%（色调和饱和度无关）</li>
+</ul>
+
+<p>现在这很好，但是一旦你试图直观地描述，如何在两个系统之间转换，事情就会变得混乱。</p>
+<ul>
+<li>添加亮度（lightness）超过 50% 与添加白色相同（意味着，对应在 HSB 系统下，饱和度降低、亮度升高）。</li>
+<li>减去亮度（lightness）低于 50% 与添加黑色相同（对应在 HSB 系统下，饱和度没有影响，但亮度降低）。</li>
+</ul>
+
+<p>所以 HSL 的亮度属性是 HSB 的饱和度和亮度的奇怪混合，这取决于它的亮度值！</p>
+<p>尽管如此，黑白相对的系统可能实际上是一个更加合理的系统。但现代的 UI 设计应用程序（Sketch、Figma 和 Adobe XD）都使用的是 HSB，而不是 HSL。坦率地说，你的 UI 设计应用程序只是你挑选和调整颜色的第一步。所以，让我们保持简单：如果你想将颜色值从设计转换为代码，只使用十六进制值。（虽然它远比任何一个系统都不易理解！）</p>
+<p>（但是，至少你能够进行复制和粘贴。）</p>
+<p class="post-image"><img src="/resources/figures/2019-07-06-hsb-cone-and-hsl-dicone.png" alt="hsb-cone-and-hsl-dicone" width="80%"></p>
+
+<p class="post-image-title">Image courtsey of Wikipedia's <a href="https://commons.wikimedia.org/wiki/File:Color_solid_comparison_hsl_hsv_rgb_cone_sphere_cube_cylinder.png" target="_blank">SharkD</a></p>
+
+<p>如果你对了解更多颜色系统知识感兴趣，这张图包含了启发你的种子。它应该明确了 HSB 和 HSL 之间细微但关键的区别。但是，像这样划分颜色空间让我们离开了实践，而进入了理论，所以我还是交给其他人吧。</p>
+<h3>参考文献：</h3>
+
+<p><a href="https://learnui.design/blog/the-hsb-color-system-practicioners-primer.html" target="_blank">The HSB Color System: A Practitioner’s Primer</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/07/06/hsb-practitioners-primer/" data-id="ckrsyk6uw000waqnb8iefb69v" data-title="HSB 颜色系统实践入门（译）" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hsd-websocket" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/15/hsd-websocket/" class="article-date">
+  <time class="dt-published" datetime="2019-06-15T00:00:00.000Z" itemprop="datePublished">2019-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/06/15/hsd-websocket/">为 GCDWebServer 引入 WebSocket 支持</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2 id="section_1">前言</h2>
+
+<p>借助一些工具库，iOS 设备可以配置成为服务器，在此之上可以做许多有意思的事情。例如，<a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HttpServerDebug</a> 基于这种能力，提供了现场调试 iOS App 的能力。</p>
+<p><a href="https://github.com/robbiehanson/CocoaHTTPServer" target="_blank">CocoaHTTPServer</a> 是比较早期的提供服务器能力的库，(基础 Socket 通信能力由 <a href="https://github.com/robbiehanson/CocoaAsyncSocket" target="_blank">CocoaAsyncSocket</a> 提供，)现在已不再维护。</p>
+<p><a href="https://github.com/swisspol/GCDWebServer" target="_blank">GCDWebServer</a> 也是一个提供服务器能力的工具，基于 GCD 实现，当前仍在维护中。</p>
+<p>HSD（HttpServerDebug） 基于 GCDWebServer。HSD 希望能够主动的把信息发送到前端，这依赖于 WebSocket 协议，但是 GCDWebServer 不支持。</p>
+<p>HSD 对 GCDWebServer 进行二次开发，增加 WebSocket 能力，并且不再同步原始 GCDWebServer 库。这是支持 WebSocket 协议的一次实践，并没有完备的支持 WebSocket 的所有方面，如新版本的 WebSochet 协议、加密数据传输等。</p>
+<h2 id="section_2">Socket 实现</h2>
+
+<p>Http 和 WebSocket 都是应用层的协议，其底层都依赖 Socket 进行通信。</p>
+<p>GCDWebServer 中，Socket 的建立使用 POSIX C 函数实现。生成的核心数据对象是一对 Socket 文件描述符，分别代表服务端和客户端。对 Socket 文件描述符的监听、读取、写入均使用 GCD 函数进行了封装。</p>
+<h2 id="section_3">WebSocket 协议</h2>
+
+<p>WebSocket 协议是借用 HTTP 101 switch protocol 来完成协议转换，从 HTTP 协议切换成 WebSocket 通信协议。一个典型的建立连接请求和响应头如下，具体含义见参考文献链接。</p>
+<div class="code"><pre><code>Request Headers
+GET ws://localhost:5555/ HTTP/1.1
+Host: localhost:5555
+Connection: Upgrade
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade: websocket
+Origin: http://localhost:5555
+Sec-WebSocket-Version: 13
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
+Cookie: locale=zh-cn
+Sec-WebSocket-Key: qtAGynUVRNU3JdTH1dsQiA==
+Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+
+<p>Response Headers<br>HTTP/1.1 101 Web Socket Protocol Handshake<br>WebSocket-Location: ws://localhost:5555/<br>Sec-WebSocket-Accept: We1qmJgFvf8w3cDqTuUO5B6lrNA=<br>Upgrade: WebSocket<br>Connection: Upgrade<br>WebSocket-Origin: <a target="_blank" rel="noopener" href="http://localhost:5555/">http://localhost:5555</a><br></code></pre></div></p>
+<p>WebSocket 协议传输的数据以 Frame 为单位，每个 Frame 都有严格的数据结构，如下表所示。其中每个位以字节流形式考察，具体含义见参考文献链接。</p>
+<div class="code"><pre><code>  0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
+ +-+-+-+-+-------+-+-------------+-------------------------------+
+ |F|R|R|R| opcode|M| Payload len |    Extended payload length    |
+ |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |
+ |N|V|V|V|       |S|             |   (if payload len==126/127)   |
+ | |1|2|3|       |K|             |                               |
+ +-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +
+ |     Extended payload length continued, if payload len == 127  |
+ + - - - - - - - - - - - - - - - +-------------------------------+
+ |                               |Masking-key, if MASK set to 1  |
+ +-------------------------------+-------------------------------+
+ | Masking-key (continued)       |          Payload Data         |
+ +-------------------------------- - - - - - - - - - - - - - - - +
+ :                     Payload Data continued ...                :
+ + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
+ |                     Payload Data continued ...                |
+ +---------------------------------------------------------------+
+</code></pre></div>
+
+<h2 id="section_4">持有关系</h2>
+
+<p class="post-image">
+  <img src="/resources/figures/2019-06-15-websocket-retain.png" alt="Retain Relationship" width="60%">
+</p>
+
+<p>如上图所示，增加 WebSocket 协议支持后，对象实例的持有关系有一些变化。GCDWebServer 表示服务器实例，GCDWebServerConnection 表示一次通信连接实例。</p>
+<p>GCDWebServer 实例和 GCDWebServerConnection 实例的对应关系是 1 : n，这在修改前后都是一样的。修改前，GCDWebServerConnection 实例没有显式的声明被某个对象持有，其内部实现中，dispatch_read 和 dispatch_write 的 block 持有其自身，并在 block 执行结束后释放。</p>
+<p>修改后，明确了 GCDWebServerConnection 实例的持有关系。GCDWebServer 实例接收到请求并实例出 GCDWebServerConnection 对象后，显示持有该对象。</p>
+<p>HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConnection 检测到当前请求为 WebSocket 请求时，实例出 HSDGWebSocket 对象，并显示持有。他们的对应关系是 1 : 1。</p>
+<h2 id="section_5">建立连接</h2>
+
+<div class="code"><pre><code>+ (BOOL)isWebSocketRequest:(NSDictionary *)requestHeaders &#123;
+    NSString *connectionHeaderValue = [requestHeaders objectForKey:@"Connection"];
+    NSString *upgradeHeaderValue = [requestHeaders objectForKey:@"Upgrade"];
+
+<pre><code>BOOL isWebSocket = YES;
+if (!upgradeHeaderValue || !connectionHeaderValue) &#123;
+    isWebSocket = NO;
+&#125; else if ([upgradeHeaderValue caseInsensitiveCompare:@&quot;WebSocket&quot;] != NSOrderedSame) &#123;
+    isWebSocket = NO;
+&#125; else if ([connectionHeaderValue rangeOfString:@&quot;Upgrade&quot; options:NSCaseInsensitiveSearch].location == NSNotFound) &#123;
+    isWebSocket = NO;
+&#125;
+return isWebSocket;
+</code></pre>
+<p>}<br></code></pre></div></p>
+<p>如上代码所示，接收到请求后，根据请求头判断是否是 WebSocket 请求。如果是 WekSocket 请求，则发送对应的响应头，如下代码所示。请求和响应的格式和值见 WebSocket 协议的定义。</p>
+<div class="code"><pre><code>- (void)sendResponseHeaders &#123;
+    // request info
+    NSDictionary *requestHeaders = CFBridgingRelease(CFHTTPMessageCopyAllHeaderFields(self.requestMessage));
+    NSString *origin = [requestHeaders objectForKey:@"Origin"];
+    NSString *host = [requestHeaders objectForKey:@"Host"];
+    NSString *secWebSocketKey = [requestHeaders objectForKey:@"Sec-WebSocket-Key"];
+
+<pre><code>NSURL *requestURL = CFBridgingRelease(CFHTTPMessageCopyRequestURL(self.requestMessage));
+NSString *relativeString = [requestURL relativeString];
+
+// response
+CFHTTPMessageRef responseMessage = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 101, CFSTR(&quot;Web Socket Protocol Handshake&quot;), kCFHTTPVersion1_1);
+CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;Connection&quot;), CFSTR(&quot;Upgrade&quot;));
+CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;Upgrade&quot;), CFSTR(&quot;WebSocket&quot;));
+
+CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;WebSocket-Origin&quot;), (__bridge CFStringRef)origin);
+NSString *locationValue = [NSString stringWithFormat:@&quot;ws://%@%@&quot;, host, relativeString];
+CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;WebSocket-Location&quot;), (__bridge CFStringRef)locationValue);
+
+// Sec-WebSocket-Accept
+NSString *guid = @&quot;258EAFA5-E914-47DA-95CA-C5AB0DC85B11&quot;;
+NSString *acceptValue = [[secWebSocketKey stringByAppendingString:guid] dataUsingEncoding: NSUTF8StringEncoding].sha1Digest.base64Encoded;
+if (acceptValue.length &gt; 0) &#123;
+    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;Sec-WebSocket-Accept&quot;), (__bridge CFStringRef)acceptValue);
+&#125;
+
+CFDataRef data = CFHTTPMessageCopySerializedMessage(responseMessage);
+[self writeData:(__bridge NSData*)data withCompletionBlock:^(BOOL sucess) &#123;&#125;];
+CFRelease(data);
+</code></pre>
+<p>}</code></pre></div></p>
+<h2 id="section_6">发送和接收信息</h2>
+
+<p>下面两段代码分别是，从服务端发送信息到前端和服务端接收前端发来的信息。其中关于字节流的处理见 WebSocket 协议 Frame 的定义。</p>
+<div class="code"><pre><code>- (void)sendMessage:(NSString *)msg &#123;
+    NSData *msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableData *data = nil;
+
+<pre><code>NSUInteger length = msgData.length;
+if (length &lt;= 125) &#123;
+    data = [NSMutableData dataWithCapacity:(length + 2)];
+    [data appendBytes:&quot;\x81&quot; length:1];
+    UInt8 len = (UInt8)length;
+    [data appendBytes:&amp;len length:1];
+    [data appendData:msgData];
+&#125; else if (length &lt;= 0xFFFF) &#123;
+    data = [NSMutableData dataWithCapacity:(length + 4)];
+    [data appendBytes:&quot;\x81\x7E&quot; length:2];
+    UInt16 len = (UInt16)length;
+    [data appendBytes:(UInt8[])&#123;len &gt;&gt; 8, len &amp; 0xFF&#125; length:2];
+    [data appendData:msgData];
+&#125; else &#123;
+    data = [NSMutableData dataWithCapacity:(length + 10)];
+    [data appendBytes:&quot;\x81\x7F&quot; length:2];
+    [data appendBytes:(UInt8[])&#123;0, 0, 0, 0, (UInt8)(length &gt;&gt; 24), (UInt8)(length &gt;&gt; 16), (UInt8)(length &gt;&gt; 8), length &amp; 0xFF&#125; length:8];
+    [data appendData:msgData];
+&#125;
+
+[self writeData:data withCompletionBlock:^(BOOL success) &#123;&#125;];
+</code></pre>
+<p>}</code></pre></div></p>
+<div class="code"><pre><code>- (void)handleReceivedData:(NSData *)data &#123;
+    NSUInteger curPointPos = 0;     // pointer postion cursor
+    NSUInteger msgLength;           // payload length
+    NSUInteger opCode;
+    BOOL frameMasked;
+    NSData *maskingKey;
+
+<pre><code>NSData *tmp = [[NSData alloc] initWithBytes:(UInt8 *)[data bytes] length:1];// first byte
+curPointPos++;
+
+UInt8 frame = *(UInt8 *)[tmp bytes];
+if ([self isValidWebSocketFrame:frame]) &#123;
+    opCode = frame &amp; 0x0F;
+&#125; else &#123;
+    [self closeWebSocket];
+    return;
+&#125;
+
+tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:1];
+curPointPos++;
+
+frame = *(UInt8 *)[tmp bytes];
+frameMasked = WS_PAYLOAD_IS_MASKED(frame);
+NSUInteger length = WS_PAYLOAD_LENGTH(frame);
+
+if (length &lt;= 125) &#123;
+    if (frameMasked) &#123;
+        maskingKey = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:4];
+        curPointPos += 4;
+    &#125;
+    msgLength = length;
+&#125; else if (length == 126) &#123;
+    tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:2];
+    curPointPos += 2;
+
+    UInt8 *pFrame = (UInt8 *)[tmp bytes];
+    NSUInteger length = ((NSUInteger)pFrame[0] &lt;&lt; 8) | (NSUInteger)pFrame[1];
+    if (frameMasked) &#123;
+        maskingKey = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:4];
+        curPointPos += 4;
+    &#125;
+    msgLength = length;
+&#125; else &#123;
+    tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:8];
+    curPointPos += 8;
+    // FIXME: 64bit data size in memory?
+    [self closeWebSocket];
+    return;
+&#125;
+
+NSData *remainingData = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:msgLength];
+if (frameMasked &amp;&amp; maskingKey) &#123;
+    NSMutableData *masked = [remainingData mutableCopy];
+    UInt8 *pData = (UInt8 *)masked.mutableBytes;
+    UInt8 *pMask = (UInt8 *)maskingKey.bytes;
+    for (NSUInteger i = 0; i &lt; msgLength; i++) &#123;
+        pData[i] = pData[i] ^ pMask[i % 4];
+    &#125;
+    remainingData = masked;
+&#125;
+if (opCode == WS_OP_TEXT_FRAME) &#123;
+    NSString *msg = [[NSString alloc] initWithBytes:[remainingData bytes] length:msgLength encoding:NSUTF8StringEncoding];
+    [self didReceiveMessage:msg];
+
+    if (self.isReadSourceSuspended) &#123;
+        // current reading finished, prepare for the next read event
+        dispatch_resume(self.readSource);
+        self.socketFDBytesAvailable = 0;
+    &#125;
+&#125; else &#123;
+    [self closeWebSocket];
+&#125;
+</code></pre>
+<p>}<br></code></pre></div></p>
+<h2 id="section_7">遇到的问题</h2>
+
+<h3>HSDGWebSocket 实例无法释放问题</h3>
+
+<p>HSDGWebSocket 使用 dispatch_source 监听客户端 Socket 文件描述符。如果有数据可以读取，则 event_handler 会读取并解析数据。</p>
+<p>最初的实现中设置了 dispatch_source_set_cancel_handler，如果接收到 WebSocket 关闭的信息，调用 dispatch_source_cancel，cancel_handler 会负责执行清理的工作，比如关闭 Socket 文件描述符。但是，测试下来发现，调用 dispatch_source_cancel 并没有触发 cancel_handler 的执行，并且，event_handler 的 block 实例不会释放，而且一直持有着 HSDGWebSocket 实例。</p>
+<p>使用另外一种方法解决了这个问题。不再设置 dispatch_source_set_cancel_handler，如果接收到 WebSocket 关闭的信息，主动去执行清理的工作。并且 dispatch_source_set_event_handler 的 block 弱引用 HSDGWebSocket，解决 HSDGWebSocket 无法释放的问题。</p>
+<p>dispatch_source_cancel 没有触发 cancel_handler 的原因还不知道。当前的做法可能仍然存在 dispatch_source_set_event_handler 的 block 实例一直未释放的问题。</p>
+<h3>参考文献：</h3>
+
+<p><a href="https://github.com/abbshr/abbshr.github.io/issues/22" target="_blank">学习WebSocket协议—从顶层到底层的实现原理（修订版）</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/06/15/hsd-websocket/" data-id="ckrsyk6uv000vaqnbgnoy6ip5" data-title="为 GCDWebServer 引入 WebSocket 支持" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-js-date-and-zone" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/10/js-date-and-zone/" class="article-date">
+  <time class="dt-published" datetime="2019-06-10T00:00:00.000Z" itemprop="datePublished">2019-06-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/06/10/js-date-and-zone/">JavaScript Date 和时区</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2 id='section_1'>概述</h2>
+
+<p>JS 中使用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a> 类型记录时间。Date 类型是对时间的抽象封装，它提供了许多操作时间的便利方法。本文整理了如何使用 Date 来处理时间，以及解决时区转换带来的问题。</p>
+<h2 id='section_2'>Date 实例</h2>
+
+<p>一个 Date 实例封装了一个时间，其中，时间的底层表示方式是1970年1月1日至今的毫秒数。并且，这里毫秒数的计算与时区无关，均以 UTC±0 计算。在同一时刻生成的 Date 实例，无论是在北京，还是在西雅图，其中封装的时间都是相同的。</p>
+<h2 id='section_3'>时间的传输与显示</h2>
+
+<p>在实际环境中，时间信息经常需要在不同的系统之间传输。最简单的方法便是采用时间的毫秒数表达方式。这种方式不需要考虑时区问题，能够准确传递时间信息，并且，由于使用的是整数数据类型，适用于所有的系统。JS Date 实例的 getTime()、valueOf() 接口可以返回1970年1月1日至今的毫秒数。</p>
+<p>时间的毫秒数表达方式对机器友好，但是不易理解。当时间从毫秒数转换为人类可以理解的时间表达方式时，需要考虑时区的影响。</p>
+<p>JS 中 Date 实例提供的接口包含本地化（时区有关）接口和时区无关接口。比如，Date 实例的 toString() 接口返回的是本地化的时间，getUTCHours() 接口返回的是时区无关的信息。</p>
+<h2 id='section_4'>案例分析</h2>
+
+<p>存在一个 BS（Browser-Server）结构的系统，用户在浏览器上执行了某项操作，这个操作的时间会发送至服务端存储。浏览器与服务端均可能处于任意时区。如果使用1970年1月1日至今的毫秒数来表示和传递时间，不需要考虑时区问题。</p>
+<p>对于希望以北京时间（UTC+8）、人类可理解的方式来表示时间时，有如下两种处理方式。</p>
+<p>1、如果当前执行环境所在的时区为 UTC+8，那么直接使用 Date 实例的本地化接口就能获得北京时间的表达。Date 实例的 getTimezoneOffset() 接口可以判断当前所处的时区，其返回值表示本地时区与 UTC±0 时区分钟差。</p>
+<div class="code"><pre><code>/* 本地化接口 */
+getDate()
+getDay()
+getMonth()
+getFullYear()
+getHours()
+getMinutes()
+getSeconds()
+...
+</code></pre></div>
+
+<p>2、如果不想考虑当前执行环境所在时区带来的影响，Date 也提供了一系列时区无关的接口。如下代码所示，核心思想是将原始时间和转换后的时间都当成 UTC±0 的时间来处理。</p>
+<div class="code"><pre><code>function getFormattedBeijingDateString(timestamp) &#123;
+  const utcDate = new Date(timestamp + 8 * 60 * 60 * 1000); // 时区时间差
+  const year = `$&#123;utcDate.getUTCFullYear()&#125;`;
+  let month;
+  if (utcDate.getUTCMonth() + 1 < 10) &#123;
+    month = `0$&#123;utcDate.getUTCMonth() + 1&#125;`;
+  &#125; else &#123;
+    month = `$&#123;utcDate.getUTCMonth() + 1&#125;`;
+  &#125;
+  let day;
+  if (utcDate.getUTCDate() < 10) &#123;
+    day = `0$&#123;utcDate.getUTCDate()&#125;`;
+  &#125; else &#123;
+    day = `$&#123;utcDate.getUTCDate()&#125;`;
+  &#125;
+  return `$&#123;year&#125;-$&#123;month&#125;-$&#123;day&#125;`;
+&#125;
+</code></pre></div>
+
+<h2 id='section_5'><a href="https://momentjs.com" target="_blank">moment.js</a></h2>
+
+<p><code>moment().utcOffset(8).format(&#39;YYYY-MM-DD&#39;);</code></p>
+<p>使用这种方法可以显示北京时间。</p>
+<p>moment.js 的 utcOffset() 接口的核心逻辑如下语句所示，其原理和上一小节时区无关的处理方式类似。</p>
+<p><code>mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/06/10/js-date-and-zone/" data-id="ckrsyk6uu000uaqnba5tecgf7" data-title="JavaScript Date 和时区" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-lookuptables" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/04/16/lookuptables/" class="article-date">
+  <time class="dt-published" datetime="2019-04-16T00:00:00.000Z" itemprop="datePublished">2019-04-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/04/16/lookuptables/">ASCII 编码对照表</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<p class="post-image">
+  <img src="/resources/figures/2019-04-16-asciifull.gif" alt="ASCII table" width="100%">
+</p>
+
+<h3>参考文献：</h3>
+
+<p><a href="http://www.asciitable.com" target="_blank">http://www.asciitable.com</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/04/16/lookuptables/" data-id="ckrsyk6uu000taqnb1xib8lfl" data-title="ASCII 编码对照表" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-css-knowledge" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/04/09/css-knowledge/" class="article-date">
+  <time class="dt-published" datetime="2019-04-09T00:00:00.000Z" itemprop="datePublished">2019-04-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/04/09/css-knowledge/">CSS 知识</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<h2>选择器的特殊性</h2>
+
+<p>根据选择器的特殊性决定规则的次序。具有更特殊选择器的规则优先于具有一般选择器的规则。如果两个规则的特殊性相同，那么后定义的规则优先。</p>
+<p>选择器的特殊性分成4个成分等级：a、b、c 和 d。</p>
+<ul>
+<li>如果样式是行内样式，那么 a = 1.</li>
+<li>b 等于 ID 选择器的总数。</li>
+<li>c 等于类、伪类和属性选择器的数量。</li>
+<li>d 等于类型选择器和伪元素选择器的数量。</li>
+</ul>
+<div class="post-table-title">特殊性示例</div>
+
+<div class="code"><pre><code>-----------------------------------------------------
+|  选择器                              |  特殊性      |
+|-------------------------------------|-------------|
+|  style=""                           |  1,0,0,0    |
+|  #wrapper #content &#123;&#125;               |  0,2,0,0    |
+|  #content .datePosted &#123;&#125;            |  0,1,1,0    |
+|  div#content &#123;&#125;                     |  0,1,0,1    |
+|  #content &#123;&#125;                        |  0,1,0,0    |
+|  p.comment .datePosted &#123;&#125;           |  0,0,2,1    |
+|  p.comment &#123;&#125;                       |  0,0,1,1    |
+|  div p &#123;&#125;                           |  0,0,0,2    |
+|  p &#123;&#125;                               |  0,0,0,1    |
+-----------------------------------------------------
+</code></pre></div>
+
+<h3>参考文献：</h3>
+
+<p>Andy Budd, Simon Collison, Cameron Moll, 陈剑瓯（译）. 精通 CSS 高级 Web 标准解决方案. 人民邮电出版社.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/04/09/css-knowledge/" data-id="ckrsyk6ut000saqnb2lxghz1h" data-title="CSS 知识" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-blog-comment-system" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/30/blog-comment-system/" class="article-date">
+  <time class="dt-published" datetime="2019-03-30T00:00:00.000Z" itemprop="datePublished">2019-03-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/30/blog-comment-system/">博客评论系统的更新历程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<p></p>
+这个博客站点使用 Github Pages 搭建，能够提供静态页面的展示，但是没有一套现成的评论系统。从前年开始，就一直在尝试各种方法增加评论功能，每次更新都是方案的重大改变。最终的实现还是使用传统方案，自建服务器，使用数据库存储。应该以后就会围绕这个方案完善下去，好在博客一直没啥人气，我可以慢慢折腾 ==。
+
+<h2 id="section_1">disqus</h2>
+
+<p>一开始自然是使用大名鼎鼎的 <a href="https://disqus.com/" target="_blank">disqus</a>，但是国内大部分时候都不能用，没过多久就放弃这个方案了。</p>
+<h2 id="section_2">GitHub API</h2>
+
+<p>发现一个神奇的工具 <a href="https://commentit.io/" target="_blank">Comm(ent|it)</a>。可以直接将评论提交到博客所在的代码仓库，Jekyll 生成静态站点时再从代码库中的指定文件解析出评论内容。</p>
+<p>受这个工具启发，也开始按这个思路去开发评论系统，目标是不需要服务端系统，所有逻辑由前端完成。</p>
+<p>从 GitHub API 文档找到一些接口，能够满足我的需要，还专门写了一篇文章描述技术细节 <a target="_blank" rel="noopener" href="https://blog.jamchenjun.com/2017/04/18/commentme.html">实现 GitHub Pages 的评论系统</a>。</p>
+<p>这个方案的缺点是，写一条评论，前端页面就需要与 GitHub 服务器进行5次通信，速度非常慢，并且很不稳定。</p>
+<p>另一个让我耿耿于怀的问题是，因为所有逻辑写在前端，代码人人可见，跟 GitHub 通信的密钥都是公开的，虽然搞了点花招混淆了密钥字符串，但是很容易逆向混淆逻辑将密钥解析出来。</p>
+<h2 id="section_3">服务器 + Git</h2>
+
+<p>后来去 Vultr 买了台虚拟主机用于科学上网，但是仅用于科学上网有点浪费，便开始在这台虚拟主机上部署评论的后端系统。</p>
+<p>方案仍然是将评论写入代码仓库，生成静态站点时再解析出来。与之前不同的是前端现在只需要将评论数据打包发送给后端就行，不用处理太多逻辑。后端逻辑也进行了简化，不再需要使用复杂的 GitHub API，使用脚本利用 Git 命令提交和推送即可。</p>
+<h2 id="section_4">服务器 + 数据库</h2>
+
+<p>服务器 + Git 方案的流程还是有点复杂，既然有服务器了，那么不如用最直接的方式实现好了，即数据库存储方式。现在评论系统已经改成了这种方式，这种方案是最常见的实现方式，没有什么值得多说的。</p>
+<p>其实评论系统切换到服务器一开始就是不可用的，因为前端和服务端的通信走的是 http 协议，而博客站点使用的是 https 协议，浏览器会阻止在 https 站点中发送 http 请求的行为。</p>
+<p>通过对服务端系统进行 https 改造，这个问题目前已经解决，参考<a href="https://itnext.io/node-express-letsencrypt-generate-a-free-ssl-certificate-and-run-an-https-server-in-5-minutes-a730fbe528ca" target="_blank">这篇文章</a>。</p>
+<h2 id="section_5">证书更新</h2>
+
+<p>服务器使用的证书来自 <a href="https://letsencrypt.org/" target="_blank">Let’s Encrypt</a>。Let’s Encrypt 的证书有效期为60天，可以在 crontab 中配置定时任务，定期更新。</p>
+<div class="code"><pre><code># 定时更新证书，每个月15号执行
+0 0 15 */1 * certbot renew --standalone --pre-hook "pm2 stop server" --post-hook "pm2 start server"
+</code></pre></div>
+
+<h3>参考文献</h3>
+
+<p><a href="https://itnext.io/node-express-letsencrypt-generate-a-free-ssl-certificate-and-run-an-https-server-in-5-minutes-a730fbe528ca" target="_blank">Node + Express + LetsEncrypt : Generate a free SSL certificate and run an HTTPS server in 5 minutes or less</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/03/30/blog-comment-system/" data-id="ckrsyk6us000raqnbf6lhfbuv" data-title="博客评论系统的更新历程" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-three-mothods-in-antfin" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/03/10/three-mothods-in-antfin/" class="article-date">
+  <time class="dt-published" datetime="2019-03-10T00:00:00.000Z" itemprop="datePublished">2019-03-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2019/03/10/three-mothods-in-antfin/">蚂蚁金服三个月</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<p>12月中旬离开百度加入蚂蚁金服。三个月时间转瞬即逝，马上就要提交试用期绩效评估，趁着这个时间自己也总结和梳理下最近的思考。</p>
+<p>在百度一直做的是 iOS 开发，来到蚂蚁开始做前端开发。可见蚂蚁是一个比较开放的平台，技术栈本身不会限制你的选择，能力本身才是最重要的。</p>
+<p>自己是一个比较闷的人，在学校时就曾想过，以后要做底层的开发，不喜欢跟非技术人员打太多交道。没想到这些年的发展，从客户端到前端，跟直接用户接触的反而越来越多了。真是件神奇的事情。</p>
+<p>移动端开发和 PC 端的开发比较相似，在特定硬件和软件平台下开发，无论是 PC、MAC、iPhone、Android 手机，还是 Windows、macOS、iOS 还是 Android 系统。高级别开发者需要精通他所在平台的技术细节，使用平台提供的 API 和硬件能力开发软件。客户端软件需要下载安装到用户本地运行，特点是迭代慢、质量要求高、不需要考虑业务流量压力。</p>
+<p>前端的门槛很低，许多人都可能体验过，比如为自己建个博客、为项目做个宣传页面。因为前端的简单，使得实际情况变得有点混乱，为了达到一个相同的目的，可能有各种各样的实现方案。虽说 web 标准的存在是为了使得前端开发更加规范，但是各种平台的实现却可能有些细节上的差异。更糟糕的是，不像客户端开发，你的代码只需要跑在一个特定平台上，前端的代码是需要保证在全平台上都能正常运行。</p>
+<p>前端页面是在线请求的服务，所以可以以非常快的速度迭代，非常适合现代的产品开发方式。快速上线，根据反馈不断迭代优化。对比 iOS 开发中苹果爸爸的严格审核，可以说是截然不同的上线体验。不过如今许多前端页面和逻辑可以通过离线包的方式下载到用户本地运行，客户端 App 只是一个容器。这变得跟客户端开发有点相似。但是容器的处理方式都是自己人开发的，完全可以建立一套机制保证非常高的离线包更新触达率，相比客户端的发版，还是要快很多。</p>
+<p>我说移动端不需要考虑业务流量的压力，是指每个 App 都是独立的用户设备里的软件，即使是上亿日活的 App，它仍然只跟所在的特定设备交互。传统前端也是如此，不过如今前端的工作也会包含服务端的部分。以 nodejs 技术实现的中台介于服务端和前端页面之间，这种方式在大公司非常流行，并且表现出轻前台、重中台的趋势。这种结构带来的挑战是，前端领域也需要关注海量用户带来的流量压力。</p>
+<p>之前培训时前辈说过，对前端工程师的需求量可以看作业务方向是否繁荣向上的晴雨表，如果一个业务是蓬勃发展的，它通常会遇到前端紧缺的境况。对前端工程师的挑战是，如何更好的支持业务的发展，无论是前端工程化、各种新技术的出现，都是为了解决这个问题。</p>
+<p>如今大家都在说大前端这回事，前端开发经常是基于容器的开发，客户端团队也开始招聘前端人员。但是这显然还有很长的一段路要走，既有的工种划分还会长时间的保持，各个开发角色对于彼此的了解仍然是黑盒状态，特别是前端在客户端容器中遭遇问题，团队沟通一如既往会是一个耗时耗精力的过程。</p>
+<p>蚂蚁这三个月一直在做小程序开发。对于开发本身还是很有自信，边学边开发，对于软件设计也有自己的想法。但是深刻体会到了前端的“不可靠”，遇到不少需要前端写兼容逻辑解决问题的情况。比较头疼的一个问题是需要依赖很多新增的客户端能力，每个 api 是不同的人开发的，还要配合在一起被我调用，出现问题只能一个一个去找人解决。理论上，作为提供服务的一方应该保证自己服务的可靠，但是实际和理论还是有差距的。</p>
+<p>另一个问题是，前端是直接面向用户的，而且直接对项目负责。即使是其它角色的问题，也需要前端工程师去推动和解决。可预测的事情需要控制风险，提前规划。其它问题需要能快速定位问题，找对应人解决或者自己寻找解决方案。</p>
+<p>当下情况，如果想要获得快速成长和晋升，需要加强对业务和数据的重视，这两点对于自己来说都是比较薄弱的。</p>
+<p>以前的观念是认为自己是一个开发者，只需要关注计算机技术本身就可以了。在职业生涯的初期，这种观点可能不会有问题，但现在的体会是，如果只关注技术本身，可能会很快达到自己的瓶颈。本来这次跳槽的一部分原因也有感觉自己遇到技术上升瓶颈，跳入一个新的技术栈领域延迟了自己达到瓶颈的时间，但是除非转换观念，否则最好的情况只能是线性的成长曲线。</p>
+<p>另一个观念更新是对数据的重视。觉得自己写的代码很牛，体验很棒，可能并没有什么用。Make something people want，这个才是衡量标准。数据是直接体现产品效果的东西，而且廉价、快速。对数据的敏感性和分析技巧可以培养，但是对数据的观念的转变是至关重要的一步。</p>
+<p>阿里堪称大牛收割机，吸引了大量优秀的人才，身边也有许多牛人存在。就技术方面来说，大家对于自己的发展都有思考，许多人都有明确的发展方向。自己也算是一个有上进心的人，但是努力的方向想来一直还是比较模糊。现在给自己制定个努力方向吧，将来回头再看。</p>
+<p>短期当然是要深入研究蚂蚁前端技术，比如小程序、蚂蚁前端解决方案。长期以基础架构方向和数据可视化方向作为目标。</p>
+<p>客户第一 - 客户是衣食父母，这是蚂蚁价值观的第一条。作为开发工程师，经常会忽略自己作为公司职员的本分，为公司创造客户，对客户保持敬畏之心。无论是面包师、服装零售，还是软件工程师，这都应该是通用的价值观。说不定自己以后也转行进入传统行业了，谁知道呢。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/03/10/three-mothods-in-antfin/" data-id="ckrsyk6us000qaqnb1hkz84oj" data-title="蚂蚁金服三个月" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-javascript-prototype-chain" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/11/21/javascript-prototype-chain/" class="article-date">
+  <time class="dt-published" datetime="2018-11-21T00:00:00.000Z" itemprop="datePublished">2018-11-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/11/21/javascript-prototype-chain/">JavaScript 原型链和继承机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<h2>核心概念</h2>
+
+<p>js 中的继承不同于 C++、Java 此类面向对象语言，其继承机制基于原型链。当需要在 js 中使用继承机制时，构造正确的原型链即可实现继承。</p>
+<p class="post-image">
+    <img src="/resources/figures/2018-11-21-javascript-object-layout.jpg" alt="JavaScript Object Layout" width="90%">
+</p>
+
+<p>js 原型链机制中的各对象之间的关系如上图所示。构造正确的符合继承行为的原型链的关键在于，构造函数的 prototype 属性以及 prototype 的 constructor 属性。</p>
+<h2>为构造函数构造原型链</h2>
+
+<div class="code"><pre><code>function extend(Child, Parent) &#123;
+    var F = function() &#123;&#125;;
+    F.prototype = Parent.prototype;
+    Child.prototype = new F();
+    Child.prototype.constructor = Child;
+&#125;
+</code></pre></div>
+
+<p>为构造函数构造原型链处理的是构造函数，用于实例化出任意多的对象实例。</p>
+<h2>为对象实例构造原型链</h2>
+
+<div class="code"><pre><code>function object(o) &#123;
+    function F() &#123;&#125;
+    F.prototype = o;
+    return new F();
+&#125;
+</code></pre></div>
+
+<p>为对象实例构造原型链是一次性的行为，所以 F.prototype.constructor 不需要严格设定。</p>
+<h3>参考文献：</h3>
+
+<p><a href="http://www.mollypages.org/tutorials/js.mp" target="_blank">http://www.mollypages.org/tutorials/js.mp</a></p>
+<p><a href="http://blog.vjeux.com/2011/javascript/how-prototypal-inheritance-really-works.html" target="_blank">Javascript – How Prototypal Inheritance really works</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance.html" target="_blank">Javascript面向对象编程（二）：构造函数的继承</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance_continued.html" target="_blank">Javascript面向对象编程（三）：非构造函数的继承</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/11/21/javascript-prototype-chain/" data-id="ckrsyk6ur000paqnbdx43dbw0" data-title="JavaScript 原型链和继承机制" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-clipped-content" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/10/12/clipped-content/" class="article-date">
+  <time class="dt-published" datetime="2018-10-12T00:00:00.000Z" itemprop="datePublished">2018-10-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/10/12/clipped-content/">视图裁剪</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<h2>前言</h2>
+
+<p><a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HttpServerDebug</a> 实现了类似 Xcode Debug View Hierarchy 功能。客户端提供信息，前端绘制并提供交互能力，实现视图调试功能。</p>
+<p>视图调试其中一项功能是 Show Clipped Content，虽然不知道 Xcode 的实现方式，但是通过计算我们也可以拿到同样的信息。本文说明 HttpServerDebug 中的实现方案。</p>
+<h2>效果图</h2>
+
+<p class="post-image">
+    <img src="/resources/figures/2018-10-12-hsd-clipped-content.png" alt="HttpServerDebug Show Clipped Content" width="90%">
+</p>
+
+<p class="post-image-title">HttpServerDebug 效果截图</p>
+
+<p class="post-image">
+    <img src="/resources/figures/2018-10-12-xcode-clipped-content.png" alt="Xcode Show Clipped Content" width="90%">
+</p>
+
+<p class="post-image-title">Xcode 效果截图</p>
+
+<p>上面一组截图是 HttpServerDebug 运行效果，下面一组截图是 Xcode 中的原生效果。</p>
+<h2>代码实现</h2>
+
+<p>下面代码的目的是计算目标视图的位置和尺寸。</p>
+<p>需要注意的是，代码中获取的 CGRect 信息来自于视图的 bounds 属性而不是 frame。bounds 可以理解为目标视图的内容在自己的坐标系统中的位置和尺寸，frame 是目标视图在父视图坐标系统中的位置和尺寸。我们使用了一系列转换函数实现不同坐标系统中的位置和尺寸转换，所以不需要直接获取 frame 属性。</p>
+<div class="code"><pre><code>// view：UIView，目标视图
+// window：UIWindow，view 属于该 window 视图层级
+CGRect tryClippedRect = view.bounds;
+UIView *tryView = view;
+while (tryView.superview) &#123;
+    UIView *superview = tryView.superview;
+
+<pre><code>// 目标视图的位置和尺寸转换到父类的坐标系统中
+tryClippedRect = [tryView convertRect:tryClippedRect toView:superview];
+
+if (!CGSizeEqualToSize(tryClippedRect.size, CGSizeMake(0, 0)) &amp;&amp;
+    superview.clipsToBounds) &#123;
+    // 需要裁剪
+    CGRect baseRect = superview.bounds;
+    tryClippedRect = CGRectIntersection(tryClippedRect, baseRect);
+    tryClippedRect = CGRectIsNull(tryClippedRect) ? CGRectZero : tryClippedRect;
+&#125;
+tryView = superview;
+</code></pre>
+<p>}<br>// 在 window 坐标系统中的位置和尺寸<br>CGRect clippedFrameRoot = tryClippedRect;<br></code></pre></div></p>
+<p>上面代码只是计算出了位置和尺寸，调试界面显示还需要对目标视图进行截图，如下面代码所示。</p>
+<p>（默认截图会包含目标视图的子视图，否则需要在截图前先移除或隐藏所有的子视图。）</p>
+<div class="code"><pre><code>// 目标视图坐标系统中的裁剪位置
+CGPoint clippedOrigin = [view convertPoint:clippedFrameRoot.origin fromView:window];
+
+<p>// 截图<br>UIGraphicsBeginImageContextWithOptions(clippedFrameRoot.size, NO, 0.0);<br>CGContextRef context = UIGraphicsGetCurrentContext();<br>CGFloat tx = -clippedOrigin.x;<br>CGFloat ty = -clippedOrigin.y;<br>CGContextTranslateCTM(context, tx, ty);<br>[view.layer renderInContext:context];<br>UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();<br>UIGraphicsEndImageContext();<br></code></pre></div></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="ckrsyk6uo000oaqnb1p3qgzwj" data-title="视图裁剪" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-block" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/30/block/" class="article-date">
+  <time class="dt-published" datetime="2018-09-30T00:00:00.000Z" itemprop="datePublished">2018-09-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/30/block/">Objective-C Block</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2>前言</h2>
+
+<p>本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考<a href="/2016/12/29/Reading-Notes-Pro-Multithreading-and-Memory-Management-for-iOS-and-OSX-with-ARC-Grand_Central-Dispatch-and-Blocks.html">这篇文章</a>。</p>
+<p>Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions together with automatic (local) variables）”。本文不多说 Block 的使用方法，着重讨论 Block 的实现机制。</p>
+<h2 id="section_1">一、Block 的基本实现</h2>
+
+<p>可以使用指令 <code>clang -rewrite-objc file_name_of_the_source_code</code>，将 OC 源代码转换成对应的 C++ 实现，从而探究 Block 的实现原理。</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>int main()
+&#123;
+    void (^blk)(void) = ^&#123;printf("Block\n");&#125;;
+    blk();
+    return 0;
+&#125;
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>struct __block_impl &#123;
+    void *isa;
+    int Flags;
+    int Reserved;
+    void *FuncPtr;
+&#125;;
+
+<p>struct __main_block_impl_0 &#123;<br>    struct __block_impl impl;<br>    struct __main_block_desc_0 *Desc;<br>    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int flags=0) &#123;<br>        impl.isa = &amp;_NSConcreteStackBlock;<br>        impl.Flags = flags;<br>        impl.FuncPtr = fp;<br>        Desc = desc;<br>    &#125;<br>&#125;;</p>
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself)<br>&#123;<br>    printf(“Block\n”);<br>&#125;</p>
+<p>static struct __main_block_desc_0<br>&#123;<br>    unsigned long reserved;<br>    unsigned long Block_size;<br>&#125; __main_block_desc_0_DATA = &#123;<br>    0,<br>    sizeof(struct __main_block_impl_0)<br>&#125;;</p>
+<p>int main() &#123;<br>    void (<em>blk)(void) =<br>        (void (</em>)(void))&amp;__main_block_impl_0((void <em>)__main_block_func_0, &amp;__main_block_desc_0_DATA);<br>    ((void (</em>)(struct __block_impl *))((struct __block_impl *)blk)-&gt;FuncPtr)((struct __block_impl *)blk);<br>    return 0;<br>&#125;<br></code></pre></div></p>
+<p>对比原始代码，转换后的代码增加了三个结构体和一个函数的定义。结构体：__block_impl、__main_block_impl_0、__main_block_desc_0；函数：__main_block_func_0。__main_block_func_0 对应原始代码中的 Block 实现，函数命名的规则是取原始方法名（main）和该 Block 在原始方法中的次序（第0个），结构体的命名规则也是如此。</p>
+<h2 id="section_2">二、isa 和 _NSConcreteStackBlock</h2>
+
+<p>上小节 __main_block_impl_0 的构造函数中有赋值语句 <code>impl.isa = &amp;_NSConcreteStackBlock</code>，本小节简述 isa 和 _NSConcreteStackBlock 的含义。</p>
+<p>OC 中的对象实例和类编译后都有其对应的结构体定义，如下所示。</p>
+<p>对象实例对应的结构体：</p>
+<div class="code"><pre><code>/* declared in /usr/include/objc/objc.h */
+struct objc_object &#123;
+    Class isa;
+&#125;
+</code></pre></div>
+
+<p>类对应的结构体：</p>
+<div class="code"><pre><code>/* declared in /usr/include/objc/runtime.h */
+struct objc_class &#123;
+    Class isa;
+&#125;;
+
+<p>typedef struct objc_class *Class;</p>
+<p>/* declared at runtime/objc-runtime-new.h in the objc4 runtime library */<br>struct class_t &#123;<br>    struct class_t *isa;<br>    struct class_t *superclass;<br>    Cache cache;<br>    IMP *vtable;<br>    uintptr_t data_NEVER_USE;<br>&#125;;<br></code></pre></div></p>
+<p>OC 中的类使用 class_t 构造（class_t 本身基于 objc_class），也就是说 OC 中的每个类都使用 class_t 创建了实例。比如，NSObject 有其对应的 class_t 实例，NSMutableArray 有其对应的 class_t 实例。class_t 实例保存了类的信息，如方法名、方法实现、指向父类的指针等，提供给 OC 运行时库使用。</p>
+<p>基于上面描述，下图描述 isa 值的含义。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图 OC 对象和类中 isa 指针的指向</p>
+
+<p>__main_block_impl_0 结构体基于 objc_object，表明 Block 本身即为 OC 对象。创建 Block 时执行语句 <code>impl.isa = &amp;_NSConcreteStackBlock</code>。根据上文描述，_NSConcreteStackBlock 是 class_t 实例，保存了该 Block 对应的类的信息。</p>
+<h2 id="section_3">三、Block 捕获自动变量</h2>
+
+<p>Block 能够捕获自动变量。下面使用 <code>clang -rewrite-objc file_name_of_the_source_code</code> 指令转换代码，描述了在这种情况下 Block 实现方式的变化。（__block_impl、__main_block_desc_0、__main_block_desc_0_DATA的声明和定义与上文相同，不再描述）</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>int main() &#123;
+    int dmy = 256;
+    int val = 10;
+    const char *fmt = "val = %d\n";
+    void (^blk)(void) = ^&#123;printf(fmt, val);&#125;;
+    return 0;
+&#125;
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>struct __main_block_impl_0 &#123;
+    struct __block_impl impl;
+    struct __main_block_desc_0* Desc;
+    const char *fmt;
+    int val;
+
+<pre><code>__main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, const char *_fmt, int _val, int flags=0)
+    : fmt(_fmt), val(_val) &#123;
+    impl.isa = &amp;_NSConcreteStackBlock;
+    impl.Flags = flags;
+    impl.FuncPtr = fp;
+    Desc = desc;
+&#125;
+</code></pre>
+<p>};</p>
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself)<br>{<br>    const char *fmt = __cself-&gt;fmt;<br>    int val = __cself-&gt;val;<br>    printf(fmt, val);<br>}</p>
+<p>int main() {<br>    int dmy = 256;<br>    int val = 10;<br>    const char *fmt = “val = %d\n”;<br>    void (*blk)(void) = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, fmt, val);<br>  return 0;<br>}<br></code></pre></div></p>
+<p>__main_block_impl_0 为 Block 对象的定义，在这种情况下，其中增加了两个成员变量（fmt 和 val）用来存储捕获的自动变量。Block 不会捕获未使用的自动变量（dmy）。</p>
+<h2 id="section_4">四、Block 中修改静态变量、静态全局变量和全局变量</h2>
+
+<p>Block 中能够修改静态变量、静态全局变量和全局变量的值，但是底层实现机制存在差异。下面给出转换前后的代码，并给出说明。</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>int global_val = 1;
+static int static_global_val = 2;
+int main()
+&#123;
+    static int static_val = 3;
+    void (^blk)(void) = ^&#123;
+        global_val *= 1;
+        static_global_val *= 2;
+        static_val *= 3;
+    &#125;;
+    return 0;
+&#125;
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>int global_val = 1;
+static int static_global_val = 2;
+
+<p>struct __main_block_impl_0 &#123;<br>    struct __block_impl impl;<br>    struct __main_block_desc_0 *Desc;<br>    int *static_val;<br>    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int *_static_val, int flags=0)<br>        : static_val(_static_val) &#123;<br>        impl.isa = &amp;_NSConcreteStackBlock;<br>        impl.Flags = flags;<br>        impl.FuncPtr = fp;<br>        Desc = desc;<br>    &#125;<br>&#125;;</p>
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself) &#123;<br>    int *static_val = __cself-&gt;static_val;</p>
+<pre><code>global_val *= 1;
+static_global_val *= 2;
+(*static_val) *= 3;
+</code></pre>
+<p>}</p>
+<p>int main()<br>{<br>    static int static_val = 3;</p>
+<pre><code>blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, &amp;static_val);
+return 0;
+</code></pre>
+<p>}<br></code></pre></div></p>
+<p>静态全局变量和全局变量的处理方式是一致的，Block 能够直接对其进行读写。</p>
+<p>静态变量的可见性只是当前函数内，转换后的代码中 __main_block_func_0 无法访问。在 __main_block_impl_0 中增加指向静态变量指针的成员变量，通过该成员变量实现读写静态变量。</p>
+<p>前文说到 Block 能够捕获自动变量，但是不能修改其值。自动变量的生命周期跟随其所在的作用域，离开作用域即销毁。Block 的生命周期可能会长于自动变量的生命周期，所以无法采用读写静态变量的实现方案。</p>
+<h2 id="section_5">五、Block 中修改 __block 变量</h2>
+
+<p>原始代码：</p>
+<div class="code"><pre><code>int main() &#123;
+    __block int val = 10;
+    void (^blk)(void) = ^&#123;val = 1;&#125;;
+    return 0;
+&#125;
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>struct __Block_byref_val_0 &#123;
+    void *__isa;
+    __Block_byref_val_0 *__forwarding;
+    int __flags;
+    int __size;
+    int val;
+&#125;;
+
+<p>struct __main_block_impl_0 &#123;<br>    struct __block_impl impl;<br>    struct __main_block_desc_0 *Desc;<br>    __Block_byref_val_0 *val;<br>    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, __Block_byref_val_0 *_val, int flags=0)<br>        : val(_val-&gt;__forwarding) &#123;<br>        impl.isa = &amp;_NSConcreteStackBlock;<br>        impl.Flags = flags;<br>        impl.FuncPtr = fp;<br>        Desc = desc;<br>    &#125;<br>&#125;;</p>
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself)<br>&#123;<br>    __Block_byref_val_0 *val = __cself-&gt;val;<br>    (val-&gt;__forwarding-&gt;val) = 1;<br>&#125;</p>
+<p>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_assign(&amp;dst-&gt;val, src-&gt;val, BLOCK_FIELD_IS_BYREF);<br>&#125;</p>
+<p>static void __main_block_dispose_0(struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_dispose(src-&gt;val, BLOCK_FIELD_IS_BYREF);<br>&#125;</p>
+<p>static struct __main_block_desc_0 &#123;<br>    unsigned long reserved;<br>    unsigned long Block_size;<br>    void (<em>copy)(struct __main_block_impl_0</em>, struct __main_block_impl_0*);<br>    void (<em>dispose)(struct __main_block_impl_0</em>);<br>&#125; __main_block_desc_0_DATA = &#123;<br>    0,<br>    sizeof(struct __main_block_impl_0),<br>    __main_block_copy_0,<br>    __main_block_dispose_0<br>&#125;;</p>
+<p>int main()<br>&#123;<br>    __Block_byref_val_0 val = &#123;<br>        0,<br>        &amp;val,<br>        0,<br>        sizeof(__Block_byref_val_0),<br>        10<br>    &#125;;<br>    blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, &amp;val, 0x22000000);<br>    return 0;<br>&#125;<br></code></pre></div></p>
+<p>转换后的代码中，原始 __block 变量转换成了 __Block_byref_val_0 结构体类型。__Block_byref_val_0 的成员变量 val 存储原始值。</p>
+<p>__Block_byref_val_0 实例和 __main_block_impl_0 实例是多对多的关系，即一个 __Block_byref_val_0 实例可以在多个 __main_block_impl_0 实例中使用，一个 __main_block_impl_0 实例也可以使用多个 __Block_byref_val_0 实例。</p>
+<h2 id="section_6">六、Block 的存储类型</h2>
+
+<p>上文可知 Block 本身也是 OC 对象，其在内存中的存储方式有三种：_NSConcreteStackBlock、_NSConcreteGlobalBlock、_NSConcreteMallocBlock，分别对应：栈、全局/静态存储区、堆。内存区域划分方式大致可用下图表示，下图同时描述了不同存储方式的 Block 对应的内存区域。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%"></p>
+
+<p class="post-image-title">图 Block 不同存储方式对应的内存区域</p>
+
+<p>Block 字面定义在全局作用域生成 _NSConcreteGlobalBlock 类型 Block 对象。</p>
+<p>存储类型为 _NSConcreteStackBlock 的 Block 以及 __block 修饰的变量的生命周期与普通自动变量相同，离开作用域后即销毁。</p>
+<h2 id="section_7">七、Block 的存储类型 -- 堆上的 Block</h2>
+
+<p>堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。下图为 Block 从栈拷贝到堆的示意图，同样的，__block 变量也可以从栈拷贝到堆。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图 Block 和 __block 变量从栈拷贝到堆</p>
+
+<p>在下列情况下，栈中的 Block 会拷贝到堆：</p>
+<p>a. 调用 Block 对象的 copy 方法；</p>
+<p>b. 函数返回值为 Block 对象；</p>
+<p>c. Block 对象赋给 __strong 所有权描述符修饰的变量；</p>
+<p>d. Block 对象被 Cocoa 框架中的 “usingBlock” 方法使用，或者被 GCD 中的函数使用。</p>
+<p>不同存储类型的 Block 对象调用 copy 方法的效果不同：</p>
+<p> a. _NSConcreteStackBlock 类型的 Block 对象，从栈拷贝到堆；</p>
+<p> b. _NSConcreteGlobalBlock 类型的 Block 对象，不发生作用；</p>
+<p> c. _NSConcreteMallocBlock 类型的 Block 对象，引用计数加一。（在 ARC 开启的情况下，多次调用 copy 方法也没有问题。）</p>
+<h2 id="section_8">八、__block 变量</h2>
+
+<p>当 Block 使用了 __block 变量并且 Block 从栈拷贝到堆时：如果 __block 变量存储在栈上，__block 变量会被拷贝到堆上，并且 Block 对象拥有 __block 变量的所有权；如果 __block 变量本来即存储在堆上，Block 也会拥有 __block 变量的所有权。</p>
+<p>__block 变量编译后也是普通的结构体实例，其中有个特别的成员变量 __forwarding。通过 __forwarding 成员变量保证访问 __block 变量的一致性。如下代码片段，__block 变量随着 Block 从栈拷贝到堆上。</p>
+<div class="code"><pre><code>__block int val = 0;
+void (^blk)(void) = [^&#123;++val;&#125; copy];
+++val;
+blk();
+</code></pre></div>
+
+<p>Block 内部会修改堆上的 __block 变量，Block 外部会修改栈上的 __block 变量。转换后，这两种行为是一致的，即<code>++(val.__forwarding-&gt;val)</code>。栈和堆上 __block 变量中的 __forwarding 指针都指向堆上的 __block 变量，下图描述了这种机制。</p>
+<p class="post-image"><img src="/resources/figures/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%"></p>
+
+<p class="post-image-title">图 __block 变量拷贝到堆</p>
+
+<h2 id="section_9">九、Block 捕获对象实例</h2>
+
+<p>前文讲述的 Block 捕获自动变量，自动变量的类型为整型变量。当 Block 捕获的自动变量为 OC 对象时：</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>blk_t blk;
+&#123;
+    id array = [[NSMutableArray alloc] init];
+    blk = [^(id obj) &#123;
+        [array addObject:obj];
+        NSLog(@"array count = %ld", [array count]);
+    &#125; copy];
+&#125;
+blk([[NSObject alloc] init]);
+blk([[NSObject alloc] init]);
+blk([[NSObject alloc] init]);
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>/* a struct for the Block and some functions */
+struct __main_block_impl_0 &#123;
+    struct __block_impl impl;
+    struct __main_block_desc_0 *Desc;
+    id __strong array;
+    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, id __strong _array, int flags=0)
+        : array(_array) &#123;
+        impl.isa = &_NSConcreteStackBlock;
+        impl.Flags = flags;
+        impl.FuncPtr = fp;
+        Desc = desc;
+    &#125;
+&#125;;
+
+<p>static void __main_block_func_0(struct __main_block_impl_0 *__cself, id obj)<br>&#123;<br>    id __strong array = __cself-&gt;array;<br>    [array addObject:obj];<br>    NSLog(@”array count = %ld”, [array count]);<br>&#125;</p>
+<p>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_assign(&amp;dst-&gt;array, src-&gt;array, BLOCK_FIELD_IS_OBJECT);<br>&#125;</p>
+<p>static void __main_block_dispose_0(struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_dispose(src-&gt;array, BLOCK_FIELD_IS_OBJECT);<br>&#125;</p>
+<p>static struct __main_block_desc_0 &#123;<br>    unsigned long reserved;<br>    unsigned long Block_size;<br>    void (<em>copy)(struct __main_block_impl_0</em>, struct __main_block_impl_0*);<br>    void (<em>dispose)(struct __main_block_impl_0</em>);<br>&#125; __main_block_desc_0_DATA = &#123;<br>    0,<br>    sizeof(struct __main_block_impl_0),<br>    __main_block_copy_0,<br>    __main_block_dispose_0<br>&#125;;</p>
+<p>/* Block literal and executing the Block */<br>blk_t blk;<br>&#123;<br>    id __strong array = [[NSMutableArray alloc] init];<br>    blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, array, 0x22000000);<br>    blk = [blk copy];<br>&#125;<br>(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);<br>(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);<br>(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);<br></code></pre></div></p>
+<h2 id="section_10">十、内存管理</h2>
+
+<p>前文讲述到 Block 内存管理时提到对象之间的所有权关系，但是转换后的 C 代码是无法利用 ARC 机制的。本小节说明相关的内存管理是如何实现的。</p>
+<h4>10.1 Block 内的内存管理实现</h4>
+
+<p>在前文中，当 Block 对象需要引用对象时，比如捕获 __block 变量、捕获 OC 对象实例，__main_block_desc_0 结构体中多了两个成员变量 copy 和 dispose，他们都为函数指针，函数实现如下代码所示。copy 和 dispose 分别对应对象的初始化和销毁，OC 运行时检测到 Block 从栈拷贝到堆或者 Block 对象被销毁时，能够适时调用 copy 和 dispose 实现 Block 内的内存管理。</p>
+<p>Block 捕获 __block 变量内存管理相关代码：</p>
+ <div class="code"><pre><code>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+&#123;
+    _Block_object_assign(&dst->val, src->val, BLOCK_FIELD_IS_BYREF);
+&#125;
+
+<p>static void __main_block_dispose_0(struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_dispose(src-&gt;val, BLOCK_FIELD_IS_BYREF);<br>&#125;<br></code></pre></div></p>
+<p>Block 捕获对象实例内存管理相关代码：</p>
+<div class="code"><pre><code>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
+&#123;
+    _Block_object_assign(&dst->array, src->array, BLOCK_FIELD_IS_OBJECT);
+&#125;
+
+<p>static void __main_block_dispose_0(struct __main_block_impl_0 *src)<br>&#123;<br>    _Block_object_dispose(src-&gt;array, BLOCK_FIELD_IS_OBJECT);<br>&#125;<br></code></pre></div></p>
+<h4>10.2 __block 变量内的内存管理实现</h4>
+
+<p>当 __block 修饰的变量为 OC 对象实例时，__block 内部需要负责该对象实例的内存管理。如下代码所示。__block 变量内的内存管理实现和 Block 内的内存管理类似。该情况下，__Block_byref_obj_0 结构体中多了两个成员变量 __Block_byref_id_object_copy 和 __Block_byref_id_object_dispose，都为函数指针，作用与上小节的 copy 和 dispose 相同，OC 运行时检测到 __block 变量从栈拷贝到堆或者 __block 变量被销毁时，适时调用这对方法，实现 __block 变量内的内存管理。</p>
+<p>原始代码：</p>
+<div class="code"><pre><code>__block id obj = [[NSObject alloc] init];
+</code></pre></div>
+
+<p>转换后代码：</p>
+<div class="code"><pre><code>/* struct for __block variable */
+struct __Block_byref_obj_0 &#123;
+    void *__isa;
+    __Block_byref_obj_0 *__forwarding;
+    int __flags;
+    int __size;
+    void (*__Block_byref_id_object_copy)(void*, void*);
+    void (*__Block_byref_id_object_dispose)(void*);
+    __strong id obj;
+&#125;;
+
+<p>static void __Block_byref_id_object_copy_131(void *dst, void <em>src) &#123;<br>    _Block_object_assign((char</em>)dst + 40, *(void * <em>) ((char</em>)src + 40), 131);<br>&#125;</p>
+<p>static void __Block_byref_id_object_dispose_131(void <em>src) &#123;<br>    _Block_object_dispose(</em>(void * <em>) ((char</em>)src + 40), 131);<br>&#125;</p>
+<p>/* __block variable declaration */<br>__Block_byref_obj_0 obj = &#123;<br>    0,<br>    &amp;obj,<br>    0x2000000,<br>    sizeof(__Block_byref_obj_0),<br>    __Block_byref_id_object_copy_131,<br>    __Block_byref_id_object_dispose_131,<br>    [[NSObject alloc] init]<br>&#125;;<br></code></pre></div></p>
+<h2 id="section_11">十一、ARC 下 Block 得存储类型变化</h2>
+
+<p>_NSConcreteGlobalBlock：这种类型的 block 定义在全局存储区，它没有捕获任何上下文，在编译时就能完全定义。</p>
+<p>_NSConcreteStackBlock：这种类型的 block 定义在栈上。block 在被拷贝到堆上之前，都是存储在栈中。</p>
+<p>_NSConcreteMallocBlock：这种类型的 block 存储在堆上。和普通 OC 对象遵循同样的内存管理规则（引用计数）。</p>
+<p>MRC 和 ARC 的 block 存储有差异，“在 ARC 开启的情况下，将只会有 NSConcreteGlobalBlock 和 NSConcreteMallocBlock 类型的 block。”</p>
+<h2 id="section_12">十二、案例分析</h2>
+
+<h3>案例</h3>
+
+<p>下面的代码显然存在内存泄漏，有 self -&gt; blk -&gt; self 这样的循环引用。那内存泄漏是哪个环节导致的，是位置 A，还是位置 B？</p>
+<div class="code"><pre><code>@interface TestObject : NSObject
+@property (nonatomic, copy) dispatch_block_t blk;
+@end
+@implementation TestObject
+- (instancetype)init &#123;
+    self = [super init];
+    if (self) &#123;
+        self.blk = ^&#123;               // A
+            [self emptyMethod];
+        &#125;;
+        self.blk();                 // B
+    &#125;
+    return self;
+&#125;
+- (void)emptyMethod &#123;
+    NSLog(@"hello");
+&#125;
+@end
+</code></pre></div>
+
+<p>使用 Instruments 能够分析出位置 A 便引入了循环引用。参考 <a href="#section_9">九、Block 捕获对象实例</a>，Block 实例化的时候，外部对象实例在其构造函数中就被强引用。所以 Block 定义的时候就已经产生了循环引用，而不用等到执行的时候。</p>
+<h3>参考文献：</h3>
+
+<p>Sakamoto, Kazuki, and Tomohiko Furumoto. Pro Multithreading and Memory Management for IOS and OS X. Apress, 2012.</p>
+<p><a href="http://www.galloway.me.uk/2012/10/a-look-inside-blocks-episode-2/" target="_blank">A look inside blocks: Episode 2</a></p>
+<p>唐巧 . <a href="http://blog.devtang.com/2013/07/28/a-look-inside-blocks/#ARC-%E5%AF%B9-block-%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%BD%B1%E5%93%8D" target="_blank">谈Objective-C block的实现 – ARC 对 block 类型的影响</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="ckrsyk6v60018aqnbe0qc7zez" data-title="Objective-C Block" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

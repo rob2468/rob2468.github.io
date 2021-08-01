@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="jam.chenjun blog">
+<meta property="og:url" content="https://rob2468.github.io/page/3/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-sort" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/17/sort/" class="article-date">
+  <time class="dt-published" datetime="2018-09-17T00:00:00.000Z" itemprop="datePublished">2018-09-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/17/sort/">排序算法，伪代码实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2 id="section_1">一、插入排序</h2>
+
+<h3 id="section_1_1">1. 直接插入排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用插入排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param n  数组长度
+ */
+void InsertSort(int array[], int n) &#123;
+    int i, j;
+    int tmp;
+    for (i = 1; i < n; i++) &#123;
+        // 遍历待排序元素
+        tmp = array[i];
+        for (j = i - 1; j >= 0 && array[j] > tmp; j--) &#123;
+            // 遍历已排序元素
+            array[j + 1] = array[j];
+        &#125;
+        array[j + 1] = tmp;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>时间复杂度 O(n^2)，空间复杂度 O(1)。直接插入排序是稳定的排序算法。</p>
+<h3 id="section_1_2">2. 希尔排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用希尔排序算法，将目标数组从小到大排列
+ * @param arrray  待排序的目标数组
+ * @param n  数组长度
+ */
+void ShellSort(int array[], int n) &#123;
+    int dk, i, j;
+    int tmp;
+    for (dk = n / 2; dk >= 1; dk = dk / 2) &#123;
+        // 步长变化
+        for (i = dk; i < n; i++) &#123;
+            // 遍历待排序元素
+            if (array[i] < array[i - dk]) &#123;
+                tmp = array[i];
+                for (j = i - dk; j >= 0 && tmp < array[j]; j -= dk) &#123;
+                    // 遍历已排序元素
+                    array[j + dk] = array[j];
+                &#125;
+                array[j + dk] = tmp;
+            &#125; // if
+        &#125;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>由于希尔排序的时间复杂度依赖于增量序列的函数，这涉及数学上尚未解决的难题，所以其时间复杂度分析比较困难。当 n 在某个特定范围时，希尔排序的时间复杂度约为 O(n^1.3)。在最坏情况下希尔排序的时间复杂度为 O(n^2)。</p>
+<p>空间复杂度 O(1)。</p>
+<p>希尔排序是不稳定的排序算法。</p>
+<h2 id="section_2">二、交换排序</h2>
+
+<h3 id="section_2_1">1. 冒泡排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用冒泡排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param n  数组长度
+ */
+void BubbleSort(int array[], int n) &#123;
+    for (int i = 0; i < n - 1; i++) &#123;
+        bool flag = false;     // 本趟冒泡是否发生交换的标志
+        for (int j = n - 1; j > i; j--) &#123;
+            if (array[j - 1] > array[j]) &#123;
+                // 交换
+                int tmp = array[j - 1];
+                array[j - 1] = array[j];
+                array[j] = tmp;
+
+<pre><code>            flag = true;
+         &#125;
+     &#125;
+     if (!flag) &#123;
+         // 本趟遍历没有发生交换，说明已有序
+         break;
+     &#125;
+ &#125;
+</code></pre>
+<p> }<br></code></pre></div></p>
+<p>时间复杂度 O(n^2)，空间复杂度 O(1)。冒泡排序是稳定的排序算法。</p>
+<h3 id="section_2_2">2. 快速排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用快速排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param low  起始下标
+ * @param high  结束下标
+ */
+void QuickSort(int array[], int low, int high) &#123;
+    if (low < high) &#123;
+        int pivotPos = Partition(array, low, high); // 划分
+        QuickSort(array, low, pivotPos - 1);
+        QuickSort(array, pivotPos + 1, high);
+    &#125;
+&#125;
+/**
+ *  将数组划分成两个部分
+ *  @param array  待排序的目标数组
+ *  @param low  起始下标
+ *  @param high  结束下标
+ *  @return  已在最终位置元素的下标
+ */
+int Partition(int array[], int low, int high) &#123;
+    int pivot = array[low];             // 将第一个元素设为枢轴值，对表进行划分
+    while (low < high) &#123;
+        while (low < high && array[high] >= pivot) &#123;
+            --high;
+        &#125;
+        array[low] = array[high];       // 将比枢轴值小的元素移动到左端
+        while (low < high && array[low] <= pivot) &#123;
+            ++low;
+        &#125;
+        array[high] = array[low];       // 将比枢轴值大的元素移动到右端
+    &#125;
+    array[low] = pivot;                 // 枢轴值存放到最终位置
+    return low;
+&#125;
+</code></pre></div>
+
+<p>时间复杂度 O(nlogn)，空间复杂度 O(logn)。快速排序是不稳定的排序算法。</p>
+<h2 id="section_3">三、选择排序</h2>
+
+<h3 id="section_3_1">1. 简单选择排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用简单选择排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param n  数组长度
+ */
+void SelectSort(int array[], int n) &#123;
+    for (int i = 0; i < n - 1; i++) &#123;
+        // 遍历所有待排序元素，每一轮遍历，找出最小元素并交换到最终位置
+        int min = i;
+        for (int j = i + 1; j < n; j++) &#123;
+            if (array[j] < array[min]) &#123;
+                min = j;
+            &#125;
+        &#125;
+        if (min != i) &#123;
+            // 交换
+            int tmp = array[min];
+            array[min] = array[i];
+            array[i] = tmp;
+        &#125;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>时间复杂度 O(n^2)，空间复杂度 O(1)。简单选择排序是不稳定的排序算法。</p>
+<h3 id="section_3_2">2. 堆排序</h3>
+
+<p>堆的定义如下：n 个关键字序列 L[1…n] 称为堆，当且仅当该序列满足：</p>
+<p>(1) L(i) &lt;= L(2i) 且 L(i) &lt;= L(2i + 1) 或 (2) L(i) &gt;= L(2i) 且 L(i) &gt;= L(2i + 1)</p>
+<p>（1 &lt;= i &lt;= n/2）</p>
+<p>满足第(1)种情况的堆称为小根堆（小顶堆），满足第(2)种情况的堆称为大根堆（大顶堆）。</p>
+<p>下面代码都是构造和维护大根堆。</p>
+<div class="code"><pre><code>/**
+ * 使用堆排序算法，将目标数组从小到大排列
+ */
+void HeapSort(int A[], int len) &#123;
+    BuildMaxHeap(A, len);       // 初始建堆
+    for (i = len; i > 1; i--) &#123;
+        // n - 1 趟的交换和建堆过程
+        // 输出堆顶元素（和堆底元素交换）
+        int tmp = A[i];
+        A[i] = A[1];
+        A[1] = tmp;
+
+<pre><code>    // 整理，把剩余的 i - 1 个元素整理成堆
+    AdjustDown(A, 1, i - 1);
+&#125; // for
+</code></pre>
+<p>}<br>/**</p>
+<ul>
+<li>建立大根堆，注意 A[0] 中不存储元素，实际存储从 A[1] 开始</li>
+<li>/<br>void BuildMaxHeap(int A[], int len) {<br>  for (int i = len/2; i &gt; 0; i–) {   // 从 len/2 ~ 1，反复调整堆<pre><code>  AdjustDown(A, i, len);
+</code></pre>
+  }<br>}<br>/**</li>
+<li>将元素 k 向下进行调整</li>
+<li>/<br>void AdjustDown(int A[], int k, int len) {<br>  A[0] = A[k];            // A[0] 暂存<br>  for (i = 2 * k; i &lt;= len; i*= 2) {<pre><code>  // 沿 key 较大的子结点向下筛选
+  if (i &lt; len &amp;&amp; A[i] &lt; A[i + 1]) &#123;
+      // 取 key 较大的子结点的下标
+      i++;
+  &#125;
+  if (A[0] &gt;= A[i]) &#123;
+      // 筛选结束
+      break;
+  &#125; else &#123;
+      A[k] = A[i];    // 将 A[i] 调整到双亲结点上
+      k = i;          // 修改 k 值，以便继续向下筛选
+  &#125;
+</code></pre>
+  } // for<br>  A[k] = A[0];            // 被筛选结点的值放入最终位置<br>}<br></code></pre></div></li>
+</ul>
+<div class="code"><pre><code>/**
+ * 参数 k 为向上调整的结点，也为堆的元素个数
+ */
+void AdjustUp(int A[], int k) &#123;
+    A[0] = A[k];
+    int i = k / 2;  // 若结点值大于双亲结点，则将双亲结点向下调，并继续向上比较
+    while (i > 0 && A[i] < A[0]) &#123;
+        A[k] = A[i];
+        k = i;
+        i = k / 2;
+    &#125; // while
+    A[k] = A[0];
+&#125;
+</code></pre></div>
+
+<p>注意：堆最重要的操作就是函数 AdjustDown 和 AdjustUp，其余操作均通过这两个操作完成。</p>
+<p>时间复杂度 O(nlogn)，空间复杂度 O(1)。堆排序是不稳定的排序算法。</p>
+<h2 id="section_4">四、归并排序</h2>
+
+<h3 id="section_4_1">1. 二路归并排序</h3>
+
+<div class="code"><pre><code>/**
+ * 使用二路归并排序算法，将目标数组从小到大排列
+ * @param array  待排序的目标数组
+ * @param low  起始下标
+ * @param high  结束下标
+ */
+void MergeSort(int array[], int low, int high) &#123;
+    if (low < high) &#123;
+        int mid = (low + high) / 2;
+        MergeSort(array, low, mid);        // 对左侧子序列进行递归排序
+        MergeSort(array, mid + 1, high);   // 对右侧子序列进行递归排序
+        Merge(array, low, mid, high);          // 归并
+    &#125;
+&#125;
+int *B = (int *)malloc((n) * sizeof(int));  // 辅助数组
+void Merge(int array[], int low, int mid, int high) &#123;
+    int i, j, k;
+    for (k = low; k <= high; k++) &#123;
+        // 将 array 中元素拷贝到 B 中
+        B[k] = array[k];
+    &#125;
+    for (i = low, j = mid + 1, k = i; i <= mid && j <= high; k++) &#123;
+        // 比较 B 中左右两段中的元素，将较小值拷贝到 array 中
+        if (B[i] < B[j]) &#123;
+            array[k] = B[i++];
+        &#125; else &#123;
+            array[k] = B[j++];
+        &#125;
+    &#125; // for
+    // 下面两个 while 循环只有一个会执行
+    while (i <= mid) &#123;
+        // 第一个表未检测完
+        array[k++] = B[i++];
+    &#125;
+    while (j <= high) &#123;
+        // 第二个表未检测完
+        array[k++] = B[j++];
+    &#125;
+ &#125;
+</code></pre></div>
+
+<p>时间复杂度 O(nlogn)，空间复杂度 O(n)。二路归并排序是稳定的排序算法。</p>
+<p>原地归并排序不需要辅助数组即可归并，空间复杂度 O(1)。关键在于 Merge 函数，如下所示。</p>
+<div class="code"><pre><code>/**
+ * 将长度为 n 的数组逆序
+ */
+void reverse(int array[], int n) &#123;
+    int i = 0;
+    int j = n - 1;
+    while (i < j) &#123;
+        int tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+
+<pre><code>    i++;
+    j--;
+&#125;
+</code></pre>
+<p>}<br>/**</p>
+<ul>
+<li>将含有 n 个元素的数组向左循环移位 i 个位置</li>
+<li>/<br>void exchange(int array[], int n, int i) {<br>  reverse(array, i);<br>  reverse(array + i, n - i);<br>  reverse(array, n);<br>}<br>void Merge(int array[], int low, int mid, int high) {<br>  int i = low;<br>  int j = mid + 1;<br>  while (i &lt; j &amp;&amp; j &lt;= high) {<pre><code>  int step = 0;
+  while (i &lt; j &amp;&amp; array[i] &lt;= array[j]) &#123;
+      i++;
+  &#125;
+  while (j &lt;= high &amp;&amp; array[j] &lt;= array[i]) &#123;
+      j++;
+      step++;
+  &#125;
+  // array + i 为子数组首地址，j - i 为子数组元素个数，j - i - step 为左循环移位的个数
+  exchange(array + i, j - i, j - i - step);
+  i += step;
+</code></pre>
+  }<br>}<br></code></pre></div></li>
+</ul>
+<h3 id="section_4_2">2. 多路归并排序</h3>
+
+<p>外部排序指的是大文件的排序，即待排序的记录存储在外部存储器上，待排序的文件无法一次装入内存，需要在内存和外部存储器之间进行多次数据交换，以达到排序整个文件的目的。</p>
+<p>外部排序最常用的算法是多路归并排序，即将原文件分解成多个能够一次性装入内存的部分，分别把每一部分调入内存完成排序。然后，对已经排序的子文件进行归并排序。</p>
+<h3>参考文献：</h3>
+
+<p>王道论坛. 程序员求职宝典. 电子工业出版社.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="ckrsyk6uo000naqnbcadv9goi" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-binary-tree-traverse" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/09/16/binary-tree-traverse/" class="article-date">
+  <time class="dt-published" datetime="2018-09-16T00:00:00.000Z" itemprop="datePublished">2018-09-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/09/16/binary-tree-traverse/">二叉树的遍历，伪代码实现</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<div class="code"><pre><code>/**
+ *  二叉树链表存储，结点数据模型
+ */
+struct BiTreeNode &#123;
+    int data;
+    BiTreeNode *lchild;
+    BiTreeNode *rchild;
+&#125;;
+</code></pre></div>
+
+<h3>递归算法</h3>
+
+<div class="code"><pre><code>/**
+ *  先序遍历二叉树，递归算法实现
+ *  采用链表存储结构，对每个二叉树的结点数据调用 Visit 函数
+ *  最简单的 Visit 函数功能之一，如打印传入参数
+ */
+void PreOrderTraverse(BiTreeNode *T) &#123;
+    if (T) &#123;
+        Visit(T->data);
+        PreOrderTraverse(T->lchild);
+        PreOrderTraverse(T->rchild);
+    &#125;
+&#125;
+</code></pre></div>
+
+<div class="code"><pre><code>/**
+ *  中序遍历二叉树，递归算法实现
+ */
+void InOrderTraverse(BiTreeNode *T) &#123;
+    if (T) &#123;
+        InOrderTraverse(T->lchild);
+        Visit(T->data);
+        InOrderTraverse(T->rchild);
+    &#125;
+&#125;
+</code></pre></div>
+
+<div class="code"><pre><code>/**
+ *  后序遍历二叉树，递归算法实现
+ */
+void PostOrderTraverse(BiTreeNode *T) &#123;
+    if (T) &#123;
+        PostOrderTraverse(T->lchild);
+        PostOrderTraverse(T->rchild);
+        Visit(T->data);
+    &#125;
+&#125;
+</code></pre></div>
+
+<h3>非递归算法</h3>
+
+<div class="code"><pre><code>/**
+ *  先序遍历二叉树，非递归算法实现
+ */
+void PreOrderTraverse(BiTreeNode *T) &#123;
+    stack<BiTreeNode *> s;
+    BiTreeNode *p = T;
+    while (p || !s.empty()) &#123;
+        if (p) &#123;
+            Visit(p->data);
+            s.push(p);
+            p = p->lchild;
+        &#125; else &#123;
+            p = s.top();
+            s.pop();
+            p = p->rchild;
+        &#125;
+     &#125;
+ &#125;
+</code></pre></div>
+
+<div class="code"><pre><code>/**
+ *  中序遍历二叉树，非递归算法实现
+ */
+void InOrderTraverse(BiTreeNode *T) &#123;
+    stack<BiTreeNode *> s;
+    BiTreeNode *p = T;
+    while (p || !s.empty()) &#123;
+        if (p) &#123;
+            s.push(p);
+            p = p->lchild;
+        &#125; else &#123;
+            p = s.top();
+            s.pop();
+            Visit(p->data);
+            p = p->rchild;
+        &#125;
+    &#125;
+&#125;
+</code></pre></div>
+
+<div class="code"><pre><code>/**
+ *  后续遍历二叉树，非递归算法实现
+ *  当用栈来存储结点，必须分清返回根结点时，是从左子树返回的，还是从右子树返回的
+ *  使用辅助指针 r，其指向最近访问过的结点（也可以在结点中增加一个标志域，记录是否已被访问）
+ */
+void PostOrderTraverse(BiTreeNode *T) &#123;
+    stack<BiTreeNode *> s;
+    BiTreeNode *p = T, *r = NULL;
+    while (p || !s.empty()) &#123;
+        if (p) &#123;
+            // 走到最左边
+            s.push(p);
+            p = p->lchild;
+        &#125; else &#123;
+            // 向右
+            p = s.top();            // 取栈顶结点
+            if (p->rchild && p->rchild != r) &#123;
+                // 右子树存在，且未被访问过
+                p = p->rchild;      // 转向右
+                s.push(p);          // 压入栈
+                p = p->lchild;      // 再走到最左
+            &#125; else &#123;
+                // 弹出结点并访问
+                p = s.top();
+                s.pop();            // 将结点弹出
+                Visit(p->data);     // 访问该结点
+                r = p;              // 记录最近访问过的结点
+                p = NULL;           // 结点访问完后，重置 p 指针
+            &#125;
+        &#125; // else
+    &#125; // while
+&#125;
+</code></pre></div>
+
+<h3>参考文献：</h3>
+
+<p>严蔚敏, 吴伟民. 数据结构(C语言版). 清华大学出版社.</p>
+<p>王道论坛. 程序员求职宝典. 电子工业出版社.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="ckrsyk6un000maqnbheha1687" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-the-practice-of-management-reading-notes" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/08/26/the-practice-of-management-reading-notes/" class="article-date">
+  <time class="dt-published" datetime="2018-08-26T00:00:00.000Z" itemprop="datePublished">2018-08-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/08/26/the-practice-of-management-reading-notes/">管理的实践，读书笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<p>花了好长时间才读完管理的实践这本书，不是因为内容无趣，而是因为必须专注的思考，才能体会德鲁克先生深刻的理念和见解。德鲁克先生的真知灼见和书中的系统论述，让我受益匪浅。</p>
+<p>书中说到，“管理是一种实践而不是一种科学或一种专业”。同样的，虽然目前脑中有的只是书中的各种支离片段，相信随着实践和经验的增加一定会有不一样的理解。</p>
+<p>本文摘录书中我觉得重要的内容。</p>
+<p>本书的根本目的在于通过对管理原则、责任和实践的研究，探索如何建立有效的管理机制和制度。而衡量一种管理制度是否有效的标准就在于是否将管理者个人特征的影响降到最低。</p>
+<p>贯穿本书的三条主线：<br><br>管理企业<br><br>管理管理者<br><br>管理员工和工作</p>
+<p>德鲁克的三个经典提问：<br><br>我们的事业是什么<br><br>我们的事业将是什么<br><br>我们的事业究竟应该是什么</p>
+<p>管理必须同时需要考虑三个方面的问题：<br><br>成果和绩效，这是企业存在的目的<br><br>在企业内部共同工作的人所形成的组织<br><br>外在社会，也就是企业的社会责任</p>
+<p>概论 管理的本质</p>
+<p>第1章 管理层的角色<br><br>第2章 管理层的职责<br><br>第3章 管理层面临的挑战</p>
+<p>第一部分 管理企业</p>
+<p>第4章 西尔斯公司的故事<br><br>第5章 企业是什么<br><br>第6章 我们的事业是什么，我们的事业应该是什么<br><br>第7章 企业的目标<br><br>第8章 今天的决策，明天的成果<br><br>第9章 生产的原则</p>
+<p>第二部分 管理管理者</p>
+<p>第10章 福特的故事<br><br>第11章 目标管理与自我控制<br><br>第12章 管理者必须管理<br><br>第13章 组织的精神<br><br>第14章 首席执行官与董事会<br><br>第15章 培养管理者</p>
+<p>第三部分 管理的结构</p>
+<p>第16章 企业需要哪一种结构<br><br>第17章 建立管理结构<br><br>第18章 大企业、小企业和成长中的企业</p>
+<p>第四部分 管理员工和工作</p>
+<p>第19章 IBM 的故事<br><br>第20章 雇佣整个人<br><br>第21章 人事管理是否已告彻底失败<br><br>第22章 创造巅峰绩效的组织<br><br>第23章 激励员工创造最佳绩效<br><br>第24章 经济层面<br><br>第25章 主管<br><br>第26章 专业人员</p>
+<p>第五部分 当一名管理者意味着什么</p>
+<p>第27章 管理者及其工作<br><br>第28章 做决策<br><br>第29章 未来的管理者<br><br>结语 管理层的责任</p>
+<p>管理不仅是由现代工业体系的性质所决定的，而且是由现代企业的需要所决定的。现代工业体系必须将其生产力资源–人和物质–交托给现代企业。</p>
+<p>管理体现了现代西方社会的基本信念：它体现了通过系统地组织经济资源有可能控制人的生活和信念；它体现了经济的变革能够成为争取人类进步和社会正义的强大推动力的信念。</p>
+<p>管理层是专门负责赋予资源以生产力的社会机构，也是负责有组织地发展经济的机构，体现着现代社会的基本精神。</p>
+<p>管理层的第一个定义是：管理层是经济器官，是工业社会所独有的经济器官。管理层的每一个行动、每一项决策和每一个考虑，都必须以经济作为首要尺度。</p>
+<p>管理的三项职能：管理企业、管理管理者、管理员工和工作。</p>
+<p>企业管理的技巧、能力和经验是不能被照搬运用到其它机构的。</p>
+<p>管理绝不能成为一门精确的科学。</p>
+<p>最终检验管理的是企业的绩效。</p>
+<p>管理层的权责无论在范围或程度上都受到严格的限制。</p>
+<p>管理层必须管理，而管理不只是被动的适应性行为，而是主动采取行动，促使企业获得期望的成果。</p>
+<p>每个管理问题、管理决策和行动有一个共同要素，时间。为什么在管理层的工作中，时间因素显得格外重要，也格外困难？第一，经济和技术进步使得证实决策的成效和收获成果所需的时间不断延长。第二，管理者必须能兼顾现在和未来。</p>
+<p>从西尔斯公司的故事中，我们得到的第一个结论是：企业是由人创造和管理的，而不是由”经济力量“创造和管理的。第二个结论是：我们不能单单从利润的角度来定义或解释企业。</p>
+<p>关于企业的目的，只有一个正确而有效的定义：创造顾客。由于企业的目的是创造顾客，任何企业都有两个基本功能，而且也只有这两个基本功能：营销和创新。企业必须掌握创造财富的资源，以达到创造顾客的目的。因此企业重要的管理功能之一，就是有效地利用一切创造财富的资源，从经济角度来说，则称之为生产力。</p>
+<p>有两种管理费用：生产性的管理费用——用于管理者、技术或专业人才的费用。这种费用取代了一笔至少数额相等的用于生产性或非生产性员工费用或资本支出。另一种是寄生性的或摩擦性的管理费用。这种费用不但没有提高生产力，反而降低了生产力，这是由摩擦造成的，反过来又会制造摩擦。因此我们需要的生产力观念是，一方面能将投入与产出的一切努力都加以考虑，同时又能根据与产出结果的关联性来呈现所投入的努力，而不是假定劳动力是唯一的生产性投入。</p>
+<p>无论以资本取代劳动力，或以营业成本取代资本设备与人力（需要设法区分创造性和寄生性的管理费用），我们都必须评估这些因素究竟对生产力产生何种影响。有一些无形的因素对于生产力有即使不是决定性的也是巨大的影响，却无法以成本数字来衡量：时间运用、产品组合、流程组合、组织结构和各种企业活动之间的平衡。</p>
+<p>“我们的事业是什么”并非由生产者决定，而是由消费者来决定；不是靠公司名称、地位或规章来定义，而是由顾客购买产品或服务时获得满足的需求来定义。因此，要回答这个问题，我们只能从外向内看，从顾客和市场的角度，来观察我们所经营的事业。</p>
+<p>“我们的事业将是什么？”这个问题牵涉四个问题。首先，是市场潜力和市场趋势。其次，经济发展、流行趋势和品味的变化，或竞争对手的动作，分别会导致市场结构发生什么样的改变？第三，哪些创新将改变顾客需求、创造新需求、淘汰旧需求、创造满足顾客需求的新方式、改变顾客对价值的看法，或带给顾客更高的价值满足感？最后，今天还有哪些顾客需求无法从现有的产品和服务中获得充分满足？</p>
+<p>许多公司都是在意外情况下跨入新事业，而不是有计划地朝既定方向发展。但是决定将主要的能量和资源从旧产品转移到新产品，换句话说，决定让整个事业不再只是意外的产物，必须以下列分析为基础：“我们的事业是什么？我们的事业应该是什么？”如果从市场地位、创新和生产力的角度来看，跨入新事业领域的决定符合了企业构成的基本条件的话，那么管理层的责任就是要设法获得企业必要的最低利润。</p>
+<p>企业管理是在设法平衡各种需求和目标，因此需要判断力。寻找单一目标，基本上就等于在寻找一种方程式，使得判断力毫无用武之地，这是非理性的；只有缩小范围、减少替代方案、明确重点，以事实为基础，建立衡量行动与决策效益的可靠标准，才能有良好的判断。因此，由于企业的本质使然，必须建立多重目标。</p>
+<p>那么，企业的目标应该是什么呢？只有一个答案：任何一个其绩效和结果对企业的生存和兴旺有着直接和举足轻重影响的领域，都需要有目标。</p>
+<p>这些关键领域的目标应该能做到5点：能用简洁易懂的语言说明所有的企业现象；在实践中接受检验；能预测行为；在决策制定过程，就能加以评估；能让实际经营者分析自己的实践，并因此改善经营绩效。</p>
+<p>企业应该设定绩效和成果目标的领域共有8个：包括市场地位、创新、生产力、实物和财力资源、获利能力、管理者绩效和培养管理者、员工绩效和工作态度、社会责任。</p>
+<p>利润有三个目的。首先，利润衡量企业付出的努力有多少净效益以及是否健全。利润确实是企业绩效的最终检验。其次，利润是弥补继续维持事业的成本（包括更新、淘汰、市场风险和其他不确定因素）的“风险溢价”。最后，利润或者直接地以自我集资的手段，从留存的积累中提取资金，或者间接地通过提供诱因，以最适合公司目标的形式吸引新的外部资金，保障未来用于创新和发展的资金的供应。</p>
+<p>为了达成目标，管理层必须设法在最近的将来（未来几年）和5年以上的长远未来之间，通过“管理支出预算”，而取得平衡。因为几乎所有影响平衡的决策都被视为会计师所谓的“管理支出”——这些支出由目前的管理决策决定，而不是由不可改变的过去决策（如资本费用）或当前企业经营上的要求（例如劳动力和原料成本）来决定。今天的“管理支出”将成为明天的利润；但也可能成为明日的亏损。</p>
+<p>除了要权衡最近的将来和长远的未来之外，企业管理者也必须在各种目标之间取得平衡。要区别管理是否有效，最好的指标莫过于管理者在平衡各种目标上所显现的绩效。这项工作也没有公式可循，每一家企业都必须达到自己的平衡，而且可能在不同的时期必须达到不同的均衡状态。唯一能确定的是，平衡各种不同的企业目标并非机械化的工作，不是靠“编制预算”就可以办得到的。预算只是最后用来表达平衡决策的文件；但是决策本身有赖于良好的判断力，而健全的判断则必须基于完善的企业经营分析。企业管理者能否谨守预算，往往被视为管理能力的一大考验。但是当预算将企业各种不同的需求做了最佳调和后，能否尽力达成预算，才是检验管理能力更重要的指标。</p>
+<p>企业真正的安全保障，是未来的管理者。这表示今天的管理者必须有系统地为明天的管理者做好准备。明天的管理者能够调整今天的决策以适应明天的环境，能将理性推测转变为扎实的成就，让明天的环境更适合今天所制定的决策。</p>
+<p>到目前为止，我们所知的基本工业生产系统有三种：单件产品的生产系统、大规模生产系统和流程生产系统。我们也可以把它算成四种生产系统，即大规模生产系统可分为：“旧式”的大规模生产系统，也就是大规模生产同一种产品，以及“新式”的大规模生产系统，制造同一种零件，但却组装成不同的产品。</p>
+<p>关于每一种系统对于管理能力的要求，有两个通则：1. 各种系统的要求不但难度有别，而且所要求的管理能力和绩效顺序也不同。从一种系统转换到另外一种系统时，管理层必须学习如何做好新工作，而不只是把旧的工作做得更好。2. 越能成功地贯彻每个系统的原则，就越容易达到系统对管理的要求。</p>
+<p>管理管理者的5个要求：1. “目标管理与自我控制”。2. “为管理者的职务建立适当的结构”。3. 创造“正确的组织精神”。4. 企业必须具备治理的机构。企业需要能全面领导和制定最后决策的机制，也需要能全面检讨和评估的机制。企业既需要首席执行官，也需要董事会。5. “为管理组织建立健全的结构性原则”。</p>
+<p>目标管理必须投注大量心力，并需要特殊工具。因为在企业中，管理者并不会自动自发地追求共同的目标。相反，企业在本质上包含了三种误导管理者的重要因素：管理者的专业工作；管理的层级结构；以及因愿景和工作上的差异，导致各级管理者之间产生隔阂。</p>
+<p>管理者的目标应该是什么？目标从一开始就应该强调团队合作和团队成果。这些目标应该根据企业的整体目标来制定。每位管理者的目标都应该说明他对于公司所有经营目标的贡献。为了在投入的努力中求取平衡，不同领域、不同层次的管理者在制定目标时，都应该兼顾短期和长期的考虑。并且所有的目标也应该包含有形的经营目标和管理者的组织和培养，以及员工绩效、态度和社会责任等无形的目标。</p>
+<p>正确的管理要求兼顾各种目标，特别是高层管理者对目标要统筹兼顾。它排斥那种普遍的、有害的经营恶习：靠“压力”和“危机”进行管理。</p>
+<p>管理者应该负责让自己所管辖的单位对所属部门有所贡献，并且最后对整个企业有所贡献。他的绩效目标是向上负责，而非向下负责。每位管理者必须自行发展和设定单位的目标。当然，高层管理者仍然需要保留对目标的同意权，但是发展出这些目标则是管理者的职责所在。</p>
+<p>目标管理最大的好处或许在于，管理者因此能控制自己的绩效。自我控制意味着更强烈的工作动机：想要有最好的表现，而不只是达标而已，因此会制定更高的绩效目标和更宏伟的愿景。虽然，即使有了目标管理，企业管理团队不一定就会同心协力，方向一致，但是如果要通过自我控制来管理企业，势必推行目标管理。</p>
+<p>（书中所说的自我控制可以理解为，通过测评控制自己的绩效。）为了控制自己的绩效，管理者单单了解自己的目标还不够，还必须有能力针对目标，衡量自己的绩效和成果。每位管理者都应该具备评估自己绩效所需的信息，而且应该及早收到这类信息，因此才能及时修正做法，以达到预定目标。</p>
+<p>有三种最常见的误用报告和程序的方式。第一，一般人普遍相信程序是道德规范的工具，其实不然。第二个误用方式是以为程序可以取代判断。第三也是最常见的误用方式是把报告和程序当作上级控制下属的工具，尤其是纯为提供信息给高级主管而交的每天例行报告更是如此。</p>
+<p>企业应该把报告和程序保持在最低限度，只有当报告和程序能节省时间和人力时，才运用这项工具，并且应该尽可能简化。企业应该只采用达到关键领域的绩效所必需的报告和程序。报告和程序应该时填表者的工具，而不能用来衡量他们的绩效。</p>
+<p>企业需要的管理原则是：能让个人充分发挥特长，凝聚共同的愿景和一致的努力方向，建立团队合作，调和个人目标和共同福祉的原则。目标管理和自我控制是唯一能做到这点的管理原则，能让追求共同福祉成为每位管理者的目标，以更严格、更精确和更有效的内部控制取代外部控制。管理者的工作动机不再是因为别人命令他或说服他去做某件事情，而是因为管理者的任务本身必须达到这样的目标。他不再只是听命行事，而是自己决定必须这么做。换句话说，他以自由人的身份采取行动。</p>
+<p>管理者的工作应该以能够达成公司目标的任务为基础，是实质工作，能对企业的成功产生明显而且可以清楚衡量的贡献。管理者的工作范围和职权应该尽可能宽泛，凡事不能明确排除在外的事务都应该视为管理者的职责。最后，管理者应该受绩效目标的指引和控制，而不是由上司指导和控制。</p>
+<p>管理单位的目标应该包括本单位对于企业的成功必须贡献的绩效与成果，应该总是把焦点放在上级的目标上，但是单位主管的目标应该包括如何协助下级主管达到目标。管理者的愿景应该总是向上看，视企业为整体，但是他同样应该向下负责，向他所领导的团队中的管理者负责。或许在有效组织管理者的工作时，基本的要求时，管理者应该明白他和下属的关系是一种责任，而不是上对下的监督。</p>
+<p>目标管理告诉管理者应该做什么，通过工作的合理安排，管理者能顺利完成工作，但是组织精神却决定了管理者是否有意愿完成工作。组织精神能唤醒员工内在的奉献精神，激励他们努力付出，决定了员工究竟会全力以赴，还是敷衍了事。</p>
+<p>企业必须通过5方面的实践，才能确保正确的精神贯彻于整个管理组织中：1. 必须建立很高的绩效标准，不能宽容差的或平庸的表现，而且必须根据绩效，给予奖励。2. 每个管理职位本身必须有其价值，而不只是升迁的踏板。3. 必须建立合理而公平的升迁制度。4. 管理章程中必须清楚说明谁有权制定事关管理者命运的重要决定，管理者必须有向高层申诉的途径。5. 在任命管理者的时候，必须很清楚诚实正直的品格是对管理者的绝对要求，是管理者原本就需具备的特质，不能期待他升上管理职位后才开始培养这种特质。</p>
+<p>企业首席执行官必须具备3个基本特质：“思考者”、“行动者”和“抛头露面的人”。我们或许可以在一个人身上找到其中两项特质，通常很难在同一个人身上看到3个特质并存。不过，如果企业要繁荣发展，就必须在这3个重要领域中，都找到人好好负起责任。因此结论只有一个：（或许非常小的企业是个例外）即使有再妥善的安排，都不可能由个人承担企业首席执行官的所有工作，必须由好几个人共同努力，通过团队合作来完成。</p>
+<p>如何组织首席执行官管理团队？第一个要求是，这必须是个“团队”，而不是“委员会”。团队没有集体责任，每个团队成员在他所负责的领域中享有最终决策权，有事情大家集思广益，但各自做决定。第二个要求是，管理团队的成员之间不能相互责难。无论是谁做的决定，都代表整个管理团队的决定。这并不表示管理团队不需要有一位队长。相反，队长的角色非常重要，而且一定会有某个人凭着才干和道德权威脱颖而出。</p>
+<p>培养未来管理者的第一个原则是必须培养所有的管理者。第二个原则是，培养管理者必须是动态的活动，绝不能只把目标放在今天——取代今天的主管、他们的工作或他们的资格，而必须总是把焦点放在明天的需求上。（不能根据机械化的轮调制度进行静态的人事更迭）</p>
+<p>在讨论组织结构的时候，必须同时考虑需要的是哪一种结构，以及应该如何建立这种结构。组织本身不是目的，而是达到经营绩效和成果的手段。组织结构是不可或缺的工具；错误的结构会严重伤害，甚至摧毁企业经营绩效。</p>
+<p>任何针对组织的分析，都不应该从讨论结构开始，而必须先做经营分析。有3种特殊方法可以找出达到经营目标所需的结构：活动分析、决策分析和关系分析。</p>
+<p>不去分析企业实际需要的活动，而只以典型的企业职能（如制造业的典型职能就包括生产、营销、工程、会计、采购和人事）取而代之，反映了危险的怠惰心理，结果将事倍功半。因为只有经过完整细密的活动分析，才能理清必须完成哪些工作，应该把哪些工作归为一类，以及每一项活动在组织结构中有何重要性。</p>
+<p>有四种基本特性决定了企业决策的本质。第一，决策的未来性。第二，这个决策对公司其他职能、其他领域或企业整体的影响有多大。第三，决策的性质是由其中包含多少质的因素来决定：例如基本行为准则、伦理价值、社会和政治信念等。最后，我们可以根据究竟这是经常性决策，还是偶尔为之的特殊决策来归类。</p>
+<p>关系分析。负责某项活动的管理者必须和谁合作，他必须对负责其他活动的管理者有什么贡献，反之，这些管理者又必须对他有什么贡献？包括，上对下的关系分析，下对上的关系分析，横向关系分析。</p>
+<p>建立管理结构时，第一个要考虑的是：这个结构必须满足哪些条件。这一问题的主要答案有三个：1. 管理结构在组织上必须以绩效为目标。2. 组织结构必须尽可能包含最少的管理层级，设计最便捷的指挥链。3. 组织结构必须能培育和检验未来的高层管理者。为了满足这些要求，组织结构必须采取以下原则之一：企业必须依照联邦分权制的原则，尽可能整合所有的活动，将企业活动组织成自主管理的产品事业，拥有自己的市场和产品，同时也自负盈亏。不可能采用这种原则的组织，则必须采取职能分权制的原则，设立整合的单位，为企业流程中最主要的阶段，负起最大的责任。联邦分权制和职能分权制这两个原则互补而非相互竞争。</p>
+<p>无论事业单位的规模是大是小，多么独立自主或很多限制，如果要成功地实施联邦分权制，应该遵守五个规则：1. 任何联邦式组织都需要强大的分布和强有力的中央。2. 采取联邦分权制的单位规模必须大到足以支撑所需要的管理结构。3. 每个联邦分权制的单位应该都富有成长的潜力。4. 管理者在工作上应该有充分的发挥空间和挑战。5. 联邦单位应该并行，每个单位有自己的任务、市场和产品，同时彼此竞争，和通用汽车或福特汽车的汽车事业部一样。</p>
+<p>职能性组织存在许多弱点。职能性组织越接近联邦分权制，则效益越高，问题越少。</p>
+<p>无论实施联邦或职能分权制，都必须在企业上上下下建立共同的公民意识，在多元中保存一致性。无论是因为职能性组织的派系斗争还是产品事业部狭隘的本位主义，要建立共同的公民意识，保持向心力，管理层可以采取如下方法。第一种方法关系到高层保留给自己的决策权。必须有某种“共同福祉条款”，将影响企业整体及未来长期利益的重要决策权保留给中央主管机关，因此中央有权基于整体利益，而驳回地方单位野心勃勃的计划。第二种方法公司应该跨越部门和单位的界限，有系统地提拔管理人才。</p>
+<p>组织不健全的一个明显症状是管理层级不断增加——显示缺乏目标或目标混乱，不能撤换表现不佳的员工，过度中央集权，或缺乏适当的活动分析。同样明显的迹象是，员工喜欢“通过渠道沟通”，而不直接去找掌握了信息、有想法或应该被告知目前状况的人沟通。管理层年龄结构失衡问题。</p>
+<p>人力资源是所有经济资源中，使用效率最低的资源。提升经济绩效的最大契机完全在于企业能否提升员工的工作效能，这种说法在美国管理界几乎已经变成老生常谈了。企业能否提高经营绩效，完全要看能否促使员工提高工作绩效。因此，管理员工和工作，是管理的基本功能之一。</p>
+<p>从工程观点来看，企业应该先考虑人力资源最大的长处和弱点，并据此建立最适合人力资源特性和限制的工作组织。人力资源有一种其他资源所没有的特性：具有协调、整合、判断和想象的能力。事实上，这是人力资源唯一的特殊优越性；在其他方面，无论是体力、手艺或感知能力上，机器都胜过人力。人具有许多独一无二的特质。和其他资源不同的是，人对于自己要不要工作，握有绝对的自主权。专制的领导者常常忘了这点。杀死抵抗分子无法完成工作，因此，应该设法改变工作动机。</p>
+<p>工作的组织方式必须设法让个人所有的长处、进取心、责任感和能力，都能对群体的绩效和优势有所贡献。这是组织的首要原则，事实上，这也是组织开宗明义的目的。人力资源和其他资源不同之处在于，一个人的“发展”无法靠外力来完成，不是找到更好的方法来运用既有特性这么简单。人力资源发展代表的是个人的成长，而个人的成长往往必须从内在产生。因此，管理者的工作是鼓励并引导个人的成长，否则就无法充分运用人力资源的特长。</p>
+<p>企业对员工的要求。企业期望员工不只是被动接受劳动力工作，而必须主动承担达成经营绩效的责任。企业对员工还必须有第二个要求：员工必须愿意接受改变。创新是企业的必要功能，也是企业的重要社会责任。然而，员工必须愿意改变他们的工作、习惯和群体关系，企业才能不断创新。</p>
+<p>员工对企业的要求。许多人都误用“公平的报酬”这句话来说明员工对企业的要求。对企业有所要求的员工是完整的个人，而不只是个经济单位。他是基于一个人、一位公民的身份，来提出超越经济报酬的要求。他要求能够通过工作，在职位上发挥所长，建立自己的地位；他要求企业履行社会对个人的承诺——通过公平的升迁机会，实现社会正义；他要求从事有意义的严肃工作。此外，员工对企业最重要的要求还包括：建立高绩效标准、具备组织和管理工作的高度能力，以及能明确表达对于良好工作表现的关注。尤其在自由社会中，员工既身而为人，同时也是社会公民，自然对企业带来限制。要求员工对企业绝对忠诚，就好像企业承诺对员工负起百分之百的责任一样，都是不对的。</p>
+<p>基本原则：必须先假定每个人都想工作，不能假定他们没有工作意愿，这和我们对人性的理解不符。管理层的任务是激发员工的工作动机和参与感，唤起他们的工作欲望。</p>
+<p>低层和高层工作或低薪和高薪的工作，主要差别应该在于例行、重复性事务与需要技巧或判断的工作各占多少比例，要求具备的技能和判断力有多高，以及承担的职责有什么不同，也就是说，如果缺乏必要的技能或判断错误的话，会对组织整体绩效产生多大的影响。</p>
+<p>创造巅峰绩效的组织。装配线是无效率的设计。针对机械性工作，以机械化为原则；针对人的工作，则以整合为原则。</p>
+<p>在管理员工和工作时，最重要的任务之一是把安排员工职务视为持续性且系统化的努力。不能在新人刚来时就决定，而必须等到他花时间了解工作，公司也对他有更多的了解之后，才真正指派他工作，而且也不是一旦做了决定，就绝不更改，必须不断检讨工作分派是否合适。</p>
+<p>激励员工创造最佳绩效。唯一有效的方法是加强员工的责任感，而非满意度。我们可以通过四种方式来造就负责任的员工，这四种方式包括：慎重安排员工职务、设定高绩效标准、提供员工自我控制所需的信息、提供员工参与的机会以培养管理者的愿景。</p>
+<p>要根据目标来衡量绩效，需要有充足的信息。问题不在于员工需要多少信息，而在于企业为了自身利益，必须让员工了解多少信息。管理者应该尽量提供信息——不是因为员工要求看到这些数据，而是因为这么做才符合公司最大利益。</p>
+<p>当员工拥有管理者的愿景时，也就是说，如果员工能站在管理者的角度来看待企业，认为自己的绩效将影响企业的兴衰存亡，那么他才会承担起达到最高绩效的责任。</p>
+<p>企业将薪资看作成本，要求薪资必须有弹性，而员工将薪资看作收入，要求薪资稳定，两者之间有很大的分歧。只通过可预测的薪资和雇佣计划，才能解决这个冲突。我们需要的不是长生不老的保证——工会传统的“保障年薪”诉求。我们需要的是寿险计划，这是企业做得到的。</p>
+<p>对自由经济危害最大的莫过于员工对利润的敌意。工作才是员工在企业中真正拥有的东西，利润分享或股权分享都不是核心，只是附加品而已。</p>
+<p>主管需要什么。1. 为自己的活动制定明确的目标，而且目标必须直接聚焦于企业的经营目标。2. 企业必须提供主管充足的升迁机会，并且根据明确的绩效标准，制定合理的升迁制度。3. 主管需要拥有管理者的地位。</p>
+<p>主管的职责是什么。1. 主管工作必须是真正的管理工作，主管必须担负起大部分的管理责任。2. 主管必须能够控制履行职责时所需的活动，也必须有充足的人力来处理相关事务。3. 我们必须设法扭转趋势，不再削减主管的权限。4. 主管的单位规模应该要比目前大。</p>
+<p>如果有人认为，我表面上似乎要把主管工作变得更容易管理，也更有意义，但实际上是要“废除”主管职务，那么我的回答是，我的本意确实是如此。当企业希望促使员工达到最高绩效时，他们需要的是管理者，而非主管。</p>
+<p>现代企业至少需要3种类型的工作人员：企业需要管理者，也需要普通工人，无论他们是技术或非技术性员工，从事体力劳动或事务性工作。最后，企业越来越需要个体的专业贡献者。</p>
+<p>管理者必须为成果负责，因此他必须为别人的工作负责。个体的专业贡献者无论采取单独工作方式，或是团队的一份子，都为自己的贡献负责。由于管理者必须为单位的工作成果负责，因此他必须有权安排、调动单位的员工，并指导他们工作；他必须规划他们的职务内容，将他们在工作上付出的心力组织起来，把他们整合为一个团队，同时评估他们的工作成果。个别的贡献者也为成果负责，但只为自己的工作成果负责。只有当其他人了解他的工作成果，并且能运用他的工作成果时，他的工作才能发挥功效。这意味着个别贡献者对于其他人也有应负的权责，但是这些权责不同于管理者的权责，反而比较像是老师的权责。</p>
+<p>第二个不同之处在于专业人员的工作和企业的绩效目标及经营成果之间的关系。设定职务目标时，如果直接以企业的经营目标为依据，那么这必然是管理性职务，可以直接依照这个职务对企业成功的贡献来衡量其绩效。只要依照正确的结构原则来组织职务内容，就能符合组织精神的要求。但是如果无法直接从企业经营目标发展出职务的目标，这就不是一项管理性的职务，它的目标可能是专业上的目标，而不是以企业成功为目的，绩效衡量时根据的是专业标准，而非对企业经营绩效和成果有多少贡献。</p>
+<p>究竟专业与非专业、技术与非技术员工真正的差别何在呢？身为专业人员，他的工作内容、工作标准、目标和愿景都完全要根据某个专业的标准、目标和愿景来制定，换句话说，主要取决于企业外部的因素。专业人员必须自行决定他的工作内容为何，做到什么地步才称得上表现优异，别人无法替他决定他应该做什么，以及工作标准为何。</p>
+<p>当然，这些界限都很模糊。许多专业人员十分近似于管理者；许多专业人员则比较像非专业性的员工，也就是单纯的技术人员。</p>
+<p>要让专业人员在企业中发挥效能和生产力，必须满足五个特殊需求：他必须是专业人员，但也必须对企业有所贡献，而且知道自己有何贡献；他必须享有专业人员和个别贡献者的升迁机会；当他改善绩效和提高个人贡献时，企业必须提供金钱上的奖励；他的职务必须属于专业工作；他需要在企业内部和更广大的社区中获得专业上的肯定。</p>
+<p>管理者有两项特殊任务，企业中其他人都不需负担这两项任务，而且凡是必须承担这两项任务的人都是管理者。第一项任务是创造出大于各部分总和的真正整体，创造出有生产力的实体，而且其产出将大于所有投入资源的总和。第二项任务是协调每个决策和行动的长远的需求和眼前的需求。</p>
+<p>管理者的工作中包含了5项基本活动。1. 管理者设定目标，决定目标应该是什么，也决定应该采取哪些行动，以达到目标。2. 管理者从事组织的工作。3. 管理者还必须激励员工，和员工沟通。4. 管理者必须为工作建立衡量标准。5. 管理者必须培养人才。</p>
+<p>管理者有一个特殊工具：信息。管理者不“操纵”人，而是激励、引导、组织他人做好自己的工作。管理者如果不能通过书写和口头文字或明确的数据来激励部属，就不可能成为成功的管理者。</p>
+<p>懂得善用时间的管理者通过良好的规划，达成绩效。他们愿意先思考，再行动，花很多时间彻底思考应该设定目标的领域，花更多时间有系统地思考如何解决一再出现的老问题。大多数的管理者都要花很多时间来评估部属的工作绩效与工作品质。然而善用时间的人却不会如此，他们每年对下属做一次系统化的评估。善用时间的人也不会花大量时间修改产品的工程设计。善用时间的管理者花在和上司沟通的时间远多于和下属沟通的时间。善用时间的管理者也花很多时间思考上司的问题，以及思考他对上司、对整个企业的成功可以有什么贡献。</p>
+<p>管理者培养部属时，方向是否正确，能否协助部属成才为更重要、更丰富的人，将直接决定管理者自己能否成长、发展，还是逐渐颓废；内涵越来越丰富，还是每况愈下；不断进步，还是日趋堕落。管理者能从管理工作中，学到一些技巧，例如主持会议的技巧或面谈的技巧。他可以规划一些有助于人才培育的做法——例如管理者及部属的关系结构、升迁制度、组织的奖励措施等方面。管理者的基本品质，诚实正直的品格。</p>
+<p>我们只能以一个人的功能和企业期望他发挥的贡献来定义他是不是管理者。而管理者有别于其他员工的独特功能乃是教育的功能。企业期望他发挥的独特贡献，则是赋予他人达成绩效的能力和愿景。最后，是道德责任和愿景决定了一个人究竟算不算管理者。</p>
+<p>大多数的战术决策都更复杂，也更重要，但通常总是单向思考，也就是说：在既定的情况和明确的要求下做的决策。唯一的问题只是要找到最符合经济效益的方式，来运用已知的资源就好。但是真正重要的决策，都是战略性决策，必须设法了解情势或改变情势，找出可用的资源或应该采用的资源。这些都属于管理决策。任何管理者都必须制定这类战略性决策，管理者的层级越高，则需要制定的战略性决策就越多。</p>
+<p>决策包含了5个不同的阶段：界定问题、分析问题、制定可行的替代方案、寻找最佳的解决方案、把决策转化为有效的行动。</p>
+<h3>参考文献：</h3>
+
+<p>彼得.德鲁克. 管理的实践.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="ckrsyk6v9001aaqnb58bibif5" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-image-and-graphics-best-practices" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/08/22/image-and-graphics-best-practices/" class="article-date">
+  <time class="dt-published" datetime="2018-08-22T00:00:00.000Z" itemprop="datePublished">2018-08-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/08/22/image-and-graphics-best-practices/">iOS 图像解码和最佳实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2>前言</h2>
+
+<p>最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。</p>
+<h2 id="section_1">1. 三种 Buffer 和解码</h2>
+
+<p>Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。</p>
+<p>有三种 Buffer：Data Buffer、Image Buffer、Frame Buffer。</p>
+<p>Data Buffer 是存储在内存中的原始数据，图像可以使用不同的格式保存，如 jpg、png。Data Buffer 的信息不能用来描述图像的像素信息。</p>
+<p>Image Buffer 是图像在内存中的存在方式，其中每个元素描述了一个像素点。Image Buffer 的大小和图像的大小成正比。</p>
+<p>Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM）中，而 Image Buffer 存储在 RAM 中。</p>
+<p>解码就是从 Data Buffer 生成 Image Buffer 的过程。Image Buffer 会上传到 GPU 成为 Frame Buffer，GPU 以每秒60次的速度使用 Frame Buffer 更新屏幕。</p>
+<p>下图描述了图像从文件到渲染到屏幕上的流程。</p>
+<p class="post-image">
+    <img src="/resources/figures/2018-08-22-image-rendering-pipeline.png" alt="图像渲染流程" width="90%">
+</p>
+
+<p class="post-image-title">图像渲染流程</p>
+
+<h2 id="section_2">2. UIImage 和 UIImageView</h2>
+
+<p>UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图，如下图所示。</p>
+<p class="post-image">
+    <img src="/resources/figures/2018-08-22-uiimage-uiimageview.png" alt="UIImage 和 UIImageView" width="90%">
+</p>
+
+<p class="post-image-title">UIImage 和 UIImageView 的角色</p>
+
+<p>UIImage 是 iOS 中处理图像的高级类。创建一个 UIImage 实例只会加载 Data Buffer，将图像显示到屏幕上才会触发解码，也就是 Data Buffer 解码为 Image Buffer。Image Buffer 也关联在 UIImage 上。</p>
+<p>UIImage 关联的图像是否已解码对外部是透明的（如本文最后的 Instruments 截图，调用栈中都是系统函数），没有办法判断。</p>
+<h2 id="section_3">3. 图像解码</h2>
+
+<p>上面说到，UIImage 关联的图像是否已解码对外部是透明的，但是有许多操作会触发图像的解码，下面是一些例子。</p>
+<h3>隐式解码</h3>
+
+<p>将图像显示到屏幕上会触发隐式解码。（必须同时满足图像被设置到 UIImageView 中、UIImageView 添加到视图，才会触发图像解码。)</p>
+<div class="code"><pre><code>UIImageView *imageView = [[UIImageView alloc] init];
+[self.view addSubview:imageView];
+[imageView setImage:image];
+</code></pre></div>
+
+<p></p>
+
+<h3>Core Graphics</h3>
+
+<p>手动绘制图像能完成图像解码，下面代码中的 newImage 实例的图像已完成解码。</p>
+<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
+[image drawAtPoint:CGPointZero];
+UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+UIGraphicsEndImageContext();
+</code></pre></div>
+
+<p>下面的代码片段截取自 <a href="https://github.com/ibireme/YYKit.git" target="_blank">YYKit</a>，其中 newImage 实例的图像已完成解码。在测试工程中，该代码比上面直接绘制代码快约7倍。</p>
+<div class="code"><pre><code>size_t width = CGImageGetWidth(imageRef);
+size_t height = CGImageGetHeight(imageRef);
+CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
+size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
+size_t bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
+size_t bytesPerRow = CGImageGetBytesPerRow(imageRef);
+CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+
+<p>CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);<br>CFDataRef data = CGDataProviderCopyData(dataProvider);      // 主要耗时操作（解码）</p>
+<p>CGDataProviderRef newProvider = CGDataProviderCreateWithCFData(data);<br>CFRelease(data);</p>
+<p>CGImageRef newImageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, NULL, false, kCGRenderingIntentDefault);<br>UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];<br>CGImageRelease(newImageRef);<br>CFRelease(newProvider);<br></code></pre></div></p>
+<h3>Image I/O</h3>
+
+<p>Image I/O 提供了多种处理图像的接口，但是我并没有找到一个可以直观的触发图像解码的实现方案。（简单的使用 CGImageSourceCreateWith… / CGImageSourceCreateImageAtIndex 这对函数并不会触发解码。）（下文中引用的 WWDC 提供的代码段算是一种解码的方案。）</p>
+<h2 id="section_4">4. 最佳实践</h2>
+
+<p>内存和 CPU 是 App 运行最宝贵的资源，我们处理和使用图像从减少内存占用和优化 CPU 使用入手。下面提供一些优化方案。</p>
+<h3>减少内存占用</h3>
+
+<p>大的图像会占用较多的内存资源，解码和传输到 GPU 也会耗费较多时间。实际需要显示的图像尺寸可能并不是很大，如果能将大图缩小，便能达到优化的目的。</p>
+<p>下面的代码片段来自 WWDC 2018，功能是缩小图像并解码。原始代码为 Swift，这里转成了 Objective-C。</p>
+<div class="code"><pre><code>// 大图缩小为显示尺寸的图
+- (UIImage *)downsampleImageAt:(NSURL *)imageURL to:(CGSize)pointSize scale:(CGFloat)scale &#123;
+    // 利用图像文件地址创建 image source
+    NSDictionary *imageSourceOptions =
+  @&#123;
+    (__bridge NSString *)kCGImageSourceShouldCache: @NO // 原始图像不要解码
+    &#125;;
+    CGImageSourceRef imageSource =
+    CGImageSourceCreateWithURL((__bridge CFURLRef)imageURL, (__bridge CFDictionaryRef)imageSourceOptions);
+
+<pre><code>// 下采样
+CGFloat maxDimensionInPixels = MAX(pointSize.width, pointSize.height) * scale;
+NSDictionary *downsampleOptions =
+@&#123;
+  (__bridge NSString *)kCGImageSourceCreateThumbnailFromImageAlways: @YES,
+  (__bridge NSString *)kCGImageSourceShouldCacheImmediately: @YES,  // 缩小图像的同时进行解码
+  (__bridge NSString *)kCGImageSourceCreateThumbnailWithTransform: @YES,
+  (__bridge NSString *)kCGImageSourceThumbnailMaxPixelSize: @(maxDimensionInPixels)
+   &#125;;
+CGImageRef downsampledImage =
+CGImageSourceCreateThumbnailAtIndex(imageSource, 0, (__bridge CFDictionaryRef)downsampleOptions);
+UIImage *image = [[UIImage alloc] initWithCGImage:downsampledImage];
+CGImageRelease(downsampledImage);
+CFRelease(imageSource);
+
+return image;
+</code></pre>
+<p>}<br></code></pre></div></p>
+<h3>优化 CPU 使用</h3>
+
+<p>CPU 使用的优化我们考虑的是，利用设备的多核芯片（多线程）和采用预处理策略。</p>
+<p>值得关注的 CPU 计算工作是，Data Buffer 转 Image Buffer 这一过程，也就是解码过程。在一个测试工程中，大量的设置了图像的 UIImageView 被显示到屏幕上，图像解码是性能瓶颈。如下图所示。</p>
+<p class="post-image">
+    <img src="/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png" alt="" width="100%">
+</p>
+
+<p>预处理本身并没有减少 CPU 的工作量，但是在 CPU 空闲时提前完成图像解码，能间接达到优化用户体验的效果。</p>
+<h3>参考文献：</h3>
+
+<p>WWDC2018. <a href="https://developer.apple.com/videos/play/wwdc2018/219/" target="_blank">Image and Graphics Best Practices</a></p>
+<p>Luke Parham. <a href="http://www.lukeparham.com/blog/2018/3/14/decoding-jpegs-with-the-best" target="_blank">JPEG Decoding with the Best</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="ckrsyk6um000laqnb4w3khl48" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-how-to-choose-opensource-liscence" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/06/27/how-to-choose-opensource-liscence/" class="article-date">
+  <time class="dt-published" datetime="2018-06-27T00:00:00.000Z" itemprop="datePublished">2018-06-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/27/how-to-choose-opensource-liscence/">如何选择开源许可证？（转）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<p>原文链接，<a href="http://www.ruanyifeng.com/blog/2011/05/how_to_choose_free_software_licenses.html" target="_blank">阮一峰的网络日志-如何选择开源许可证</a>。</p>
+<p>下图说明了如何选择一个合适的开源许可证书。</p>
+<p class="post-image">
+    <img src="/resources/figures/2018-06-27-opensource-liscences.png" alt="opensource liscences" width="100%">
+</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="ckrsyk6um000kaqnb0rdtc5n9" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-event-dispatch-and-dom-event-flow-translation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/" class="article-date">
+  <time class="dt-published" datetime="2018-06-19T00:00:00.000Z" itemprop="datePublished">2018-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/">事件分发和 DOM 事件流（译）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>原文链接，<a href="https://www.w3.org/TR/uievents/#event-flow" target="_blank">Event dispatch and DOM event flow</a>。</p>
+<p>本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 <code>dispatchEvent()</code> 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。</p>
+<p class="post-image"><img src="/resources/figures/2018-06-19-eventflow.svg" alt="eventflow" width="90%"></p>
+
+<p class="post-image-title">事件分发示意图</p>
+
+<p>事件对象会被分发给事件目标（event target），事件目标是指最终被选中的响应事件的对象，可以从事件的 <code>target</code> 属性获取。</p>
+<p>在事件分发开始之前，事件对象的传播路径（propagation path）必须首先确定下来。</p>
+<p>传播路径（propagation path）是一个由当前事件目标（current event targets）组成的有序列表，事件会依次经过这些事件目标。当前事件目标可能是事件目标本身（event target），或者事件目标的祖先节点。事件不断传播时，当前事件目标也在不断发生改变。当前事件目标可以从事件的 <code>currentTarget</code> 属性获取。</p>
+<p>传播路径列表中的最后一个条目即为事件目标。传播路径还反映了文档的分层树状结构。在事件目标之前的条目被称为祖先，紧接着事件目标之前的条目被称为父亲。</p>
+<p>传播路径确定下来后，事件在传播的过程中会经过一个或多个阶段。事件阶段一共有三个：捕获阶段（capture phase）、目标阶段（target phase）、冒泡阶段（bubble phase）。如果事件不支持某个阶段，或者事件传播被阻止，那么这个阶段会被跳过。比如，如果事件的 <code>bubbles</code> 属性被设为 <code>false</code>，那么冒泡阶段会被跳过。如果事件的 <code>stopPropagation()</code> 方法在分发之前被调用，那么所有的阶段都会被跳过。</p>
+<p>捕获阶段（capture phase）：在这个阶段，事件对象沿着事件目标的祖先节点传播，从 <code>window</code> 到事件目标的父节点。</p>
+<p>目标阶段（target phase）：这个阶段也被称为 <code>at-target phase</code>，表明事件对象到达了事件目标。如果事件表明不再进行冒泡，那么事件对象在完成该阶段后便停止传播。</p>
+<p>冒泡阶段（bubble phase）：在这个阶段，事件对象沿着事件目标的祖先节点逆向传播，从事件目标的父节点到 <code>window</code>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="ckrsyk6ul000jaqnb6mf1gwkq" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-pod-trunk-push-without-validation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/05/12/pod-trunk-push-without-validation/" class="article-date">
+  <time class="dt-published" datetime="2018-05-12T00:00:00.000Z" itemprop="datePublished">2018-05-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/05/12/pod-trunk-push-without-validation/">如何在验证失败的情况下发布 Pod</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 CocoaPods 发布 Pod 的最后一步是执行 <code>pod trunk push</code> 命令，pod-trunk 首先会对你创建的 Pod 进行验证，验证通过才允许上传。</p>
+<p>有时，希望在 Pod 验证失败的情况下也能够上传，关于这种做法是否合理 <a href="https://github.com/CocoaPods/CocoaPods/issues/5801" target="_blank">这里</a> 有相关讨论。讨论中 <a href="https://github.com/mxcl" target="_blank">@mxcl</a> 给出了一种绕过发布前验证的方法，如下文所述。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>pod 命令使用 Ruby 写成，使用解释型语言的好处是我们可以方便的修改命令的逻辑。只要找到目标代码，注释掉验证 Pod 的逻辑便能达到目的。</p>
+<p>首先执行 <code>gem env</code>，如下变量给出了 Ruby 库安装的位置。</p>
+<div class="code"><pre><code>  - INSTALLATION DIRECTORY: /usr/local/lib/ruby/gems/2.4.0
+</code></pre></div>
+
+<p>当前，<code>pod trunk push</code> 命令文件对于 Ruby 库根目录的相对位置是 <code>gems/cocoapods-trunk-1.3.0/lib/pod/command/trunk/push.rb</code>，只要注释掉如下一行代码即可。</p>
+<div class="code"><pre><code>def run
+    update_master_repo
+    # validate_podspec  # 删除验证逻辑
+    status, json = push_to_trunk
+    update_master_repo
+
+<pre><code># ...
+</code></pre>
+<p>end<br></code></pre></div></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="ckrsyk6uk000iaqnb3dvycktq" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-callmethodwithcompletionblock-memory-speculating" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/" class="article-date">
+  <time class="dt-published" datetime="2018-02-08T00:00:00.000Z" itemprop="datePublished">2018-02-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/">callMethodWithCompletionBlock&amp;#58; 中 Block 的内存管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>开发中不时会遇到 <code>[obj callMethodWithCompletionBlock:^&#123; [obj doSomething] &#125;]</code> 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。</p>
+<p>本文的讨论都是基于 ARC，并且一般性的 block 内存管理说明可以参考<a href="/2018/09/30/block.html">这篇文章</a>。</p>
+<h2>Demo 1</h2>
+
+<div class="code"><pre><code>@interface CustomUIView : UIView
+@end
+@implementation CustomUIView
+- (void)doSomeThing:(void(^)(void))block &#123;
+    block();
+&#125;
+- (void)emptyMethod &#123;&#125;
+- (void)dealloc &#123;
+    NSLog(@"CustomUIView dealloc");
+&#125;
+@end
+
+<p>@interface ViewController ()<br>@end<br>@implementation ViewController</p>
+<ul>
+<li>(void)viewDidLoad &#123;<br>  [super viewDidLoad];<br>  CustomUIView *customView = [[CustomUIView alloc] init];<br>  [customView doSomeThing:^&#123;<pre><code>  [customView emptyMethod];
+</code></pre>
+  }];<br>}<br>@end<br></code></pre></div></li>
+</ul>
+<p>运行结果：</p>
+<div class="code"><pre><code>2018-02-08 15:56:53.638344+0800 Test[41287:2545568] CustomUIView dealloc
+</code></pre></div>
+
+<p>Demo 1 演示的即是本文开头说的情况，运行结果显示没有产生循环引用，customView 正常释放。</p>
+<p>结论：block 引用了 customView，但是 customView 没有引用 block。见 Demo 2。</p>
+<h2>Demo 2</h2>
+
+<div class="code"><pre><code>@interface CustomUIView0 : UIView
+@end
+@implementation CustomUIView0
+- (void)emptyMethod &#123;&#125;
+- (void)dealloc &#123;
+    NSLog(@"CustomUIView0 dealloc");
+&#125;
+@end
+
+<p>@interface CustomUIView : UIView<br>@end<br>@implementation CustomUIView</p>
+<ul>
+<li>(void)doSomeThing:(void(^)(void))block &#123;<br>  block();<br>&#125;</li>
+<li>(void)emptyMethod &#123;&#125;</li>
+<li>(void)dealloc &#123;<br>  NSLog(@”CustomUIView dealloc”);<br>&#125;<br>@end</li>
+</ul>
+<p>@interface ViewController ()<br>@property (strong, nonatomic) CustomUIView *customView;<br>@end<br>@implementation ViewController</p>
+<ul>
+<li>(void)viewDidLoad &#123;<br>  [super viewDidLoad];<br>  CustomUIView0 *view0 = [[CustomUIView0 alloc] init];<br>  self.customView = [[CustomUIView alloc] init];<br>  [self.customView doSomeThing:^&#123;<pre><code>  [view0 emptyMethod];
+</code></pre>
+  }];<br>}<br>@end<br></code></pre></div></li>
+</ul>
+<p>运行结果：</p>
+<div class="code"><pre><code>2018-02-08 15:58:54.662221+0800 Test[41318:2553382] CustomUIView0 dealloc
+</code></pre></div>
+
+<p>该示例中 customView 被强引用，不会释放。因为 block 引用了 view0，如果 customView 引用 block，那么 view0 便不会被释放。但是实际上 view0 正常释放，说明 Demo 1 的结论是正确的。</p>
+<h2>Demo 3</h2>
+
+<div class="code"><pre><code>@interface CustomUIView0 : UIView
+@end
+@implementation CustomUIView0
+- (void)emptyMethod &#123;&#125;
+- (void)dealloc &#123;
+    NSLog(@"CustomUIView0 dealloc");
+&#125;
+@end
+
+<p>@interface CustomUIView : UIView<br>@property (strong, nonatomic) void(^strongBlock)(void);<br>@end<br>@implementation CustomUIView</p>
+<ul>
+<li>(void)doSomeThing:(void(^)(void))block &#123;<br>  self.strongBlock = block;<br>  block();<br>&#125;</li>
+<li>(void)emptyMethod &#123;&#125;</li>
+<li>(void)dealloc &#123;<br>  NSLog(@”CustomUIView dealloc”);<br>&#125;<br>@end</li>
+</ul>
+<p>@interface ViewController ()<br>@property (strong, nonatomic) CustomUIView *customView;<br>@end<br>@implementation ViewController</p>
+<ul>
+<li>(void)viewDidLoad &#123;<br>  [super viewDidLoad];<br>  CustomUIView0 *view0 = [[CustomUIView0 alloc] init];<br>  self.customView = [[CustomUIView alloc] init];<br>  [self.customView doSomeThing:^&#123;<pre><code>  [view0 emptyMethod];
+</code></pre>
+  }];<br>}<br>@end<br></code></pre></div></li>
+</ul>
+<p>Demo 3 与 Demo 2 的区别是 CustomUIView 中强引用了 block，此时 view0 不会释放，存在 self -&gt; customView -&gt; block -&gt; view0 这样的强引用关系。</p>
+<p>这样的强引用关系是单向的，只要打破其中一个环节便能释放，比如作如下修改：</p>
+<div class="code"><pre><code>    CustomUIView0 *view0 = [[CustomUIView0 alloc] init];
+    CustomUIView *customView = [[CustomUIView alloc] init];
+    [customView doSomeThing:^&#123;
+        [view0 emptyMethod];
+    &#125;];
+</code></pre></div>
+
+<p>运行结果：</p>
+<div class="code"><pre><code>2018-02-08 16:48:27.802266+0800 Test[41900:2865267] CustomUIView dealloc
+2018-02-08 16:48:27.802428+0800 Test[41900:2865267] CustomUIView0 dealloc
+</code></pre></div>
+
+<p>此时 customView 成为局部变量，上下文结束便释放。被引用的 block 和 view0 也会依次释放。</p>
+<h2>Demo 4</h2>
+
+<div class="code"><pre><code>@interface CustomUIView : UIView
+@property (strong, nonatomic) void(^strongBlock)(void);
+@end
+@implementation CustomUIView
+- (void)doSomeThing:(void(^)(void))block &#123;
+    self.strongBlock = block;
+    block();
+&#125;
+- (void)emptyMethod &#123;&#125;
+- (void)dealloc &#123;
+    NSLog(@"CustomUIView dealloc");
+&#125;
+@end
+
+<p>@interface ViewController ()<br>@property (strong, nonatomic) CustomUIView *customView;<br>@end<br>@implementation ViewController</p>
+<ul>
+<li>(void)viewDidLoad &#123;<br>  [super viewDidLoad];<br>  CustomUIView *customView = [[CustomUIView alloc] init];<br>  [customView doSomeThing:^&#123;<pre><code>  [customView emptyMethod];
+</code></pre>
+  }];<br>}<br>@end<br></code></pre></div></li>
+</ul>
+<p>最后，我们来看一个会产生循环引用的例子。Demo 4 和 Demo 1 的区别是 CustomUIView 中强引用了 block。此时存在 customView -&gt; block -&gt; customView 这样的循环引用，除非显式打破这个环状引用（比如 customView 中有逻辑能解除对 block 的引用），否则便产生了内存泄漏。</p>
+<p class="post-image"><img src="/resources/figures/2018-02-08-Memory-Leak.png" alt="" width="70%"></p>
+
+<h2>总结</h2>
+
+<p><code>[obj callMethodWithCompletionBlock:^&#123; [obj doSomething] &#125;]</code> 这种写法，ARC 会自动负责 block 的内存管理，在上下文开始和结束的地方持有和释放。</p>
+<p>block 为开发带来了便利，ARC 又为 block 的内存管理带来了便利，但如果未遵守内存管理的基本原则，仍然会引入内存泄漏的问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="ckrsyk6uk000haqnb1735gzuq" data-title="callMethodWithCompletionBlock&amp;#58; 中 Block 的内存管理" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-getting-pixels-onto-the-screen-translation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2018/01/14/getting-pixels-onto-the-screen-translation/" class="article-date">
+  <time class="dt-published" datetime="2018-01-14T00:00:00.000Z" itemprop="datePublished">2018-01-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2018/01/14/getting-pixels-onto-the-screen-translation/">像素如何被绘制到屏幕上（译）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2>前言</h2>
+之前看到一篇很好的关于视图渲染的文章（<a href="https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/?from=timeline&isappinstalled=0" target="_blank">Getting Pixels onto the Screen</a>），最近项目中遇到一些帧率优化的问题，想起来又阅读了一遍，并且抽时间进行了翻译，以便今后学习查阅。
+
+<h2>正文</h2>
+
+<p>将内容显示到屏幕上，有许多方式可以实现。这个过程包含许多框架，依靠许多函数和方法的组合实现。本文讨论该过程的底层原理。当你需要考虑相关性能问题时，本文内容能够帮助挑选最优的 API。本文研究的对象是 iOS 系统，不过其中大部分内容也适用于 OS X。</p>
+<h2 id="section_1">1. 图形栈（Graphics Stack）</h2>
+
+<p>内容显示到屏幕的过程有许多工作。但当内容显示到屏幕上后，当前的结构就很简单，每个像素都是由3个颜色单元组成：红色、绿色和蓝色。屏幕上某个像素点显示了特定颜色，本质上就是，组成该像素的红绿蓝这3个颜色单元被使用特定亮度点亮。在 iPhone 5上，屏幕有 1,136×640 = 727,040 个像素，因此有 2,181,120 个颜色单元。在拥有视网膜显示屏的 15” MacBook Pro 上，这个数值超过一千五百万。整个显示系统的软硬件通力合作，确保每个颜色单元使用了正确的亮度点亮。当你滑动视图时，百万数量级的亮点必须每秒钟更新60次。这是一个巨大的工作量。</p>
+<h3 id="section_1_1">1.1 软件组件（The Software Components）</h3>
+
+<p>下面相关软件组件的简图：</p>
+<p class="post-image"><img src="/resources/figures/2018-01-14-pixels-software-stack.png" alt="" width="90%"></p>
+
+<p>紧靠着 Display 的是 GPU（graphics processing unit）。GPU 为图形并行计算量身定制，是一个高度并发的处理器单元。因此，它能够处理大量的像素计算并将处理结果显示到屏幕上。GPU 的并行计算能力也使得 Texture 的合成非常高效，本文后面会详细讨论。重点是，GPU 是非常专业的处理器，擅长处理这种类型的计算，比起 CPU，它计算更快，功耗更小。普通 CPU 的设计考虑的是一般性的计算，它可以做很多不同类型的事情，但是比如纹理合成这种工作，执行起来会比 GPU 慢一点。</p>
+<p>GPU Driver 是一些直接与 GPU 通信的代码。GPU Driver 可以看成是对各种复杂 GPU 的封装，为调用方提供标准化的接口。相邻 GPU Driver 的调用方通常是 OpenGL / OpenGL ES。</p>
+<p>OpenGL（<a href="https://en.wikipedia.org/wiki/OpenGL" target="_blank">Open Graphics Library</a>）是用来进行 2D 和 3D 图形绘制的 API。上文说到 GPU 是非常专业化的硬件，OpenGL 能够与 GPU 密切合作，释放 GPU 性能，实现硬件加速渲染。对很多人来说，OpenGL 似乎是非常底层的 API，但是1992年首次发布时，它是与 GPU 通信的第一个主要标准化方式。程序员不再需要为每一种 GPU 重写他们的代码，这个一个巨大的进步。</p>
+<p>上图中，OpenGL 再往后有些分散。当前的 iOS 系统中，几乎所有的事情都得经过 Core Animation，但是 OS X 系统中，Core Graphics 绕过 Core Animation 的情况并不罕见。对于一些专门的应用程序，尤其是游戏应用，可能会直接与 Open GL / OpenGL ES 通信。Core Animation 会利用 Core Graphics 来实现一些绘制，这让事情变的更加混乱。一些框架，比如 AVFoundation、Core Image，会用到其中的多种技术。</p>
+<p>上面说了这么多，需要记住以下几点。GPU 是一个非常强大的图形硬件，在显示内容过程中起着中心作用。GPU 通过一些总线与 CPU 相连。OpenGL、Core Animation、Core Graphics 这些框架组织着 GPU 和 CPU 之间的数据传输。为了在屏幕上显示内容，首先需要在 CPU 上进行一些处理，然后数据被传输到 GPU，再经过 GPU 处理，最后像素在屏幕上显示出来。</p>
+<p>这个过程中的每一步都有自己的挑战，并且需要做各种权衡。</p>
+<h3 id="section_1_2">1.2 硬件组件（The Hardware Players）</h3>
+
+<p class="post-image"><img src="/resources/figures/2018-01-14-pixels-hardware.png" alt="" width="70%"></p>
+
+<p>上文说的挑战一个非常简单的例子可能是这样的：GPU 有许多合成好的 Texture（位图），这些 Texture 是为每一帧（1秒钟60次）准备的。每一个 Texture 需要占用部分 VRAM（video RAM），GPU 能够持有的 Texture 总数存在上限。虽然 GPU 很擅长合成，但总有一些合成任务要比另一些任务更加复杂，GPU 在16.7毫秒（1/60秒）内能够完成的工作存在上限。</p>
+<p>下一个挑战是把数据传送到 GPU。数据需要从 RAM 转移到 VRAM，GPU 才能够处理。这被称为上传到GPU。这项工作似乎微不足道，但对于大的 Texture，这仍然是一项耗时的工作。</p>
+<p>最后，CPU 运行着你的程序，你要求 CPU 从磁盘载入一张 PNG 并解压。这些都工作都发生在 CPU 上。当你想在屏幕上显示这张解压的 PNG，就需要将数据上传到 GPU。一些普通操作，比如在屏幕上显示文本，对 CPU 来说也是非常复杂的任务，CPU 需要紧密整合 Core Text 和 Core Graphics 框架，从文本生成位图。这项工作完成后，数据被当成 Texture 上传到 GPU，准备展示。当你在屏幕上移动文本，相同的 Texture 是能够复用的。CPU 只需告诉 GPU 新的位置，GPU 便能重用已经存在的 Texture。CPU 不必重新渲染文本，且位图不必重新上传。</p>
+<p>上文描述了目前为止遇到的复杂问题，后面本文深入讲述其中涉及的技术。</p>
+<h2 id="section_2">2. 合成（Compositing）</h2>
+
+<p>合成是图像领域的术语，描述的是不同的位图是如何整合在一起并最终形成屏幕上看到的图像。从许多方面来看，这件事情是如此显而易见，以至于我们很容易忽略其中的复杂程度和计算。</p>
+<p>暂且忽略一些复杂深奥的情况，假设屏幕上所有东西是一个 Texture。Texture 是一个由 RGBA 值组成的矩形区域，也就是说每个像素包含有红色、绿色和蓝色值，还有透明度值。Core Animation 中的 CALayer，本质上就是 Texture。</p>
+<p>在上述简单设定下，每个层是一个 Texture，所有的 Texture 以特定方式互相堆叠在一起。对于屏幕上的每个像素，GPU 需要弄清楚如何混合这些 Texture 以得到该像素的 RGB 值。这便是合成的含义。</p>
+<p>如果我们只有一个 Texture，这个 Texture 的尺寸和屏幕相同，并且和屏幕的像素对齐，那么屏幕上的每个像素都对应了 Texture 中的一个像素。这个 Texture 的像素最终成为屏幕上显示的像素。</p>
+<p>如果我们需要将第二个 Texture 放到第一个 Texture 的上面，GPU 就需要将这个 Texture 合成到第一个 Texture 上。Texture 有不同的混合方式，假设两个 Texture 按像素对齐并且采用正常混合的方式，每个像素可以使用下面的公式计算出最终的颜色：</p>
+<div class="code"><pre><code>R = S + D * (1 - Sa)</code></pre></div>
+
+<p>R 表示最终颜色；S 表示源颜色，对应的是上层的 Texture；D 表示目标颜色，对应的是下层的 Texture；Sa 表示源颜色的透明度值。这个公式中的所有颜色（R、S、D）都已经预先乘以了它们的透明度值。</p>
+<p>下面通过几个例子来理解上面这个公式。假设所有的 Texture 都是不透明的，也就是说透明度值为1。如果下层 Texture 的一个像素为蓝色（RGB = 0, 0, 1），上层 Texture 的对应像素为红色（RGB = 1, 0, 0），因为 Sa = 1，代入公式计算：</p>
+<div class="code"><pre><code>R = S</code></pre></div>
+
+<p>最终颜色值为上层 Texture 的红色。符合实际情况。</p>
+<p>基于上面的例子，假设上层 Texture 有 50% 的透明度，也就是说透明度值为0.5，则 S = （0.5, 0, 0）。代入公式计算：</p>
+<div class="code"><pre><code>                       0.5   0               0.5
+R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
+                       0     1               0.5
+</code></pre></div>
+
+<p>最终得到颜色值为（0.5, 0, 0.5），是一种紫色。半透明的红色叠加到蓝色背景上，从直觉上判断正是这种颜色。</p>
+<p>我们上面做的计算处理的是，将一个 Texture 的一个像素合成到另一个 Texture 中的一个像素。GPU 需要计算的是两个 Texture 重叠部分的所有像素。通常情况下，大多数应用包含了大量的视图层级，这些内容需要被合成到一起。尽管 GPU 为此高度优化，但这些工作已足以使得 GPU 处于忙碌状态。</p>
+<h3 id="section_2_1">2.1 是否透明（Opaque vs. Transparent）</h3>
+
+<p>如果即将添加的 Texture 是完全不透明的，那么最终屏幕上的像素和该 Texture 相同。GPU 可以节省大量的工作，因为只需要拷贝该 Texture 的像素，不再需要进行多个 Texture的混合。但是 GPU 无法知道 Texture 上的像素是否都是不透明的。Texture 对应着 Core Animation 中的 CALayer，CALayer 的 opaque 属性用于设置是否不透明。如果 opaque 设为 YES，那么 GPU 不再进行图层的混合，直接拷贝最上层图层的像素而忽略该图层下面的内容。这样可以为 GPU 节省相当多的工作量。Instruments 和模拟器调试菜单下有 “color blended layers” 选项，能够标记出半透明的图层，也就是 GPU 需要进行图层混合的地方。</p>
+<p>合成不透明的图层需要的计算更少，代价更小。所以，如果你知道你的图层是不透明的，确保将它的 opaque 属性设为 YES。如果你载入一个没有 Alpha 通道的图片，那该图层的 opaque 属性会自动设为 YES。需要注意的是，一张没有 Alpha 通道的图片和一张所有像素 Alpha 值为100%的图片是不同的。对于后者，Core Animation 必须假设可能有 Alpha 不是100％的像素存在。Finder 中，查看图片简介，在更多信息中会指出当前图片是否有 Alpha 通道。</p>
+<h3 id="section_2_2">2.2 像素是否对齐（Pixel Alignment and Misalignment）</h3>
+
+<p>目前为止，我们考察的图层的像素和显示的像素完全对齐。在像素对齐的情况下，需要进行的计算也相对较少。当 GPU 需要判断如何显示屏幕上的一个像素时，只需要查看该像素之上的所有图层对应位置的像素，将它们合成到一起。或者，如果最上层的图层是不透明的，GPU 只需要简单的拷贝最上层图层的像素就行了。</p>
+<p>如果一个图层的所有像素与屏幕上的像素一一对应，那这个图层就是像素对齐的。主要存在两种原因使得这种情况不满足。第一个原因是缩放，当图层被放大或缩小时，那图层的像素和屏幕的像素将不再对齐；第二个原因是图层布局的起始位置不在像素的边界位置上。</p>
+<p>上述两种情况都会使得 GPU 不得不进行一些额外的计算。为了合成出一个值，GPU 得从原始图层取出多个像素进行混合。如果所有的东西都是像素对齐的，GPU 的工作就会更少。</p>
+<p>同样的，Instruments 和模拟器调试菜单下有一个“color misaligned images”选项，能够指出发生这种情况的 CALayer 实例。</p>
+<h3 id="section_2_3">2.3 遮罩（Masks）</h3>
+
+<p>一个图层可以有一个与之关联的遮罩。遮罩是只有 Alpha 值的位图。图层的像素会事先应用它的遮罩，然后再进行像素的合成。当你为图层设置拐角半径（corner radius），实际上便是为该图层设置了遮罩。为图层设置任意样式的遮罩也是可以的，比如设置一个样式为大写字母 A 的遮罩。只有遮罩下的图层内容会被渲染出来。</p>
+<h3 id="section_2_4">2.4 离屏渲染（Offscreen Rendering）</h3>
+
+<p>离屏渲染能够被 Core Animation 自动触发，也能由应用程序显式触发。离屏渲染在一个新的缓冲区中合成/渲染部分视图树，然后这个缓冲区再被渲染到屏幕上。（离屏也就是不在屏幕上的意思）</p>
+<p>如果合成的计算复杂度很高，你可能希望强制指定离屏渲染。这是一种缓存已合成好的图层的方法。如果你的渲染树（所有图层以及它们的组织方式）比较复杂，你可以强制离屏渲染来缓存这些图层，然后使用该缓存合成到屏幕上。</p>
+<p>如果你的应用有许多图层一起参与动画，GPU通常必须在每一帧里（1/60s）将所有这些层重新合成到下方的视图上。当启用了离屏渲染后，GPU 首先会在一个新的 Texture 上将这些图层组合到一个位图缓存里，然后使用这个 Texture 在屏幕上绘制。这样的话，当这些图层一起移动，GPU 能够重用位图缓存，可以节省很多的工作。（需要注意的是，这只有在这些图层不改变的情况下才有效。不然的话，GPU 需要不断的重建位图缓存。）通过将 shouldRasterize 属性设为 YES 来启用这种行为。</p>
+<p>不过，这是一种需要权衡的方案。在一些情况下，这会让事情变得更慢。创建离屏缓冲区对于 GPU 来说是个额外的工作，尤其是当 GPU 永远不会重用到这些位图缓存时，这些工作都白白浪费。然而，一旦位图被重用了，GPU 便能卸下重担。你必须自己测量 GPU 的利用率和帧率，来确定这种方案是否有帮助。</p>
+<p>离屏渲染也可能是作为一个副作用发生。如果你直接或者间接的为一个图层设置遮罩，Core Animation 会强制离屏渲染来应用遮罩。这给 GPU 增加了负担。因为通常 GPU 只需要直接在帧缓冲区（也就是屏幕上）绘制就行了。</p>
+<p>在 Instruments 的 Core Animation 工具和模拟器的调试菜单下，有一个“Color Offscreen-Rendered Yellow”选项，能够将那些在离屏缓冲区中渲染过的区域用黄色标记出来。同时，记得选上“Color Hits Green and Misses Red”选项，绿色表示离屏缓冲区被重用了，红色则表示没有。</p>
+<p>通常情况下，你会希望避免离屏渲染，因为这会造成额外开销。直接在帧缓冲区合成图层，代价更小。相对的情况是，首先创建一个离屏缓冲区，然后在该缓冲区内渲染，最后将缓冲区中的内容渲染到帧缓冲区中。这其中包含了两次昂贵的上下文切换操作（将上下文切换到离屏缓存区，然后重新切换到帧缓冲区）。</p>
+<p>在你打开“Color Offscreen-Rendered Yellow”选项后，当你看到了黄色，这通常代表了一种警告。但是这并不一定是坏事，如果 Core Animation 能够重用离屏渲染的结果，这有可能带来性能的提升。当在离屏缓冲区中绘制的图层没有发生变化，重用便能发生。</p>
+<p>还需要注意的是，离屏缓冲区是有大小有限的。Apple 暗示，离屏缓冲区大约是屏幕空间大小的两倍。</p>
+<p>如果是你使用图层的方式导致了离屏渲染，你可能最好避免这种使用方式。使用遮罩、设置圆角、设置阴影，这些都会触发离屏渲染。</p>
+<p>以遮罩来说，如果希望设置圆角（一种特殊的遮罩）和 clipsToBounds / masksToBounds 属性，你可以通过事先设置内容来实现，比如使用带有圆角的图片。跟之前一样，你需要做一下权衡。如果你希望为图层添加一个矩形遮罩，你可以通过设置 contentsRect 来实现，而不是使用遮罩。</p>
+<p>如果你的最终方案需要将 shouldRasterize 设为 YES，记住同时将 rasterizationScale 设为 contentScale。</p>
+<h2 id="section_3">3. Core Animation & OpenGL ES</h2>
+
+<p>顾名思义，Core Animation 就是用于让屏幕上的东西动起来。但是，我们会基本上跳过关于动画的讨论，而着重于绘制。需要知道的是，Core Animation 使你能够做非常高效的渲染，因此，你能够在每秒60帧的条件下进行动画。</p>
+<p>Core Animation 的核心是对 OpenGL ES 的一层抽象。简单来说，它让你能够使用 OpenGL ES 的强大功能，但是却不需要处理与 OpenGL ES 相关的复杂问题。上文中，当我们讨论合成时，我们混用了图层（layer）和 Texture 这两个词。他们不是完全相同的两样东西，但是相当类似。</p>
+<p>Core Animation 的图层可以有子图层，所以最终你得到的是一个图层树。Core Animation 需要做的繁重工作包括，判断哪些图层需要绘制或重绘制，需要调用 OpenGL ES 的哪些接口来将这些图层合成到屏幕上。</p>
+<p>例如，当你将一个图层的 contents 赋给一个 CGImageRef 时，Core Animation 会创建一个 OpenGL Texture，也就是保证这个位图上传到对应的 Texture。又或者，如果你重写了 -drawInContext，Core Animation 会分配一个 Texture，保证你调用的 Core Graphics 接口最终转换成这个 Texture 的位图数据。设置图层属性和继承 CALayer 能影响到 OpenGL 绘制的执行方式，许多 OpenGL ES 的底层行为都被很好的封装在易于理解的 CALayer 概念之中。</p>
+<p>Core Animation 在一端组织着通过 Core Graphics 实现的基于 CPU 的位图绘制，在另一端组织着 OpenGL ES。并且因为 Core Animation 在渲染流程中处于一个至关重要的位置，你怎样使用 Core Animation 会显著的影响到性能。</p>
+<h3 id="section_3_1">3.1 CPU 受限与 GPU 受限（CPU bound vs. GPU bound）</h3>
+
+<p>当你在屏幕上显示一些内容时，有许多部件参与了这个流程。其中主要的两个硬件部件是 CPU 和 GPU。它们名字中都包含了字母 P 和 U，表示处理单元（processing unit）。当需要在屏幕上绘制内容时，它们都需要进行处理。并且，二者都只有有限的资源。</p>
+<p>为了达到每秒60帧，你得确保 CPU 和 GPU 都不能过载。除此之外，即使你达到了60fps，你应该将尽量多的工作交给 GPU 完成，从而让 CPU 有更多的时间运行其它应用程序代码，而不是忙于绘制工作。并且通常来说，在绘制方面 GPU 比 CPU 更加高效，能降低系统整体的负载和能源消耗。</p>
+<p>既然绘制的性能同时依赖于 CPU 和 GPU，你需要弄清楚哪一部分正在限制你的绘制性能。如果你使用了全部的 GPU 资源，也就是说 GPU 正在限制你的性能，那这种情况称为 GPU 受限（GPU bound）。同样的，如果你正在最大限度的使用 CPU，这种情况就被称为 CPU 受限（CPU bound）。</p>
+<p>如果你是 GPU 受限的，你需要降低 GPU 的负载（比如将更多工作交给 CPU 完成）。如果你是 CPU 受限，那得降低 CPU 的负载。</p>
+<p>可以使用 OpenGL ES Driver instrument 来判断是否 GPU 受限。点击 i 按钮，然后进行配置，确保 Device Utilization % 被选中。现在，当你运行你的应用，你能够看到 GPU 的负载是多少。如果这个数值接近 100%，表明你正试着让 GPU 做非常多的工作。</p>
+<p>应用程序执行太多任务这种更传统方面的原因通常导致 CPU 受限。Time Profiler instrument 能够帮助进行调试。</p>
+<h2 id="section_4">4. Core Graphics 或 Quartz 2D（Core Graphics / Quartz 2D）</h2>
+
+<p>Quartz 2D 更多的是因为它被包含在 Core Graphics 框架中，而被人所知。</p>
+<p>与我们能覆盖到的内容相比，Quartz 2D 拥有更多的使用技巧。我们不会讨论和 PDF 创建、渲染、解析或打印相关的众多内容。只需要知道，打印和创建 PDF，在很大程度上和在屏幕上绘制位图是一样的，因为它们都是基于的 Quartz 2D。</p>
+<p>本文会比较简略的介绍 Quartz 2D 的主要概念。详细内容可以参考 Apple 的文章<a href="https://developer.apple.com/library/mac/#documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/Introduction/Introduction.html" target="_blank">Quartz 2D Programming Guide</a>。</p>
+<p>对于2D绘图，Quartz 2D 非常强大，比如，基于路径的绘图、抗锯齿渲染、透明图层、分辨率和设备无关性。它提供的是偏低层的基于 C 语言的 API，这些可能会让人望而却步。</p>
+<p>尽管如此，Quartz 2D 的主要概念相对比较简单。UIKit 将 Quartz 2D 的一些接口封装成了易于使用的 API，并且即使是原始的 C API 也是可以使用的。你得到的是一个几乎可以媲美 Photoshop 和 Illustrator 的绘制引擎。</p>
+<p>应用程序以某种方式基于 Quartz 2D 实现位图绘制。也就是说，CPU 部分的绘制工作是由 Quartz 2D 完成的。虽然 Quartz 也能够做其它的事情，我们这里关注的仍然是它的位图绘制能力，也就是说在一片内存区域中绘制包含 RGBA 数据的内容。</p>
+<p>比如我们希望绘制一个八边形，可以使用如下的 UIKit 代码：</p>
+<div class="code"><pre><code>UIBezierPath *path = [UIBezierPath bezierPath];
+[path moveToPoint:CGPointMake(16.72, 7.22)];
+[path addLineToPoint:CGPointMake(3.29, 20.83)];
+[path addLineToPoint:CGPointMake(0.4, 18.05)];
+[path addLineToPoint:CGPointMake(18.8, -0.47)];
+[path addLineToPoint:CGPointMake(37.21, 18.05)];
+[path addLineToPoint:CGPointMake(34.31, 20.83)];
+[path addLineToPoint:CGPointMake(20.88, 7.22)];
+[path addLineToPoint:CGPointMake(20.88, 42.18)];
+[path addLineToPoint:CGPointMake(16.72, 42.18)];
+[path addLineToPoint:CGPointMake(16.72, 7.22)];
+[path closePath];
+path.lineWidth = 1;
+[[UIColor redColor] setStroke];
+[path stroke];
+</code></pre></div>
+
+<p>如下使用 Core Graphics 的代码可以实现相同的效果：</p>
+<div class="code"><pre><code>CGContextBeginPath(ctx);
+CGContextMoveToPoint(ctx, 16.72, 7.22);
+CGContextAddLineToPoint(ctx, 3.29, 20.83);
+CGContextAddLineToPoint(ctx, 0.4, 18.05);
+CGContextAddLineToPoint(ctx, 18.8, -0.47);
+CGContextAddLineToPoint(ctx, 37.21, 18.05);
+CGContextAddLineToPoint(ctx, 34.31, 20.83);
+CGContextAddLineToPoint(ctx, 20.88, 7.22);
+CGContextAddLineToPoint(ctx, 20.88, 42.18);
+CGContextAddLineToPoint(ctx, 16.72, 42.18);
+CGContextAddLineToPoint(ctx, 16.72, 7.22);
+CGContextClosePath(ctx);
+CGContextSetLineWidth(ctx, 1);
+CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);
+CGContextStrokePath(ctx);
+</code></pre></div>
+
+<p>上述代码中，绘制在被称为 CGContext 的地方完成。我们传入的 ctx 参数，就是在这个上下文中。这个上下文定义了我们将要绘制的地方。如果实现了 CALayer 的 -drawInContext: 接口，那我们就会被传入一个上下文。在这个上下文的绘制会写入到该图层的缓冲区中。我们也可以创建自己的上下文，比如使用 CGBitmapContextCreate() 创建一个基于位图的上下文。这个函数返回一个上下文，然后我们可以把这个上下文传给需要 CGContext 的函数用于绘制。</p>
+<p>可以发现，UIKit 版本的代码没有往方法中传入上下文。因为，当使用 UIKit 时，上下文是隐式的。UIKit 维护一个包含上下文的栈，并且 UIKit 方法总是在栈顶的上下文中绘制。你可以使用 UIGraphicsGetCurrentContext() 函数获得这个上下文，使用 UIGraphicsPushContext() 和 UIGraphicsPopContext() 进行上下文的入栈和出栈。</p>
+<p>需要特别留意的是，UIKit 有两个便捷的方法 UIGraphicsBeginImageContextWithOptions() 和 UIGraphicsEndImageContext() 可以用来创建一个位图上下文，达到和 CGBitmapContextCreate() 一样的效果。混合进行 UIKit 和 Core Graphics 的调用非常简单：</p>
+<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(CGSizeMake(45, 45), YES, 2);
+CGContextRef ctx = UIGraphicsGetCurrentContext();
+CGContextBeginPath(ctx);
+CGContextMoveToPoint(ctx, 16.72, 7.22);
+CGContextAddLineToPoint(ctx, 3.29, 20.83);
+...
+CGContextStrokePath(ctx);
+UIGraphicsEndImageContext();
+</code></pre></div>
+
+<p>或者以另一种方式：</p>
+<div class="code"><pre><code>CGContextRef ctx = CGBitmapContextCreate(NULL, 90, 90, 8, 90 * 4, space, bitmapInfo);
+CGContextScaleCTM(ctx, 0.5, 0.5);
+UIGraphicsPushContext(ctx);
+UIBezierPath *path = [UIBezierPath bezierPath];
+[path moveToPoint:CGPointMake(16.72, 7.22)];
+[path addLineToPoint:CGPointMake(3.29, 20.83)];
+...
+[path stroke];
+UIGraphicsPopContext(ctx);
+CGContextRelease(ctx);
+</code></pre></div>
+
+<h2 id="section_5">5. 像素（Pixels）</h2>
+
+<p>屏幕上的像素由3个颜色单元组成，红色、绿色和蓝色。因此，位图数据有时又被称为 RGB 数据。你也许想问，这些数据在内存中是如何组织的。实际情况是，存在非常非常多不同的表示 RGB 位图数据的方式。</p>
+<p>待会儿我们将要讨论压缩数据，这又是一种完全不同的数据组织方式。现在，我们先考察 RGB 位图数据，红色、绿色和蓝色每个颜色单元都有一个值，并且经常还会有第四个值，透明度。最终，每个像素对应了四个独立的值。</p>
+<h3 id="section_5_1">5.1 默认像素布局（Default Pixel Layouts）</h3>
+
+<p>iOS 和 OS X 系统上一种非常常见的格式是，32 bits-per-pixel（bpp），8 bits-per-component（bpc），alpha premultiplied first。在内存中的表示如下所示：</p>
+<div class="code"><pre><code>  A   R   G   B   A   R   G   B   A   R   G   B
+| pixel 0       | pixel 1       | pixel 2
+  0   1   2   3   4   5   6   7   8   9   10  11 ...
+</code></pre></div>
+
+<p>这种格式经常被称为 ARGB。每个像素占用4个字节（32 bpp）。每个颜色单元占用1个字节（8 bpc）。每个像素有一个 alpha 值，并且排列在 RGB 值的前面。RGB 的值都已经事先和 alpha 值相乘过。预先相乘表明 alpha 值已经融入到 RGB 颜色单元之中。如果有一个橘色，8 bpc 的 RGB 值分别是240，99和24。完全不透明的橘色使用上面的内存布局方式，ARGB 值为 255，240，99，24。如果这个橘色有 33% 的透明度，那这个像素的值为 84，80，33，8。</p>
+<p>另一种常见的格式是，32 bpp，8 bpc，alpha-none-skip-first。在内存中的表示如下所示：</p>
+<div class="code"><pre><code>  x   R   G   B   x   R   G   B   x   R   G   B
+| pixel 0       | pixel 1       | pixel 2
+  0   1   2   3   4   5   6   7   8   9   10  11 ...
+</code></pre></div>
+
+<p>这种格式也为称为 xRGB。像素没有 alpha 值，也就是说是完全不透明的，但是内存布局仍然是和上面的相同。你也许会好奇为什么这种格式会变得流行。如果每个像素剔除那个未使用的字节，我们能节省下25%的空间。但实际证明，因为每个独立的像素和32位内存边界对齐，这种格式更易于被现代的 CPU 和图像算法处理。现代 CPU “不喜欢”读取不对齐的数据。处理不对齐的数据需要做很多的移位和映射，尤其是与上面那种有 alpha 值的像素混合的时候。</p>
+<p>当处理 RGB 数据时，Core Graphics 也支持将 alpha 值放在最后面，分别称为 RGBA 和 RGBx。同样的，满足 8bpc 和预乘 alpha 值。</p>
+<h3 id="section_5_2">5.2 “深奥的”布局（Esoteric Layouts）</h3>
+
+<p>大多数时候，当处理位图数据时，我们将要处理的是 Core Graphics / Quartz 2D。它支持一系列指定的格式。但是首先，我们先来看下剩下的 RGB 格式：</p>
+<p>另一种可选的格式是，16bpp，5bpc，没有 alpha 值。跟上文说的布局格式相比，这种格式只占用 50% 的内存（一个像素2个字节）。如果你需要将（未压缩的）RGB数据存储在内存或磁盘上，这可以派上用场。但是因为这种格式每个颜色单元只有5位，图片可能会出现<a href="https://zh.wikipedia.org/wiki/%E8%89%B2%E8%AA%BF%E5%88%86%E9%9B%A2" target="_blank">色调分离</a>。</p>
+<p>从另一个角度出发，还存在64bpp，16bpc和128bpp，32bpc（都有有 alpha 和无 alpha 两种版本）的格式。这两种格式分别使用8字节和16字节存储一个像素，可以带来更高的保真度，代价就是更多的存储空间和计算成本。</p>
+<p>Core Graphics 还支持一些灰度和 <a href="https://zh.wikipedia.org/wiki/%E5%8D%B0%E5%88%B7%E5%9B%9B%E5%88%86%E8%89%B2%E6%A8%A1%E5%BC%8F" target="_blank">CMYK</a> 格式，以及只包含 alpha 值的格式（为使用遮罩服务）。</p>
+<h3 id="section_5_3">5.3 平面数据（Planar Data）</h3>
+
+<p>大多数的框架，包括 Core Graphics，使用的像素数据的颜色单元（red，green，blue，alpha）都是混合在一起的。也存在另外一种情况，每个颜色单元存储在它自己的一片内存区域中，也就是说平面的。对于 RGB 数据来说，我们有三个独立的内存区域，一个区域包含所有像素的红色值，一个包含所有像素的绿色值，还有一个包含所有像素的蓝色值。</p>
+<p>一些视频相关的框架在一些情况下，会使用平面数据。</p>
+<h3 id="section_5_4">5.4 YCbCr</h3>
+
+<p>在处理视频数据时，YCbCr 是一个相对常见的格式。它同样也由三个部分组成（Y，Cb 和 Cr），能够表示出颜色数据。但是，简单来说，它更像人类视觉感知颜色的方式。人类视觉对两个色度分量 Cb 和 Cr 的保真度不太敏感，但对亮度信号 Y 的保真度非常敏感。当使用 YCbCr 格式存储数据时，为了获得相同的视觉感受质量，Cb 和 Cr 部分能够比 Y 部分进行更大程度的压缩。</p>
+<p>因为这个原因，JPEG 格式的图片有时会将 RGB 格式的像素数据转换成 YCbCr 格式。JPEG 独立的压缩每个颜色区域。当压缩针对 YCbCr 格式时，Cb 和 Cr 区域可以比 Y 区域压缩的更多。</p>
+<h2 id="section_6">6. 图片格式（Image Formats）</h2>
+
+<p>iOS 和 OS X 系统上接触到的图片大多是 JPEG 和 PNG 格式，下面会讨论这两种格式。</p>
+<h3 id="section_6_1">6.1 JPEG</h3>
+
+<p>所有人都知道 JPEG。相机拍摄出来的图片就是 JPEG。照片存储在电脑上的方式就是 JPEG。即使你妈妈可能也听过 JPEG。</p>
+<p>许多人会认为 JPEG 文件只不过是另一种格式化像素数据的方式，也就是我们前文讨论的 RGB 像素的布局。但是，实际情况并不是这样。</p>
+<p>将 JPEG 数据转换成像素数据是一个非常复杂的过程。对于每个<a href="#section_5_3">颜色区域</a>，JPEG 压缩使用基于<a href="https://zh.wikipedia.org/wiki/%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2" target="_blank">离散余弦变换</a>的算法将空间信息转换到频域。然后使用<a href="https://zh.wikipedia.org/wiki/%E9%9C%8D%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81" target="_blank">霍夫曼编码</a>的变体，量化、排序和打包该信息。在最初的阶段，位图数据经常会从 RGB 转换成 YCbCr。当解码 JPEG 的时候，所有流程会反向执行一遍。</p>
+<p>因为 CPU 忙于解压 JPEG 文件，所以当你从 JPEG 文件创建 UIImage 并绘制到屏幕上，会出现一段延迟。如果你需要为 UITableView 的每个 cell 解压 JPEG 文件，那你视图的滑动就不会那么流畅。</p>
+<p>那为什么还要使用 JPEG 格式呢？原因是 JPEG 能够非常大程度的压缩照片。iPhone 5中一张未经压缩的照片差不多会占用 24MB 的空间。但是使用默认压缩设置，你的照片通常只有 2MB 到 3MB 大小。JPEG 压缩是有损压缩，它会将人眼不太敏感的信息丢弃，所以它的压缩效率能远远超过一般的压缩算法，比如 gzip。但是这种方式仅对照片比较适合，因为 JPEG 的高效压缩依赖照片中存在许多人眼不敏感的信息。如果你给一个大部分内容都是文本的网页截图，JPEG 工作的就不会那么好。压缩的空间会变得很少，并且你可能会看到 JPEG 压缩改变了这张图片。</p>
+<h3 id="section_6_2">6.2 PNG</h3>
+
+<p>与 JPEG 不同，PNG 是一种无损压缩格式。如果你将一张图片保存为 PNG，然后再解压打开，所有的像素数据都跟最初的时候一摸一样。因为这个限制，PNG 无法达到 JPEG 一样的压缩效率。但是作为应用程序的素材图片，比如按钮、图标等，它实际上工作的很好。更重要的是，PNG 解码的复杂度相比 JPEG 解码要低很多。</p>
+<p>在现实世界中，事情从来不是这么简单，实际上存在一堆不同的 PNG 格式。简单来说，PNG 同时支持包含和不包含 alpha 通道的图片。这也是另一个它适合做应用程序素材图片的原因。</p>
+<h3 id="section_6_3">6.3 选择一种格式（Picking a Format）</h3>
+
+<p>当你需要在应用中使用图片，你应该从 JPEG 和 PNG 中选择一种。对这两种格式的读取解压和写入压缩已经做过高度优化，更进一步说，支持并行化。并且，如果 Apple 在将来的系统更新中进一步优化解码器，你也将能从中获得收益。如果你打算使用另一种图片格式，你必须意识到这可能影响到应用的性能。因为图片解码器是黑客非常喜欢的一种目标，使用新的图片格式可能会带来安全漏洞。</p>
+<p>当 Xcode 优化 PNG 文件时，它会对 PNG 文件进行转换，从技术上讲，转换后的内容不再是合法的 PNG 格式。但是 iOS 系统能够读取这些文件，并且解压这些格式的文件会比通常的 PNG 文件更快。Xcode 调整了这些文件，使得 iOS 系统能够使用更高效的解压算法。需要知道的主要点是，它改变了像素布局。我们在<a href="#section_5">像素</a>章节中说过，RGB 数据存在许多种表示方式，如果图片格式不是 iOS 图形系统需要的，需要为每个像素进行移位操作。不再需要进行这些处理能够加快处理速度。</p>
+<p>再次强调：如果可以，你应该使用可调整图片作为图片素材。你的文件会更小，需要从文件系统读取并解压的数据会更少。</p>
+<h2 id="section_7">7. UIKit 和像素（UIKit and Pixels）</h2>
+
+<p>UIKit 中的每个视图都有一个自己的图层 CALayer。这个图层通常有一个后台存储，这个后台存储有点像图片，是一个像素位图。实际被绘制到显示屏上的内容便是这个后台存储。</p>
+<h3 id="section_7_1">7.1 使用 -drawRect:（With -drawRect:）</h3>
+
+<p>如果你的视图类实现了 -drawRect: 接口，有如下的工作机制：</p>
+<p>当你调用 -setNeedsDisplay，UIKit 会调用该视图对应图层的 -setNeedsDisplay。这会为图层设置一个标志位，将其标示成脏图层，也就是需要重新显示。这实际上不会做任何事情，所以即使你一次性调用了很多次 -setNeedsDisplay 接口也没有关系。</p>
+<p>接下来，当绘制系统准备好后，它会调用图层的 -display 接口。这时，图层会准备它的后台存储。然后，图层会准备一个基于后台存储内存区域的 Core Graphics 上下文（CGContextRef）。在这个 CGContextRef 上绘制就会保存到这片内存区域中。</p>
+<p>当你在你的 -drawRect: 方法中使用如 UIRectFill() 或 -[UIBezierPath fill] 这样的绘制方法时，它们会使用到这个上下文。工作机制如下，UIKit 会将这个 CGContextRef 压入 graphics context stack，也就是说，将这个上下文变成当前上下文。UIGraphicsGetCurrent() 函数的返回值正是这个当前上下文。UIKit 的绘制方法会使用 UIGraphicsGetCurrent()，也就是说绘制内容会保存到对应图层的后台存储中。如果你想直接使用 Core Graphics 的方法，你仍然可以通过调用 UIGraphicsGetCurrent() 获得这个上下文，然后将这个上下文传入 Core Graphics 函数中。</p>
+<p>从现在开始，这个图层的后台存储将会被不停的绘制到屏幕上。直到视图的 -setNeedsDisplay 接口再次被调用，然后图层的后台存储相应的进行更新。</p>
+<h3 id="section_7_2">7.2 不使用 -drawRect（Without -drawRect:）</h3>
+
+<p>如果你使用 UIImageView，工作机制和上一小节有些不同。视图仍然有对应的 CALayer，但是这个图层不再分配后台存储。图层直接使用 CGImageRef 作为它的内容，并且绘制系统会将这个位图绘制到帧缓冲区中，也就是绘制到屏幕上。</p>
+<p>在这种情况下，将不会有绘画过程。我们只是简单的将图片格式的位图数据传递给 UIImageView，然后转发给 Core Animation，最后转发给绘制系统。</p>
+<h3 id="section_7_3">7.3 是否使用 -drawRect（To -drawRect: or Not to -drawRect:）</h3>
+
+<p>虽然听起来老套，但最快的绘画方式是不要绘画。</p>
+<p>大多数情况下，你不需要自己进行视图或图层的合成来获得自定义视图。UIKit 的视图已为此进行高度优化，因此这是比较推荐的方式。</p>
+<p>下面是两个比较好的手动绘画的例子。Apple 在 <a href="https://developer.apple.com/videos/play/wwdc2012/506/" target="_blank">WWDC 2012’s session 506</a>：Optimizing 2D Graphics and Animation Performance 中演示的“finger painting”App。</p>
+<p>另一个例子是 iOS 的股市 App，股票图形都是使用 Core Graphics 绘制在屏幕上的。你不是非得在 -drawRect: 方法中进行自定义绘画，有的时候，下面一种方式可能会更有意义。使用 UIGraphicsBeginImageContextWithOptions() 或者 CGBitmapContextCreate() 创建出一个位图，从中获取图片，再设置到 CALayer 的内容中。</p>
+<h3 id="section_7_4">7.4 纯色（Solid Colors）</h3>
+
+<p>看下面这个例子：</p>
+<div class="code"><pre><code>// Don't do this
+- (void)drawRect:(CGRect)rect
+&#123;
+    [[UIColor redColor] setFill];
+    UIRectFill([self bounds]);
+&#125;
+</code></pre></div>
+
+<p>我们现在知道这种做法是不好的。Core Animation 会创建一个后台存储，Core Graphics 使用纯色填充这个后台存储，再上传到 GPU。</p>
+<p>简单的设置视图图层的 backgroundColor，而不是实现 -drawRect:，我们能节省下所有这些工作。如果视图的图层是 CAGradientLayer，我们也可以用同样技术处理渐变。</p>
+<h3 id="section_7_5">7.5 可调整的图片（Resizable Images）</h3>
+
+<p>类似的，你可以使用可调整图片来降低图像系统的压力。比如你想为按钮设置一个 300 x 50 pt 的图片。对于2x屏幕来说，需要 600 x 100 = 60k 的像素，或者说 60k x 4 = 240kB 的内存，这些数据会上传到 GPU，占用 VRAM 空间。如果我们使用可调整图片，我们可能需要的是一个 54 x 12 pt 的图片，需要不到 2.6k 的像素，或者说 10kB 的内存空间。这样能获得更快的渲染速度。</p>
+<p>Core Animation 可以使用 CALayer 的 contentsCenter 属性调整图片，但是更常用的方法是使用 -[UIImage resizableImageWithCapInsets:resizingMode:]。</p>
+<p>同样需要留意的是，在上面说的按钮被首次渲染之前，你需要从文件系统载入图片，读取并解压 60k 像素的 PNG 的速度也相对较慢。使用可调整图片，你的应用程序在所有相关流程中都只需要做更少的事情，因此你的视图将获得更快的展现速度。</p>
+<h3 id="section_7_6">7.6 并发绘图（Concurrent Drawing）</h3>
+
+<p>正如你所知，UIKit 的线程模型非常简单：你只能在主线程中使用 UIKit 的类，比如视图。那并发绘图是什么意思呢？</p>
+<p>如果你实现了 -drawRect: 并且需要绘制一些复杂的内容，这将会耗费很多时间。但是你希望你的动画能够更加平滑，所以想要将这些任务放到子线程中执行。并发的实现很复杂，但是留意一些注意事项，并发绘图是能够轻松实现的。</p>
+<p>我们只能在主线程往 CALayer 的后台存储绘制内容，否则会出现一些无法预料的问题。但是我们可以在任意线程，往一个完全独立的位图上下文绘制内容。</p>
+<p>在 Core Graphics 章节我们提到，所有 Core Graphics 绘画方法都需要一个上下文参数，指明绘制在哪里发生。UIKit 有一个当前上下文的概念，指明绘制发生的地方。每个线程都有其自己的当前上下文。</p>
+<p>为了实现并发绘图，我们采用如下方案。我们在子线程中创建图片，一旦图片创建完成，我们切换到主线程，并且把这张图片设置给 UIImageView。在 <a href="https://developer.apple.com/videos/wwdc/2012/?id=211" target="_blank">WWDC 2012 session 211</a> 中讨论了这项技术。</p>
+<p>添加如下的绘制代码：</p>
+<div class="code"><pre><code>- (UIImage *)renderInImageOfSize:(CGSize)size;
+&#123;
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+
+<pre><code>// do drawing here
+
+UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+UIGraphicsEndImageContext();
+return result;
+</code></pre>
+<p>}<br></code></pre></div></p>
+<p>这个方法通过 UIGraphicsBeginImageContextWithOptions() 函数创建了一个新的位图 CGContextRef。这个函数同时将这个新的上下文设为当前上下文。现在，你可以跟通常在 -drawRect: 中一样进行绘图操作。然后，我们使用 UIGraphicsGetImageFromCurrentImageContext() 函数从这个上下文中获取 UIImage。最后，结束这个上下文。</p>
+<p>非常重要的是，你在这个绘图方法中调用的接口必须得是线程安全的，因为你将会在子线程中调用这个绘图方法。如果这个方法写在你的视图类中，这可能会存在隐患。另一个可选项是创建一个独立的绘制类，用于设置需要的属性，然后绘制图片。这样的话，你可能只需要一个原生的 UIImageView 或者 UITableViewCell 就可以了。</p>
+<p>UIKit 的所有绘制 API 都是可以在子线程中使用的。仅仅需要确保的是，UIGraphicsBeginImageContextWithOptions() 和 UIGraphicsEndIamgeContext() 这两个函数需要成对使用。</p>
+<p>你可以使用下面的代码使用上面绘图方法：</p>
+<div class="code"><pre><code>UIImageView *view; // assume we have this
+NSOperationQueue *renderQueue; // assume we have this
+CGSize size = view.bounds.size;
+[renderQueue addOperationWithBlock:^()&#123;
+    UIImage *image = [renderer renderInImageOfSize:size];
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^()&#123;
+        view.image = image;
+    &#125;];
+&#125;];
+</code></pre></div>
+
+<p>我们在主线程中执行了 <code>view.image = image</code>。这是非常重要的一点，你不能在子线程中执行这条语句。</p>
+<p>同样的，使用并发会增加不少复杂度。你可能需要增加取消后台绘制的逻辑，并且为绘制队列设置一个合理的最大并发操作数。可能最简单的方法是在一个 NSOperation 的子类中实现 -renderInImageSize: 方法。</p>
+<p>最后需要指出的一点是，为 UITableViewCell 异步的设置内容可能会出现漏洞。当你在子线程完成内容绘制后，目标 cell 可能已经被重用了，此时内容会被设置到错误的地方。</p>
+<h2 id="section_8">8. 其它 CALayer 相关内容(CALayer Odds and Ends)</h2>
+
+<p>现在，你应该知道 CALayer 可以类比成 GPU 中的 Texture。图层有一个后台存储，里面的内容是将被绘制到屏幕的位图。</p>
+<p>在你使用 CALayer 时，你将图层的 contents 属性设置为一张图片。这种操作告诉 Core Animation，使用这张图片的位图数据作为 Texture。Core Animation 会解码图片（如果图片被压缩过），然后将像素数据上传到 GPU。</p>
+<p>如果你使用原生的 CALayer，没有设置 contents 属性，而是设置 backgroundColor，Core Animation 不会往 GPU 上传数据，GPU 自己能完成所有工作。类似的，对于渐变图层，GPU 能够创建渐变而 CPU 没有必要做任何工作，因此不需要往 GPU 上传任何数据。</p>
+<h3 id="section_8_1">8.1 自定义绘画的图层（Layers with Custom Drawing）</h3>
+
+<p>如果 CALayer 的子类实现了 -drawInContext:，或者它的 delegate 实现了 -drawLayer:inContext:，Core Animation 将为该图层分配一个后台存储，这个后台存储保存这些方法绘制出的位图。这些方法中的代码在 CPU 中执行，然后运算结果被上传到 GPU。</p>
+<h3 id="section_8_2">8.2 形状和文本图层（Shape and Text Layers）</h3>
+
+<p>图形和文本图层的工作方式有些差异。从概念上来说，它们的工作方式和上一节说的手动实现 -drawInContext: 很相似，并且性能也很相似。</p>
+<p>当你以一种方式改变了形状和文本图层，它的后台存储需要进行更新，Core Animation 将会重新绘制后台存储。比如说，如果需要动画改变一个形状图层的尺寸，Core Animation 需要在动画的每一帧中重绘形状。</p>
+<h3 id="section_8_3">8.3 异步绘画（Asynchronous Drawing）</h3>
+
+<p>CALayer 有一个 drawsAsynchronously 属性，这看起来是一个能解决所有问题的银弹。这有可能提升性能，但它也有可能使性能变得更差。</p>
+<p>当你将 drawsAsynchronously 属性设为 YES，你的 -drawRect: / -drawInContext: 方法仍然会在主线程中执行。但是所有的 Core Graphics 调用都不会立即执行，绘画命令会被延迟，并在子线程中被异步处理。</p>
+<p>从另一个角度来看，绘画命令首先被记录了下来，然后这些绘画命令在一个后台线程中被应用。为了完成这项工作，需要做更多额外的工作，也需要分配更多的内存空间。但是一部分工作还是从主线程中移除了，你需要做好测试和权衡。</p>
+<p>这种方法对复杂绘画的性能提升比较有用，但是不太可能提升简单绘画的性能。</p>
+<h3>参考文献：</h3>
+
+<p><a target="_blank" rel="noopener" href="http://twitter.com/danielboedewadt">Daniel Eggert</a>. <a href="https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/?from=timeline&isappinstalled=0" target="_blank">Getting Pixels onto the Screen</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="ckrsyk6v80019aqnbdbrqacwt" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-git-revert-multiple-commit-best-practice" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2017/08/30/git-revert-multiple-commit-best-practice/" class="article-date">
+  <time class="dt-published" datetime="2017-08-30T00:00:00.000Z" itemprop="datePublished">2017-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2017/08/30/git-revert-multiple-commit-best-practice/">Git 回滚多次提交最佳实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1></h1>
+
+<h2>一、前言</h2>
+
+<p>在开发过程中有这么一种情况，某个特性开发的代码需要回滚，但是该特性的开发提交和所有即将上线的提交处于统一分支，此时需要将该特性相关的提交依次回滚。在回滚代码时希望满足两个要求，能够保留详细的回滚日志信息、只产生一次提交记录。</p>
+<h2>二、可选命令</h2>
+
+<p><code>git revert</code> 命令用于回滚提交，该命令会创建一次新提交，新提交的内容是之前提交的逆操作。<code>git revert</code> 自动生成的提交日志有关于本次操作的详细信息，如下所示。</p>
+<div class="code"><pre><code>commit a35fc9cad9e1fd827fab4b991995b0f7f9b8716b
+Author: jam.chenjun <jam.chenjun@gmail.com>
+Date:   Wed Aug 30 16:40:34 2017 +0800
+
+<pre><code>Revert &quot;add new line &quot;b&quot;&quot;
+
+This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.
+</code></pre>
+<p></code></pre></div></p>
+<p>git-revert 有 -n 或 –no-commit 选项，当执行提交回滚时添加该选项，回滚的改动会体现在工作区和暂存区，不会产生提交。如果希望只产生一次提交记录，可以在回滚每次提交时使用该选项，待所有回滚完成后再执行提交。</p>
+<p>上面两个方法不能同时满足保留产生一次提交和保留回滚日志信息的要求。在 stackoverflow 发现了一个非常好的方法，使用 <code>git revert</code> 回滚代码和自动生成提交日志，使用 <code>git rebase</code> 将多次提交日志压缩成一个。</p>
+<div class="code"><pre><code>git revert <# all commits #>
+git rebase -i
+</code></pre></div>
+
+<h2>三、Demo</h2>
+
+<p>使用 <code>git log --oneline</code> 查看提交日志，如下所示。</p>
+<div class="code"><pre><code>82c5dd2 (HEAD -> master) add new line "e"
+528b283 add new line "d"
+3fb9964 add new line "c"
+d4c5ad3 add new line "b"
+f625066  Initial commit
+</code></pre></div>
+
+<p>现希望回滚 <code>528b283 add new line &quot;d&quot;</code> 和 <code>d4c5ad3 add new line &quot;b&quot;</code> 这两次提交。执行 <code>git revert 528b283 d4c5ad3</code>，完成后的提交日志如下所示。</p>
+<div class="code"><pre><code>9093fa5 (HEAD -> master) Revert "add new line "b""
+ae7b6cc Revert "add new line "d""
+82c5dd2 add new line "e"
+528b283 add new line "d"
+3fb9964 add new line "c"
+d4c5ad3 add new line "b"
+f625066  Initial commit
+</code></pre></div>
+
+<p>使用 git-rebase 压缩提交，执行 <code>git rebase -i 82c5dd2</code>，出现如下交互界面。（<code>git rebase -i</code> 是交互式变基操作的命令，如果本地分支追踪某个远端分支，并且希望变基操作从最久本地提交开始，则直接执行 <code>git rebase -i</code> 指令即可，否则需要显式指定从哪个提交开始。）</p>
+<div class="code"><pre><code>pick ae7b6cc Revert "add new line "d""
+pick 9093fa5 Revert "add new line "b""
+</code></pre></div>
+
+<p>将除第一次提交外的其它提交的操作执行改为 squash，表明将所有提交压缩成一个。</p>
+<div class="code"><pre><code>pick ae7b6cc Revert "add new line "d""
+squash 9093fa5 Revert "add new line "b""
+</code></pre></div>
+
+<p>保存退出后，出现最终合成提交的提交日志编辑界面，其中包含有详细的回滚操作信息。如下所示。</p>
+<div class="code"><pre><code># This is a combination of 2 commits.
+# This is the 1st commit message:
+
+<p>Revert “add new line “d””</p>
+<p>This reverts commit 528b2835b03a08ce172efaf20faab9e435cb4345.</p>
+<h1 id="This-is-the-commit-message-2"><a href="#This-is-the-commit-message-2" class="headerlink" title="This is the commit message #2:"></a>This is the commit message #2:</h1><p>Revert “add new line “b””</p>
+<p>This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.<br></code></pre></div></p>
+<p>编辑、保存、退出后，即完成所有步骤。生成的回滚提交日志如下所示。</p>
+<div class="code"><pre><code>commit 5f5d572aab6eb247852546cb3ff55375d09953e6 (HEAD -> master)
+Author: jam.chenjun <jam.chenjun@gmail.com>
+Date:   Thu Aug 31 16:47:16 2017 +0800
+
+<pre><code>Revert &quot;add new line &quot;d&quot;&quot;
+
+This reverts commit 528b2835b03a08ce172efaf20faab9e435cb4345.
+
+Revert &quot;add new line &quot;b&quot;&quot;
+
+This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.
+</code></pre>
+<p></code></pre></div></p>
+<h3>参考文献：</h3>
+
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/a/19537017">https://stackoverflow.com/a/19537017</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/" data-id="ckrsyk6uj000gaqnb02zu8qmu" data-title="Git 回滚多次提交最佳实践" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

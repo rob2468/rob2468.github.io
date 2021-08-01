@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>HttpServerDebug 视图层级之数据结构设计 | jam.chenjun blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="前言  HSD（HttpServerDebug） 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。         图1 HttpServerDebug 视图调试  在进行视图调试时，需要以不同的方式访问这些视图，如图1所示。区域1和区域2需要以顺序的方式访问视图，依次显示。区域3需要以树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HttpServerDebug 视图层级之数据结构设计">
+<meta property="og:url" content="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/index.html">
+<meta property="og:site_name" content="jam.chenjun blog">
+<meta property="og:description" content="前言  HSD（HttpServerDebug） 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。         图1 HttpServerDebug 视图调试  在进行视图调试时，需要以不同的方式访问这些视图，如图1所示。区域1和区域2需要以顺序的方式访问视图，依次显示。区域3需要以树">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2019-09-20-view-hierarchy-demo.png">
+<meta property="og:image" content="https://rob2468.github.io/resources/figures/2019-09-20-data-structure.png">
+<meta property="article:published_time" content="2019-09-20T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-01T08:45:03.247Z">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2019-09-20-view-hierarchy-demo.png">
+  
+    <link rel="alternate" href="/atom.xml" title="jam.chenjun blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">jam.chenjun blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-hsd-view-hierarchy-data-structure" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/09/20/hsd-view-hierarchy-data-structure/" class="article-date">
+  <time class="dt-published" datetime="2019-09-20T00:00:00.000Z" itemprop="datePublished">2019-09-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      HttpServerDebug 视图层级之数据结构设计
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class="title"></h1>
+
+<h2 id="section_1">前言</h2>
+
+<p><a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HSD（HttpServerDebug）</a> 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。</p>
+<p class="post-image">
+    <img src="/resources/figures/2019-09-20-view-hierarchy-demo.png" alt="HttpServerDebug view debug demo" width="100%">
+</p>
+
+<p class="post-image-title">图1 HttpServerDebug 视图调试</p>
+
+<p>在进行视图调试时，需要以不同的方式访问这些视图，如图1所示。区域1和区域2需要以顺序的方式访问视图，依次显示。区域3需要以树状访问，描述目标视图在视图层级中的位置。</p>
+<h2 id="section_2">数据结构</h2>
+
+<p>按前文分析，数据结构的设计需要同时利于顺序和树状访问。下图是一个示例。</p>
+<p class="post-image">
+    <img src="/resources/figures/2019-09-20-data-structure.png" alt="" width="100%">
+</p>
+
+<p class="post-image-title">图2 视图数据与对应的视图</p>
+
+<p>视图数据以数组方式存储，支持 O(1) 复杂度的访问。</p>
+<p>以深度优先搜索方法遍历视图层级，每个访问到的视图依次成为数组中的元素。每个元素对象除了包含视图自身基本信息，如位置、背景色等，还需要包含其在整个视图层级中的位置的信息，这个信息通过 parent 和 children 字段实现。</p>
+<p>parent 指向对应视图的父视图，值为父视图在视图数据数组中的下标。除了根节点，每个视图有1个父视图。</p>
+<p>children 保存对应视图的子视图，只记录直接关联的子视图。每个视图有0个或多个子视图，children 使用数组存储，元素值为子视图在视图数据数组中的下标。</p>
+<h2 id="section_3">代码实现</h2>
+
+<p>构造数据：</p>
+<div class="code"><pre><code>// 入口函数，获取所有视图数据
++ (NSArray *)fetchAllViewsDataInHierarchy &#123;
+    NSMutableArray *allViewsData = [[NSMutableArray alloc] init];
+    NSArray *windows = [self fetchAllWindows]; // 获取所有根视图
+    for (UIWindow *window in windows) &#123;
+        if (![window isHidden]) &#123;
+            // 根视图数据
+            NSMutableDictionary *viewData = [[self fetchViewData:window] mutableCopy];
+            [viewData setObject:@(-1) forKey:@"parent"];
+            [viewData setObject:[@[] mutableCopy] forKey:@"children"];
+            [allViewsData addObject:viewData];
+
+<pre><code>        // 遍历子视图
+        NSInteger viewIndex = [allViewsData count] - 1;
+        NSArray *subviewsData = [self allRecursiveSubviewsInView:window viewData:viewData viewIndex:viewIndex];
+        [allViewsData addObjectsFromArray:subviewsData];
+    &#125;
+&#125;
+return allViewsData;
+</code></pre>
+<p>}</p>
+<p>// 递归获取所有子视图数据</p>
+<ul>
+<li><p>(NSArray *)allRecursiveSubviewsInView:(UIView *)superView viewData:(NSMutableDictionary *)superViewData viewIndex:(NSInteger)superViewIndex {<br>  NSMutableArray *viewsData = [[NSMutableArray alloc] init];<br>  for (UIView *view in superView.subviews) {</p>
+<pre><code>  if (![view isHidden]) &#123;
+      // 视图数据
+      NSMutableDictionary *viewData = [[self fetchViewData:view] mutableCopy];
+      [viewData setObject:@(superViewIndex) forKey:@&quot;parent&quot;];
+      [viewData setObject:[@[] mutableCopy] forKey:@&quot;children&quot;];
+      [viewsData addObject:viewData];
+
+      // 遍历子视图
+      NSInteger currentIndex = superViewIndex + [viewsData count];
+      NSArray *subviewsData = [self allRecursiveSubviewsInView:view viewData:viewData viewIndex:currentIndex];
+      [viewsData addObjectsFromArray:subviewsData];
+
+      // 更新父视图的 children 字段
+      NSMutableArray *children = [superViewData objectForKey:@&quot;children&quot;];
+      [children addObject:@(currentIndex)];
+      [superViewData setObject:children forKey:@&quot;children&quot;];
+  &#125;
+</code></pre>
+<p>  }<br>  return viewsData;<br>}</p>
+</li>
+</ul>
+<p>// 获取根视图</p>
+<ul>
+<li>(NSArray *)fetchAllWindows {}</li>
+</ul>
+<p>// 获取视图数据 e.g. 位置、背景色</p>
+<ul>
+<li>(NSDictionary *)fetchViewData:(UIView *)view {}<br></code></pre></div></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/" data-id="ckrsyk6uy000zaqnbfo2c9y6j" data-title="HttpServerDebug 视图层级之数据结构设计" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/14/xcodeproj/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          使用 xcodeproj 构建脚本
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/07/28/index-fund-investment-fundation/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">指数基金基础知识</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/27/read-with-my-son/">与儿子一起的睡前阅读</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/05/different-sales/">不同的销售</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
