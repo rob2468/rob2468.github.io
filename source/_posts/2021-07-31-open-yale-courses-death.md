@@ -1,5 +1,4 @@
 ---
-layout: post
 title: 耶鲁大学公开课:死亡-读后感
 page_id: id-2021-07-31
 ---

@@ -1,5 +1,4 @@
 ---
-layout: post
 title: 简单问题、复杂问题、混沌问题
 page_id: id-2021-01-09
 ---
