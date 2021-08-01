@@ -10,7 +10,8 @@ page_id: id-2019-12-29
 
 xcodeproj 虽然功能丰富，但是文档很差。本文提供一个脚本样例，提供一些实践相关的参考。该脚本样例实现的功能是为目标工程文件创建单测 target 并完成相关配置，最后会创建一个可以执行的 scheme。
 
-<div class="code"><pre><code>#!/usr/bin/env ruby
+{% codeblock lang:ruby %}
+#!/usr/bin/env ruby
 require 'xcodeproj'
 require 'pathname'
 
@@ -107,7 +108,7 @@ test_target_scheme.add_test_target(test_target)
 test_target_scheme.save_as(project_path, test_target_name)
 
 project.save(project_path)
-</code></pre></div>
+{% endcodeblock %}
 
 <h2>参考文档</h2>
 
