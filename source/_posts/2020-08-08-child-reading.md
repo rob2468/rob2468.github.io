@@ -14,9 +14,12 @@ page_id: id-2020-08-08
 
 指物命名、丰富形容、口语延展
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-hungry.jpeg" alt="" width="60%">
-</p>
+</p> -->
+
+![](/images/2020-08-08-hungry.jpeg)
+
 
 <h2 id="section_3">故事期：有讨论的阅读才是好阅读</h2>
 
@@ -36,19 +39,26 @@ page_id: id-2020-08-08
 
 多听重复句型，培养语法能力
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-sleepy-house.jpeg" alt="" width="60%">
-</p>
+</p> -->
 
-<p class="post-image">
+![](/images/2020-08-08-sleepy-house.jpeg)
+
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-brown-bear-what-do-you-see.jpeg" alt="" width="60%">
-</p>
+</p> -->
+
+![](/images/2020-08-08-brown-bear-what-do-you-see.jpeg)
 
 多体会绘本情境，培养语用能力
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-language.jpeg" alt="" width="60%">
-</p>
+</p> -->
+
+![](/images/2020-08-08-language.jpeg)
+
 
 <h2 id="section_6">怎样在阅读中发展认知能力</h2>
 
@@ -56,13 +66,19 @@ page_id: id-2020-08-08
 
 用绘本培养观察力
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-fish-run.jpeg" alt="" width="60%">
-</p>
+</p> -->
 
-<p class="post-image">
+![](/images/2020-08-08-fish-run.jpeg)
+
+
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-where-is-willy.jpeg" alt="" width="60%">
-</p>
+</p> -->
+
+![](/images/2020-08-08-where-is-willy.jpeg)
+
 
 用绘本培养观点取替能力
 
@@ -70,23 +86,32 @@ page_id: id-2020-08-08
 
 观点取替包括三个方面，包括视觉的观点取替、认知的观点取替和情感的观点取替。
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-duck-rabbit.jpeg" alt="" width="60%">
-</p>
+</p> -->
 
-<p class="post-image">
+![](/images/2020-08-08-duck-rabbit.jpeg)
+
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-tooth-doctor.jpeg" alt="" width="60%">
-</p>
+</p> -->
+
+![](/images/2020-08-08-tooth-doctor.jpeg)
 
 用绘本培养创造力
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-monkey-hat.jpeg" alt="" width="60%">
-</p>
+</p> -->
 
-<p class="post-image">
+![](/images/2020-08-08-monkey-hat.jpeg)
+
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-not-a-box.jpeg" alt="" width="60%">
-</p>
+</p> -->
+
+![](/images/2020-08-08-not-a-box.jpeg)
+
 
 <h2 id="section_7">怎样在阅读中提高孩子的情商</h2>
 
@@ -94,23 +119,32 @@ page_id: id-2020-08-08
 
 促进孩子对各种人际关系的理解
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-love-mom-most.jpeg" alt="" width="60%">
-</p>
+</p> -->
 
-<p class="post-image">
+![](/images/2020-08-08-love-mom-most.jpeg)
+
+
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-child-growth.jpeg" alt="" width="60%">
-</p>
+</p> -->
+
+![](/images/2020-08-08-child-growth.jpeg)
+
 
 提高孩子的情绪管理能力
 
 “我的感觉系列”
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-when-i-feel-scared.jpeg" alt="" width="60%">
-</p>
+</p> -->
 
-<p class="post-image">
+![](/images/2020-08-08-when-i-feel-scared.jpeg)
+
+<!-- <p class="post-image">
   <img src="/resources/figures/2020-08-08-when-i-feel-sad.jpeg" alt="" width="60%">
-</p>
+</p> -->
 
+![](/images/2020-08-08-when-i-feel-sad.jpeg)
