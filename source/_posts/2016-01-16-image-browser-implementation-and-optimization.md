@@ -25,7 +25,9 @@ page_id: id-2016-01-16
 
 在开发过程中经历了三套设计方案。
 
-<p class="post-image"><img src="/resources/figures/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png" alt="" width="80%"></p> -->
+
+![](/images/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png)
 
 <p class="post-image-title">图1. 各设计方案的视图层级</p>
 
@@ -60,7 +62,9 @@ UIScrollView中有如下3个属性，通过设置这些属性，能够实现内�
 
 图2是双击缩放图片时的处理流程图。
 
-<p class="post-image"><img src="/resources/figures/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p> -->
+
+![](/images/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png)
 
 <p class="post-image-title">图2. 双击缩放图片处理流程</p>
 
@@ -70,7 +74,9 @@ UIScrollView中有如下3个属性，通过设置这些属性，能够实现内�
 
 图3是手指捏合缩放图片时的处理流程。
 
-<p class="post-image"><img src="/resources/figures/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p> -->
+
+![](/images/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png)
 
 <p class="post-image-title">图3. 手指捏合缩放图片处理流程</p>
 

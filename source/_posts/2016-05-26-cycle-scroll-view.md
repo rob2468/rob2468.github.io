@@ -56,6 +56,8 @@ else
 
 <p></p>
 
-<p class="post-image"><img src="/resources/figures/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p> -->
+
+![](/images/2016-05-26-Cycle-Scroll-View.png)
 
 <p class="post-image-title">demo截图</p>

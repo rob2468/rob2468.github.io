@@ -182,7 +182,9 @@ Demo 3 与 Demo 2 的区别是 CustomUIView 中强引用了 block，此时 view0
 
 最后，我们来看一个会产生循环引用的例子。Demo 4 和 Demo 1 的区别是 CustomUIView 中强引用了 block。此时存在 customView -> block -> customView 这样的循环引用，除非显式打破这个环状引用（比如 customView 中有逻辑能解除对 block 的引用），否则便产生了内存泄漏。
 
-<p class="post-image"><img src="/resources/figures/2018-02-08-Memory-Leak.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2018-02-08-Memory-Leak.png" alt="" width="70%"></p> -->
+
+![](/images/2018-02-08-Memory-Leak.png)
 
 <h2>总结</h2>
 

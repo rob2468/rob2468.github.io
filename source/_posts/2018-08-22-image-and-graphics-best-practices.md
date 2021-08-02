@@ -26,9 +26,11 @@ Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM
 
 下图描述了图像从文件到渲染到屏幕上的流程。
 
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-image-rendering-pipeline.png" alt="图像渲染流程" width="90%">
-</p>
+</p> -->
+
+![](/images/2018-08-22-image-rendering-pipeline.png)
 
 <p class="post-image-title">图像渲染流程</p>
 
@@ -36,9 +38,11 @@ Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM
 
 UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图，如下图所示。
 
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-uiimage-uiimageview.png" alt="UIImage 和 UIImageView" width="90%">
-</p>
+</p> -->
+
+![](/images/2018-08-22-uiimage-uiimageview.png)
 
 <p class="post-image-title">UIImage 和 UIImageView 的角色</p>
 
@@ -142,9 +146,11 @@ CPU 使用的优化我们考虑的是，利用设备的多核芯片（多线程�
 
 值得关注的 CPU 计算工作是，Data Buffer 转 Image Buffer 这一过程，也就是解码过程。在一个测试工程中，大量的设置了图像的 UIImageView 被显示到屏幕上，图像解码是性能瓶颈。如下图所示。
 
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png" alt="" width="100%">
-</p>
+</p> -->
+
+![](/images/2018-08-22-time-profiler-applejpeg-decode-image-all.png)
 
 预处理本身并没有减少 CPU 的工作量，但是在 CPU 空闲时提前完成图像解码，能间接达到优化用户体验的效果。
 

@@ -14,15 +14,19 @@ page_id: id-2018-10-12
 
 <h2>效果图</h2>
 
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-10-12-hsd-clipped-content.png" alt="HttpServerDebug Show Clipped Content" width="90%">
-</p>
+</p> -->
+
+![](/images/2018-10-12-hsd-clipped-content.png)
 
 <p class="post-image-title">HttpServerDebug 效果截图</p>
 
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-10-12-xcode-clipped-content.png" alt="Xcode Show Clipped Content" width="90%">
-</p>
+</p> -->
+
+![](/images/2018-10-12-xcode-clipped-content.png)
 
 <p class="post-image-title">Xcode 效果截图</p>
 

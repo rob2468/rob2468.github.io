@@ -21,7 +21,9 @@ page_id: id-2018-01-14
 
 下面相关软件组件的简图：
 
-<p class="post-image"><img src="/resources/figures/2018-01-14-pixels-software-stack.png" alt="" width="90%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2018-01-14-pixels-software-stack.png" alt="" width="90%"></p> -->
+
+![](/images/2018-01-14-pixels-software-stack.png)
 
 紧靠着 Display 的是 GPU（graphics processing unit）。GPU 为图形并行计算量身定制，是一个高度并发的处理器单元。因此，它能够处理大量的像素计算并将处理结果显示到屏幕上。GPU 的并行计算能力也使得 Texture 的合成非常高效，本文后面会详细讨论。重点是，GPU 是非常专业的处理器，擅长处理这种类型的计算，比起 CPU，它计算更快，功耗更小。普通 CPU 的设计考虑的是一般性的计算，它可以做很多不同类型的事情，但是比如纹理合成这种工作，执行起来会比 GPU 慢一点。
 
@@ -37,7 +39,9 @@ OpenGL（<a href="https://en.wikipedia.org/wiki/OpenGL" target="_blank">Open Gra
 
 <h3 id="section_1_2">1.2 硬件组件（The Hardware Players）</h3>
 
-<p class="post-image"><img src="/resources/figures/2018-01-14-pixels-hardware.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2018-01-14-pixels-hardware.png" alt="" width="70%"></p> -->
+
+![](/images/2018-01-14-pixels-hardware.png)
 
 上文说的挑战一个非常简单的例子可能是这样的：GPU 有许多合成好的 Texture（位图），这些 Texture 是为每一帧（1秒钟60次）准备的。每一个 Texture 需要占用部分 VRAM（video RAM），GPU 能够持有的 Texture 总数存在上限。虽然 GPU 很擅长合成，但总有一些合成任务要比另一些任务更加复杂，GPU 在16.7毫秒（1/60秒）内能够完成的工作存在上限。
 

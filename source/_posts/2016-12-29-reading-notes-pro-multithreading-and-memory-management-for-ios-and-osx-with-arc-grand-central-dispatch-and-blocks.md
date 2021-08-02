@@ -31,7 +31,9 @@ OC 使用引用计数来实现内存管理。引用计数是内存管理的基�
 
 下面两幅图描述 <a href="http://gnustep.org/" target="_blank">GNUstep</a> 和 Apple 存储对象引用计数的方式。
 
-<p class="post-image"><img src="/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p> -->
+
+![](/images/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png)
 
 <p class="post-image-title">图 GNUstep 存储引用计数的方式</p>
 
@@ -42,7 +44,9 @@ GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字
 };
 </code></pre></div>
 
-<p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p> -->
+
+![](/images/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png)
 
 <p class="post-image-title">图 Apple 存储引用计数的方式</p>
 
@@ -148,7 +152,9 @@ id obj = [[NSObject alloc] init];
 
 两种写法的对应关系如下图所示。
 
-<p class="post-image"><img src="/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p> -->
+
+![](/images/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png)
 
 <p class="post-image-title">图 @autoreleasepool 和 __autoreleasing 描述符</p>
 
@@ -354,7 +360,9 @@ objc_release(obj);
 
 实际情况下，objc_autoreleaseReturnValue() 并不总会将对象注册到对象释放池。objc_autoreleaseReturnValue() 会检测调用者的执行代码，如果调用者接下来调用了 objc_retainAutoreleasedReturnValue() 函数，便跳过将对象注册到自动释放池的步骤，以提升性能。见下图。
 
-<p class="post-image"><img src="/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p> -->
+
+![](/images/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg)
 
 <p class="post-image-title">图 跳过对象加入自动释放池步骤</p>
 
@@ -368,7 +376,9 @@ GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要
 
 分发队列是先进先出的队列结构，可以分为串行队列和并发队列。加入到串行队列中的任务会依次有序执行，当前任务完成后再执行队列中下一个任务。并发队列中的任务执行不会等待前次任务执行完成。
 
-<p class="post-image"><img src="/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p> -->
+
+![](/images/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png)
 
 <p class="post-image-title">图 串行队列、并发队列与线程的关系</p>
 

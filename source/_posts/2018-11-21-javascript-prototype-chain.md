@@ -10,9 +10,11 @@ page_id: id-2018-11-21
 
 js 中的继承不同于 C++、Java 此类面向对象语言，其继承机制基于原型链。当需要在 js 中使用继承机制时，构造正确的原型链即可实现继承。
 
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-11-21-javascript-object-layout.jpg" alt="JavaScript Object Layout" width="90%">
-</p>
+</p> -->
+
+![](/images/2018-11-21-javascript-object-layout.jpg)
 
 js 原型链机制中的各对象之间的关系如上图所示。构造正确的符合继承行为的原型链的关键在于，构造函数的 prototype 属性以及 prototype 的 constructor 属性。
 

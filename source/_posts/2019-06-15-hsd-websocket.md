@@ -76,9 +76,11 @@ WebSocket 协议传输的数据以 Frame 为单位，每个 Frame 都有严格�
 
 <h2 id="section_4">持有关系</h2>
 
-<p class="post-image">
+<!-- <p class="post-image">
   <img src="/resources/figures/2019-06-15-websocket-retain.png" alt="Retain Relationship" width="60%">
-</p>
+</p> -->
+
+![](/images/2019-06-15-websocket-retain.png)
 
 如上图所示，增加 WebSocket 协议支持后，对象实例的持有关系有一些变化。GCDWebServer 表示服务器实例，GCDWebServerConnection 表示一次通信连接实例。
 

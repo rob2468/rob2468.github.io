@@ -34,7 +34,9 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 色调是一个 0 到 360 的数字。它的单位是度，就像一个圆的度数。记得色彩环吗？色调就是色彩环上的某个值。
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-color-wheel.png" alt="The color wheel" width="35%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-color-wheel.png" alt="The color wheel" width="35%"></p> -->
+
+![](/images/2019-07-06-color-wheel.png)
 
 <p class="post-image-title">The color wheel – AKA the hue wheel</p>
 
@@ -57,7 +59,9 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 想要看看吗？
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-saturation.png" alt="saturation" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-saturation.png" alt="saturation" width="80%"></p> -->
+
+![](/images/2019-07-06-saturation.png)
 
 饱和度很简单。我有时会把它想象成向灰色中注入的颜色的数量。所以，0% 是纯灰色，100% 是你的显示器能做出的最多彩的颜色。
 
@@ -72,7 +76,9 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 听起来很困惑？可以这样想。想象一下亮度是个有色灯泡。0% 表示灯泡关闭（房间内变黑）。100% 表示光的强度最大，亮度最大的灯泡是一种明亮的颜色。如果光已经是白色的，那么 100% 的亮度是纯白色的。
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-brightness.png" alt="brightness" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-brightness.png" alt="brightness" width="80%"></p> -->
+
+![](/images/2019-07-06-brightness.png)
 
 好了，回顾一下，我们可以用三个合理的数字来描述一种颜色：
 
@@ -90,7 +96,9 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 首先，色调是一种创造色彩变化的绝佳方式。因为从 0° 到 360° 你有很多的选择，而不是简单地把蓝色设为“蓝色”。你可以稍微向下或向上改变一下色调，很容易就能得到漂亮的变体。
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-blue-color-variations.png" alt="blue-color-variations" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-blue-color-variations.png" alt="blue-color-variations" width="80%"></p> -->
+
+![](/images/2019-07-06-blue-color-variations.png)
 
 我们从一个标准的蓝色开始，它在色彩环 240° 的位置。但是，我们不会选择最无聊的颜色，而是决定稍微加点变化。
 
@@ -98,7 +106,9 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 把色调调到 260°，得到了靛蓝。仅仅 20 度的变化，就带来一种完全不同的感觉 —— 一些更酷的东西，可能适用于霓虹灯颜色或者深色背景；给一些东西带来微妙的女性气息。等等之类。你明白的。
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-red-color-variations.png" alt="color-variations" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-red-color-variations.png" alt="color-variations" width="80%"></p> -->
+
+![](/images/2019-07-06-red-color-variations.png)
 
 同样的，红色。这是相当棘手的颜色，出门时很难搭配。超级大胆，超级强势。但是，根据我们想要做的，比如说这是我们的错误信息颜色或者其他什么，我们可以通过注入少量的粉色（将色调降低 10°），使其更友好。或者，我们可以通过添加一些橙色，来获得一种更稳重的变体。
 
@@ -112,11 +122,15 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 比如，看看 Google Logo 上的这种变化。我把蓝色的饱和度调整到了 90%，你会发现它变得非常引入注目。
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-google-saturated.png" alt="google-saturated" width="50%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-google-saturated.png" alt="google-saturated" width="50%"></p> -->
+
+![](/images/2019-07-06-google-saturated.png)
 
 留意一下蓝色有多突出。如果你看不到它，试着放松你的眼睛，然后盯着 Logo 几秒钟。几乎立刻，你就会看到 “G” 和 “g” 从其他颜色中弹出。
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-google-normal.png" alt="google-normal" width="50%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-google-normal.png" alt="google-normal" width="50%"></p> -->
+
+![](/images/2019-07-06-google-normal.png)
 
 在正常的 Google Logo 中，不同颜色之间有着更好的平衡。
 
@@ -137,17 +151,23 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 要添加白色，必须在颜色选择器上将颜色移到白色。白色在左上角，可以肯定的是，增加白色包括降低饱和度（向左移动）和增加亮度（向上移动）。
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-adding-white.png" alt="adding-white" width="30%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-adding-white.png" alt="adding-white" width="30%"></p> -->
+
+![](/images/2019-07-06-adding-white.png)
 
 <p class="post-image-title">Going from one red to a whiter red.</p>
 
 增加白色看起来像下面这样：
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-adding-white-swatches.png" alt="adding-white-swatches" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-adding-white-swatches.png" alt="adding-white-swatches" width="80%"></p> -->
+
+![](/images/2019-07-06-adding-white-swatches.png)
 
 但是添加黑色？好吧，因为黑色是颜色选择器矩形的整个底部，添加黑色只需要降低亮度。饱和度的值与此无关。
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-adding-black.png" alt="adding-black" width="30%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-adding-black.png" alt="adding-black" width="30%"></p> -->
+
+![](/images/2019-07-06-adding-black.png)
 
 <p class="post-image-title">Going from one red to a blackr red.</p>
 
@@ -155,7 +175,9 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 从实用的角度来看，与较浅的版本相比，通过添加黑色得到的暗色非常乏味：
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-adding-black-swatches.png" alt="adding-black-swatches" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-adding-black-swatches.png" alt="adding-black-swatches" width="80%"></p> -->
+
+![](/images/2019-07-06-adding-black-swatches.png)
 
 需要特别说明的是：我希望你去掉白色，而不是增加黑色。换句话说，同时：
 
@@ -166,13 +188,17 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 或者，如果您更喜欢图表的话：
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-removing-white.png" alt="removing-white" width="30%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-removing-white.png" alt="removing-white" width="30%"></p> -->
+
+![](/images/2019-07-06-removing-white.png)
 
 <p class="post-image-title">Going from one red to a less white red.</p>
 
 这将给你更丰富的暗色：
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-removing-white-swatches.png" alt="removing-white-swatches" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-removing-white-swatches.png" alt="removing-white-swatches" width="80%"></p> -->
+
+![](/images/2019-07-06-removing-white-swatches.png)
 
 去除白色 —— 也就是说，让你的暗色调更丰富 —— 是产生 95% 以上颜色的暗变化的“正确”方法。
 
@@ -204,7 +230,9 @@ HSB 代表色调 (hue) - 饱和度 (saturation) - 亮度 (brightness)，它是�
 
 （但是，至少你能够进行复制和粘贴。）
 
-<p class="post-image"><img src="/resources/figures/2019-07-06-hsb-cone-and-hsl-dicone.png" alt="hsb-cone-and-hsl-dicone" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2019-07-06-hsb-cone-and-hsl-dicone.png" alt="hsb-cone-and-hsl-dicone" width="80%"></p> -->
+
+![](/images/2019-07-06-hsb-cone-and-hsl-dicone.png)
 
 <p class="post-image-title">Image courtsey of Wikipedia's <a href="https://commons.wikimedia.org/wiki/File:Color_solid_comparison_hsl_hsv_rgb_cone_sphere_cube_cylinder.png" target="_blank">SharkD</a></p>
 
