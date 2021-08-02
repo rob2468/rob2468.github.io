@@ -96,24 +96,28 @@
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>通过为控件设定约束，Autolayout 能够实现控件布局的自适应。当 app 运行时，iOS 根据预先设定的约束布局界面元素。</p>
 <p>以约束的方式为控件 A 设定布局，控件 A 的实际布局数据是通过约束的依赖关系计算出来的。比如，控件 A 的 leading 始终和控件 B 的 trailing 相等，则控件 A 的 leading 数据依赖于控件 B 的 trailing 数据。</p>
 <h2 id="一、问题"><a href="#一、问题" class="headerlink" title="一、问题"></a>一、问题</h2><p>当在 UIScrollView 中采用 Autolayout 方式布局时，情况变得有些复杂。UIScrollView 的 contentSize 依赖于其子视图的布局，而其子视图的布局依赖于 UIScrollView 的 contentSize。如图1所示。</p>
-<p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView简单布局依赖示意图.png" alt="UIScrollView简单布局依赖示意图" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView简单布局依赖示意图.png" alt="UIScrollView简单布局依赖示意图" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-UIScrollView%E7%AE%80%E5%8D%95%E5%B8%83%E5%B1%80%E4%BE%9D%E8%B5%96%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="UIScrollView简单布局依赖示意图"></p>
 <p class="post-image-title">图1. UIScrollView 简单布局依赖示意图</p>
 
 <p>图1中箭头代表布局的依赖关系，弧尾依赖弧头。如图所示，ScrollView_ContentSize 和 ScrollView_SubviewFrame 互相依赖，iOS 无法计算出控件的布局数据。这种简单的约束设置方案无法满足要求，Xcode 会出现约束无法满足的提醒，如图2所示。</p>
-<p class="post-image"><img src="/resources/figures/2015-10-26-xib文件中UIScrollView简单布局.png" alt="xib文件中UIScrollView简单布局" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-10-26-xib文件中UIScrollView简单布局.png" alt="xib文件中UIScrollView简单布局" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-xib%E6%96%87%E4%BB%B6%E4%B8%ADUIScrollView%E7%AE%80%E5%8D%95%E5%B8%83%E5%B1%80.png" alt="xib文件中UIScrollView简单布局"></p>
 <p class="post-image-title">图2. xib 文件中 UIScrollView 简单布局</p>
 
 <h2 id="二、方案"><a href="#二、方案" class="headerlink" title="二、方案"></a>二、方案</h2><p>解决 UIScrollView 中的布局问题，关键在于消除图1中所示循环依赖的问题。</p>
 <p>ScrollView_SubviewFrame 对应的是目标控件视图，它的布局可以不依赖 ScrollView_ContentSize，而是依赖于 ParentViewFrame，如图3所示。</p>
-<p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView布局依赖示意图.png" alt="UIScrollView布局依赖示意图" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView布局依赖示意图.png" alt="UIScrollView布局依赖示意图" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-UIScrollView%E5%B8%83%E5%B1%80%E4%BE%9D%E8%B5%96%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="UIScrollView布局依赖示意图"></p>
 <p class="post-image-title">图3. UIScrollView 布局依赖示意图</p>
 
 <h2 id="三、经验分享"><a href="#三、经验分享" class="headerlink" title="三、经验分享"></a>三、经验分享</h2><p>上一节叙述了解决 UIScrollView 中布局问题的解决方案，这一节分享开发经验，如图4所示。图4对应的需求如下，UIScrollView 左右贴边，其中内容仅支持上下滚动，</p>
-<p class="post-image"><img src="/resources/figures/2015-10-26-xib文件中UIScrollView布局.png" alt="xib文件中UIScrollView布局" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-10-26-xib文件中UIScrollView布局.png" alt="xib文件中UIScrollView布局" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-xib%E6%96%87%E4%BB%B6%E4%B8%ADUIScrollView%E5%B8%83%E5%B1%80.png" alt="xib文件中UIScrollView布局"></p>
 <p class="post-image-title">图4. xib 文件中 UIScrollView 布局</p>
 
 <p>该方法的关键在于添加了一个 ContainerView，ContainerView 为 UIScrolView 的子视图，并且所有原本应该直接添加到 UIScrollView 中的视图现在都添加为 ContainerView 的子视图。</p>
@@ -126,7 +130,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/" data-id="ckrtbl2ew0006c8nehngf5ow0" data-title="在 UIScrollView 中使用 Autolayout" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/" data-id="ckrtz3o56000699nj7kxg5oxm" data-title="在 UIScrollView 中使用 Autolayout" class="article-share-link">Share</a>
       
       
       
@@ -185,7 +189,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/" data-id="ckrtbl2ev0005c8neg46mht8x" data-title="iOS App 在不同状态下收到 push 通知的行为" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/" data-id="ckrtz3o55000599nj6e3hbzwe" data-title="iOS App 在不同状态下收到 push 通知的行为" class="article-share-link">Share</a>
       
       
       
@@ -220,12 +224,14 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>在软件开发过程中，UML类图经常被用来描述工程中的类与类和类之间的关系。在UML中，类及其之间的关系有标准的符号表示，方便开发者表达和理解。此篇博客记录一些常用的符号表示。</p>
-<p class="post-image"><img src="/resources/figures/2015-05-24-UML中类及其关系的符号表示.png" alt="UML中类及其关系的符号表示" width="100%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-05-24-UML中类及其关系的符号表示.png" alt="UML中类及其关系的符号表示" width="100%"></p> -->
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-05-24-UML%E4%B8%AD%E7%B1%BB%E5%8F%8A%E5%85%B6%E5%85%B3%E7%B3%BB%E7%9A%84%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%A4%BA.png" alt="UML中类及其关系的符号表示"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/05/24/symbol-representation-of-uml-class-diagram/" data-id="ckrtbl2eu0004c8neft6a492p" data-title="UML 中类及其关系的符号表示" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/05/24/symbol-representation-of-uml-class-diagram/" data-id="ckrtz3o54000499njh8wyditz" data-title="UML 中类及其关系的符号表示" class="article-share-link">Share</a>
       
       
       
@@ -260,12 +266,14 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>《iOS编程（第三版）》“图7-20 某个视图控制对象的视图的生命周期”</p>
-<p class="post-image"><img src="/resources/figures/2015-04-15-某个视图控制对象的视图的生命周期.png" alt="某个视图控制对象的视图的生命周期" width="100%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-04-15-某个视图控制对象的视图的生命周期.png" alt="某个视图控制对象的视图的生命周期" width="100%"></p> -->
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-04-15-%E6%9F%90%E4%B8%AA%E8%A7%86%E5%9B%BE%E6%8E%A7%E5%88%B6%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%A7%86%E5%9B%BE%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png" alt="某个视图控制对象的视图的生命周期"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/04/15/lifecycle-of-view-of-viewcontroller/" data-id="ckrtbl2et0003c8nehayfcb1t" data-title="视图控制对象的视图的生命周期" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/04/15/lifecycle-of-view-of-viewcontroller/" data-id="ckrtz3o53000399njaiazh7zr" data-title="视图控制对象的视图的生命周期" class="article-share-link">Share</a>
       
       
       
@@ -321,7 +329,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/" data-id="ckrtbl2er0002c8ne9rqz3yaq" data-title="iOS 工程默认源代码文件简介（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/" data-id="ckrtz3o52000299nje6zw25kx" data-title="iOS 工程默认源代码文件简介（译）" class="article-share-link">Share</a>
       
       
       

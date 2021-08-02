@@ -6,17 +6,19 @@
   
   <title>视图裁剪 | jam.chenjun blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="前言  HttpServerDebug 实现了类似 Xcode Debug View Hierarchy 功能。客户端提供信息，前端绘制并提供交互能力，实现视图调试功能。 视图调试其中一项功能是 Show Clipped Content，虽然不知道 Xcode 的实现方式，但是通过计算我们也可以拿到同样的信息。本文说明 HttpServerDebug 中的实现方案。 效果图">
+  <meta name="description" content="前言  HttpServerDebug 实现了类似 Xcode Debug View Hierarchy 功能。客户端提供信息，前端绘制并提供交互能力，实现视图调试功能。 视图调试其中一项功能是 Show Clipped Content，虽然不知道 Xcode 的实现方式，但是通过计算我们也可以拿到同样的信息。本文说明 HttpServerDebug 中的实现方案。 效果图     HttpS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="视图裁剪">
 <meta property="og:url" content="https://rob2468.github.io/2018/10/12/clipped-content/index.html">
 <meta property="og:site_name" content="jam.chenjun blog">
-<meta property="og:description" content="前言  HttpServerDebug 实现了类似 Xcode Debug View Hierarchy 功能。客户端提供信息，前端绘制并提供交互能力，实现视图调试功能。 视图调试其中一项功能是 Show Clipped Content，虽然不知道 Xcode 的实现方式，但是通过计算我们也可以拿到同样的信息。本文说明 HttpServerDebug 中的实现方案。 效果图">
+<meta property="og:description" content="前言  HttpServerDebug 实现了类似 Xcode Debug View Hierarchy 功能。客户端提供信息，前端绘制并提供交互能力，实现视图调试功能。 视图调试其中一项功能是 Show Clipped Content，虽然不知道 Xcode 的实现方式，但是通过计算我们也可以拿到同样的信息。本文说明 HttpServerDebug 中的实现方案。 效果图     HttpS">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-10-12-hsd-clipped-content.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-10-12-hsd-clipped-content.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-10-12-xcode-clipped-content.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-10-12-xcode-clipped-content.png">
 <meta property="article:published_time" content="2018-10-12T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-01T14:49:36.819Z">
+<meta property="article:modified_time" content="2021-08-02T01:47:56.141Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-10-12-hsd-clipped-content.png">
@@ -106,16 +108,18 @@
 <p>视图调试其中一项功能是 Show Clipped Content，虽然不知道 Xcode 的实现方式，但是通过计算我们也可以拿到同样的信息。本文说明 HttpServerDebug 中的实现方案。</p>
 <h2>效果图</h2>
 
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-10-12-hsd-clipped-content.png" alt="HttpServerDebug Show Clipped Content" width="90%">
-</p>
+</p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-10-12-hsd-clipped-content.png"></p>
 <p class="post-image-title">HttpServerDebug 效果截图</p>
 
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-10-12-xcode-clipped-content.png" alt="Xcode Show Clipped Content" width="90%">
-</p>
+</p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-10-12-xcode-clipped-content.png"></p>
 <p class="post-image-title">Xcode 效果截图</p>
 
 <p>上面一组截图是 HttpServerDebug 运行效果，下面一组截图是 Xcode 中的原生效果。</p>
@@ -153,7 +157,7 @@ CGPoint clippedOrigin = [view convertPoint:clippedFrameRoot.origin fromView:wind
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="ckrtbl2ff000oc8ne9yjz06tq" data-title="视图裁剪" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="ckrtz3o5m000o99nj9sbt038j" data-title="视图裁剪" class="article-share-link">Share</a>
       
       
       

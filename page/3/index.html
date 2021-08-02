@@ -401,7 +401,7 @@ void reverse(int array[], int n) &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="ckrtbl2fe000nc8nehf673ih8" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="ckrtz3o5l000n99nj8hzvhzo7" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
       
       
       
@@ -571,7 +571,7 @@ void PostOrderTraverse(BiTreeNode *T) &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="ckrtbl2fe000mc8ne29wm1v79" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="ckrtz3o5k000m99njf4lqga2p" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
       
       
       
@@ -719,7 +719,7 @@ void PostOrderTraverse(BiTreeNode *T) &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="ckrtbl2g6001ac8nea52c3oyr" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="ckrtz3o66001a99nj994s8wyo" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
       
       
       
@@ -767,19 +767,21 @@ void PostOrderTraverse(BiTreeNode *T) &#123;
 <p>Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM）中，而 Image Buffer 存储在 RAM 中。</p>
 <p>解码就是从 Data Buffer 生成 Image Buffer 的过程。Image Buffer 会上传到 GPU 成为 Frame Buffer，GPU 以每秒60次的速度使用 Frame Buffer 更新屏幕。</p>
 <p>下图描述了图像从文件到渲染到屏幕上的流程。</p>
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-image-rendering-pipeline.png" alt="图像渲染流程" width="90%">
-</p>
+</p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-image-rendering-pipeline.png"></p>
 <p class="post-image-title">图像渲染流程</p>
 
 <h2 id="section_2">2. UIImage 和 UIImageView</h2>
 
 <p>UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图，如下图所示。</p>
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-uiimage-uiimageview.png" alt="UIImage 和 UIImageView" width="90%">
-</p>
+</p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-uiimage-uiimageview.png"></p>
 <p class="post-image-title">UIImage 和 UIImageView 的角色</p>
 
 <p>UIImage 是 iOS 中处理图像的高级类。创建一个 UIImage 实例只会加载 Data Buffer，将图像显示到屏幕上才会触发解码，也就是 Data Buffer 解码为 Image Buffer。Image Buffer 也关联在 UIImage 上。</p>
@@ -860,10 +862,11 @@ return image;
 
 <p>CPU 使用的优化我们考虑的是，利用设备的多核芯片（多线程）和采用预处理策略。</p>
 <p>值得关注的 CPU 计算工作是，Data Buffer 转 Image Buffer 这一过程，也就是解码过程。在一个测试工程中，大量的设置了图像的 UIImageView 被显示到屏幕上，图像解码是性能瓶颈。如下图所示。</p>
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png" alt="" width="100%">
-</p>
+</p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-time-profiler-applejpeg-decode-image-all.png"></p>
 <p>预处理本身并没有减少 CPU 的工作量，但是在 CPU 空闲时提前完成图像解码，能间接达到优化用户体验的效果。</p>
 <h3>参考文献：</h3>
 
@@ -873,7 +876,7 @@ return image;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="ckrtbl2fd000lc8ne46lfgeyr" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="ckrtz3o5k000l99nj9npz292m" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
       
       
       
@@ -911,14 +914,16 @@ return image;
 
 <p>原文链接，<a href="http://www.ruanyifeng.com/blog/2011/05/how_to_choose_free_software_licenses.html" target="_blank">阮一峰的网络日志-如何选择开源许可证</a>。</p>
 <p>下图说明了如何选择一个合适的开源许可证书。</p>
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-06-27-opensource-liscences.png" alt="opensource liscences" width="100%">
-</p>
+</p> -->
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-06-27-opensource-liscences.png"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="ckrtbl2fc000kc8ne5buq4mr6" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="ckrtz3o5j000k99nj95vl1v0z" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
       
       
       
@@ -954,8 +959,9 @@ return image;
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>原文链接，<a href="https://www.w3.org/TR/uievents/#event-flow" target="_blank">Event dispatch and DOM event flow</a>。</p>
 <p>本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 <code>dispatchEvent()</code> 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。</p>
-<p class="post-image"><img src="/resources/figures/2018-06-19-eventflow.svg" alt="eventflow" width="90%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2018-06-19-eventflow.svg" alt="eventflow" width="90%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-06-19-eventflow.svg"></p>
 <p class="post-image-title">事件分发示意图</p>
 
 <p>事件对象会被分发给事件目标（event target），事件目标是指最终被选中的响应事件的对象，可以从事件的 <code>target</code> 属性获取。</p>
@@ -970,7 +976,7 @@ return image;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="ckrtbl2fb000jc8ne2ckc9gcw" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="ckrtz3o5i000j99njbsfxbp44" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
       
       
       
@@ -1025,7 +1031,7 @@ return image;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="ckrtbl2fa000ic8neb121g4ix" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="ckrtz3o5i000i99nj8v0ngj86" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
       
       
       
@@ -1176,8 +1182,9 @@ return image;
   }];<br>}<br>@end<br></code></pre></div></li>
 </ul>
 <p>最后，我们来看一个会产生循环引用的例子。Demo 4 和 Demo 1 的区别是 CustomUIView 中强引用了 block。此时存在 customView -&gt; block -&gt; customView 这样的循环引用，除非显式打破这个环状引用（比如 customView 中有逻辑能解除对 block 的引用），否则便产生了内存泄漏。</p>
-<p class="post-image"><img src="/resources/figures/2018-02-08-Memory-Leak.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2018-02-08-Memory-Leak.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-02-08-Memory-Leak.png"></p>
 <h2>总结</h2>
 
 <p><code>[obj callMethodWithCompletionBlock:^&#123; [obj doSomething] &#125;]</code> 这种写法，ARC 会自动负责 block 的内存管理，在上下文开始和结束的地方持有和释放。</p>
@@ -1186,7 +1193,7 @@ return image;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="ckrtbl2f9000hc8nearrf0pku" data-title="callMethodWithCompletionBlock&amp;#58; 中 Block 的内存管理" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="ckrtz3o5h000h99nj6krdazga" data-title="callMethodWithCompletionBlock&amp;#58; 中 Block 的内存管理" class="article-share-link">Share</a>
       
       
       
@@ -1234,8 +1241,9 @@ return image;
 <h3 id="section_1_1">1.1 软件组件（The Software Components）</h3>
 
 <p>下面相关软件组件的简图：</p>
-<p class="post-image"><img src="/resources/figures/2018-01-14-pixels-software-stack.png" alt="" width="90%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2018-01-14-pixels-software-stack.png" alt="" width="90%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-01-14-pixels-software-stack.png"></p>
 <p>紧靠着 Display 的是 GPU（graphics processing unit）。GPU 为图形并行计算量身定制，是一个高度并发的处理器单元。因此，它能够处理大量的像素计算并将处理结果显示到屏幕上。GPU 的并行计算能力也使得 Texture 的合成非常高效，本文后面会详细讨论。重点是，GPU 是非常专业的处理器，擅长处理这种类型的计算，比起 CPU，它计算更快，功耗更小。普通 CPU 的设计考虑的是一般性的计算，它可以做很多不同类型的事情，但是比如纹理合成这种工作，执行起来会比 GPU 慢一点。</p>
 <p>GPU Driver 是一些直接与 GPU 通信的代码。GPU Driver 可以看成是对各种复杂 GPU 的封装，为调用方提供标准化的接口。相邻 GPU Driver 的调用方通常是 OpenGL / OpenGL ES。</p>
 <p>OpenGL（<a href="https://en.wikipedia.org/wiki/OpenGL" target="_blank">Open Graphics Library</a>）是用来进行 2D 和 3D 图形绘制的 API。上文说到 GPU 是非常专业化的硬件，OpenGL 能够与 GPU 密切合作，释放 GPU 性能，实现硬件加速渲染。对很多人来说，OpenGL 似乎是非常底层的 API，但是1992年首次发布时，它是与 GPU 通信的第一个主要标准化方式。程序员不再需要为每一种 GPU 重写他们的代码，这个一个巨大的进步。</p>
@@ -1244,8 +1252,9 @@ return image;
 <p>这个过程中的每一步都有自己的挑战，并且需要做各种权衡。</p>
 <h3 id="section_1_2">1.2 硬件组件（The Hardware Players）</h3>
 
-<p class="post-image"><img src="/resources/figures/2018-01-14-pixels-hardware.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2018-01-14-pixels-hardware.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-01-14-pixels-hardware.png"></p>
 <p>上文说的挑战一个非常简单的例子可能是这样的：GPU 有许多合成好的 Texture（位图），这些 Texture 是为每一帧（1秒钟60次）准备的。每一个 Texture 需要占用部分 VRAM（video RAM），GPU 能够持有的 Texture 总数存在上限。虽然 GPU 很擅长合成，但总有一些合成任务要比另一些任务更加复杂，GPU 在16.7毫秒（1/60秒）内能够完成的工作存在上限。</p>
 <p>下一个挑战是把数据传送到 GPU。数据需要从 RAM 转移到 VRAM，GPU 才能够处理。这被称为上传到GPU。这项工作似乎微不足道，但对于大的 Texture，这仍然是一项耗时的工作。</p>
 <p>最后，CPU 运行着你的程序，你要求 CPU 从磁盘载入一张 PNG 并解压。这些都工作都发生在 CPU 上。当你想在屏幕上显示这张解压的 PNG，就需要将数据上传到 GPU。一些普通操作，比如在屏幕上显示文本，对 CPU 来说也是非常复杂的任务，CPU 需要紧密整合 Core Text 和 Core Graphics 框架，从文本生成位图。这项工作完成后，数据被当成 Texture 上传到 GPU，准备展示。当你在屏幕上移动文本，相同的 Texture 是能够复用的。CPU 只需告诉 GPU 新的位置，GPU 便能重用已经存在的 Texture。CPU 不必重新渲染文本，且位图不必重新上传。</p>
@@ -1538,7 +1547,7 @@ CGSize size = view.bounds.size;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="ckrtbl2g60019c8neaqzw4a7n" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="ckrtz3o66001999nj83e2dc45" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
       
       
       
@@ -1654,7 +1663,7 @@ This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/" data-id="ckrtbl2f8000gc8ne6jlt0igf" data-title="Git 回滚多次提交最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/" data-id="ckrtz3o5g000g99nj74lagqg8" data-title="Git 回滚多次提交最佳实践" class="article-share-link">Share</a>
       
       
       

@@ -14,10 +14,13 @@
 <meta property="og:description" content="前言  最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。 1. 三种 Buffer 和解码  Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。 有三种 Buffer：Data Buffer、Image Buffer、Frame Buffer。 Data Buffer 是存储在内存中的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-image-rendering-pipeline.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-image-rendering-pipeline.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-uiimage-uiimageview.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-uiimage-uiimageview.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-time-profiler-applejpeg-decode-image-all.png">
 <meta property="article:published_time" content="2018-08-22T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-01T14:49:36.819Z">
+<meta property="article:modified_time" content="2021-08-02T01:47:56.141Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-08-22-image-rendering-pipeline.png">
@@ -113,19 +116,21 @@
 <p>Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM）中，而 Image Buffer 存储在 RAM 中。</p>
 <p>解码就是从 Data Buffer 生成 Image Buffer 的过程。Image Buffer 会上传到 GPU 成为 Frame Buffer，GPU 以每秒60次的速度使用 Frame Buffer 更新屏幕。</p>
 <p>下图描述了图像从文件到渲染到屏幕上的流程。</p>
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-image-rendering-pipeline.png" alt="图像渲染流程" width="90%">
-</p>
+</p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-image-rendering-pipeline.png"></p>
 <p class="post-image-title">图像渲染流程</p>
 
 <h2 id="section_2">2. UIImage 和 UIImageView</h2>
 
 <p>UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图，如下图所示。</p>
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-uiimage-uiimageview.png" alt="UIImage 和 UIImageView" width="90%">
-</p>
+</p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-uiimage-uiimageview.png"></p>
 <p class="post-image-title">UIImage 和 UIImageView 的角色</p>
 
 <p>UIImage 是 iOS 中处理图像的高级类。创建一个 UIImage 实例只会加载 Data Buffer，将图像显示到屏幕上才会触发解码，也就是 Data Buffer 解码为 Image Buffer。Image Buffer 也关联在 UIImage 上。</p>
@@ -206,10 +211,11 @@ return image;
 
 <p>CPU 使用的优化我们考虑的是，利用设备的多核芯片（多线程）和采用预处理策略。</p>
 <p>值得关注的 CPU 计算工作是，Data Buffer 转 Image Buffer 这一过程，也就是解码过程。在一个测试工程中，大量的设置了图像的 UIImageView 被显示到屏幕上，图像解码是性能瓶颈。如下图所示。</p>
-<p class="post-image">
+<!-- <p class="post-image">
     <img src="/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png" alt="" width="100%">
-</p>
+</p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-time-profiler-applejpeg-decode-image-all.png"></p>
 <p>预处理本身并没有减少 CPU 的工作量，但是在 CPU 空闲时提前完成图像解码，能间接达到优化用户体验的效果。</p>
 <h3>参考文献：</h3>
 
@@ -219,7 +225,7 @@ return image;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="ckrtbl2fd000lc8ne46lfgeyr" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="ckrtz3o5k000l99nj9npz292m" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
       
       
       

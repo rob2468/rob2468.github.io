@@ -14,12 +14,17 @@
 <meta property="og:description" content="前言  Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书篇幅不多，可分为如下3部分，共8个章节。 内存管理基础知识：第一章、Life Before Automatic Reference Counting；第二章、ARC Rules">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png">
 <meta property="article:published_time" content="2016-12-29T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-01T14:49:36.815Z">
+<meta property="article:modified_time" content="2021-08-02T01:47:56.141Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png">
@@ -122,8 +127,9 @@
 <h3 id="section_1_1">1. GNUstep 和 Apple 存储引用计数的不同方式</h3>
 
 <p>下面两幅图描述 <a href="http://gnustep.org/" target="_blank">GNUstep</a> 和 Apple 存储对象引用计数的方式。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png"></p>
 <p class="post-image-title">图 GNUstep 存储引用计数的方式</p>
 
 <p>GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字段。struct obj_layout 的定义如下所示：</p>
@@ -132,8 +138,9 @@
 &#125;;
 </code></pre></div>
 
-<p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png"></p>
 <p class="post-image-title">图 Apple 存储引用计数的方式</p>
 
 <p>Apple 实现，使用一个独立的哈希表存储对象实例的引用计数。</p>
@@ -212,8 +219,9 @@ id obj = [[NSObject alloc] init];
 </code></pre></div>
 
 <p>两种写法的对应关系如下图所示。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png"></p>
 <p class="post-image-title">图 @autoreleasepool 和 __autoreleasing 描述符</p>
 
 <p>得益于编译器的自动化操作，简化了开发者的许多工作，在实际使用中，很少使用到 __autoreleasing 语法。下面分情况对背后的细节进行说明。(使用下面方法调试查看自动释放池状态，<code>extern void _objc_autoreleasePoolPrint(); /* 声明 */ _objc_autoreleasePoolPrint(); /* 调用 */</code>)</p>
@@ -346,8 +354,9 @@ id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer
 </ul>
 <p>示例3和示例2的伪代码中调用了一对函数，objc_autoreleaseReturnValue() 和 objc_retainAutoreleasedReturnValue()，这对函数调用对应“3.4. 情况分析一”小节的解释。objc_autoreleaseReturnValue() 的作用是将对象注册到自动释放池中，objc_retainAutoreleasedReturnValue() 的作用是持有目标对象。</p>
 <p>实际情况下，objc_autoreleaseReturnValue() 并不总会将对象注册到对象释放池。objc_autoreleaseReturnValue() 会检测调用者的执行代码，如果调用者接下来调用了 objc_retainAutoreleasedReturnValue() 函数，便跳过将对象注册到自动释放池的步骤，以提升性能。见下图。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg"></p>
 <p class="post-image-title">图 跳过对象加入自动释放池步骤</p>
 
 <h3 id="section_1_7">7. _objc_rootRetainCount</h3>
@@ -357,8 +366,9 @@ id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer
 
 <p>GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要定义好任务并加入到分发队列中，线程管理的相关工作由系统完成。</p>
 <p>分发队列是先进先出的队列结构，可以分为串行队列和并发队列。加入到串行队列中的任务会依次有序执行，当前任务完成后再执行队列中下一个任务。并发队列中的任务执行不会等待前次任务执行完成。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png"></p>
 <p class="post-image-title">图 串行队列、并发队列与线程的关系</p>
 
 <p>上图描述了分发队列和线程的关系。XNU kernel 是 iOS 和 OS X 的核心部分，负责线程的管理，创建、销毁和调度线程。比如，8个任务添加至并发队列中，XNU kernel 提供了4个线程执行任务，可能有如下执行顺序。</p>
@@ -380,7 +390,7 @@ id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="ckrtbl2g30017c8neducaev13" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="ckrtz3o63001799njceul33qm" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
       
       
       

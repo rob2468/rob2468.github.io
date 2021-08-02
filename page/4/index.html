@@ -291,7 +291,7 @@ JPDevMenuDelegate
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="ckrtbl2f7000fc8ne7a445xdw" data-title="代码混淆" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="ckrtz3o5f000f99nj22i17uvd" data-title="代码混淆" class="article-share-link">Share</a>
       
       
       
@@ -339,8 +339,9 @@ JPDevMenuDelegate
 <h2>一、整体架构</h2>
 
 <p>不考虑技术细节，整个评论系统可以分为三个部分。一是评论入口，由前端提供表单，可输入评论内容并提交。二是评论内容存储，实现评论内容持久化。三是评论展示，能够读取已持久化存储的评论内容。如下图所示。</p>
-<p class="post-image"><img src="/resources/figures/2017-04-18-overall-architecture.png" alt="" width="60%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2017-04-18-overall-architecture.png" alt="" width="60%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2017-04-18-overall-architecture.png"></p>
 <p>评论入口使用 HTML 和 JS 实现评论表单的展现和交互逻辑。评论内容采用约定组织结构，存储于同一个 Git 仓库中，由前端页面利用 GitHub API 实现。评论展示利用 Jekyll 实现，生成静态站点时解析有固定结构的评论内容，并将内容填充在网页中。</p>
 <h2>二、Git 底层原理与 GitHub API</h2>
 
@@ -390,8 +391,9 @@ endfor
 
 <p>提交评论是整个评论系统的核心操作。利用 GitHub API，使用 XMLHttpRequest 实现客户端和 GitHub 的通信。提交评论操作的本质是在博客代码库的 comments 分支基于当前最新提交创建一次提交，并将分支引用指向该次提交。新创建提交的内容是，_data/raw_comments/ 下创建的一个临时文件，保存评论者提交的评论信息。</p>
 <p>下面描述客户端和 GitHub 通信的流程。</p>
-<p class="post-image"><img src="/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2017-04-18-UA-and-GitHub-communication-process.png"></p>
 <p>如上图所示，提交评论需要进行5次客户端和 GitHub 的通信，并且后3次 POST 请求需要在请求中附加身份验证信息。</p>
 <p>a）首先获取目标分支的最新提交，取得 commit id；</p>
 <p>b）获取最新提交对应的 tree，取得 tree id；</p>
@@ -433,7 +435,7 @@ endfor
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/04/18/commentme/" data-id="ckrtbl2f6000ec8ne9bn24k70" data-title="实现 GitHub Pages 的评论系统" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/04/18/commentme/" data-id="ckrtz3o5e000e99nj5jm5c1fv" data-title="实现 GitHub Pages 的评论系统" class="article-share-link">Share</a>
       
       
       
@@ -488,8 +490,9 @@ endfor
 <h3 id="section_1_1">1. GNUstep 和 Apple 存储引用计数的不同方式</h3>
 
 <p>下面两幅图描述 <a href="http://gnustep.org/" target="_blank">GNUstep</a> 和 Apple 存储对象引用计数的方式。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png"></p>
 <p class="post-image-title">图 GNUstep 存储引用计数的方式</p>
 
 <p>GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字段。struct obj_layout 的定义如下所示：</p>
@@ -498,8 +501,9 @@ endfor
 &#125;;
 </code></pre></div>
 
-<p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png"></p>
 <p class="post-image-title">图 Apple 存储引用计数的方式</p>
 
 <p>Apple 实现，使用一个独立的哈希表存储对象实例的引用计数。</p>
@@ -578,8 +582,9 @@ id obj = [[NSObject alloc] init];
 </code></pre></div>
 
 <p>两种写法的对应关系如下图所示。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-@autoreleasepool-and-a-variable-with-__autoreleasing-qualifier.png"></p>
 <p class="post-image-title">图 @autoreleasepool 和 __autoreleasing 描述符</p>
 
 <p>得益于编译器的自动化操作，简化了开发者的许多工作，在实际使用中，很少使用到 __autoreleasing 语法。下面分情况对背后的细节进行说明。(使用下面方法调试查看自动释放池状态，<code>extern void _objc_autoreleasePoolPrint(); /* 声明 */ _objc_autoreleasePoolPrint(); /* 调用 */</code>)</p>
@@ -712,8 +717,9 @@ id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer
 </ul>
 <p>示例3和示例2的伪代码中调用了一对函数，objc_autoreleaseReturnValue() 和 objc_retainAutoreleasedReturnValue()，这对函数调用对应“3.4. 情况分析一”小节的解释。objc_autoreleaseReturnValue() 的作用是将对象注册到自动释放池中，objc_retainAutoreleasedReturnValue() 的作用是持有目标对象。</p>
 <p>实际情况下，objc_autoreleaseReturnValue() 并不总会将对象注册到对象释放池。objc_autoreleaseReturnValue() 会检测调用者的执行代码，如果调用者接下来调用了 objc_retainAutoreleasedReturnValue() 函数，便跳过将对象注册到自动释放池的步骤，以提升性能。见下图。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Skip-registration-to-the-autorelease-pool.jpeg"></p>
 <p class="post-image-title">图 跳过对象加入自动释放池步骤</p>
 
 <h3 id="section_1_7">7. _objc_rootRetainCount</h3>
@@ -723,8 +729,9 @@ id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer
 
 <p>GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要定义好任务并加入到分发队列中，线程管理的相关工作由系统完成。</p>
 <p>分发队列是先进先出的队列结构，可以分为串行队列和并发队列。加入到串行队列中的任务会依次有序执行，当前任务完成后再执行队列中下一个任务。并发队列中的任务执行不会等待前次任务执行完成。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png"></p>
 <p class="post-image-title">图 串行队列、并发队列与线程的关系</p>
 
 <p>上图描述了分发队列和线程的关系。XNU kernel 是 iOS 和 OS X 的核心部分，负责线程的管理，创建、销毁和调度线程。比如，8个任务添加至并发队列中，XNU kernel 提供了4个线程执行任务，可能有如下执行顺序。</p>
@@ -746,7 +753,7 @@ id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="ckrtbl2g30017c8neducaev13" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="ckrtz3o63001799njceul33qm" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
       
       
       
@@ -789,15 +796,17 @@ id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer
 <h2 id="二、UTI-的“继承”"><a href="#二、UTI-的“继承”" class="headerlink" title="二、UTI 的“继承”"></a>二、UTI 的“继承”</h2><p>下面两张图均来自 Apple 官方文档，UTI 的层次结构类似于面向对象编程语言中的“继承“特性。比如，某个文件的类型为“public.image”，该文件类型同样也属于“public.data”。</p>
 <p></p>
 
-<p class="post-image"><img src="/resources/figures/2016-09-20-conformance_hierarchy.gif" alt="" width="100%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-09-20-conformance_hierarchy.gif" alt="" width="100%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-09-20-conformance_hierarchy.gif"></p>
 <p class="post-image-title">图 A conformance hierarchy</p>
 
 <p>可以从两个角度对文件类型进行分类。物理特性：文件类型、文件夹类型等。功能特性：图片类型、视频类型等。如下图所示。</p>
 <p></p>
 
-<p class="post-image"><img src="/resources/figures/2016-09-20-physical_vs_functional.gif" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-09-20-physical_vs_functional.gif" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-09-20-physical_vs_functional.gif"></p>
 <p class="post-image-title">图 Physical and functional hierarchies</p>
 
 <h2 id="三、在-iOS-中使用-UTI"><a href="#三、在-iOS-中使用-UTI" class="headerlink" title="三、在 iOS 中使用 UTI"></a>三、在 iOS 中使用 UTI</h2><p>MobileCoreServices.framework 中定义了使用 UTI 的一些常量和方法。该框架主要包含 UTCoreTypes.h 和 UTType.h 这两个头文件。</p>
@@ -824,7 +833,7 @@ Boolean UTTypeConformsTo(CFStringRef inUTI, CFStringRef inConformsToUTI)    // i
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/09/20/uti/" data-id="ckrtbl2f5000dc8ne0g6u7bwp" data-title="UTI，Uniform Type Identifier" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/09/20/uti/" data-id="ckrtz3o5e000d99njari730zl" data-title="UTI，Uniform Type Identifier" class="article-share-link">Share</a>
       
       
       
@@ -895,14 +904,15 @@ else
 <p>下面是 demo 截图，ScrollView 展示3页视图，左滑和右滑能够无限循环。</p>
 <p></p>
 
-<p class="post-image"><img src="/resources/figures/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-26-Cycle-Scroll-View.png"></p>
 <p class="post-image-title">demo截图</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/26/cycle-scroll-view/" data-id="ckrtbl2f4000cc8negx6x2a1i" data-title="可循环滚动的 ScrollView" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/26/cycle-scroll-view/" data-id="ckrtz3o5d000c99nj66bt1rtn" data-title="可循环滚动的 ScrollView" class="article-share-link">Share</a>
       
       
       
@@ -967,7 +977,7 @@ else
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/20/project-management-summary/" data-id="ckrtbl2f3000bc8ne2hxrbpww" data-title="初试项目管理，个人经验小结" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/20/project-management-summary/" data-id="ckrtz3o5c000b99nj7wonadts" data-title="初试项目管理，个人经验小结" class="article-share-link">Share</a>
       
       
       
@@ -1052,7 +1062,7 @@ for (int i = 0 ; i < 1000 ; i++ )
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="ckrtbl2f2000ac8ne2gr67hme" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="ckrtz3o5a000a99nj9o2uh355" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
       
       
       
@@ -1162,14 +1172,16 @@ context[@"log"] = ^() &#123;
 <p>JSPatch 通过运行时系统，将错误的 OC 代码逻辑替换为正确的 JS 代码逻辑。本小节描述 OC 方法被替换后，方法调用流程如何发生，包括如下两种情况，调用修改后的方法（即 JS 函数）和调用原始方法（即 JS 环境中调用 OC 方法）。</p>
 <h3 id="section_3_1">1. 调用修改后方法</h3>
 
-<p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_MessageSend.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_MessageSend.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-16-JSPatch_MessageSend.png"></p>
 <p>上图描述了调用修改后方法的程序执行流程。</p>
 <p>每个方法可以看作两部分组成，selector 和 IMP，分别表示方法的名称和方法的实现。JSPatch 希望将类中错误方法实现修改为 JS 实现时，会执行两处方法修改。一是，将错误方法的实现修改为 _objc_msgForward；二是，将该类的 forwardInvocation 实现替换为自定义的方法实现（JPForwardInvocation）。这样，在调用该错误方法时便会执行到该类的 forwardInvocation 方法中，而 JPForwardInvocation 会判断是否执行相应的 JS 实现。</p>
 <h3 id="section_3_2">2. 调用原始方法</h3>
 
-<p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_callSelector.png" alt="" width="100%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_callSelector.png" alt="" width="100%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-16-JSPatch_callSelector.png"></p>
 <p>上图描述 JS 环境中调用 OC 方法是如何发生的，即 JS 如何调用 OC 类中的任意方法。</p>
 <p>JSPatch 通过 __c 元函数实现 JS 调用 OC 方法。如上图所示，整个流程可以分为三个环节，JSPatch 引擎开始、注入修复脚本和程序运行。</p>
 <p>开始 JSPatch 引擎时，在 OC 中定义通用回调接口，并在 JS 环境中定义元函数 __c，__c 负责调用通用回调接口。</p>
@@ -1199,7 +1211,7 @@ context[@"log"] = ^() &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="ckrtbl2f00009c8ne2xm1bhj8" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="ckrtz3o58000999nja3ft09ir" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
       
       
       
@@ -1243,8 +1255,9 @@ context[@"log"] = ^() &#123;
 <li>UIScrollView的内容视图尺寸需占满UIScrollView的视图尺寸范围，否则UIScrollView无法正确的响应用户的手势，如拖动、缩放。</li>
 </ol>
 <p>在开发过程中经历了三套设计方案。</p>
-<p class="post-image"><img src="/resources/figures/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png"></p>
 <p class="post-image-title">图1. 各设计方案的视图层级</p>
 
 <p>方案一：如图1所示，将所要展示的Image View添加到Content View中，再将Content View添加到Scroll View中。保持Content View的尺寸始终占满Scroll View的视图尺寸范围，并且设置Content View响应缩放操作。此方案通过添加额外的视图解决问题，但是需要在不同的坐标系下计算视图位置。计算Image View的位置和尺寸需要在Content View的坐标系下，计算Content View的位置和尺寸需要在Scroll View的坐标系下，同时Image View的位置和尺寸还必须相对于屏幕以最优的方式展现。这种方案使计算变得复杂，没有采纳。</p>
@@ -1267,15 +1280,17 @@ context[@"log"] = ^() &#123;
 </ol>
 <h2 id="四、经验分享"><a href="#四、经验分享" class="headerlink" title="四、经验分享"></a>四、经验分享</h2><p>图片查看器支持两种方式缩放图片，双击和手指捏合。在scrollViewWillBeginZooming:withView:方法中通过语句<code>scrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateBegan</code>判断缩放操作是由代码执行的，还是由用户捏合执行的。</p>
 <p>图2是双击缩放图片时的处理流程图。</p>
-<p class="post-image"><img src="/resources/figures/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png"></p>
 <p class="post-image-title">图2. 双击缩放图片处理流程</p>
 
 <p>图片刚加载时，根据需求计算并设置Scroll View contentInset、contentSize和Image View frame。onDoubleTappedGestureRecognizer:是自定义的响应双击手势的方法，其中执行的操作如图2所示。</p>
 <p>通过此种方式缩放图片，在图片缩放的过程中不会有其它事件的干预，因此在缩放操作刚开始时便已知道缩放结束后的最终状态。如图2所示，在用户双击图片后计算出图片缩放最终状态下的Scroll View的contentInset，并修改Scroll View的contentInset。因为修改Scroll View的contentInset会导致contentOffset发生改变，所以需要先存储contentOffset，设置好contentInset后再恢复contentOffset。将Scroll View的属性修改为其最终状态的值后，通过setZoomScale:animated:方法或者zoomToRect:animated:方法缩放图片。</p>
 <p>图3是手指捏合缩放图片时的处理流程。</p>
-<p class="post-image"><img src="/resources/figures/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png"></p>
 <p class="post-image-title">图3. 手指捏合缩放图片处理流程</p>
 
 <p>图3图片刚加载时的处理流程和图2相同。</p>
@@ -1293,7 +1308,7 @@ context[@"log"] = ^() &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/01/16/image-browser-implementation-and-optimization/" data-id="ckrtbl2ez0008c8neebsngzby" data-title="图片查看器中单张图片浏览的实现与优化" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/01/16/image-browser-implementation-and-optimization/" data-id="ckrtz3o57000899nj01b23qar" data-title="图片查看器中单张图片浏览的实现与优化" class="article-share-link">Share</a>
       
       
       
@@ -1329,26 +1344,29 @@ context[@"log"] = ^() &#123;
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>源代码：<a target="_blank" rel="noopener" href="https://github.com/rob2468/HeadTabView">BDPhoneHeadTabView</a></p>
 <p>截图：如图1所示</p>
-<p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView_Screenshot.png"></p>
 <p class="post-image-title">图1. 效果截图</p>
 
 <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了Head Tab View，使用autolayout方式实现布局。</p>
 <h2 id="二、代码结构"><a href="#二、代码结构" class="headerlink" title="二、代码结构"></a>二、代码结构</h2><p>Head Tab View的整体结构如图2所示。</p>
-<p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView%E7%9A%84%E4%BB%A3%E7%A0%81%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84.png"></p>
 <p class="post-image-title">图2. HeadTabView的代码整体结构</p>
 
 <p>图2中圆角矩形表示各个模块，有向箭头表示数据通信，数据从弧尾流向弧头。Head Tab View的设计遵循MVC。外部只与BDPhoneHeadTabViewController实例打交道，从BDPhoneHeadTabViewController实例读取Head Tab View的信息，通过BDPhoneHeadTabViewController实例修改Head Tab View。</p>
 <h2 id="三、视图层次"><a href="#三、视图层次" class="headerlink" title="三、视图层次"></a>三、视图层次</h2><p>在源代码中，BDPhoneHeadTabView表示Head Tab View的视图，其视图层次结构如图3所示。</p>
-<p class="post-image"><img src="/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-BDPhoneHeadTabView%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E6%AC%A1.png"></p>
 <p class="post-image-title">图3. BDPhoneHeadTabView的视图层次</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="ckrtbl2ey0007c8nef7b36ul9" data-title="Head Tab View" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="ckrtz3o57000799nj50ovae0u" data-title="Head Tab View" class="article-share-link">Share</a>
       
       
       

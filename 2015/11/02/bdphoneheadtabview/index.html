@@ -6,18 +6,21 @@
   
   <title>Head Tab View | jam.chenjun blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="源代码：BDPhoneHeadTabView 截图：如图1所示   图1. 效果截图  一、前言在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了">
+  <meta name="description" content="源代码：BDPhoneHeadTabView 截图：如图1所示    图1. 效果截图  一、前言在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Head Tab View">
 <meta property="og:url" content="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/index.html">
 <meta property="og:site_name" content="jam.chenjun blog">
-<meta property="og:description" content="源代码：BDPhoneHeadTabView 截图：如图1所示   图1. 效果截图  一、前言在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了">
+<meta property="og:description" content="源代码：BDPhoneHeadTabView 截图：如图1所示    图1. 效果截图  一、前言在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-11-02-HeadTabView_Screenshot.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView_Screenshot.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-11-02-HeadTabView的代码整体结构.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView%E7%9A%84%E4%BB%A3%E7%A0%81%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-BDPhoneHeadTabView%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E6%AC%A1.png">
 <meta property="article:published_time" content="2015-11-02T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-01T14:49:36.815Z">
+<meta property="article:modified_time" content="2021-08-02T01:47:56.141Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2015-11-02-HeadTabView_Screenshot.png">
@@ -101,26 +104,29 @@
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>源代码：<a target="_blank" rel="noopener" href="https://github.com/rob2468/HeadTabView">BDPhoneHeadTabView</a></p>
 <p>截图：如图1所示</p>
-<p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView_Screenshot.png"></p>
 <p class="post-image-title">图1. 效果截图</p>
 
 <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了Head Tab View，使用autolayout方式实现布局。</p>
 <h2 id="二、代码结构"><a href="#二、代码结构" class="headerlink" title="二、代码结构"></a>二、代码结构</h2><p>Head Tab View的整体结构如图2所示。</p>
-<p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView%E7%9A%84%E4%BB%A3%E7%A0%81%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84.png"></p>
 <p class="post-image-title">图2. HeadTabView的代码整体结构</p>
 
 <p>图2中圆角矩形表示各个模块，有向箭头表示数据通信，数据从弧尾流向弧头。Head Tab View的设计遵循MVC。外部只与BDPhoneHeadTabViewController实例打交道，从BDPhoneHeadTabViewController实例读取Head Tab View的信息，通过BDPhoneHeadTabViewController实例修改Head Tab View。</p>
 <h2 id="三、视图层次"><a href="#三、视图层次" class="headerlink" title="三、视图层次"></a>三、视图层次</h2><p>在源代码中，BDPhoneHeadTabView表示Head Tab View的视图，其视图层次结构如图3所示。</p>
-<p class="post-image"><img src="/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-BDPhoneHeadTabView%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E6%AC%A1.png"></p>
 <p class="post-image-title">图3. BDPhoneHeadTabView的视图层次</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="ckrtbl2ey0007c8nef7b36ul9" data-title="Head Tab View" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="ckrtz3o57000799nj50ovae0u" data-title="Head Tab View" class="article-share-link">Share</a>
       
       
       

@@ -14,11 +14,15 @@
 <meta property="og:description" content="前言  本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考这篇文章。 Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Objective-C-class-and-object.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Objective-C-class-and-object.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Memory-segments-for-Blocks.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Memory-segments-for-Blocks.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Copying-a-__block-variable.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Copying-a-__block-variable.png">
 <meta property="article:published_time" content="2018-09-30T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-08-01T14:49:36.819Z">
+<meta property="article:modified_time" content="2021-08-02T01:47:56.141Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Objective-C-class-and-object.png">
@@ -152,8 +156,9 @@ struct objc_class &#123;
 <p>/* declared at runtime/objc-runtime-new.h in the objc4 runtime library */<br>struct class_t &#123;<br>    struct class_t *isa;<br>    struct class_t *superclass;<br>    Cache cache;<br>    IMP *vtable;<br>    uintptr_t data_NEVER_USE;<br>&#125;;<br></code></pre></div></p>
 <p>OC 中的类使用 class_t 构造（class_t 本身基于 objc_class），也就是说 OC 中的每个类都使用 class_t 创建了实例。比如，NSObject 有其对应的 class_t 实例，NSMutableArray 有其对应的 class_t 实例。class_t 实例保存了类的信息，如方法名、方法实现、指向父类的指针等，提供给 OC 运行时库使用。</p>
 <p>基于上面描述，下图描述 isa 值的含义。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Objective-C-class-and-object.png"></p>
 <p class="post-image-title">图 OC 对象和类中 isa 指针的指向</p>
 
 <p>__main_block_impl_0 结构体基于 objc_object，表明 Block 本身即为 OC 对象。创建 Block 时执行语句 <code>impl.isa = &amp;_NSConcreteStackBlock</code>。根据上文描述，_NSConcreteStackBlock 是 class_t 实例，保存了该 Block 对应的类的信息。</p>
@@ -256,8 +261,9 @@ return 0;
 <h2 id="section_6">六、Block 的存储类型</h2>
 
 <p>上文可知 Block 本身也是 OC 对象，其在内存中的存储方式有三种：_NSConcreteStackBlock、_NSConcreteGlobalBlock、_NSConcreteMallocBlock，分别对应：栈、全局/静态存储区、堆。内存区域划分方式大致可用下图表示，下图同时描述了不同存储方式的 Block 对应的内存区域。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Memory-segments-for-Blocks.png"></p>
 <p class="post-image-title">图 Block 不同存储方式对应的内存区域</p>
 
 <p>Block 字面定义在全局作用域生成 _NSConcreteGlobalBlock 类型 Block 对象。</p>
@@ -265,8 +271,9 @@ return 0;
 <h2 id="section_7">七、Block 的存储类型 -- 堆上的 Block</h2>
 
 <p>堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。下图为 Block 从栈拷贝到堆的示意图，同样的，__block 变量也可以从栈拷贝到堆。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png"></p>
 <p class="post-image-title">图 Block 和 __block 变量从栈拷贝到堆</p>
 
 <p>在下列情况下，栈中的 Block 会拷贝到堆：</p>
@@ -289,8 +296,9 @@ blk();
 </code></pre></div>
 
 <p>Block 内部会修改堆上的 __block 变量，Block 外部会修改栈上的 __block 变量。转换后，这两种行为是一致的，即<code>++(val.__forwarding-&gt;val)</code>。栈和堆上 __block 变量中的 __forwarding 指针都指向堆上的 __block 变量，下图描述了这种机制。</p>
-<p class="post-image"><img src="/resources/figures/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%"></p>
+<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%"></p> -->
 
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Copying-a-__block-variable.png"></p>
 <p class="post-image-title">图 __block 变量拷贝到堆</p>
 
 <h2 id="section_9">九、Block 捕获对象实例</h2>
@@ -413,7 +421,7 @@ struct __Block_byref_obj_0 &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="ckrtbl2g30018c8ne9xjf9jyx" data-title="Objective-C Block" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="ckrtz3o64001899njeyi25jr3" data-title="Objective-C Block" class="article-share-link">Share</a>
       
       
       
