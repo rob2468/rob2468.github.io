@@ -71,6 +71,64 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-bdphoneheadtabview" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2015/11/02/bdphoneheadtabview/" class="article-date">
+  <time class="dt-published" datetime="2015-11-02T00:00:00.000Z" itemprop="datePublished">2015-11-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2015/11/02/bdphoneheadtabview/">Head Tab View</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>源代码：<a target="_blank" rel="noopener" href="https://github.com/rob2468/HeadTabView">BDPhoneHeadTabView</a></p>
+<p>截图：如图1所示</p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p> -->
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView_Screenshot.png"></p>
+<p class="post-image-title">图1. 效果截图</p>
+
+<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了Head Tab View，使用autolayout方式实现布局。</p>
+<h2 id="二、代码结构"><a href="#二、代码结构" class="headerlink" title="二、代码结构"></a>二、代码结构</h2><p>Head Tab View的整体结构如图2所示。</p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p> -->
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView%E7%9A%84%E4%BB%A3%E7%A0%81%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84.png"></p>
+<p class="post-image-title">图2. HeadTabView的代码整体结构</p>
+
+<p>图2中圆角矩形表示各个模块，有向箭头表示数据通信，数据从弧尾流向弧头。Head Tab View的设计遵循MVC。外部只与BDPhoneHeadTabViewController实例打交道，从BDPhoneHeadTabViewController实例读取Head Tab View的信息，通过BDPhoneHeadTabViewController实例修改Head Tab View。</p>
+<h2 id="三、视图层次"><a href="#三、视图层次" class="headerlink" title="三、视图层次"></a>三、视图层次</h2><p>在源代码中，BDPhoneHeadTabView表示Head Tab View的视图，其视图层次结构如图3所示。</p>
+<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p> -->
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-BDPhoneHeadTabView%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E6%AC%A1.png"></p>
+<p class="post-image-title">图3. BDPhoneHeadTabView的视图层次</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="ckwsq08d300079wnlew9y153t" data-title="Head Tab View" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-autolayout-in-uiscrollView" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2015/10/26/autolayout-in-uiscrollView/" class="article-date">
@@ -130,7 +188,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/" data-id="ckrtz3o56000699nj7kxg5oxm" data-title="在 UIScrollView 中使用 Autolayout" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/" data-id="ckwsq08d200069wnl0s1t7btp" data-title="在 UIScrollView 中使用 Autolayout" class="article-share-link">Share</a>
       
       
       
@@ -189,7 +247,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/" data-id="ckrtz3o55000599nj6e3hbzwe" data-title="iOS App 在不同状态下收到 push 通知的行为" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/" data-id="ckwsq08d100059wnlab3hglcs" data-title="iOS App 在不同状态下收到 push 通知的行为" class="article-share-link">Share</a>
       
       
       
@@ -231,7 +289,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/05/24/symbol-representation-of-uml-class-diagram/" data-id="ckrtz3o54000499njh8wyditz" data-title="UML 中类及其关系的符号表示" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/05/24/symbol-representation-of-uml-class-diagram/" data-id="ckwsq08d100049wnlao9e5j7d" data-title="UML 中类及其关系的符号表示" class="article-share-link">Share</a>
       
       
       
@@ -273,7 +331,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/04/15/lifecycle-of-view-of-viewcontroller/" data-id="ckrtz3o53000399njaiazh7zr" data-title="视图控制对象的视图的生命周期" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/04/15/lifecycle-of-view-of-viewcontroller/" data-id="ckwsq08d000039wnl1qiwaxv2" data-title="视图控制对象的视图的生命周期" class="article-share-link">Share</a>
       
       
       
@@ -329,7 +387,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/" data-id="ckrtz3o52000299nje6zw25kx" data-title="iOS 工程默认源代码文件简介（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/" data-id="ckwsq08cz00029wnl97rk9cw7" data-title="iOS 工程默认源代码文件简介（译）" class="article-share-link">Share</a>
       
       
       
@@ -381,6 +439,10 @@
           </li>
         
           <li>
+            <a href="/2021/07/11/jing-imagination/">儿子的想象力</a>
+          </li>
+        
+          <li>
             <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
           </li>
         
@@ -390,10 +452,6 @@
         
           <li>
             <a href="/2020/12/05/different-sales/">不同的销售</a>
-          </li>
-        
-          <li>
-            <a href="/2020/08/08/child-reading/">如何开发孩子的阅读潜力</a>
           </li>
         
       </ul>
