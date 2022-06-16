@@ -44,7 +44,7 @@ children 保存对应视图的子视图，只记录直接关联的子视图。�
 
 构造数据：
 
-<div class="code"><pre><code>// 入口函数，获取所有视图数据
+<pre><code>// 入口函数，获取所有视图数据
 + (NSArray *)fetchAllViewsDataInHierarchy {
     NSMutableArray *allViewsData = [[NSMutableArray alloc] init];
     NSArray *windows = [self fetchAllWindows]; // 获取所有根视图
@@ -95,4 +95,4 @@ children 保存对应视图的子视图，只记录直接关联的子视图。�
 
 // 获取视图数据 e.g. 位置、背景色
 + (NSDictionary *)fetchViewData:(UIView *)view {}
-</code></pre></div>
+</code></pre>
