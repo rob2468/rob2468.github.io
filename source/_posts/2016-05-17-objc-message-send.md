@@ -10,13 +10,15 @@ OC 为动态运行时语言，其将许多决策从编译和链接时延迟到�
 
 本文以 Apple 开发文档为基础，讲述 OC 以消息传递方式实现方法调用的执行流程。第一节介绍执行消息解析的函数；第二节讲述消息解析过程中，消息对应的方法实现是如何寻找的；第三节讲述方法实现找到后，如何执行。
 
+<!-- more -->
+
 ## 一、objc_msgSend 函数
 
 [objc_msgSend](https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ObjCRuntimeRef/index.html#//apple_ref/c/func/objc_msgSend) 为 OC 运行时系统提供的函数。
 
 <p></p>
 
-<div class="code"><pre><code>Declaration
+<pre><code>Declaration
 id objc_msgSend(id self, SEL op, ...)
 
 Parameters
@@ -29,7 +31,7 @@ A variable argument list containing the arguments to the method.
 
 Return Value
 The return value of the method.
-</code></pre></div>
+</code></pre>
 
 编译后，OC 中的消息传递实现将转换为 objc_msgSend 函数调用。比如，[receiver message] 会转换成相应的 objc_msgSend(receiver, selector)。selector 的类型是 SEL，为要执行方法的名称，objc_msgSend 的重要工作就是找到 selector 对应的方法实现。
 
@@ -53,26 +55,26 @@ objc_msgSend 获取到方法实现后，便调用该方法实现。该方法实�
 
 下面的代码片段说明了如何主动调用消息传递解析后的函数。
 
-<div class="code"><pre><code>void (*setter)(id, SEL, BOOL);
+<pre><code>void (*setter)(id, SEL, BOOL);
 setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
 setter(target, @selector(setFilled:), YES);
-</code></pre></div>
+</code></pre>
 
 objc_msgSend 自动调用函数时，会自动传如两个隐藏参数，但是主动调用需要显式的传入。
 
 主动调用函数能够节省消息传递与解析的时间，比如上面的代码段在如下的一个 for 循环中。
 
-<div class="code"><pre><code>void (*setter)(id, SEL, BOOL);
+<pre><code>void (*setter)(id, SEL, BOOL);
 setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
 for (int i = 0 ; i < 1000 ; i++ )
     setter(targetList[i], @selector(setFilled:), YES);
-</code></pre></div>
+</code></pre>
 
 附 methodForSelector: 方法的[说明](https://developer.apple.com/documentation/objectivec/nsobject/1418863-methodforselector?language=objc)：
 
 <p></p>
 
-<div class="code"><pre><code>Locates and returns the address of the receiver’s implementation of a method so it can be called as a function.
+<pre><code>Locates and returns the address of the receiver’s implementation of a method so it can be called as a function.
 
 Declaration
 - (IMP)methodForSelector:(SEL)aSelector;
@@ -86,7 +88,7 @@ The address of the receiver’s implementation of the aSelector.
 
 Discussion
 If the receiver is an instance, aSelector should refer to an instance method; if the receiver is a class, it should refer to a class method.
-</code></pre></div>
+</code></pre>
 
 <p></p>
 

@@ -10,6 +10,8 @@ page_id: id-2018-08-22
 
 最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。
 
+<!-- more -->
+
 <h2 id="section_1">1. 三种 Buffer 和解码</h2>
 
 Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。
@@ -58,10 +60,10 @@ UIImage 关联的图像是否已解码对外部是透明的（如本文最后的
 
 将图像显示到屏幕上会触发隐式解码。（必须同时满足图像被设置到 UIImageView 中、UIImageView 添加到视图，才会触发图像解码。)
 
-<div class="code"><pre><code>UIImageView *imageView = [[UIImageView alloc] init];
+<pre><code>UIImageView *imageView = [[UIImageView alloc] init];
 [self.view addSubview:imageView];
 [imageView setImage:image];
-</code></pre></div>
+</code></pre>
 
 <p></p>
 
@@ -69,15 +71,15 @@ UIImage 关联的图像是否已解码对外部是透明的（如本文最后的
 
 手动绘制图像能完成图像解码，下面代码中的 newImage 实例的图像已完成解码。
 
-<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
+<pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
 [image drawAtPoint:CGPointZero];
 UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
 UIGraphicsEndImageContext();
-</code></pre></div>
+</code></pre>
 
 下面的代码片段截取自 <a href="https://github.com/ibireme/YYKit.git" target="_blank">YYKit</a>，其中 newImage 实例的图像已完成解码。在测试工程中，该代码比上面直接绘制代码快约7倍。
 
-<div class="code"><pre><code>size_t width = CGImageGetWidth(imageRef);
+<pre><code>size_t width = CGImageGetWidth(imageRef);
 size_t height = CGImageGetHeight(imageRef);
 CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
 size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
@@ -95,7 +97,7 @@ CGImageRef newImageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerP
 UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];
 CGImageRelease(newImageRef);
 CFRelease(newProvider);
-</code></pre></div>
+</code></pre>
 
 <h3>Image I/O</h3>
 
@@ -111,7 +113,7 @@ Image I/O 提供了多种处理图像的接口，但是我并没有找到一个�
 
 下面的代码片段来自 WWDC 2018，功能是缩小图像并解码。原始代码为 Swift，这里转成了 Objective-C。
 
-<div class="code"><pre><code>// 大图缩小为显示尺寸的图
+<pre><code>// 大图缩小为显示尺寸的图
 - (UIImage *)downsampleImageAt:(NSURL *)imageURL to:(CGSize)pointSize scale:(CGFloat)scale {
     // 利用图像文件地址创建 image source
     NSDictionary *imageSourceOptions =
@@ -138,7 +140,7 @@ Image I/O 提供了多种处理图像的接口，但是我并没有找到一个�
 
     return image;
 }
-</code></pre></div>
+</code></pre>
 
 <h3>优化 CPU 使用</h3>
 

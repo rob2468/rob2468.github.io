@@ -8,6 +8,8 @@ page_id: id-2019-12-29
 
 <a href="https://github.com/CocoaPods/Xcodeproj" target="_blank">xcodeproj</a> 是 CocoaPods 的一个子项目，能够创建和修改 Xcode 工程。基于 xcodeproj 的能力编写脚本，可以完成许多 Xcode 工程配置的自动化工作。
 
+<!-- more -->
+
 xcodeproj 虽然功能丰富，但是文档很差。本文提供一个脚本样例，提供一些实践相关的参考。该脚本样例实现的功能是为目标工程文件创建单测 target 并完成相关配置，最后会创建一个可以执行的 scheme。
 
 {% codeblock lang:ruby %}

@@ -10,6 +10,8 @@ page_id: id-2020-05-24
 
 得之太易必不受珍惜。唯有付出代价，万物始有价值。上苍深知如何为其产品制定合理的价格。
 
+<!-- more -->
+
 <!-- <p class="post-image">
   <img src="/resources/figures/2020-05-24-七个习惯模型.jpeg" alt="七个习惯模型" width="60%">
 </p> -->

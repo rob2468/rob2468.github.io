@@ -23,7 +23,7 @@ pod 命令使用 Ruby 写成，使用解释型语言的好处是我们可以方�
 
 当前，`pod trunk push` 命令文件对于 Ruby 库根目录的相对位置是 `gems/cocoapods-trunk-1.3.0/lib/pod/command/trunk/push.rb`，只要注释掉如下一行代码即可。
 
-<div class="code"><pre><code>def run
+<pre><code>def run
     update_master_repo
     # validate_podspec  # 删除验证逻辑
     status, json = push_to_trunk
@@ -31,4 +31,4 @@ pod 命令使用 Ruby 写成，使用解释型语言的好处是我们可以方�
 
     # ...
 end
-</code></pre></div>
+</code></pre>

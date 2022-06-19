@@ -16,6 +16,8 @@ page_id: id-2016-05-26
 
 实现参考了网上搜到的一些方案，经过几次优化，形成最终的版本。许多实现存在一些缺陷，比如，快速滑动时会卡住，等 ScrollView 停止滑动后再滑动就可以了。最初的版本也存在这个问题，因为布局调整是在 scrollViewDidEndDecelerating 中实现的，快速滑动时不会调用到该方法中。
 
+<!-- more -->
+
 下面讲述实现原理。
 
 使用的 ScrollView 为 UICollectionView，每个分页为一个 cell，这样能够利用到 UICollectionView 的 cell 重用特性，降低内存消耗。
@@ -28,7 +30,7 @@ page_id: id-2016-05-26
 
 <p></p>
 
-<div class="code"><pre><code>if (currentOffsetX < pageWidth && currentOffsetX < lastContentOffsetX) // 右划
+<pre><code>if (currentOffsetX < pageWidth && currentOffsetX < lastContentOffsetX) // 右划
 {
     // 修改布局
     lastContentOffsetX = currentOffsetX + offset;
@@ -46,7 +48,7 @@ else
 {
     lastContentOffsetX = currentOffsetX;
 }
-</code></pre></div>
+</code></pre>
 
 以第一个 if 判断分支为例，ScrollView 展示的是原始第一页并开始滑入复制在开头的原始最后一页。此时需要调整布局，调整后的状态是 ScrollView 展示复制在最后的原始第一页并开始滑入原始最后一页。
 

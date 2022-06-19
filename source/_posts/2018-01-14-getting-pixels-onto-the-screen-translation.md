@@ -13,6 +13,8 @@ page_id: id-2018-01-14
 
 将内容显示到屏幕上，有许多方式可以实现。这个过程包含许多框架，依靠许多函数和方法的组合实现。本文讨论该过程的底层原理。当你需要考虑相关性能问题时，本文内容能够帮助挑选最优的 API。本文研究的对象是 iOS 系统，不过其中大部分内容也适用于 OS X。
 
+<!-- more -->
+
 <h2 id="section_1">1. 图形栈（Graphics Stack）</h2>
 
 内容显示到屏幕的过程有许多工作。但当内容显示到屏幕上后，当前的结构就很简单，每个像素都是由3个颜色单元组成：红色、绿色和蓝色。屏幕上某个像素点显示了特定颜色，本质上就是，组成该像素的红绿蓝这3个颜色单元被使用特定亮度点亮。在 iPhone 5上，屏幕有 1,136×640 = 727,040 个像素，因此有 2,181,120 个颜色单元。在拥有视网膜显示屏的 15" MacBook Pro 上，这个数值超过一千五百万。整个显示系统的软硬件通力合作，确保每个颜色单元使用了正确的亮度点亮。当你滑动视图时，百万数量级的亮点必须每秒钟更新60次。这是一个巨大的工作量。
@@ -75,10 +77,10 @@ R 表示最终颜色；S 表示源颜色，对应的是上层的 Texture；D 表
 
 基于上面的例子，假设上层 Texture 有 50% 的透明度，也就是说透明度值为0.5，则 S = （0.5, 0, 0）。代入公式计算：
 
-<div class="code"><pre><code>                       0.5   0               0.5
+<pre><code>                       0.5   0               0.5
 R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
                        0     1               0.5
-</code></pre></div>
+</code></pre>
 
 最终得到颜色值为（0.5, 0, 0.5），是一种紫色。半透明的红色叠加到蓝色背景上，从直觉上判断正是这种颜色。
 
@@ -172,7 +174,7 @@ Quartz 2D 更多的是因为它被包含在 Core Graphics 框架中，而被人�
 
 比如我们希望绘制一个八边形，可以使用如下的 UIKit 代码：
 
-<div class="code"><pre><code>UIBezierPath *path = [UIBezierPath bezierPath];
+<pre><code>UIBezierPath *path = [UIBezierPath bezierPath];
 [path moveToPoint:CGPointMake(16.72, 7.22)];
 [path addLineToPoint:CGPointMake(3.29, 20.83)];
 [path addLineToPoint:CGPointMake(0.4, 18.05)];
@@ -187,11 +189,11 @@ Quartz 2D 更多的是因为它被包含在 Core Graphics 框架中，而被人�
 path.lineWidth = 1;
 [[UIColor redColor] setStroke];
 [path stroke];
-</code></pre></div>
+</code></pre>
 
 如下使用 Core Graphics 的代码可以实现相同的效果：
 
-<div class="code"><pre><code>CGContextBeginPath(ctx);
+<pre><code>CGContextBeginPath(ctx);
 CGContextMoveToPoint(ctx, 16.72, 7.22);
 CGContextAddLineToPoint(ctx, 3.29, 20.83);
 CGContextAddLineToPoint(ctx, 0.4, 18.05);
@@ -206,7 +208,7 @@ CGContextClosePath(ctx);
 CGContextSetLineWidth(ctx, 1);
 CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);
 CGContextStrokePath(ctx);
-</code></pre></div>
+</code></pre>
 
 上述代码中，绘制在被称为 CGContext 的地方完成。我们传入的 ctx 参数，就是在这个上下文中。这个上下文定义了我们将要绘制的地方。如果实现了 CALayer 的 -drawInContext: 接口，那我们就会被传入一个上下文。在这个上下文的绘制会写入到该图层的缓冲区中。我们也可以创建自己的上下文，比如使用 CGBitmapContextCreate() 创建一个基于位图的上下文。这个函数返回一个上下文，然后我们可以把这个上下文传给需要 CGContext 的函数用于绘制。
 
@@ -214,7 +216,7 @@ CGContextStrokePath(ctx);
 
 需要特别留意的是，UIKit 有两个便捷的方法 UIGraphicsBeginImageContextWithOptions() 和 UIGraphicsEndImageContext() 可以用来创建一个位图上下文，达到和 CGBitmapContextCreate() 一样的效果。混合进行 UIKit 和 Core Graphics 的调用非常简单：
 
-<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(CGSizeMake(45, 45), YES, 2);
+<pre><code>UIGraphicsBeginImageContextWithOptions(CGSizeMake(45, 45), YES, 2);
 CGContextRef ctx = UIGraphicsGetCurrentContext();
 CGContextBeginPath(ctx);
 CGContextMoveToPoint(ctx, 16.72, 7.22);
@@ -222,11 +224,11 @@ CGContextAddLineToPoint(ctx, 3.29, 20.83);
 ...
 CGContextStrokePath(ctx);
 UIGraphicsEndImageContext();
-</code></pre></div>
+</code></pre>
 
 或者以另一种方式：
 
-<div class="code"><pre><code>CGContextRef ctx = CGBitmapContextCreate(NULL, 90, 90, 8, 90 * 4, space, bitmapInfo);
+<pre><code>CGContextRef ctx = CGBitmapContextCreate(NULL, 90, 90, 8, 90 * 4, space, bitmapInfo);
 CGContextScaleCTM(ctx, 0.5, 0.5);
 UIGraphicsPushContext(ctx);
 UIBezierPath *path = [UIBezierPath bezierPath];
@@ -236,7 +238,7 @@ UIBezierPath *path = [UIBezierPath bezierPath];
 [path stroke];
 UIGraphicsPopContext(ctx);
 CGContextRelease(ctx);
-</code></pre></div>
+</code></pre>
 
 <h2 id="section_5">5. 像素（Pixels）</h2>
 
@@ -248,19 +250,19 @@ CGContextRelease(ctx);
 
 iOS 和 OS X 系统上一种非常常见的格式是，32 bits-per-pixel（bpp），8 bits-per-component（bpc），alpha premultiplied first。在内存中的表示如下所示：
 
-<div class="code"><pre><code>  A   R   G   B   A   R   G   B   A   R   G   B
+<pre><code>  A   R   G   B   A   R   G   B   A   R   G   B
 | pixel 0       | pixel 1       | pixel 2
   0   1   2   3   4   5   6   7   8   9   10  11 ...
-</code></pre></div>
+</code></pre>
 
 这种格式经常被称为 ARGB。每个像素占用4个字节（32 bpp）。每个颜色单元占用1个字节（8 bpc）。每个像素有一个 alpha 值，并且排列在 RGB 值的前面。RGB 的值都已经事先和 alpha 值相乘过。预先相乘表明 alpha 值已经融入到 RGB 颜色单元之中。如果有一个橘色，8 bpc 的 RGB 值分别是240，99和24。完全不透明的橘色使用上面的内存布局方式，ARGB 值为 255，240，99，24。如果这个橘色有 33% 的透明度，那这个像素的值为 84，80，33，8。
 
 另一种常见的格式是，32 bpp，8 bpc，alpha-none-skip-first。在内存中的表示如下所示：
 
-<div class="code"><pre><code>  x   R   G   B   x   R   G   B   x   R   G   B
+<pre><code>  x   R   G   B   x   R   G   B   x   R   G   B
 | pixel 0       | pixel 1       | pixel 2
   0   1   2   3   4   5   6   7   8   9   10  11 ...
-</code></pre></div>
+</code></pre>
 
 这种格式也为称为 xRGB。像素没有 alpha 值，也就是说是完全不透明的，但是内存布局仍然是和上面的相同。你也许会好奇为什么这种格式会变得流行。如果每个像素剔除那个未使用的字节，我们能节省下25%的空间。但实际证明，因为每个独立的像素和32位内存边界对齐，这种格式更易于被现代的 CPU 和图像算法处理。现代 CPU “不喜欢”读取不对齐的数据。处理不对齐的数据需要做很多的移位和映射，尤其是与上面那种有 alpha 值的像素混合的时候。
 
@@ -354,13 +356,13 @@ UIKit 中的每个视图都有一个自己的图层 CALayer。这个图层通常
 
 看下面这个例子：
 
-<div class="code"><pre><code>// Don't do this
+<pre><code>// Don't do this
 - (void)drawRect:(CGRect)rect
 {
     [[UIColor redColor] setFill];
     UIRectFill([self bounds]);
 }
-</code></pre></div>
+</code></pre>
 
 我们现在知道这种做法是不好的。Core Animation 会创建一个后台存储，Core Graphics 使用纯色填充这个后台存储，再上传到 GPU。
 
@@ -388,7 +390,7 @@ Core Animation 可以使用 CALayer 的 contentsCenter 属性调整图片，但�
 
 添加如下的绘制代码：
 
-<div class="code"><pre><code>- (UIImage *)renderInImageOfSize:(CGSize)size;
+<pre><code>- (UIImage *)renderInImageOfSize:(CGSize)size;
 {
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
 
@@ -398,7 +400,7 @@ Core Animation 可以使用 CALayer 的 contentsCenter 属性调整图片，但�
     UIGraphicsEndImageContext();
     return result;
 }
-</code></pre></div>
+</code></pre>
 
 这个方法通过 UIGraphicsBeginImageContextWithOptions() 函数创建了一个新的位图 CGContextRef。这个函数同时将这个新的上下文设为当前上下文。现在，你可以跟通常在 -drawRect: 中一样进行绘图操作。然后，我们使用 UIGraphicsGetImageFromCurrentImageContext() 函数从这个上下文中获取 UIImage。最后，结束这个上下文。
 
@@ -408,7 +410,7 @@ UIKit 的所有绘制 API 都是可以在子线程中使用的。仅仅需要确
 
 你可以使用下面的代码使用上面绘图方法：
 
-<div class="code"><pre><code>UIImageView *view; // assume we have this
+<pre><code>UIImageView *view; // assume we have this
 NSOperationQueue *renderQueue; // assume we have this
 CGSize size = view.bounds.size;
 [renderQueue addOperationWithBlock:^(){
@@ -417,7 +419,7 @@ CGSize size = view.bounds.size;
         view.image = image;
     }];
 }];
-</code></pre></div>
+</code></pre>
 
 我们在主线程中执行了 `view.image = image`。这是非常重要的一点，你不能在子线程中执行这条语句。
 

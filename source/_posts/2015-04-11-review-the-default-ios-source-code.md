@@ -12,14 +12,16 @@ page_id: id-2015-04-11
 
 app 工程创建后通常会自动生成一些源代码文件，通过这些源代码文件构建 app。其中大部分的工作是由 `UIApplicationMain` 函数完成的，`UIApplicationMain` 函数在 `main.m` 文件中自动被调用。`UIApplicationMain` 函数创建一个应用程序对象，该应用程序对象为 app 创建与 iOS 操作系统协同工作的基础设施环境，包括创建一个向 app 分发输入事件的 *run loop*。
 
+<!-- more -->
+
 ## `main.m` 文件和 `UIApplicationMain` 函数
 
 `main.m` 文件中的 `main` 函数在一个 autorelease 池中调用 `UIApplicationMain` 函数。
 
-<div class="code"><pre><code>@autoreleasepool {
+<pre><code>@autoreleasepool {
     return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
 }
-</code></pre></div>
+</code></pre>
 
 `@autoreleasepool` 语句支持 app 内存管理。ARC（Automatic Reference Counting）机制让编译器跟踪对象的持有者，使得内存管理工作变得简单；`@autoreleasepool` 是内存管理架构的一部分。
 

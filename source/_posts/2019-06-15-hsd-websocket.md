@@ -10,6 +10,8 @@ page_id: id-2019-06-15
 
 借助一些工具库，iOS 设备可以配置成为服务器，在此之上可以做许多有意思的事情。例如，<a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HttpServerDebug</a> 基于这种能力，提供了现场调试 iOS App 的能力。
 
+<!-- more -->
+
 <a href="https://github.com/robbiehanson/CocoaHTTPServer" target="_blank">CocoaHTTPServer</a> 是比较早期的提供服务器能力的库，(基础 Socket 通信能力由 <a href="https://github.com/robbiehanson/CocoaAsyncSocket" target="_blank">CocoaAsyncSocket</a> 提供，)现在已不再维护。
 
 <a href="https://github.com/swisspol/GCDWebServer" target="_blank">GCDWebServer</a> 也是一个提供服务器能力的工具，基于 GCD 实现，当前仍在维护中。
@@ -92,7 +94,7 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
 
 <h2 id="section_5">建立连接</h2>
 
-<div class="code"><pre><code>+ (BOOL)isWebSocketRequest:(NSDictionary *)requestHeaders {
+<pre><code>+ (BOOL)isWebSocketRequest:(NSDictionary *)requestHeaders {
     NSString *connectionHeaderValue = [requestHeaders objectForKey:@"Connection"];
     NSString *upgradeHeaderValue = [requestHeaders objectForKey:@"Upgrade"];
 
@@ -106,11 +108,11 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
     }
     return isWebSocket;
 }
-</code></pre></div>
+</code></pre>
 
 如上代码所示，接收到请求后，根据请求头判断是否是 WebSocket 请求。如果是 WekSocket 请求，则发送对应的响应头，如下代码所示。请求和响应的格式和值见 WebSocket 协议的定义。
 
-<div class="code"><pre><code>- (void)sendResponseHeaders {
+<pre><code>- (void)sendResponseHeaders {
     // request info
     NSDictionary *requestHeaders = CFBridgingRelease(CFHTTPMessageCopyAllHeaderFields(self.requestMessage));
     NSString *origin = [requestHeaders objectForKey:@"Origin"];
@@ -139,13 +141,13 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
     CFDataRef data = CFHTTPMessageCopySerializedMessage(responseMessage);
     [self writeData:(__bridge NSData*)data withCompletionBlock:^(BOOL sucess) {}];
     CFRelease(data);
-}</code></pre></div>
+}</code></pre>
 
 <h2 id="section_6">发送和接收信息</h2>
 
 下面两段代码分别是，从服务端发送信息到前端和服务端接收前端发来的信息。其中关于字节流的处理见 WebSocket 协议 Frame 的定义。
 
-<div class="code"><pre><code>- (void)sendMessage:(NSString *)msg {
+<pre><code>- (void)sendMessage:(NSString *)msg {
     NSData *msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableData *data = nil;
 
@@ -170,9 +172,9 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
     }
 
     [self writeData:data withCompletionBlock:^(BOOL success) {}];
-}</code></pre></div>
+}</code></pre>
 
-<div class="code"><pre><code>- (void)handleReceivedData:(NSData *)data {
+<pre><code>- (void)handleReceivedData:(NSData *)data {
     NSUInteger curPointPos = 0;     // pointer postion cursor
     NSUInteger msgLength;           // payload length
     NSUInteger opCode;
@@ -245,7 +247,7 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
         [self closeWebSocket];
     }
 }
-</code></pre></div>
+</code></pre>
 
 <h2 id="section_7">遇到的问题</h2>
 

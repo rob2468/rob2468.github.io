@@ -17,6 +17,8 @@ page_id: id-2017-04-18
 
 本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> 将当前提交内容编译成静态站点，实现网站发布。
 
+<!-- more -->
+
 我希望通过提供评论系统实现和读者的沟通。最开始使用 Disqus 作为评论系统，无奈国内已无法使用，并且当时没有找到好的替代品，便打算自己实现。
 
 我预想的评论系统使用现有的构建博客的技术便能实现，即静态站点，无需额外的后端计算和存储成本。查阅一番资料并加以实践，目前已实现一套可用的评论系统，本文对该解决方案加以记录说明。
@@ -49,7 +51,7 @@ Git 中的文件内容以 blob 类型存储，blob 对象只存储文件的内�
 
 所有评论以纯文本方式存储，置于 _data/comments.json 文件中。单条评论信息的结构如下所示：
 
-<div class="code"><pre><code>{
+<pre><code>{
   "email": <# email #>,
   "date": <# date #>,
   "author": {
@@ -57,21 +59,21 @@ Git 中的文件内容以 blob 类型存储，blob 对象只存储文件的内�
   },
   "content": content
 }
-</code></pre></div>
+</code></pre>
 
 _data/comments.json 中所有评论信息的结构如下所示。每篇文章使用键 page_id 唯一标示，page_id 的值为该篇文章的所有评论。
 
-<div class="code"><pre><code>{
+<pre><code>{
   <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
   <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
   ...
-}</code></pre></div>
+}</code></pre>
 
 <h3>2. 评论信息的获取</h3>
 
 根据上一小节说明的评论的存储结构，使用如下代码获取评论内容。Jekyll 将内容编译成静态站点时执行下面代码的逻辑，将评论填充到网页中。
 
-<div class="code"><pre><code>assign pageid = page.page_id    # 获取文章标识符
+<pre><code>assign pageid = page.page_id    # 获取文章标识符
 if site.data.comments[pageid]   # 如果该文章有评论
   assign sorted_comments = (site.data.comments[pageid] | sort: 'date') # 获取评论并按时间排序
 endif
@@ -81,7 +83,7 @@ for c in sorted_comments reversed # 按时间倒序遍历
 else
   这篇文章暂没有评论。
 endfor
-</code></pre></div>
+</code></pre>
 
 <h3>3. 提交评论</h3>
 
@@ -103,7 +105,7 @@ c）基于取得的 tree id，创建新的 tree 对象，并取得该对象的 i
 
 POST 请求发送的数据格式如下所示。path 字段指明评论信息存储的临时文件，content 字段是评论信息，base_tree 字段是最新提交对应的 tree 对象的 id。
 
-<div class="code"><pre><code>{
+<pre><code>{
   "tree": [{
     "path": "_data/raw_comments/comment_" + new Date().getTime(),
     "mode": "100644",
@@ -112,18 +114,18 @@ POST 请求发送的数据格式如下所示。path 字段指明评论信息存�
   }],
   "base_tree": treeID,
 }
-</code></pre></div>
+</code></pre>
 
 d）基于新创建的 tree 对象，创建提交，并取得提交对象的 id；
 
 POST 请求发送的数据格式如下所示。message 字段为提交日志，tree 字段为新创建的 tree 对象的 id，parents 字段是最新提交的 id。服务端接受到这个请求后创建新的提交对象，并返回该对象的 id。
 
-<div class="code"><pre><code>{
+<pre><code>{
   "message": "comment by " + display_name + " on " + date,
   "tree": newTreeID,
   "parents": [lastCommitID]
 }
-</code></pre></div>
+</code></pre>
 
 e）修改分支引用为最新提交。
 

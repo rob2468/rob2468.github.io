@@ -6,7 +6,7 @@ page_id: id-2018-09-16
 
 <h1>{{ page.title }}</h1>
 
-<div class="code"><pre><code>/**
+<pre><code>/**
  *  二叉树链表存储，结点数据模型
  */
 struct BiTreeNode {
@@ -14,11 +14,13 @@ struct BiTreeNode {
     BiTreeNode *lchild;
     BiTreeNode *rchild;
 };
-</code></pre></div>
+</code></pre>
+
+<!-- more -->
 
 <h3>递归算法</h3>
 
-<div class="code"><pre><code>/**
+<pre><code>/**
  *  先序遍历二叉树，递归算法实现
  *  采用链表存储结构，对每个二叉树的结点数据调用 Visit 函数
  *  最简单的 Visit 函数功能之一，如打印传入参数
@@ -30,9 +32,9 @@ void PreOrderTraverse(BiTreeNode *T) {
         PreOrderTraverse(T->rchild);
     }
 }
-</code></pre></div>
+</code></pre>
 
-<div class="code"><pre><code>/**
+<pre><code>/**
  *  中序遍历二叉树，递归算法实现
  */
 void InOrderTraverse(BiTreeNode *T) {
@@ -42,9 +44,9 @@ void InOrderTraverse(BiTreeNode *T) {
         InOrderTraverse(T->rchild);
     }
 }
-</code></pre></div>
+</code></pre>
 
-<div class="code"><pre><code>/**
+<pre><code>/**
  *  后序遍历二叉树，递归算法实现
  */
 void PostOrderTraverse(BiTreeNode *T) {
@@ -54,11 +56,11 @@ void PostOrderTraverse(BiTreeNode *T) {
         Visit(T->data);
     }
 }
-</code></pre></div>
+</code></pre>
 
 <h3>非递归算法</h3>
 
-<div class="code"><pre><code>/**
+<pre><code>/**
  *  先序遍历二叉树，非递归算法实现
  */
 void PreOrderTraverse(BiTreeNode *T) {
@@ -76,9 +78,9 @@ void PreOrderTraverse(BiTreeNode *T) {
         }
      }
  }
-</code></pre></div>
+</code></pre>
 
-<div class="code"><pre><code>/**
+<pre><code>/**
  *  中序遍历二叉树，非递归算法实现
  */
 void InOrderTraverse(BiTreeNode *T) {
@@ -96,9 +98,9 @@ void InOrderTraverse(BiTreeNode *T) {
         }
     }
 }
-</code></pre></div>
+</code></pre>
 
-<div class="code"><pre><code>/**
+<pre><code>/**
  *  后续遍历二叉树，非递归算法实现
  *  当用栈来存储结点，必须分清返回根结点时，是从左子树返回的，还是从右子树返回的
  *  使用辅助指针 r，其指向最近访问过的结点（也可以在结点中增加一个标志域，记录是否已被访问）
@@ -130,7 +132,7 @@ void PostOrderTraverse(BiTreeNode *T) {
         } // else
     } // while
 }
-</code></pre></div>
+</code></pre>
 
 <h3>参考文献：</h3>
 

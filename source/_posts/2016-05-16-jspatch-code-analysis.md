@@ -10,6 +10,8 @@ page_id: id-2016-05-16
 
 JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。
 
+<!-- more -->
+
 <h2 id="section_1">一、OC (Objective-C) 运行时</h2>
 
 OC 是运行时语言，即能够在程序运行的时候执行编译后的代码。OC 中的方法调用通过消息转发（objc_msgSend）实现，即先根据方法名寻找到方法实现，再调用方法实现。并且，通过 Method Swizzling 技术，可以动态修改方法名和方法实现的对应关系。
@@ -22,12 +24,12 @@ _objc_msgForward 是 IMP 类型，当 objc_msgSend 未找到某个 selector 的 
 
 _objc_msgForward 消息转发会依次调用如下的方法。
 
-<div class="code"><pre><code>+ (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
+<pre><code>+ (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
 - (id)forwardingTargetForSelector:(SEL)aSelector;
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;
 - (void)forwardInvocation:(NSInvocation *)anInvocation;
 - (void)doesNotRecognizeSelector:(SEL)aSelector;
-</code></pre></div>
+</code></pre>
 
 <h3>2. Method Swizzling</h3>
 
@@ -35,14 +37,14 @@ Method Swizzling 用于修改目标类的方法名和方法实现的对应关系
 
 常用函数如下所示：
 
-<div class="code"><pre><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);
+<pre><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);
 IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types);
 void method_exchangeImplementations(Method m1, Method m2);
-</code></pre></div>
+</code></pre>
 
 下面代码片段是一种情况下的使用示例：
 
-<div class="code"><pre><code>SEL originalSelector = @selector(viewWillAppear:);
+<pre><code>SEL originalSelector = @selector(viewWillAppear:);
 SEL swizzledSelector = @selector(xxx_viewWillAppear:);
 
 Method originalMethod = class_getInstanceMethod(class, originalSelector);
@@ -61,7 +63,7 @@ if (didAddMethod) {
 } else {
     method_exchangeImplementations(originalMethod, swizzledMethod);
 }
-</code></pre></div>
+</code></pre>
 
 <h2 id="section_2">二、JavaScriptCore.framework</h2>
 
@@ -71,12 +73,12 @@ JSCore 是从 UIWebView 提取出的 JS 解析引擎，封装了 JS 和 OC 桥�
 
 JSCore 提供了多种方式实现 JS 和 OC 的通信，最常用的方式是使用 Block，如下代码所示：
 
-<div class="code"><pre><code>JSContext *context = [[JSContext alloc] init];
+<pre><code>JSContext *context = [[JSContext alloc] init];
 context[@"log"] = ^() {
     NSLog(@"-------Log-------");
 };
 [context evaluateScript:@"log()"];
-</code></pre></div>
+</code></pre>
 
 JSContext 是 JS 的运行环境。上述代码中，在 JSContext 中声明了名为 log 的函数，该函数的实现是 OC block，实现了在 JS 环境中调用 OC 方法。
 
@@ -88,7 +90,7 @@ JSContext 是 JS 的运行环境。上述代码中，在 JSContext 中声明了�
 
 JS 和 OC 环境通信还伴随着数据的传递，下表是各类型数据的对应关系。
 
-<div class="code"><pre><code>-----------------------------------------------------------------------------
+<pre><code>-----------------------------------------------------------------------------
 |  Objective-C Types                                    |  Javascript Types |
 |-------------------------------------------------------|-------------------|
 |  nil                                                  |  undefined        |
@@ -102,7 +104,7 @@ JS 和 OC 环境通信还伴随着数据的传递，下表是各类型数据的�
 |  Structure types: NSRange, CGRect, CGPoint, CGSize    |  Object           |
 |  Objective-C Block                                    |  Function         |
 -----------------------------------------------------------------------------
-</code></pre></div>
+</code></pre>
 
 <h2 id="section_3">三、方法调用</h2>
 

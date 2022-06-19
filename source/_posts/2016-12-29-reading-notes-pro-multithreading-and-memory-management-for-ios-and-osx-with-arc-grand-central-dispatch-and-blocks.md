@@ -16,7 +16,9 @@ Block：第四章、Getting Started with Blocks；第五章、Blocks Implementat
 
 GCD：第六章、Grand Central Dispatch；第七章、GCD Basics；第八章、GCD Implementation。
 
-本文为该本书的读书笔记，Block 相关的内容比较多，参考<a href="/2018/09/30/block.html">这篇文章</a>。
+本文为该本书的读书笔记，Block 相关的内容比较多，参考<a href="/2018/09/30/block">这篇文章</a>。
+
+<!-- more -->
 
 <h2 id="section_1">一、内存管理</h2>
 
@@ -39,10 +41,10 @@ OC 使用引用计数来实现内存管理。引用计数是内存管理的基�
 
 GNUstep 实现，对象实例的内存结构就包含了存储引用计数的字段。struct obj_layout 的定义如下所示：
 
-<div class="code"><pre><code>struct obj_layout {
+<pre><code>struct obj_layout {
     NSUInteger retained;
 };
-</code></pre></div>
+</code></pre>
 
 <!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Apple-Managing-Reference-Counts-with-a-hash-table.png" alt="" width="70%"></p> -->
 
@@ -68,9 +70,9 @@ Apple 实现方式的优点：
 
 autorelease 可以类比 C 语言中的自动变量。如下代码，花括号指定了一片作用域，在该作用域中声明了变量a，离开该作用域后，变量a被自动释放。autorelease 的工作方式与此类似，指定一片代码块，在该代码块中向目标对象发送 autorelease 消息，当执行超出该代码块后，目标对象被自动释放。
 
-<div class="code"><pre><code>{
+<pre><code>{
     int a;
-}</code></pre></div>
+}</code></pre>
 
 autorelease 中，该指定的代码块称为自动释放池。在自动释放池内向目标对象发送 autorelease 消息即注册了该目标对象，表明离开自动释放池后需要被释放。
 
@@ -91,17 +93,17 @@ OC 中的每个对象实例都有类型，或者是具体的类的指针，或�
 
 所有使用 __strong、__weak 和 __autoreleasing 所有权描述符的对象实例都会被初始化为nil，如下两处代码块的效果相同。
 
-<div class="code"><pre><code>id __strong obj0;
+<pre><code>id __strong obj0;
 id __weak obj1;
 id __autoreleasing obj2;
-</code></pre></div>
+</code></pre>
 
 <p></p>
 
-<div class="code"><pre><code>id __strong obj0 = nil;
+<pre><code>id __strong obj0 = nil;
 id __weak obj1 = nil;
 id __autoreleasing obj2 = nil;
-</code></pre></div>
+</code></pre>
 
 本章节开头所述的内存管理的4条规则仍然适用。将对象赋给 __strong 变量即满足了前两条规则。第三条规则在不同的情况下自动满足，比如，离开变量的作用域；将值赋给变量；持有成员变量的对象实例被释放。因为不再需要手动调用 release，第四条规则显然满足。
 
@@ -113,13 +115,13 @@ __strong 所有权描述符是默认描述符。即如果描述符缺失，编�
 
 使用 __weak 所有权描述符修饰变量，表明该变量对目标对象具有弱引用（该变量对目标对象没有所有权）。__weak 所有权描述符的重要用途就是避免产生循环引用导致内存泄漏。
 
-<div class="code"><pre><code>id __weak obj = [[NSObject alloc] init];</code></pre></div>
+<pre><code>id __weak obj = [[NSObject alloc] init];</code></pre>
 
 编译这段代码编译器有可能给出编译警告。该段代码创建了一个 NSObject 对象并赋给 obj 变量，obj 使用 __weak 修饰，对该 NSObject 对象没有所有权。当编译器开启编译优化后，该 NSObject 对象刚创建出来就被销毁。下面的写法能解决这个问题。
 
-<div class="code"><pre><code>id __strong obj0 = [[NSObject alloc] init];
+<pre><code>id __strong obj0 = [[NSObject alloc] init];
 id __weak obj1 = obj0;
-</code></pre></div>
+</code></pre>
 
 __weak 所有权描述符还存在如下一个重要特性。当对象实例销毁后，所有引用该对象实例的 __weak 变量会自动设置为 nil。
 
@@ -135,20 +137,20 @@ __unsafe_unretained 和 __weak 的区别在于，当对象实例销毁后，引�
 
 autorelease 的相关知识见上文介绍，ARC 和 non-ARC 下的原理相同。ARC 引入新的语法让操作变得简单直观。如下两处代码段分别是 non-ARC 和 ARC 下 autorelease 的使用方式。
 
-<div class="code"><pre><code>/* non-ARC */
+<pre><code>/* non-ARC */
 NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 id obj = [[NSObject alloc] init];
 [obj autorelease];
 [pool drain];
-</code></pre></div>
+</code></pre>
 
 <p></p>
 
-<div class="code"><pre><code>/* ARC */
+<pre><code>/* ARC */
 @autoreleasepool {
     id __autoreleasing obj = [[NSObject alloc] init];
 }
-</code></pre></div>
+</code></pre>
 
 两种写法的对应关系如下图所示。
 
@@ -166,7 +168,7 @@ id obj = [[NSObject alloc] init];
 
 通过以 alloc/new/copy/mutableCopy 开头的方法返回对象实例，调用者才能拥有该对象实例的所有权，这条规则在 ARC 下仍然成立。在 ARC 下开发时情况变的简单，虽然引入了所有权描述符，但是编译器默认做了许多工作，开发者需要考虑的问题减少了许多。后面以如下代码段说明 ARC 下，__autoreleasing 是如何发生作用的。
 
-<div class="code"><pre><code>@implementation NSMutableArray
+<pre><code>@implementation NSMutableArray
 + (id)array
 {
     id obj = [[NSMutableArray alloc] init];     // part 1
@@ -177,7 +179,7 @@ id obj = [[NSObject alloc] init];
 @autoreleasepool {
     id obj = [NSMutableArray array];            // part 3
 }
-</code></pre></div>
+</code></pre>
 
 查看 @autoreleasepool 中的代码，part 3 语句以 [NSMutableArray array] 的方式创建了对象实例，方法的名称不符合以 alloc/new/copy/mutableCopy 开头的规则，所以调用者没有该对象实例的所有权，该对象实例注册在自动释放池中。因为 obj 变量使用 __strong 所有权描述符修饰，其会持有该对象实例。
 
@@ -187,16 +189,16 @@ id obj = [[NSObject alloc] init];
 
 当使用 __weak 所有权描述符修饰的变量时，该变量引用的对象实例总是会被注册到自动释放池中。
 
-<div class="code"><pre><code>id __weak obj1 = obj0;
+<pre><code>id __weak obj1 = obj0;
 NSLog(@"class=%@", [obj1 class]);
-</code></pre></div>
+</code></pre>
 
 上述代码等同于如下代码段。
 
-<div class="code"><pre><code>id __weak obj1 = obj0;
+<pre><code>id __weak obj1 = obj0;
 id __autoreleasing tmp = obj1;
 NSLog(@"class=%@", [tmp class]);
-</code></pre></div>
+</code></pre>
 
 因为使用 __weak 所有权描述符修饰的变量不持有对象实例，该对象实例可能会在任一时刻被释放，为了能安全的使用该对象实例，编译器总是会先将该对象实例注册到自动释放池中再使用。
 
@@ -216,7 +218,7 @@ BOOL result = [obj performOperationWithError:&error];
 
 给对象实例的指针赋值还有一个要求，即声明的对象实例指针的所有权描述符必须与赋值给该对象实例指针的所有权描述符相同。如下代码。
 
-<div class="code"><pre><code>/* 错误示例 */
+<pre><code>/* 错误示例 */
 NSError *error =nil;
 NSError **error = &error;   // __strong 赋给 __autoreleasing
 
@@ -229,15 +231,15 @@ NSError * __weak *error = &error;
 
 NSError __unsafe_unretained *error =nil;
 NSError * __unsafe_unretained *error = &error;
-</code></pre></div>
+</code></pre>
 
 在实际开发中经常书写本小节开头的那段示例代码，但是并不会报错，原因是编译器自动做了处理，实际转化后的代码如下所示。
 
-<div class="code"><pre><code>NSError __strong *error = nil;
+<pre><code>NSError __strong *error = nil;
 NSError __autoreleasing *tmp = error;
 BOOL result = [obj performOperationWithError:&tmp];
 error = tmp;
-</code></pre></div>
+</code></pre>
 
 <h3 id="section_1_4">4. 类型转换与内存管理</h3>
 
@@ -247,14 +249,14 @@ OC 环境下开发会遇到多种类型的对象实例，而且对象实例可�
 
 在 ARC 环境下，编译器不再允许对象实例直接在这三种类型之间转换，但是可以通过 `__bridge` 转换符实现类型转换，如下代码所示。
 
-<div class="code"><pre><code>id obj = [[NSObject alloc] init];
+<pre><code>id obj = [[NSObject alloc] init];
 void *p = (__bridge void *)obj;
 id o = (__bridge id)p;
-</code></pre></div>
+</code></pre>
 
 `__bridge` 只能使得对象实例在不同的类型之间转换，若要实现内存管理，需要使用 `__bridge_retained` 和 `__bridge_transfer` 这两个转换符。下面用两段示例代码说明。
 
-<div class="code"><pre><code>/* ARC */
+<pre><code>/* ARC */
 id obj = [[NSObject alloc] init];
 void *p = (__bridge_retained void *)obj;
 
@@ -262,18 +264,18 @@ void *p = (__bridge_retained void *)obj;
 id obj = [[NSObject alloc] init];
 void *p = obj;
 [(id)p retain];
-</code></pre></div>
+</code></pre>
 
 `__bridge_retained` 使得被赋值的变量拥有对象实例的所有权。
 
-<div class="code"><pre><code>/* ARC */
+<pre><code>/* ARC */
 id obj = (__bridge_transfer id)p;
 
 /* 等效的 non-ARC 实现*/
 id obj = (id)p;
 [obj retain];
 [(id)p release];
-</code></pre></div>
+</code></pre>
 
 `__bridge_transfer` 将赋值变量对对象实例的所有权转交给被赋值变量。
 
@@ -281,25 +283,25 @@ Core Foundation 框架主要使用 C 语言实现，其中创建的对象实例�
 
 除了上面所述的 `__bridge_retained` 和 `__bridge_transfer` 转换符，Core Foundation 框架引入了两个函数实现相同的功能，分别是 `CFBridgingRetain` 和 `CFBridgingRelease`。见如下代码示例。
 
-<div class="code"><pre><code>CFMutableArrayRef cfObject = NULL;
+<pre><code>CFMutableArrayRef cfObject = NULL;
 {
     id obj = [[NSMutableArray alloc] init];
     cfObject = CFBridgingRetain(obj);   // 等同于 cfObject = (__bridge_retained CFMutableArrayRef)obj;
 }
 CFRelease(cfObject);
-</code></pre></div>
+</code></pre>
 
 <p></p>
 
-<div class="code"><pre><code>CFMutableArrayRef cfObject = CFArrayCreateMutable(kCFAllocatorDefault, 0, NULL);
+<pre><code>CFMutableArrayRef cfObject = CFArrayCreateMutable(kCFAllocatorDefault, 0, NULL);
 id obj = CFBridgingRelease(cfObject);   // 等同于 id obj = (__bridge_transfer id)cfObject;
-</code></pre></div>
+</code></pre>
 
 <h3 id="section_1_5">5. 属性</h3>
 
 ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二者存在对应关系，如下表所示。
 
-<div class="code"><pre><code>----------------------------------------------------------------------------
+<pre><code>----------------------------------------------------------------------------
 |  属性修饰符            |  所有权描述符                                       |
 |----------------------|---------------------------------------------------|
 |  assign              |  __unsafe_unretained                              |
@@ -309,7 +311,7 @@ ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二�
 |  unsafe_unretained   |  __unsafe_unretained                              |
 |  weak                |  __weak                                           |
 ----------------------------------------------------------------------------
-</code></pre></div>
+</code></pre>
 
 <h3 id="section_1_6">6. ARC 的实现方式</h3>
 
@@ -320,7 +322,7 @@ ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二�
 下面三组代码示例展示 OC 源代码与翻译后的对应伪代码。
 
 示例1
-<div class="code"><pre><code>{
+<pre><code>{
     id __strong obj = [[NSObject alloc] init];
 }
 
@@ -328,10 +330,10 @@ ARC 引入了所有权描述符，同时也引入了新的属性修饰符，二�
 id obj = objc_msgSend(NSObject, @selector(alloc));
 objc_msgSend(obj, @selector(init));
 objc_release(obj);
-</code></pre></div>
+</code></pre>
 
 示例2
-<div class="code"><pre><code>{
+<pre><code>{
     id __strong obj = [NSMutableArray array];
 }
 
@@ -339,10 +341,10 @@ objc_release(obj);
 id obj = objc_msgSend(NSMutableArray, @selector(array));
 objc_retainAutoreleasedReturnValue(obj);
 objc_release(obj);
-</code></pre></div>
+</code></pre>
 
 示例3
-<div class="code"><pre><code>+ (id)array
+<pre><code>+ (id)array
 {
     return [[NSMutableArray alloc] init];
 }
@@ -354,7 +356,7 @@ objc_release(obj);
     objc_msgSend(obj, @selector(init));
     return objc_autoreleaseReturnValue(obj);
 }
-</code></pre></div>
+</code></pre>
 
 示例3和示例2的伪代码中调用了一对函数，objc_autoreleaseReturnValue() 和 objc_retainAutoreleasedReturnValue()，这对函数调用对应“3.4. 情况分析一”小节的解释。objc_autoreleaseReturnValue() 的作用是将对象注册到自动释放池中，objc_retainAutoreleasedReturnValue() 的作用是持有目标对象。
 
@@ -384,14 +386,14 @@ GCD 是一种执行多线程任务的技术方案。使用 GCD，开发者需要
 
 上图描述了分发队列和线程的关系。XNU kernel 是 iOS 和 OS X 的核心部分，负责线程的管理，创建、销毁和调度线程。比如，8个任务添加至并发队列中，XNU kernel 提供了4个线程执行任务，可能有如下执行顺序。
 
-<div class="code"><pre><code>--------------------------------------------------
+<pre><code>--------------------------------------------------
 |  Thread0  |  Thread1  |  Thread 2  |  Thread3  |
 |-----------|-----------|------------|-----------|
 |  blk0     |  blk1     |  blk2      |  blk3     |
 |  blk4     |  blk6     |  blk5      |           |
 |  blk7     |           |            |           |
 --------------------------------------------------
-</code></pre></div>
+</code></pre>
 
 在非 ARC 情况下，分发队列创建后需手动释放。
 

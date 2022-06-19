@@ -10,6 +10,8 @@ page_id: id-2019-09-20
 
 <a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HSD（HttpServerDebug）</a> 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。
 
+<!-- more -->
+
 <!-- <p class="post-image">
     <img src="/resources/figures/2019-09-20-view-hierarchy-demo.png" alt="HttpServerDebug view debug demo" width="100%">
 </p> -->

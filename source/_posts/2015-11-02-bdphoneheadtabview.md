@@ -8,6 +8,8 @@ page_id: id-2015-11-02
 
 源代码：[BDPhoneHeadTabView](https://github.com/rob2468/HeadTabView)
 
+<!-- more -->
+
 截图：如图1所示
 
 <!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p> -->

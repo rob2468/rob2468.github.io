@@ -14,6 +14,8 @@ page_id: id-2015-10-26
 
 当在 UIScrollView 中采用 Autolayout 方式布局时，情况变得有些复杂。UIScrollView 的 contentSize 依赖于其子视图的布局，而其子视图的布局依赖于 UIScrollView 的 contentSize。如图1所示。
 
+<!-- more -->
+
 <!-- <p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView简单布局依赖示意图.png" alt="UIScrollView简单布局依赖示意图" width="80%"></p> -->
 
 ![UIScrollView简单布局依赖示意图](/images/2015-10-26-UIScrollView简单布局依赖示意图.png)

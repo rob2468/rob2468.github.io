@@ -10,6 +10,8 @@ page_id: id-2019-06-10
 
 JS 中使用 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a> 类型记录时间。Date 类型是对时间的抽象封装，它提供了许多操作时间的便利方法。本文整理了如何使用 Date 来处理时间，以及解决时区转换带来的问题。
 
+<!-- more -->
+
 <h2 id='section_2'>Date 实例</h2>
 
 一个 Date 实例封装了一个时间，其中，时间的底层表示方式是1970年1月1日至今的毫秒数。并且，这里毫秒数的计算与时区无关，均以 UTC±0 计算。在同一时刻生成的 Date 实例，无论是在北京，还是在西雅图，其中封装的时间都是相同的。

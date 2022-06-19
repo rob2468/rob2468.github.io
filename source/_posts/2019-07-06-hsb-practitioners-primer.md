@@ -10,6 +10,8 @@ page_id: id-2019-07-06
 
 本文翻译自 <a href="https://learnui.design/blog/the-hsb-color-system-practicioners-primer.html" target="_blank">The HSB Color System: A Practitioner's Primer</a>。
 
+<!-- more -->
+
 为什么网上没有一篇好的解释 HSB 颜色系统的文章，我觉得这很蠢。Google 有 250 万的 HSB 搜索结果，但是实际使用这套系统的人有多少呢？我必须自己做这件事吗？
 
 好的方面是，现在在我喝完这杯啤酒的时候，我有了事情可做。
