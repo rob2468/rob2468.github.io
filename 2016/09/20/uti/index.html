@@ -6,19 +6,19 @@
   
   <title>UTI，Uniform Type Identifier | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="文本文件可以使用文本编辑器打开，图片可以使用图片查看软件打开，这些操作都包含文件类型的判断。文件类型的表示方式很多，本文介绍的UTI（Uniform Type Identifier）是 Apple 提出的一种表示文件类型的方法。其它的文件类型表示方法还有OSType、文件名后缀、MIME等。 一、UTI 的结构UTI 为表示文件类型提供了统一的方式，它的写法采用 reverse-DNS 格式，如：">
+  <meta name="description" content="文本文件可以使用文本编辑器打开，图片可以使用图片查看软件打开，这些操作都包含文件类型的判断。文件类型的表示方式很多，本文介绍的UTI（Uniform Type Identifier）是 Apple 提出的一种表示文件类型的方法。其它的文件类型表示方法还有OSType、文件名后缀、MIME等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UTI，Uniform Type Identifier">
 <meta property="og:url" content="https://rob2468.github.io/2016/09/20/uti/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="文本文件可以使用文本编辑器打开，图片可以使用图片查看软件打开，这些操作都包含文件类型的判断。文件类型的表示方式很多，本文介绍的UTI（Uniform Type Identifier）是 Apple 提出的一种表示文件类型的方法。其它的文件类型表示方法还有OSType、文件名后缀、MIME等。 一、UTI 的结构UTI 为表示文件类型提供了统一的方式，它的写法采用 reverse-DNS 格式，如：">
+<meta property="og:description" content="文本文件可以使用文本编辑器打开，图片可以使用图片查看软件打开，这些操作都包含文件类型的判断。文件类型的表示方式很多，本文介绍的UTI（Uniform Type Identifier）是 Apple 提出的一种表示文件类型的方法。其它的文件类型表示方法还有OSType、文件名后缀、MIME等。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-09-20-conformance_hierarchy.gif">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-09-20-conformance_hierarchy.gif">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-09-20-physical_vs_functional.gif">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-09-20-physical_vs_functional.gif">
 <meta property="article:published_time" content="2016-09-20T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.468Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.643Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2016-09-20-conformance_hierarchy.gif">
@@ -101,6 +101,8 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>文本文件可以使用文本编辑器打开，图片可以使用图片查看软件打开，这些操作都包含文件类型的判断。文件类型的表示方式很多，本文介绍的UTI（Uniform Type Identifier）是 Apple 提出的一种表示文件类型的方法。其它的文件类型表示方法还有OSType、文件名后缀、MIME等。</p>
+<span id="more"></span>
+
 <h2 id="一、UTI-的结构"><a href="#一、UTI-的结构" class="headerlink" title="一、UTI 的结构"></a>一、UTI 的结构</h2><p>UTI 为表示文件类型提供了统一的方式，它的写法采用 reverse-DNS 格式，如：com.apple.quicktime-movie、public.html、public.jpeg。</p>
 <p>UTI 的组织结构类似于网络中域名系统的层次结构。</p>
 <p>“public”域表示一些常见的或标准的类型。许多软件能够处理的文件类型都属于“public”域。“public”域是保留的，目前只有 Apple 能够声明该域下的类型。</p>
@@ -125,14 +127,21 @@
 <h2 id="三、在-iOS-中使用-UTI"><a href="#三、在-iOS-中使用-UTI" class="headerlink" title="三、在 iOS 中使用 UTI"></a>三、在 iOS 中使用 UTI</h2><p>MobileCoreServices.framework 中定义了使用 UTI 的一些常量和方法。该框架主要包含 UTCoreTypes.h 和 UTType.h 这两个头文件。</p>
 <p>UTCoreTypes.h 头文件中声明了系统定义的常量。如果要表示某个文件的类型，最好使用该文件中声明的常量，而不是直接使用字符串。比如 kUTTypeItem 表示 “public.item”。</p>
 <p>UTType.h 头文件中声明了操作 UTI 的方法。一些常用方法如下。</p>
-<div class="code"><pre><code>
+<pre><code>
 // 1
 Boolean UTTypeEqual(CFStringRef inUTI1, CFStringRef inUTI2)                 // 两个 UTI 是否相同
 Boolean UTTypeConformsTo(CFStringRef inUTI, CFStringRef inConformsToUTI)    // inUTI 是否“继承”自 inConformsToUTI
 
-<p>// 2<br>CFStringRef UTTypeCreatePreferredIdentifierForTag(CFStringRef inTagClass, CFStringRef inTag, CFStringRef inConformingToUTI) // 将其它的类型表示方法（如文件名后缀、MIME）转换为 UTI<br>CFArrayRef UTTypeCreateAllIdentifiersForTag(CFStringRef inTagClass, CFStringRef inTag, CFStringRef inConformingToUTI)       // 将其它的类型表示方法（如文件名后缀、MIME）转换为 UTI</p>
-<p>// 3. 下面两个方法为上面两个方法的逆操作，即将 UTI 转换为其它的类型表示方法<br>CFStringRef UTTypeCopyPreferredTagWithClass(CFStringRef inUTI, CFStringRef inTagClass)<br>CFArrayRef UTTypeCopyAllTagsWithClass(CFStringRef inUTI, CFStringRef inTagClass)</p>
-<p></code></pre></div></p>
+// 2
+CFStringRef UTTypeCreatePreferredIdentifierForTag(CFStringRef inTagClass, CFStringRef inTag, CFStringRef inConformingToUTI) // 将其它的类型表示方法（如文件名后缀、MIME）转换为 UTI
+CFArrayRef UTTypeCreateAllIdentifiersForTag(CFStringRef inTagClass, CFStringRef inTag, CFStringRef inConformingToUTI)       // 将其它的类型表示方法（如文件名后缀、MIME）转换为 UTI
+
+// 3. 下面两个方法为上面两个方法的逆操作，即将 UTI 转换为其它的类型表示方法
+CFStringRef UTTypeCopyPreferredTagWithClass(CFStringRef inUTI, CFStringRef inTagClass)
+CFArrayRef UTTypeCopyAllTagsWithClass(CFStringRef inUTI, CFStringRef inTagClass)
+
+</code></pre>
+
 <h2 id="四、其它"><a href="#四、其它" class="headerlink" title="四、其它"></a>四、其它</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_declare/understand_utis_declare.html">声明新的 UTI</a>。</p>
 <p></p>
 
@@ -146,7 +155,7 @@ Boolean UTTypeConformsTo(CFStringRef inUTI, CFStringRef inConformsToUTI)    // i
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/09/20/uti/" data-id="cl4h5hf2z000dbdoo82tu1qft" data-title="UTI，Uniform Type Identifier" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/09/20/uti/" data-id="cl4lepngz000dayox17vf3izp" data-title="UTI，Uniform Type Identifier" class="article-share-link">Share</a>
       
       
       

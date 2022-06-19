@@ -6,17 +6,17 @@
   
   <title>事件分发和 DOM 事件流（译） | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="原文链接，Event dispatch and DOM event flow。 本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 dispatchEvent() 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。    事件分发示意图  事件对象会被分发给事件目标（event target），事件目标是指最终被选中的响应事件的对象，可以从事件的 targe">
+  <meta name="description" content="原文链接，Event dispatch and DOM event flow。 本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 dispatchEvent() 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="事件分发和 DOM 事件流（译）">
 <meta property="og:url" content="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="原文链接，Event dispatch and DOM event flow。 本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 dispatchEvent() 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。    事件分发示意图  事件对象会被分发给事件目标（event target），事件目标是指最终被选中的响应事件的对象，可以从事件的 targe">
+<meta property="og:description" content="原文链接，Event dispatch and DOM event flow。 本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 dispatchEvent() 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-06-19-eventflow.svg">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-06-19-eventflow.svg">
 <meta property="article:published_time" content="2018-06-19T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.472Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.643Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-06-19-eventflow.svg">
@@ -100,6 +100,8 @@
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>原文链接，<a href="https://www.w3.org/TR/uievents/#event-flow" target="_blank">Event dispatch and DOM event flow</a>。</p>
 <p>本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 <code>dispatchEvent()</code> 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。</p>
+<span id="more"></span>
+
 <!-- <p class="post-image"><img src="/resources/figures/2018-06-19-eventflow.svg" alt="eventflow" width="90%"></p> -->
 
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-06-19-eventflow.svg"></p>
@@ -117,7 +119,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="cl4h5hf36000jbdoocpy44fib" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="cl4lepnh4000jayox4wc75q46" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
       
       
       

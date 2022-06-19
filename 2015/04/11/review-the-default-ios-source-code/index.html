@@ -14,7 +14,7 @@
 <meta property="og:description" content="翻译自 Apple iOS developer library 源代码简介app 工程创建后通常会自动生成一些源代码文件，通过这些源代码文件构建 app。其中大部分的工作是由 UIApplicationMain 函数完成的，UIApplicationMain 函数在 main.m 文件中自动被调用。UIApplicationMain 函数创建一个应用程序对象，该应用程序对象为 app 创建与 iO">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-04-11T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.468Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.643Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
   
@@ -97,11 +97,13 @@
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>翻译自 Apple iOS developer library</p>
 <h2 id="源代码简介"><a href="#源代码简介" class="headerlink" title="源代码简介"></a>源代码简介</h2><p>app 工程创建后通常会自动生成一些源代码文件，通过这些源代码文件构建 app。其中大部分的工作是由 <code>UIApplicationMain</code> 函数完成的，<code>UIApplicationMain</code> 函数在 <code>main.m</code> 文件中自动被调用。<code>UIApplicationMain</code> 函数创建一个应用程序对象，该应用程序对象为 app 创建与 iOS 操作系统协同工作的基础设施环境，包括创建一个向 app 分发输入事件的 <em>run loop</em>。</p>
+<span id="more"></span>
+
 <h2 id="main-m-文件和-UIApplicationMain-函数"><a href="#main-m-文件和-UIApplicationMain-函数" class="headerlink" title="main.m 文件和 UIApplicationMain 函数"></a><code>main.m</code> 文件和 <code>UIApplicationMain</code> 函数</h2><p><code>main.m</code> 文件中的 <code>main</code> 函数在一个 autorelease 池中调用 <code>UIApplicationMain</code> 函数。</p>
-<div class="code"><pre><code>@autoreleasepool &#123;
+<pre><code>@autoreleasepool &#123;
     return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
 &#125;
-</code></pre></div>
+</code></pre>
 
 <p><code>@autoreleasepool</code> 语句支持 app 内存管理。ARC（Automatic Reference Counting）机制让编译器跟踪对象的持有者，使得内存管理工作变得简单；<code>@autoreleasepool</code> 是内存管理架构的一部分。</p>
 <p>调用 <code>UIApplicationMain</code> 函数为 app 创建了两个重要的初始组件：</p>
@@ -117,7 +119,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/" data-id="cl4h5hf2m0002bdoo0vse2w2q" data-title="iOS 工程默认源代码文件简介（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/" data-id="cl4lepngp0002ayox3fu1a313" data-title="iOS 工程默认源代码文件简介（译）" class="article-share-link">Share</a>
       
       
       

@@ -6,19 +6,19 @@
   
   <title>JSPatch 代码分析 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="“JSPatch 是一个 iOS 动态更新框架，只需在项目中引入极小的引擎，就可以使用 JavaScript 调用任何 Objective-C 原生接口，获得脚本语言的优势：为项目动态添加模块，或替换项目原生代码动态修复 bug。” JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。 一、OC (Objective-C) 运行时">
+  <meta name="description" content="“JSPatch 是一个 iOS 动态更新框架，只需在项目中引入极小的引擎，就可以使用 JavaScript 调用任何 Objective-C 原生接口，获得脚本语言的优势：为项目动态添加模块，或替换项目原生代码动态修复 bug。” JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JSPatch 代码分析">
 <meta property="og:url" content="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="“JSPatch 是一个 iOS 动态更新框架，只需在项目中引入极小的引擎，就可以使用 JavaScript 调用任何 Objective-C 原生接口，获得脚本语言的优势：为项目动态添加模块，或替换项目原生代码动态修复 bug。” JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。 一、OC (Objective-C) 运行时">
+<meta property="og:description" content="“JSPatch 是一个 iOS 动态更新框架，只需在项目中引入极小的引擎，就可以使用 JavaScript 调用任何 Objective-C 原生接口，获得脚本语言的优势：为项目动态添加模块，或替换项目原生代码动态修复 bug。” JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-05-16-JSPatch_MessageSend.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-16-JSPatch_MessageSend.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-05-16-JSPatch_callSelector.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-16-JSPatch_callSelector.png">
 <meta property="article:published_time" content="2016-05-16T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.468Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.643Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2016-05-16-JSPatch_MessageSend.png">
@@ -104,6 +104,8 @@
 
 <p>“<a target="_blank" rel="noopener" href="https://github.com/bang590/JSPatch">JSPatch</a> 是一个 iOS 动态更新框架，只需在项目中引入极小的引擎，就可以使用 JavaScript 调用任何 Objective-C 原生接口，获得脚本语言的优势：为项目动态添加模块，或替换项目原生代码动态修复 bug。”</p>
 <p>JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。</p>
+<span id="more"></span>
+
 <h2 id="section_1">一、OC (Objective-C) 运行时</h2>
 
 <p>OC 是运行时语言，即能够在程序运行的时候执行编译后的代码。OC 中的方法调用通过消息转发（objc_msgSend）实现，即先根据方法名寻找到方法实现，再调用方法实现。并且，通过 Method Swizzling 技术，可以动态修改方法名和方法实现的对应关系。</p>
@@ -112,42 +114,56 @@
 <p>objc_msgSend 函数的重要工作是根据某个方法的 selector 找到相应的方法实现(IMP)。IMP 类型即为函数指针。</p>
 <p>_objc_msgForward 是 IMP 类型，当 objc_msgSend 未找到某个 selector 的 IMP，会使用该 IMP 替代。_objc_msgForward 会做消息转发的工作。</p>
 <p>_objc_msgForward 消息转发会依次调用如下的方法。</p>
-<div class="code"><pre><code>+ (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
+<pre><code>+ (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
 - (id)forwardingTargetForSelector:(SEL)aSelector;
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;
 - (void)forwardInvocation:(NSInvocation *)anInvocation;
 - (void)doesNotRecognizeSelector:(SEL)aSelector;
-</code></pre></div>
+</code></pre>
 
 <h3>2. Method Swizzling</h3>
 
 <p>Method Swizzling 用于修改目标类的方法名和方法实现的对应关系，比如可以增加新方法、替换已有方法的方法实现。</p>
 <p>常用函数如下所示：</p>
-<div class="code"><pre><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);
+<pre><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);
 IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types);
 void method_exchangeImplementations(Method m1, Method m2);
-</code></pre></div>
+</code></pre>
 
 <p>下面代码片段是一种情况下的使用示例：</p>
-<div class="code"><pre><code>SEL originalSelector = @selector(viewWillAppear:);
+<pre><code>SEL originalSelector = @selector(viewWillAppear:);
 SEL swizzledSelector = @selector(xxx_viewWillAppear:);
 
-<p>Method originalMethod = class_getInstanceMethod(class, originalSelector);<br>Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);</p>
-<p>// When swizzling a class method, use the following:<br>// Class class = object_getClass((id)self);<br>// …<br>// Method originalMethod = class_getClassMethod(class, originalSelector);<br>// Method swizzledMethod = class_getClassMethod(class, swizzledSelector);</p>
-<p>BOOL didAddMethod = class_addMethod(class, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));</p>
-<p>if (didAddMethod) &#123;<br>    class_replaceMethod(class, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));<br>&#125; else &#123;<br>    method_exchangeImplementations(originalMethod, swizzledMethod);<br>&#125;<br></code></pre></div></p>
+Method originalMethod = class_getInstanceMethod(class, originalSelector);
+Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
+
+// When swizzling a class method, use the following:
+// Class class = object_getClass((id)self);
+// ...
+// Method originalMethod = class_getClassMethod(class, originalSelector);
+// Method swizzledMethod = class_getClassMethod(class, swizzledSelector);
+
+BOOL didAddMethod = class_addMethod(class, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
+
+if (didAddMethod) &#123;
+    class_replaceMethod(class, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
+&#125; else &#123;
+    method_exchangeImplementations(originalMethod, swizzledMethod);
+&#125;
+</code></pre>
+
 <h2 id="section_2">二、JavaScriptCore.framework</h2>
 
 <p>JSCore 是从 UIWebView 提取出的 JS 解析引擎，封装了 JS 和 OC 桥接的 OC API，使得不依赖于 UIWebView 便能实现 JS 环境和 OC 环境的通信。JSCore 提供不同运行环境之间方法互调的接口，并对不同类型的数据格式进行封装。</p>
 <h3>1. 方法互调</h3>
 
 <p>JSCore 提供了多种方式实现 JS 和 OC 的通信，最常用的方式是使用 Block，如下代码所示：</p>
-<div class="code"><pre><code>JSContext *context = [[JSContext alloc] init];
+<pre><code>JSContext *context = [[JSContext alloc] init];
 context[@"log"] = ^() &#123;
     NSLog(@"-------Log-------");
 &#125;;
 [context evaluateScript:@"log()"];
-</code></pre></div>
+</code></pre>
 
 <p>JSContext 是 JS 的运行环境。上述代码中，在 JSContext 中声明了名为 log 的函数，该函数的实现是 OC block，实现了在 JS 环境中调用 OC 方法。</p>
 <p><code>[context evaluateScript:@&quot;log()&quot;]</code> 是调用名为 log 的 JS 函数，实现了在 OC 环境中调用 JS 函数。</p>
@@ -155,7 +171,7 @@ context[@"log"] = ^() &#123;
 <h3>2. 类型转换关系</h3>
 
 <p>JS 和 OC 环境通信还伴随着数据的传递，下表是各类型数据的对应关系。</p>
-<div class="code"><pre><code>-----------------------------------------------------------------------------
+<pre><code>-----------------------------------------------------------------------------
 |  Objective-C Types                                    |  Javascript Types |
 |-------------------------------------------------------|-------------------|
 |  nil                                                  |  undefined        |
@@ -169,7 +185,7 @@ context[@"log"] = ^() &#123;
 |  Structure types: NSRange, CGRect, CGPoint, CGSize    |  Object           |
 |  Objective-C Block                                    |  Function         |
 -----------------------------------------------------------------------------
-</code></pre></div>
+</code></pre>
 
 <h2 id="section_3">三、方法调用</h2>
 
@@ -215,7 +231,7 @@ context[@"log"] = ^() &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="cl4h5hf2u0009bdoo42l5hym0" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="cl4lepngu0009ayox954s5k05" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
       
       
       

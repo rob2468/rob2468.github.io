@@ -6,15 +6,15 @@
   
   <title>代码混淆 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。 一、基本原理  利用宏，将敏感类名、方法名替换成其它字符串。 可以在预编译头文件中(.pch)将希望替换的字符串定义为其它值，如 #define SensitiveMetho">
+  <meta name="description" content="class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="代码混淆">
 <meta property="og:url" content="https://rob2468.github.io/2017/07/27/code-obfuscation/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。 一、基本原理  利用宏，将敏感类名、方法名替换成其它字符串。 可以在预编译头文件中(.pch)将希望替换的字符串定义为其它值，如 #define SensitiveMetho">
+<meta property="og:description" content="class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-07-27T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.468Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.643Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
   
@@ -98,6 +98,8 @@
         <h1 class="title"></h1>
 
 <p>class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。</p>
+<span id="more"></span>
+
 <h2 id="section_1">一、基本原理</h2>
 
 <p>利用宏，将敏感类名、方法名替换成其它字符串。</p>
@@ -106,7 +108,7 @@
 <h2 id="section_2">二、实用工具</h2>
 
 <p>下面的脚本片段从参考文献[1]中拷贝而来，并作了部分调整，增加了随机字符串去重的功能。</p>
-<div class="code"><pre><code>#!/usr/bin/env bash
+<pre><code>#!/usr/bin/env bash
 TABLENAME="symbols"
 SYMBOL_DB_FILE="symbols"
 STRING_SYMBOL_FILE="obfuscation.list"
@@ -131,13 +133,32 @@ randomString() &#123;
     fi
 &#125;
 
-<p>rm -f $SYMBOL_DB_FILE<br>rm -f $HEAD_FILE<br>touch $HEAD_FILE<br>createTable<br>echo ‘#ifndef CodeObfuscation_h<br>#define CodeObfuscation_h’ &gt;&gt; $HEAD_FILE<br>echo “// obfuscate string at <code>date</code>“ &gt;&gt; $HEAD_FILE<br>cat “$STRING_SYMBOL_FILE” | while read -ra line; do<br>    if [[ -n “$line” ]]; then<br>        random=<code>randomString</code><br>        insertValue $line $ramdom<br>        res=”#define $line $random”<br>        echo $res<br>        echo “$res” &gt;&gt; $HEAD_FILE<br>    fi<br>done<br>echo “#endif” &gt;&gt; $HEAD_FILE<br>rm -f $SYMBOL_DB_FILE<br></code></pre></div></p>
+rm -f $SYMBOL_DB_FILE
+rm -f $HEAD_FILE
+touch $HEAD_FILE
+createTable
+echo '#ifndef CodeObfuscation_h
+#define CodeObfuscation_h' >> $HEAD_FILE
+echo "// obfuscate string at `date`" >> $HEAD_FILE
+cat "$STRING_SYMBOL_FILE" | while read -ra line; do
+    if [[ -n "$line" ]]; then
+        random=`randomString`
+        insertValue $line $ramdom
+        res="#define $line $random"
+        echo $res
+        echo "$res" >> $HEAD_FILE
+    fi
+done
+echo "#endif" >> $HEAD_FILE
+rm -f $SYMBOL_DB_FILE
+</code></pre>
+
 <p>STRING_SYMBOL_FILE 为文件名，文件内容为希望替换的字符串列表。HEAD_FILE 为文件名，文件内容为脚本生成的包含宏定义的头文件。randomString 函数用于生成一段随机字符串。脚本主体功能是不断读取 STRING_SYMBOL_FILE 中的行，每行一个原始字符串，然后生成一个随机字符串，将原始字符串和随机字符串组成一行 #define 语句。</p>
 <p>脚本文件、资源文件和生成的文件都在同一个文件夹内，将生成的头文件加入 Xcode 工程运行即可。</p>
 <h2 id="section_3">三、对 JSPatch 进行代码混淆</h2>
 
 <p>出于某些原因希望对 JSPatch 进行代码混淆，下面是一个供参考的需要进行宏替换的字符串列表。</p>
-<div class="code"><pre><code>/* obfuscation.list 文件 */
+<pre><code>/* obfuscation.list 文件 */
 startEngine
 evaluateScriptWithPath
 handleException
@@ -203,10 +224,10 @@ JPDevMenu
 JPDevMenuItem
 JPDevTipView
 JPDevMenuDelegate
-</code></pre></div>
+</code></pre>
 
 <p>将上述文件和脚本文件置于同一目录下，运行脚本，下面是某次脚本运行生成的文件。</p>
-<div class="code"><pre><code>/* CodeObfuscation.h 文件 */
+<pre><code>/* CodeObfuscation.h 文件 */
 #ifndef CodeObfuscation_h
 #define CodeObfuscation_h
 // obfuscate string at Fri Jul 28 12:45:21 CST 2017
@@ -276,7 +297,7 @@ JPDevMenuDelegate
 #define JPDevTipView ZOEYPkhWyVaoiRqE
 #define JPDevMenuDelegate DHhfMzdeghLzvggm
 #endif
-</code></pre></div>
+</code></pre>
 
 <p>JSPatch 中的核心 JS 脚本 JSPatch.js 直接打入包中，拆开包便能看到。可以使用另一种思路进行代码混淆，修改文件名、将文件内容进行编码（如base64编码），再加入到 bundle 中。需要运行 JSPatch.js 时，先读取文件内容再解码，便能获得原始的 JS 脚本内容。</p>
 <h3>参考文献：</h3>
@@ -293,7 +314,7 @@ JPDevMenuDelegate
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="cl4h5hf32000fbdooaj5jh98e" data-title="代码混淆" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="cl4lepnh1000fayox8ujwebgf" data-title="代码混淆" class="article-share-link">Share</a>
       
       
       

@@ -6,17 +6,17 @@
   
   <title>为 GCDWebServer 引入 WebSocket 支持 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="前言  借助一些工具库，iOS 设备可以配置成为服务器，在此之上可以做许多有意思的事情。例如，HttpServerDebug 基于这种能力，提供了现场调试 iOS App 的能力。 CocoaHTTPServer 是比较早期的提供服务器能力的库，(基础 Socket 通信能力由 CocoaAsyncSocket 提供，)现在已不再维护。 GCDWebServer 也是一个提供服务器能力的工具，">
+  <meta name="description" content="前言  借助一些工具库，iOS 设备可以配置成为服务器，在此之上可以做许多有意思的事情。例如，HttpServerDebug 基于这种能力，提供了现场调试 iOS App 的能力。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为 GCDWebServer 引入 WebSocket 支持">
 <meta property="og:url" content="https://rob2468.github.io/2019/06/15/hsd-websocket/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="前言  借助一些工具库，iOS 设备可以配置成为服务器，在此之上可以做许多有意思的事情。例如，HttpServerDebug 基于这种能力，提供了现场调试 iOS App 的能力。 CocoaHTTPServer 是比较早期的提供服务器能力的库，(基础 Socket 通信能力由 CocoaAsyncSocket 提供，)现在已不再维护。 GCDWebServer 也是一个提供服务器能力的工具，">
+<meta property="og:description" content="前言  借助一些工具库，iOS 设备可以配置成为服务器，在此之上可以做许多有意思的事情。例如，HttpServerDebug 基于这种能力，提供了现场调试 iOS App 的能力。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2019-06-15-websocket-retain.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2019-06-15-websocket-retain.png">
 <meta property="article:published_time" content="2019-06-15T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.472Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.647Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2019-06-15-websocket-retain.png">
@@ -103,6 +103,8 @@
 <h2 id="section_1">前言</h2>
 
 <p>借助一些工具库，iOS 设备可以配置成为服务器，在此之上可以做许多有意思的事情。例如，<a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HttpServerDebug</a> 基于这种能力，提供了现场调试 iOS App 的能力。</p>
+<span id="more"></span>
+
 <p><a href="https://github.com/robbiehanson/CocoaHTTPServer" target="_blank">CocoaHTTPServer</a> 是比较早期的提供服务器能力的库，(基础 Socket 通信能力由 <a href="https://github.com/robbiehanson/CocoaAsyncSocket" target="_blank">CocoaAsyncSocket</a> 提供，)现在已不再维护。</p>
 <p><a href="https://github.com/swisspol/GCDWebServer" target="_blank">GCDWebServer</a> 也是一个提供服务器能力的工具，基于 GCD 实现，当前仍在维护中。</p>
 <p>HSD（HttpServerDebug） 基于 GCDWebServer。HSD 希望能够主动的把信息发送到前端，这依赖于 WebSocket 协议，但是 GCDWebServer 不支持。</p>
@@ -164,157 +166,159 @@ Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
 <p>HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConnection 检测到当前请求为 WebSocket 请求时，实例出 HSDGWebSocket 对象，并显示持有。他们的对应关系是 1 : 1。</p>
 <h2 id="section_5">建立连接</h2>
 
-<div class="code"><pre><code>+ (BOOL)isWebSocketRequest:(NSDictionary *)requestHeaders &#123;
+<pre><code>+ (BOOL)isWebSocketRequest:(NSDictionary *)requestHeaders &#123;
     NSString *connectionHeaderValue = [requestHeaders objectForKey:@"Connection"];
     NSString *upgradeHeaderValue = [requestHeaders objectForKey:@"Upgrade"];
 
-<pre><code>BOOL isWebSocket = YES;
-if (!upgradeHeaderValue || !connectionHeaderValue) &#123;
-    isWebSocket = NO;
-&#125; else if ([upgradeHeaderValue caseInsensitiveCompare:@&quot;WebSocket&quot;] != NSOrderedSame) &#123;
-    isWebSocket = NO;
-&#125; else if ([connectionHeaderValue rangeOfString:@&quot;Upgrade&quot; options:NSCaseInsensitiveSearch].location == NSNotFound) &#123;
-    isWebSocket = NO;
+    BOOL isWebSocket = YES;
+    if (!upgradeHeaderValue || !connectionHeaderValue) &#123;
+        isWebSocket = NO;
+    &#125; else if ([upgradeHeaderValue caseInsensitiveCompare:@"WebSocket"] != NSOrderedSame) &#123;
+        isWebSocket = NO;
+    &#125; else if ([connectionHeaderValue rangeOfString:@"Upgrade" options:NSCaseInsensitiveSearch].location == NSNotFound) &#123;
+        isWebSocket = NO;
+    &#125;
+    return isWebSocket;
 &#125;
-return isWebSocket;
 </code></pre>
-<p>}<br></code></pre></div></p>
+
 <p>如上代码所示，接收到请求后，根据请求头判断是否是 WebSocket 请求。如果是 WekSocket 请求，则发送对应的响应头，如下代码所示。请求和响应的格式和值见 WebSocket 协议的定义。</p>
-<div class="code"><pre><code>- (void)sendResponseHeaders &#123;
+<pre><code>- (void)sendResponseHeaders &#123;
     // request info
     NSDictionary *requestHeaders = CFBridgingRelease(CFHTTPMessageCopyAllHeaderFields(self.requestMessage));
     NSString *origin = [requestHeaders objectForKey:@"Origin"];
     NSString *host = [requestHeaders objectForKey:@"Host"];
     NSString *secWebSocketKey = [requestHeaders objectForKey:@"Sec-WebSocket-Key"];
 
-<pre><code>NSURL *requestURL = CFBridgingRelease(CFHTTPMessageCopyRequestURL(self.requestMessage));
-NSString *relativeString = [requestURL relativeString];
+    NSURL *requestURL = CFBridgingRelease(CFHTTPMessageCopyRequestURL(self.requestMessage));
+    NSString *relativeString = [requestURL relativeString];
 
-// response
-CFHTTPMessageRef responseMessage = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 101, CFSTR(&quot;Web Socket Protocol Handshake&quot;), kCFHTTPVersion1_1);
-CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;Connection&quot;), CFSTR(&quot;Upgrade&quot;));
-CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;Upgrade&quot;), CFSTR(&quot;WebSocket&quot;));
+    // response
+    CFHTTPMessageRef responseMessage = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 101, CFSTR("Web Socket Protocol Handshake"), kCFHTTPVersion1_1);
+    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("Connection"), CFSTR("Upgrade"));
+    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("Upgrade"), CFSTR("WebSocket"));
 
-CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;WebSocket-Origin&quot;), (__bridge CFStringRef)origin);
-NSString *locationValue = [NSString stringWithFormat:@&quot;ws://%@%@&quot;, host, relativeString];
-CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;WebSocket-Location&quot;), (__bridge CFStringRef)locationValue);
+    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("WebSocket-Origin"), (__bridge CFStringRef)origin);
+    NSString *locationValue = [NSString stringWithFormat:@"ws://%@%@", host, relativeString];
+    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("WebSocket-Location"), (__bridge CFStringRef)locationValue);
 
-// Sec-WebSocket-Accept
-NSString *guid = @&quot;258EAFA5-E914-47DA-95CA-C5AB0DC85B11&quot;;
-NSString *acceptValue = [[secWebSocketKey stringByAppendingString:guid] dataUsingEncoding: NSUTF8StringEncoding].sha1Digest.base64Encoded;
-if (acceptValue.length &gt; 0) &#123;
-    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR(&quot;Sec-WebSocket-Accept&quot;), (__bridge CFStringRef)acceptValue);
-&#125;
+    // Sec-WebSocket-Accept
+    NSString *guid = @"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+    NSString *acceptValue = [[secWebSocketKey stringByAppendingString:guid] dataUsingEncoding: NSUTF8StringEncoding].sha1Digest.base64Encoded;
+    if (acceptValue.length > 0) &#123;
+        CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("Sec-WebSocket-Accept"), (__bridge CFStringRef)acceptValue);
+    &#125;
 
-CFDataRef data = CFHTTPMessageCopySerializedMessage(responseMessage);
-[self writeData:(__bridge NSData*)data withCompletionBlock:^(BOOL sucess) &#123;&#125;];
-CFRelease(data);
-</code></pre>
-<p>}</code></pre></div></p>
+    CFDataRef data = CFHTTPMessageCopySerializedMessage(responseMessage);
+    [self writeData:(__bridge NSData*)data withCompletionBlock:^(BOOL sucess) &#123;&#125;];
+    CFRelease(data);
+&#125;</code></pre>
+
 <h2 id="section_6">发送和接收信息</h2>
 
 <p>下面两段代码分别是，从服务端发送信息到前端和服务端接收前端发来的信息。其中关于字节流的处理见 WebSocket 协议 Frame 的定义。</p>
-<div class="code"><pre><code>- (void)sendMessage:(NSString *)msg &#123;
+<pre><code>- (void)sendMessage:(NSString *)msg &#123;
     NSData *msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableData *data = nil;
 
-<pre><code>NSUInteger length = msgData.length;
-if (length &lt;= 125) &#123;
-    data = [NSMutableData dataWithCapacity:(length + 2)];
-    [data appendBytes:&quot;\x81&quot; length:1];
-    UInt8 len = (UInt8)length;
-    [data appendBytes:&amp;len length:1];
-    [data appendData:msgData];
-&#125; else if (length &lt;= 0xFFFF) &#123;
-    data = [NSMutableData dataWithCapacity:(length + 4)];
-    [data appendBytes:&quot;\x81\x7E&quot; length:2];
-    UInt16 len = (UInt16)length;
-    [data appendBytes:(UInt8[])&#123;len &gt;&gt; 8, len &amp; 0xFF&#125; length:2];
-    [data appendData:msgData];
-&#125; else &#123;
-    data = [NSMutableData dataWithCapacity:(length + 10)];
-    [data appendBytes:&quot;\x81\x7F&quot; length:2];
-    [data appendBytes:(UInt8[])&#123;0, 0, 0, 0, (UInt8)(length &gt;&gt; 24), (UInt8)(length &gt;&gt; 16), (UInt8)(length &gt;&gt; 8), length &amp; 0xFF&#125; length:8];
-    [data appendData:msgData];
-&#125;
+    NSUInteger length = msgData.length;
+    if (length <= 125) &#123;
+        data = [NSMutableData dataWithCapacity:(length + 2)];
+        [data appendBytes:"\x81" length:1];
+        UInt8 len = (UInt8)length;
+        [data appendBytes:&len length:1];
+        [data appendData:msgData];
+    &#125; else if (length <= 0xFFFF) &#123;
+        data = [NSMutableData dataWithCapacity:(length + 4)];
+        [data appendBytes:"\x81\x7E" length:2];
+        UInt16 len = (UInt16)length;
+        [data appendBytes:(UInt8[])&#123;len >> 8, len & 0xFF&#125; length:2];
+        [data appendData:msgData];
+    &#125; else &#123;
+        data = [NSMutableData dataWithCapacity:(length + 10)];
+        [data appendBytes:"\x81\x7F" length:2];
+        [data appendBytes:(UInt8[])&#123;0, 0, 0, 0, (UInt8)(length >> 24), (UInt8)(length >> 16), (UInt8)(length >> 8), length & 0xFF&#125; length:8];
+        [data appendData:msgData];
+    &#125;
 
-[self writeData:data withCompletionBlock:^(BOOL success) &#123;&#125;];
-</code></pre>
-<p>}</code></pre></div></p>
-<div class="code"><pre><code>- (void)handleReceivedData:(NSData *)data &#123;
+    [self writeData:data withCompletionBlock:^(BOOL success) &#123;&#125;];
+&#125;</code></pre>
+
+<pre><code>- (void)handleReceivedData:(NSData *)data &#123;
     NSUInteger curPointPos = 0;     // pointer postion cursor
     NSUInteger msgLength;           // payload length
     NSUInteger opCode;
     BOOL frameMasked;
     NSData *maskingKey;
 
-<pre><code>NSData *tmp = [[NSData alloc] initWithBytes:(UInt8 *)[data bytes] length:1];// first byte
-curPointPos++;
+    NSData *tmp = [[NSData alloc] initWithBytes:(UInt8 *)[data bytes] length:1];// first byte
+    curPointPos++;
 
-UInt8 frame = *(UInt8 *)[tmp bytes];
-if ([self isValidWebSocketFrame:frame]) &#123;
-    opCode = frame &amp; 0x0F;
-&#125; else &#123;
-    [self closeWebSocket];
-    return;
-&#125;
-
-tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:1];
-curPointPos++;
-
-frame = *(UInt8 *)[tmp bytes];
-frameMasked = WS_PAYLOAD_IS_MASKED(frame);
-NSUInteger length = WS_PAYLOAD_LENGTH(frame);
-
-if (length &lt;= 125) &#123;
-    if (frameMasked) &#123;
-        maskingKey = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:4];
-        curPointPos += 4;
+    UInt8 frame = *(UInt8 *)[tmp bytes];
+    if ([self isValidWebSocketFrame:frame]) &#123;
+        opCode = frame & 0x0F;
+    &#125; else &#123;
+        [self closeWebSocket];
+        return;
     &#125;
-    msgLength = length;
-&#125; else if (length == 126) &#123;
-    tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:2];
-    curPointPos += 2;
 
-    UInt8 *pFrame = (UInt8 *)[tmp bytes];
-    NSUInteger length = ((NSUInteger)pFrame[0] &lt;&lt; 8) | (NSUInteger)pFrame[1];
-    if (frameMasked) &#123;
-        maskingKey = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:4];
-        curPointPos += 4;
-    &#125;
-    msgLength = length;
-&#125; else &#123;
-    tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:8];
-    curPointPos += 8;
-    // FIXME: 64bit data size in memory?
-    [self closeWebSocket];
-    return;
-&#125;
+    tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:1];
+    curPointPos++;
 
-NSData *remainingData = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:msgLength];
-if (frameMasked &amp;&amp; maskingKey) &#123;
-    NSMutableData *masked = [remainingData mutableCopy];
-    UInt8 *pData = (UInt8 *)masked.mutableBytes;
-    UInt8 *pMask = (UInt8 *)maskingKey.bytes;
-    for (NSUInteger i = 0; i &lt; msgLength; i++) &#123;
-        pData[i] = pData[i] ^ pMask[i % 4];
-    &#125;
-    remainingData = masked;
-&#125;
-if (opCode == WS_OP_TEXT_FRAME) &#123;
-    NSString *msg = [[NSString alloc] initWithBytes:[remainingData bytes] length:msgLength encoding:NSUTF8StringEncoding];
-    [self didReceiveMessage:msg];
+    frame = *(UInt8 *)[tmp bytes];
+    frameMasked = WS_PAYLOAD_IS_MASKED(frame);
+    NSUInteger length = WS_PAYLOAD_LENGTH(frame);
 
-    if (self.isReadSourceSuspended) &#123;
-        // current reading finished, prepare for the next read event
-        dispatch_resume(self.readSource);
-        self.socketFDBytesAvailable = 0;
+    if (length <= 125) &#123;
+        if (frameMasked) &#123;
+            maskingKey = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:4];
+            curPointPos += 4;
+        &#125;
+        msgLength = length;
+    &#125; else if (length == 126) &#123;
+        tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:2];
+        curPointPos += 2;
+
+        UInt8 *pFrame = (UInt8 *)[tmp bytes];
+        NSUInteger length = ((NSUInteger)pFrame[0] << 8) | (NSUInteger)pFrame[1];
+        if (frameMasked) &#123;
+            maskingKey = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:4];
+            curPointPos += 4;
+        &#125;
+        msgLength = length;
+    &#125; else &#123;
+        tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:8];
+        curPointPos += 8;
+        // FIXME: 64bit data size in memory?
+        [self closeWebSocket];
+        return;
     &#125;
-&#125; else &#123;
-    [self closeWebSocket];
+
+    NSData *remainingData = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:msgLength];
+    if (frameMasked && maskingKey) &#123;
+        NSMutableData *masked = [remainingData mutableCopy];
+        UInt8 *pData = (UInt8 *)masked.mutableBytes;
+        UInt8 *pMask = (UInt8 *)maskingKey.bytes;
+        for (NSUInteger i = 0; i < msgLength; i++) &#123;
+            pData[i] = pData[i] ^ pMask[i % 4];
+        &#125;
+        remainingData = masked;
+    &#125;
+    if (opCode == WS_OP_TEXT_FRAME) &#123;
+        NSString *msg = [[NSString alloc] initWithBytes:[remainingData bytes] length:msgLength encoding:NSUTF8StringEncoding];
+        [self didReceiveMessage:msg];
+
+        if (self.isReadSourceSuspended) &#123;
+            // current reading finished, prepare for the next read event
+            dispatch_resume(self.readSource);
+            self.socketFDBytesAvailable = 0;
+        &#125;
+    &#125; else &#123;
+        [self closeWebSocket];
+    &#125;
 &#125;
 </code></pre>
-<p>}<br></code></pre></div></p>
+
 <h2 id="section_7">遇到的问题</h2>
 
 <h3>HSDGWebSocket 实例无法释放问题</h3>
@@ -330,7 +334,7 @@ if (opCode == WS_OP_TEXT_FRAME) &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/06/15/hsd-websocket/" data-id="cl4h5hf3r000vbdooakvu1muz" data-title="为 GCDWebServer 引入 WebSocket 支持" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/06/15/hsd-websocket/" data-id="cl4lepnhe000vayoxc29l6whc" data-title="为 GCDWebServer 引入 WebSocket 支持" class="article-share-link">Share</a>
       
       
       

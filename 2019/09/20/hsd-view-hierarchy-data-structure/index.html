@@ -6,19 +6,19 @@
   
   <title>HttpServerDebug 视图层级之数据结构设计 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="前言  HSD（HttpServerDebug） 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。    图1 HttpServerDebug 视图调试  在进行视图调试时，需要以不同的方式访问这些视图，如图1所示。区域1和区域2需要以顺序的方式访问视图，依次显示。区域3需要以树状访问，描">
+  <meta name="description" content="前言  HSD（HttpServerDebug） 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HttpServerDebug 视图层级之数据结构设计">
 <meta property="og:url" content="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="前言  HSD（HttpServerDebug） 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。    图1 HttpServerDebug 视图调试  在进行视图调试时，需要以不同的方式访问这些视图，如图1所示。区域1和区域2需要以顺序的方式访问视图，依次显示。区域3需要以树状访问，描">
+<meta property="og:description" content="前言  HSD（HttpServerDebug） 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2019-09-20-view-hierarchy-demo.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2019-09-20-view-hierarchy-demo.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2019-09-20-data-structure.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2019-09-20-data-structure.png">
 <meta property="article:published_time" content="2019-09-20T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.472Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.647Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2019-09-20-view-hierarchy-demo.png">
@@ -105,6 +105,8 @@
 <h2 id="section_1">前言</h2>
 
 <p><a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HSD（HttpServerDebug）</a> 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。</p>
+<span id="more"></span>
+
 <!-- <p class="post-image">
     <img src="/resources/figures/2019-09-20-view-hierarchy-demo.png" alt="HttpServerDebug view debug demo" width="100%">
 </p> -->
@@ -186,7 +188,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/" data-id="cl4h5hf3v000zbdoo7hhhe049" data-title="HttpServerDebug 视图层级之数据结构设计" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/" data-id="cl4lepnhg000zayox49xh9yfx" data-title="HttpServerDebug 视图层级之数据结构设计" class="article-share-link">Share</a>
       
       
       

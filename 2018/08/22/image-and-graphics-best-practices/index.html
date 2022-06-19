@@ -6,12 +6,12 @@
   
   <title>iOS 图像解码和最佳实践 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="前言  最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。 1. 三种 Buffer 和解码  Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。 有三种 Buffer：Data Buffer、Image Buffer、Frame Buffer。 Data Buffer 是存储在内存中的">
+  <meta name="description" content="前言  最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 图像解码和最佳实践">
 <meta property="og:url" content="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="前言  最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。 1. 三种 Buffer 和解码  Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。 有三种 Buffer：Data Buffer、Image Buffer、Frame Buffer。 Data Buffer 是存储在内存中的">
+<meta property="og:description" content="前言  最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-image-rendering-pipeline.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-image-rendering-pipeline.png">
@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-time-profiler-applejpeg-decode-image-all.png">
 <meta property="article:published_time" content="2018-08-22T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.472Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.643Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-08-22-image-rendering-pipeline.png">
@@ -107,6 +107,8 @@
 <h2>前言</h2>
 
 <p>最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。</p>
+<span id="more"></span>
+
 <h2 id="section_1">1. 三种 Buffer 和解码</h2>
 
 <p>Buffer 表示一片连续的内存空间。通常，我们说的 Buffer 是指一系列内部结构相同、大小相同的元素组成的内存区域。</p>
@@ -141,24 +143,24 @@
 <h3>隐式解码</h3>
 
 <p>将图像显示到屏幕上会触发隐式解码。（必须同时满足图像被设置到 UIImageView 中、UIImageView 添加到视图，才会触发图像解码。)</p>
-<div class="code"><pre><code>UIImageView *imageView = [[UIImageView alloc] init];
+<pre><code>UIImageView *imageView = [[UIImageView alloc] init];
 [self.view addSubview:imageView];
 [imageView setImage:image];
-</code></pre></div>
+</code></pre>
 
 <p></p>
 
 <h3>Core Graphics</h3>
 
 <p>手动绘制图像能完成图像解码，下面代码中的 newImage 实例的图像已完成解码。</p>
-<div class="code"><pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
+<pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
 [image drawAtPoint:CGPointZero];
 UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
 UIGraphicsEndImageContext();
-</code></pre></div>
+</code></pre>
 
 <p>下面的代码片段截取自 <a href="https://github.com/ibireme/YYKit.git" target="_blank">YYKit</a>，其中 newImage 实例的图像已完成解码。在测试工程中，该代码比上面直接绘制代码快约7倍。</p>
-<div class="code"><pre><code>size_t width = CGImageGetWidth(imageRef);
+<pre><code>size_t width = CGImageGetWidth(imageRef);
 size_t height = CGImageGetHeight(imageRef);
 CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
 size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
@@ -166,9 +168,18 @@ size_t bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
 size_t bytesPerRow = CGImageGetBytesPerRow(imageRef);
 CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
 
-<p>CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);<br>CFDataRef data = CGDataProviderCopyData(dataProvider);      // 主要耗时操作（解码）</p>
-<p>CGDataProviderRef newProvider = CGDataProviderCreateWithCFData(data);<br>CFRelease(data);</p>
-<p>CGImageRef newImageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, NULL, false, kCGRenderingIntentDefault);<br>UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];<br>CGImageRelease(newImageRef);<br>CFRelease(newProvider);<br></code></pre></div></p>
+CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);
+CFDataRef data = CGDataProviderCopyData(dataProvider);      // 主要耗时操作（解码）
+
+CGDataProviderRef newProvider = CGDataProviderCreateWithCFData(data);
+CFRelease(data);
+
+CGImageRef newImageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, NULL, false, kCGRenderingIntentDefault);
+UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];
+CGImageRelease(newImageRef);
+CFRelease(newProvider);
+</code></pre>
+
 <h3>Image I/O</h3>
 
 <p>Image I/O 提供了多种处理图像的接口，但是我并没有找到一个可以直观的触发图像解码的实现方案。（简单的使用 CGImageSourceCreateWith… / CGImageSourceCreateImageAtIndex 这对函数并不会触发解码。）（下文中引用的 WWDC 提供的代码段算是一种解码的方案。）</p>
@@ -179,7 +190,7 @@ CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
 
 <p>大的图像会占用较多的内存资源，解码和传输到 GPU 也会耗费较多时间。实际需要显示的图像尺寸可能并不是很大，如果能将大图缩小，便能达到优化的目的。</p>
 <p>下面的代码片段来自 WWDC 2018，功能是缩小图像并解码。原始代码为 Swift，这里转成了 Objective-C。</p>
-<div class="code"><pre><code>// 大图缩小为显示尺寸的图
+<pre><code>// 大图缩小为显示尺寸的图
 - (UIImage *)downsampleImageAt:(NSURL *)imageURL to:(CGSize)pointSize scale:(CGFloat)scale &#123;
     // 利用图像文件地址创建 image source
     NSDictionary *imageSourceOptions =
@@ -189,24 +200,25 @@ CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
     CGImageSourceRef imageSource =
     CGImageSourceCreateWithURL((__bridge CFURLRef)imageURL, (__bridge CFDictionaryRef)imageSourceOptions);
 
-<pre><code>// 下采样
-CGFloat maxDimensionInPixels = MAX(pointSize.width, pointSize.height) * scale;
-NSDictionary *downsampleOptions =
-@&#123;
-  (__bridge NSString *)kCGImageSourceCreateThumbnailFromImageAlways: @YES,
-  (__bridge NSString *)kCGImageSourceShouldCacheImmediately: @YES,  // 缩小图像的同时进行解码
-  (__bridge NSString *)kCGImageSourceCreateThumbnailWithTransform: @YES,
-  (__bridge NSString *)kCGImageSourceThumbnailMaxPixelSize: @(maxDimensionInPixels)
-   &#125;;
-CGImageRef downsampledImage =
-CGImageSourceCreateThumbnailAtIndex(imageSource, 0, (__bridge CFDictionaryRef)downsampleOptions);
-UIImage *image = [[UIImage alloc] initWithCGImage:downsampledImage];
-CGImageRelease(downsampledImage);
-CFRelease(imageSource);
+    // 下采样
+    CGFloat maxDimensionInPixels = MAX(pointSize.width, pointSize.height) * scale;
+    NSDictionary *downsampleOptions =
+    @&#123;
+      (__bridge NSString *)kCGImageSourceCreateThumbnailFromImageAlways: @YES,
+      (__bridge NSString *)kCGImageSourceShouldCacheImmediately: @YES,  // 缩小图像的同时进行解码
+      (__bridge NSString *)kCGImageSourceCreateThumbnailWithTransform: @YES,
+      (__bridge NSString *)kCGImageSourceThumbnailMaxPixelSize: @(maxDimensionInPixels)
+       &#125;;
+    CGImageRef downsampledImage =
+    CGImageSourceCreateThumbnailAtIndex(imageSource, 0, (__bridge CFDictionaryRef)downsampleOptions);
+    UIImage *image = [[UIImage alloc] initWithCGImage:downsampledImage];
+    CGImageRelease(downsampledImage);
+    CFRelease(imageSource);
 
-return image;
+    return image;
+&#125;
 </code></pre>
-<p>}<br></code></pre></div></p>
+
 <h3>优化 CPU 使用</h3>
 
 <p>CPU 使用的优化我们考虑的是，利用设备的多核芯片（多线程）和采用预处理策略。</p>
@@ -225,7 +237,7 @@ return image;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cl4h5hf38000lbdoodu05cy0n" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cl4lepnh5000layox3xl1hgqb" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
       
       
       

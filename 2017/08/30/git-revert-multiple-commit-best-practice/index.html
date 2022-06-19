@@ -6,15 +6,15 @@
   
   <title>Git 回滚多次提交最佳实践 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="一、前言  在开发过程中有这么一种情况，某个特性开发的代码需要回滚，但是该特性的开发提交和所有即将上线的提交处于统一分支，此时需要将该特性相关的提交依次回滚。在回滚代码时希望满足两个要求，能够保留详细的回滚日志信息、只产生一次提交记录。 二、可选命令  git revert 命令用于回滚提交，该命令会创建一次新提交，新提交的内容是之前提交的逆操作。git revert 自动生成的提交日志有关于">
+  <meta name="description" content="一、前言  在开发过程中有这么一种情况，某个特性开发的代码需要回滚，但是该特性的开发提交和所有即将上线的提交处于统一分支，此时需要将该特性相关的提交依次回滚。在回滚代码时希望满足两个要求，能够保留详细的回滚日志信息、只产生一次提交记录。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git 回滚多次提交最佳实践">
 <meta property="og:url" content="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="一、前言  在开发过程中有这么一种情况，某个特性开发的代码需要回滚，但是该特性的开发提交和所有即将上线的提交处于统一分支，此时需要将该特性相关的提交依次回滚。在回滚代码时希望满足两个要求，能够保留详细的回滚日志信息、只产生一次提交记录。 二、可选命令  git revert 命令用于回滚提交，该命令会创建一次新提交，新提交的内容是之前提交的逆操作。git revert 自动生成的提交日志有关于">
+<meta property="og:description" content="一、前言  在开发过程中有这么一种情况，某个特性开发的代码需要回滚，但是该特性的开发提交和所有即将上线的提交处于统一分支，此时需要将该特性相关的提交依次回滚。在回滚代码时希望满足两个要求，能够保留详细的回滚日志信息、只产生一次提交记录。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-08-30T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-16T15:01:41.468Z">
+<meta property="article:modified_time" content="2022-06-19T14:31:12.643Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
   
@@ -100,76 +100,85 @@
 <h2>一、前言</h2>
 
 <p>在开发过程中有这么一种情况，某个特性开发的代码需要回滚，但是该特性的开发提交和所有即将上线的提交处于统一分支，此时需要将该特性相关的提交依次回滚。在回滚代码时希望满足两个要求，能够保留详细的回滚日志信息、只产生一次提交记录。</p>
+<span id="more"></span>
+
 <h2>二、可选命令</h2>
 
 <p><code>git revert</code> 命令用于回滚提交，该命令会创建一次新提交，新提交的内容是之前提交的逆操作。<code>git revert</code> 自动生成的提交日志有关于本次操作的详细信息，如下所示。</p>
-<div class="code"><pre><code>commit a35fc9cad9e1fd827fab4b991995b0f7f9b8716b
+<pre><code>commit a35fc9cad9e1fd827fab4b991995b0f7f9b8716b
 Author: jam.chenjun <jam.chenjun@gmail.com>
 Date:   Wed Aug 30 16:40:34 2017 +0800
 
-<pre><code>Revert &quot;add new line &quot;b&quot;&quot;
+    Revert "add new line "b""
 
-This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.
+    This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.
 </code></pre>
-<p></code></pre></div></p>
+
 <p>git-revert 有 -n 或 –no-commit 选项，当执行提交回滚时添加该选项，回滚的改动会体现在工作区和暂存区，不会产生提交。如果希望只产生一次提交记录，可以在回滚每次提交时使用该选项，待所有回滚完成后再执行提交。</p>
 <p>上面两个方法不能同时满足保留产生一次提交和保留回滚日志信息的要求。在 stackoverflow 发现了一个非常好的方法，使用 <code>git revert</code> 回滚代码和自动生成提交日志，使用 <code>git rebase</code> 将多次提交日志压缩成一个。</p>
-<div class="code"><pre><code>git revert <# all commits #>
+<pre><code>git revert <# all commits #>
 git rebase -i
-</code></pre></div>
+</code></pre>
 
 <h2>三、Demo</h2>
 
 <p>使用 <code>git log --oneline</code> 查看提交日志，如下所示。</p>
-<div class="code"><pre><code>82c5dd2 (HEAD -> master) add new line "e"
+<pre><code>82c5dd2 (HEAD -> master) add new line "e"
 528b283 add new line "d"
 3fb9964 add new line "c"
 d4c5ad3 add new line "b"
 f625066  Initial commit
-</code></pre></div>
+</code></pre>
 
 <p>现希望回滚 <code>528b283 add new line &quot;d&quot;</code> 和 <code>d4c5ad3 add new line &quot;b&quot;</code> 这两次提交。执行 <code>git revert 528b283 d4c5ad3</code>，完成后的提交日志如下所示。</p>
-<div class="code"><pre><code>9093fa5 (HEAD -> master) Revert "add new line "b""
+<pre><code>9093fa5 (HEAD -> master) Revert "add new line "b""
 ae7b6cc Revert "add new line "d""
 82c5dd2 add new line "e"
 528b283 add new line "d"
 3fb9964 add new line "c"
 d4c5ad3 add new line "b"
 f625066  Initial commit
-</code></pre></div>
+</code></pre>
 
 <p>使用 git-rebase 压缩提交，执行 <code>git rebase -i 82c5dd2</code>，出现如下交互界面。（<code>git rebase -i</code> 是交互式变基操作的命令，如果本地分支追踪某个远端分支，并且希望变基操作从最久本地提交开始，则直接执行 <code>git rebase -i</code> 指令即可，否则需要显式指定从哪个提交开始。）</p>
-<div class="code"><pre><code>pick ae7b6cc Revert "add new line "d""
+<pre><code>pick ae7b6cc Revert "add new line "d""
 pick 9093fa5 Revert "add new line "b""
-</code></pre></div>
+</code></pre>
 
 <p>将除第一次提交外的其它提交的操作执行改为 squash，表明将所有提交压缩成一个。</p>
-<div class="code"><pre><code>pick ae7b6cc Revert "add new line "d""
+<pre><code>pick ae7b6cc Revert "add new line "d""
 squash 9093fa5 Revert "add new line "b""
-</code></pre></div>
+</code></pre>
 
 <p>保存退出后，出现最终合成提交的提交日志编辑界面，其中包含有详细的回滚操作信息。如下所示。</p>
-<div class="code"><pre><code># This is a combination of 2 commits.
+<pre><code># This is a combination of 2 commits.
 # This is the 1st commit message:
 
-<p>Revert “add new line “d””</p>
-<p>This reverts commit 528b2835b03a08ce172efaf20faab9e435cb4345.</p>
-<h1 id="This-is-the-commit-message-2"><a href="#This-is-the-commit-message-2" class="headerlink" title="This is the commit message #2:"></a>This is the commit message #2:</h1><p>Revert “add new line “b””</p>
-<p>This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.<br></code></pre></div></p>
-<p>编辑、保存、退出后，即完成所有步骤。生成的回滚提交日志如下所示。</p>
-<div class="code"><pre><code>commit 5f5d572aab6eb247852546cb3ff55375d09953e6 (HEAD -> master)
-Author: jam.chenjun <jam.chenjun@gmail.com>
-Date:   Thu Aug 31 16:47:16 2017 +0800
-
-<pre><code>Revert &quot;add new line &quot;d&quot;&quot;
+Revert "add new line "d""
 
 This reverts commit 528b2835b03a08ce172efaf20faab9e435cb4345.
 
-Revert &quot;add new line &quot;b&quot;&quot;
+# This is the commit message #2:
+
+Revert "add new line "b""
 
 This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.
 </code></pre>
-<p></code></pre></div></p>
+
+<p>编辑、保存、退出后，即完成所有步骤。生成的回滚提交日志如下所示。</p>
+<pre><code>commit 5f5d572aab6eb247852546cb3ff55375d09953e6 (HEAD -> master)
+Author: jam.chenjun <jam.chenjun@gmail.com>
+Date:   Thu Aug 31 16:47:16 2017 +0800
+
+    Revert "add new line "d""
+
+    This reverts commit 528b2835b03a08ce172efaf20faab9e435cb4345.
+
+    Revert "add new line "b""
+
+    This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.
+</code></pre>
+
 <h3>参考文献：</h3>
 
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/a/19537017">https://stackoverflow.com/a/19537017</a></p>
@@ -177,7 +186,7 @@ This reverts commit d4c5ad3bd6484489c1dc80c96d06125291d0d3c3.
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/" data-id="cl4h5hf33000gbdoobyx262a3" data-title="Git 回滚多次提交最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/" data-id="cl4lepnh2000gayoxdz24btaq" data-title="Git 回滚多次提交最佳实践" class="article-share-link">Share</a>
       
       
       
