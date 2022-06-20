@@ -362,6 +362,30 @@ body {
   left: 0;
   margin-top: -20px;
 }
+#logo-wrap {
+  text-decoration: none;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+#logo-img {
+  width: 46px;
+  margin-right: 15px;
+  border-radius: 23px;
+}
 #logo,
 #subtitle {
   text-decoration: none;
