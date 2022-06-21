@@ -14,7 +14,7 @@
 <meta property="og:description" content="概述  JS 中使用 Date 类型记录时间。Date 类型是对时间的抽象封装，它提供了许多操作时间的便利方法。本文整理了如何使用 Date 来处理时间，以及解决时区转换带来的问题。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-06-10T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-20T15:43:14.370Z">
+<meta property="article:modified_time" content="2022-06-21T15:50:26.969Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
   
@@ -41,25 +41,16 @@
 <body>
   <div id="container">
     <div id="wrap">
-      <header id="header">
+      <header id="header" class="">
   <div id="banner"></div>
   <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <a id="logo-wrap" href="/">
-        
-        <img
-          id="logo-img"
-          src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
-          alt=""
-        />
-        
-        <span id="logo">陈军的博客</span>
-      </h1>
-      
-    </div>
+    
+
     <div id="header-inner" class="inner">
       <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
         <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
         
           <a class="main-nav-link" href="/">Home</a>
         
@@ -68,12 +59,22 @@
           <a class="main-nav-link" href="/about">About</a>
         
       </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
       <nav id="sub-nav">
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
+      <!-- 搜索框 -->
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
       </div>
@@ -82,7 +83,8 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-js-date-and-zone" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main">
+          <article id="post-js-date-and-zone" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2019/06/10/js-date-and-zone/" class="article-date">
   <time class="dt-published" datetime="2019-06-10T00:00:00.000Z" itemprop="datePublished">2019-06-10</time>
@@ -165,7 +167,7 @@ getSeconds()
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/06/10/js-date-and-zone/" data-id="cl4mwq4qq000vatowb8xzgirb" data-title="JavaScript Date 和时区" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/06/10/js-date-and-zone/" data-id="cl4ocfahj000vahogc8ij83t6" data-title="JavaScript Date 和时区" class="article-share-link">Share</a>
       
       
       
@@ -196,7 +198,8 @@ getSeconds()
 </article>
 
 
-</section>
+
+        </section>
         
           <aside id="sidebar">
   
@@ -264,7 +267,8 @@ getSeconds()
 </footer>
 
     </div>
-    <nav id="mobile-nav">
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
   
     <a href="/" class="mobile-nav-link">Home</a>
   

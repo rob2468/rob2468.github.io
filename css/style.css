@@ -308,31 +308,11 @@ body {
   font-weight: bold;
 }
 #header {
-  height: 200px;
   position: relative;
   border-bottom: 1px solid #ddd;
 }
-#header:before,
-#header:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 40px;
-}
-#header:before {
-  top: 0;
-  background: -webkit-linear-gradient(rgba(0,0,0,0.2), transparent);
-  background: -moz-linear-gradient(rgba(0,0,0,0.2), transparent);
-  background: -ms-linear-gradient(rgba(0,0,0,0.2), transparent);
-  background: linear-gradient(rgba(0,0,0,0.2), transparent);
-}
-#header:after {
-  bottom: 0;
-  background: -webkit-linear-gradient(transparent, rgba(0,0,0,0.2));
-  background: -moz-linear-gradient(transparent, rgba(0,0,0,0.2));
-  background: -ms-linear-gradient(transparent, rgba(0,0,0,0.2));
-  background: linear-gradient(transparent, rgba(0,0,0,0.2));
+#header.index {
+  height: 200px;
 }
 #header-outer {
   height: 100%;
@@ -341,6 +321,22 @@ body {
 #header-inner {
   position: relative;
   overflow: hidden;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: justify;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+#header-inner #logo-img {
+  width: 40px;
+  margin-right: 0;
+  border-radius: 20px;
 }
 #banner {
   position: absolute;
@@ -356,11 +352,14 @@ body {
 }
 #header-title {
   text-align: center;
-  height: 40px;
   position: absolute;
   top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
   left: 0;
-  margin-top: -20px;
+  right: 0;
 }
 #logo-wrap {
   text-decoration: none;
@@ -405,10 +404,6 @@ body {
 }
 #subtitle-wrap {
   margin-top: 16px;
-}
-#main-nav {
-  float: left;
-  margin-left: -15px;
 }
 .nav-icon,
 .main-nav-link {
@@ -457,10 +452,6 @@ body {
   #main-nav-toggle {
     display: block;
   }
-}
-#sub-nav {
-  float: right;
-  margin-right: -15px;
 }
 #nav-rss-link:before {
   content: "\f09e";
