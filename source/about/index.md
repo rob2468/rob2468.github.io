@@ -1,5 +1,6 @@
 ---
 title: 关于
+layout: post
 ---
 
 我叫陈军，这个网站是我的个人博客，使用 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a> 搭建。

@@ -1,36 +1,52 @@
-<header id="header">
+<header id="header" class="<%- index ? 'index' : '' %>">
   <div id="banner"></div>
   <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <a id="logo-wrap" href="<%- url_for() %>">
-        <% if (config.logo) { %>
-        <img
-          id="logo-img"
-          src="<%- config.logo %>"
-          alt=""
-        />
+    <% if (index) { %>
+      <!-- 首页，显示博客标题 -->
+      <div id="header-title" class="inner">
+        <a id="logo-wrap" href="<%- url_for() %>">
+          <% if (config.logo) { %>
+          <img
+            id="logo-img"
+            src="<%- config.logo %>"
+            alt=""
+          />
+          <% } %>
+          <span id="logo"><%= config.title %></span>
+        </a>
+        <% if (theme.subtitle || config.subtitle){ %>
+          <h2 id="subtitle-wrap">
+            <a href="<%- url_for() %>" id="subtitle"><%= theme.subtitle || config.subtitle %></a>
+          </h2>
         <% } %>
-        <span id="logo"><%= config.title %></span>
-      </h1>
-      <% if (theme.subtitle || config.subtitle){ %>
-        <h2 id="subtitle-wrap">
-          <a href="<%- url_for() %>" id="subtitle"><%= theme.subtitle || config.subtitle %></a>
-        </h2>
-      <% } %>
-    </div>
+      </div>
+    <% } %>
+
     <div id="header-inner" class="inner">
       <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
         <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
         <% for (var i in theme.menu){ %>
           <a class="main-nav-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
         <% } %>
       </nav>
+      <% if (!index && config.logo) { %>
+        <a id="logo-wrap" href="<%- url_for() %>">
+          <img
+            id="logo-img"
+            src="<%- config.logo %>"
+            alt=""
+          />
+        </a>
+      <% } %>
       <nav id="sub-nav">
         <% if (theme.rss){ %>
           <a id="nav-rss-link" class="nav-icon" href="<%- url_for(theme.rss) %>" title="<%= __('rss_feed') %>"></a>
         <% } %>
         <a id="nav-search-btn" class="nav-icon" title="<%= __('search') %>"></a>
       </nav>
+      <!-- 搜索框 -->
       <div id="search-form-wrap">
         <%- search_form({button: '&#xF002;', text: __('search')}) %>
       </div>
