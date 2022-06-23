@@ -53,3 +53,8 @@
 
   </section>
 <% } %>
+
+<% if (theme.gitalk.enable && pageType === 'post') { %>
+  <div id="gitalk-container"></div>
+  <%- include('post/gitalk.ejs') %>
+<% } %>

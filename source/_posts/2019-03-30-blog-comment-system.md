@@ -21,7 +21,7 @@ page_id: id-2019-03-30
 
 受这个工具启发，也开始按这个思路去开发评论系统，目标是不需要服务端系统，所有逻辑由前端完成。
 
-从 GitHub API 文档找到一些接口，能够满足我的需要，还专门写了一篇文章描述技术细节 <a href="https://blog.jamchenjun.com/2017/04/18/commentme.html">实现 GitHub Pages 的评论系统</a>。
+从 GitHub API 文档找到一些接口，能够满足我的需要，还专门写了一篇文章描述技术细节 <a href="https://blog.jamchenjun.com/2017/04/18/commentme">实现 GitHub Pages 的评论系统</a>。
 
 这个方案的缺点是，写一条评论，前端页面就需要与 GitHub 服务器进行5次通信，速度非常慢，并且很不稳定。
 

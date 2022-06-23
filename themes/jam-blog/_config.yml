@@ -65,3 +65,19 @@ valine:
   lang: zh-cn # i18n: zh-cn/en
   placeholder: Just go go # valine comment input placeholder(like: Please leave your footprints )
   guest_info: nick,mail,link #valine comment header info
+
+gitalk:
+  enable: true
+  ClientID: ca620c98d68fb29d158a
+  ClientSecret: c8a79801f98bc2971d3b936f5892afd255db7df2
+  repo: rob2468.github.io
+  owner: rob2468
+  adminUser:
+    - rob2468
+  ID: location.pathname
+  labels:
+    - Gitalk
+  perPage: 15
+  pagerDirection: last
+  createIssueManually: true
+  distractionFreeMode: false

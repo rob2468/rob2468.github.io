@@ -7,7 +7,7 @@
       <%- partial('_partial/header', { index: false }) %>
       <div class="outer">
         <section id="main">
-          <%- partial('_partial/archive', { pagination: config.archive, index: true, pageType: 'archive' }) %>
+          <%- partial('_partial/article', { post: page, index: false, pageType: 'about' }) %>
         </section>
         <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
           <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
