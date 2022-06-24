@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 
- <script type="text/javascript">
+<script type="text/javascript">
 
   var gitalk = new Gitalk({
     clientID: '<%=theme.gitalk.ClientID%>',
@@ -9,13 +9,33 @@
     repo: '<%=theme.gitalk.repo%>',
     owner: '<%=theme.gitalk.owner%>',
     admin: '<%- theme.gitalk.adminUser %>'.split(','),
-    id: <%=theme.gitalk.ID%>,
-    labels:'<%=theme.gitalk.labels%>'.split(','),
-    perPage: <%=theme.gitalk.perPage%>,
+    id: <%=theme.gitalk.ID %>,
+    labels: '<%=theme.gitalk.labels%>'.split(','),
+    perPage: <%=theme.gitalk.perPage %>,
     pagerDirection: '<%=theme.gitalk.pagerDirection%>',
-    createIssueManually: <%=theme.gitalk.createIssueManually%>,
-    distractionFreeMode: <%=theme.gitalk.distractionFreeMode%>
+    createIssueManually: <%=theme.gitalk.createIssueManually %>,
+    distractionFreeMode: <%=theme.gitalk.distractionFreeMode %>
   });
   gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
 
 </script>
