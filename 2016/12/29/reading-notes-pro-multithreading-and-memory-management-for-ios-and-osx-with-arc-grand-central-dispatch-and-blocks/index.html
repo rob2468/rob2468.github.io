@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Relationship-of-Serial-Dispatch-Queue-Concurrent-Dispatch-Queue-and-threads.png">
 <meta property="article:published_time" content="2016-12-29T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-23T16:20:15.055Z">
+<meta property="article:modified_time" content="2022-06-24T14:39:53.623Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2016-12-29-GNUstep-Memory-image-of-an-object-returned-by-alloc.png">
@@ -440,7 +440,7 @@ objc_release(obj);
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="cl4r8dekk001ab3nc190m06mc" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="cl4sk87v1001afvls4ldod8ta" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
       
       
       
@@ -478,7 +478,7 @@ objc_release(obj);
   <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
 <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 
- <script type="text/javascript">
+<script type="text/javascript">
 
   var gitalk = new Gitalk({
     clientID: 'ca620c98d68fb29d158a',
@@ -487,7 +487,7 @@ objc_release(obj);
     owner: 'rob2468',
     admin: 'rob2468'.split(','),
     id: location.pathname,
-    labels:'Gitalk'.split(','),
+    labels: 'Gitalk'.split(','),
     perPage: 15,
     pagerDirection: 'last',
     createIssueManually: true,
@@ -495,8 +495,27 @@ objc_release(obj);
   });
   gitalk.render('gitalk-container');
 
-</script>
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
 
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
 
 
         </section>
