@@ -74,7 +74,7 @@ gitalk:
   owner: rob2468
   adminUser:
     - rob2468
-  ID: location.pathname
+  ID: location.pathname.slice(1, 11) # e.g. 2022/06/24
   labels:
     - Gitalk
   perPage: 15
