@@ -13,15 +13,13 @@
 <meta property="og:site_name" content="陈军的博客">
 <meta property="og:description" content="前言  2018-10-29 更新： 最近买了个虚拟主机，可以简化前端工作，而且服务端使用命令行工具，也不会像前端实现这么复杂。旧的使用 GitHub API 方式的实现，可以访问这个链接。   本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 Jekyll 将当前提交内容编译成静">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2017-04-18-overall-architecture.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2017-04-18-overall-architecture.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2017-04-18-UA-and-GitHub-communication-process.png">
 <meta property="article:published_time" content="2017-04-18T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2017-04-18-overall-architecture.png">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2017-04-18-overall-architecture.png">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -127,8 +125,6 @@
 <h2>一、整体架构</h2>
 
 <p>不考虑技术细节，整个评论系统可以分为三个部分。一是评论入口，由前端提供表单，可输入评论内容并提交。二是评论内容存储，实现评论内容持久化。三是评论展示，能够读取已持久化存储的评论内容。如下图所示。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2017-04-18-overall-architecture.png" alt="" width="60%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2017-04-18-overall-architecture.png"></p>
 <p>评论入口使用 HTML 和 JS 实现评论表单的展现和交互逻辑。评论内容采用约定组织结构，存储于同一个 Git 仓库中，由前端页面利用 GitHub API 实现。评论展示利用 Jekyll 实现，生成静态站点时解析有固定结构的评论内容，并将内容填充在网页中。</p>
 <h2>二、Git 底层原理与 GitHub API</h2>
@@ -143,69 +139,31 @@
 <h3>1. 评论信息存储方式</h3>
 
 <p>所有评论以纯文本方式存储，置于 _data/comments.json 文件中。单条评论信息的结构如下所示：</p>
-<pre><code>&#123;
-  "email": <# email #>,
-  "date": <# date #>,
-  "author": &#123;
-    "display_name": <# display_name #>,
-  &#125;,
-  "content": content
-&#125;
-</code></pre>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;email&quot;</span>: &lt;# email #&gt;,</span><br><span class="line">  <span class="attr">&quot;date&quot;</span>: &lt;# date #&gt;,</span><br><span class="line">  <span class="attr">&quot;author&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;display_name&quot;</span>: &lt;# display_name #&gt;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;content&quot;</span>: content</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>_data/comments.json 中所有评论信息的结构如下所示。每篇文章使用键 page_id 唯一标示，page_id 的值为该篇文章的所有评论。</p>
-<pre><code>&#123;
-  <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
-  <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
-  ...
-&#125;</code></pre>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &lt;# page_id #&gt;: [&lt;# comment_info #&gt;, &lt;# comment_info #&gt;, ...],</span><br><span class="line">  &lt;# page_id #&gt;: [&lt;# comment_info #&gt;, &lt;# comment_info #&gt;, ...],</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3>2. 评论信息的获取</h3>
 
 <p>根据上一小节说明的评论的存储结构，使用如下代码获取评论内容。Jekyll 将内容编译成静态站点时执行下面代码的逻辑，将评论填充到网页中。</p>
-<pre><code>assign pageid = page.page_id    # 获取文章标识符
-if site.data.comments[pageid]   # 如果该文章有评论
-  assign sorted_comments = (site.data.comments[pageid] | sort: 'date') # 获取评论并按时间排序
-endif
-for c in sorted_comments reversed # 按时间倒序遍历
-  c.author.display_name on c.date | date: "%Y-%m-%d"  # 显示评论者和评论时间
-  c.content | newline_to_br       # 显示评论内容
-else
-  这篇文章暂没有评论。
-endfor
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">assign pageid = page.page_id    # 获取文章标识符</span><br><span class="line">if site.data.comments[pageid]   # 如果该文章有评论</span><br><span class="line">  assign sorted_comments = (site.data.comments[pageid] | sort: &#x27;date&#x27;) # 获取评论并按时间排序</span><br><span class="line">endif</span><br><span class="line">for c in sorted_comments reversed # 按时间倒序遍历</span><br><span class="line">  c.author.display_name on c.date | date: &quot;%Y-%m-%d&quot;  # 显示评论者和评论时间</span><br><span class="line">  c.content | newline_to_br       # 显示评论内容</span><br><span class="line">else</span><br><span class="line">  这篇文章暂没有评论。</span><br><span class="line">endfor</span><br></pre></td></tr></table></figure>
 
 <h3>3. 提交评论</h3>
 
 <p>提交评论是整个评论系统的核心操作。利用 GitHub API，使用 XMLHttpRequest 实现客户端和 GitHub 的通信。提交评论操作的本质是在博客代码库的 comments 分支基于当前最新提交创建一次提交，并将分支引用指向该次提交。新创建提交的内容是，_data/raw_comments/ 下创建的一个临时文件，保存评论者提交的评论信息。</p>
 <p>下面描述客户端和 GitHub 通信的流程。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png" alt="" width="70%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2017-04-18-UA-and-GitHub-communication-process.png"></p>
 <p>如上图所示，提交评论需要进行5次客户端和 GitHub 的通信，并且后3次 POST 请求需要在请求中附加身份验证信息。</p>
 <p>a）首先获取目标分支的最新提交，取得 commit id；</p>
 <p>b）获取最新提交对应的 tree，取得 tree id；</p>
 <p>c）基于取得的 tree id，创建新的 tree 对象，并取得该对象的 id；</p>
 <p>POST 请求发送的数据格式如下所示。path 字段指明评论信息存储的临时文件，content 字段是评论信息，base_tree 字段是最新提交对应的 tree 对象的 id。</p>
-<pre><code>&#123;
-  "tree": [&#123;
-    "path": "_data/raw_comments/comment_" + new Date().getTime(),
-    "mode": "100644",
-    "type": "blob",
-    "content": JSON.stringify(comment),
-  &#125;],
-  "base_tree": treeID,
-&#125;
-</code></pre>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;tree&quot;</span>: [&#123;</span><br><span class="line">    <span class="attr">&quot;path&quot;</span>: <span class="string">&quot;_data/raw_comments/comment_&quot;</span> + new Date().getTime(),</span><br><span class="line">    <span class="attr">&quot;mode&quot;</span>: <span class="string">&quot;100644&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;blob&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;content&quot;</span>: JSON.stringify(comment),</span><br><span class="line">  &#125;],</span><br><span class="line">  <span class="attr">&quot;base_tree&quot;</span>: treeID,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>d）基于新创建的 tree 对象，创建提交，并取得提交对象的 id；</p>
 <p>POST 请求发送的数据格式如下所示。message 字段为提交日志，tree 字段为新创建的 tree 对象的 id，parents 字段是最新提交的 id。服务端接受到这个请求后创建新的提交对象，并返回该对象的 id。</p>
-<pre><code>&#123;
-  "message": "comment by " + display_name + " on " + date,
-  "tree": newTreeID,
-  "parents": [lastCommitID]
-&#125;
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;message&quot;</span>: <span class="string">&quot;comment by &quot;</span> + display_name + <span class="string">&quot; on &quot;</span> + date,</span><br><span class="line">  <span class="string">&quot;tree&quot;</span>: newTreeID,</span><br><span class="line">  <span class="string">&quot;parents&quot;</span>: [lastCommitID]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>e）修改分支引用为最新提交。</p>
 <h3>4. 评论整合</h3>
@@ -223,7 +181,7 @@ endfor
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/04/18/commentme/" data-id="cl4skzbx9000fbhne51r644uy" data-title="实现 GitHub Pages 的评论系统" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/04/18/commentme/" data-id="cl4v06ow1000fg2n5hrmt4vml" data-title="实现 GitHub Pages 的评论系统" class="article-share-link">Share</a>
       
       
       

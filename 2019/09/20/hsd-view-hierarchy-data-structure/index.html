@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2019-09-20-data-structure.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2019-09-20-data-structure.png">
 <meta property="article:published_time" content="2019-09-20T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2019-09-20-view-hierarchy-demo.png">
@@ -143,63 +143,12 @@
 <h2 id="section_3">代码实现</h2>
 
 <p>构造数据：</p>
-<pre><code>// 入口函数，获取所有视图数据
-+ (NSArray *)fetchAllViewsDataInHierarchy &#123;
-    NSMutableArray *allViewsData = [[NSMutableArray alloc] init];
-    NSArray *windows = [self fetchAllWindows]; // 获取所有根视图
-    for (UIWindow *window in windows) &#123;
-        if (![window isHidden]) &#123;
-            // 根视图数据
-            NSMutableDictionary *viewData = [[self fetchViewData:window] mutableCopy];
-            [viewData setObject:@(-1) forKey:@"parent"];
-            [viewData setObject:[@[] mutableCopy] forKey:@"children"];
-            [allViewsData addObject:viewData];
-
-            // 遍历子视图
-            NSInteger viewIndex = [allViewsData count] - 1;
-            NSArray *subviewsData = [self allRecursiveSubviewsInView:window viewData:viewData viewIndex:viewIndex];
-            [allViewsData addObjectsFromArray:subviewsData];
-        &#125;
-    &#125;
-    return allViewsData;
-&#125;
-
-// 递归获取所有子视图数据
-+ (NSArray *)allRecursiveSubviewsInView:(UIView *)superView viewData:(NSMutableDictionary *)superViewData viewIndex:(NSInteger)superViewIndex &#123;
-    NSMutableArray *viewsData = [[NSMutableArray alloc] init];
-    for (UIView *view in superView.subviews) &#123;
-        if (![view isHidden]) &#123;
-            // 视图数据
-            NSMutableDictionary *viewData = [[self fetchViewData:view] mutableCopy];
-            [viewData setObject:@(superViewIndex) forKey:@"parent"];
-            [viewData setObject:[@[] mutableCopy] forKey:@"children"];
-            [viewsData addObject:viewData];
-
-            // 遍历子视图
-            NSInteger currentIndex = superViewIndex + [viewsData count];
-            NSArray *subviewsData = [self allRecursiveSubviewsInView:view viewData:viewData viewIndex:currentIndex];
-            [viewsData addObjectsFromArray:subviewsData];
-
-            // 更新父视图的 children 字段
-            NSMutableArray *children = [superViewData objectForKey:@"children"];
-            [children addObject:@(currentIndex)];
-            [superViewData setObject:children forKey:@"children"];
-        &#125;
-    &#125;
-    return viewsData;
-&#125;
-
-// 获取根视图
-+ (NSArray *)fetchAllWindows &#123;&#125;
-
-// 获取视图数据 e.g. 位置、背景色
-+ (NSDictionary *)fetchViewData:(UIView *)view &#123;&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 入口函数，获取所有视图数据</span></span><br><span class="line">+ (<span class="built_in">NSArray</span> *)fetchAllViewsDataInHierarchy &#123;</span><br><span class="line">    <span class="built_in">NSMutableArray</span> *allViewsData = [[<span class="built_in">NSMutableArray</span> alloc] init];</span><br><span class="line">    <span class="built_in">NSArray</span> *windows = [<span class="keyword">self</span> fetchAllWindows]; <span class="comment">// 获取所有根视图</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">UIWindow</span> *window <span class="keyword">in</span> windows) &#123;</span><br><span class="line">        <span class="keyword">if</span> (![window isHidden]) &#123;</span><br><span class="line">            <span class="comment">// 根视图数据</span></span><br><span class="line">            <span class="built_in">NSMutableDictionary</span> *viewData = [[<span class="keyword">self</span> fetchViewData:window] mutableCopy];</span><br><span class="line">            [viewData setObject:@(<span class="number">-1</span>) forKey:<span class="string">@&quot;parent&quot;</span>];</span><br><span class="line">            [viewData setObject:[@[] mutableCopy] forKey:<span class="string">@&quot;children&quot;</span>];</span><br><span class="line">            [allViewsData addObject:viewData];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 遍历子视图</span></span><br><span class="line">            <span class="built_in">NSInteger</span> viewIndex = [allViewsData count] - <span class="number">1</span>;</span><br><span class="line">            <span class="built_in">NSArray</span> *subviewsData = [<span class="keyword">self</span> allRecursiveSubviewsInView:window viewData:viewData viewIndex:viewIndex];</span><br><span class="line">            [allViewsData addObjectsFromArray:subviewsData];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> allViewsData;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 递归获取所有子视图数据</span></span><br><span class="line">+ (<span class="built_in">NSArray</span> *)allRecursiveSubviewsInView:(<span class="built_in">UIView</span> *)superView viewData:(<span class="built_in">NSMutableDictionary</span> *)superViewData viewIndex:(<span class="built_in">NSInteger</span>)superViewIndex &#123;</span><br><span class="line">    <span class="built_in">NSMutableArray</span> *viewsData = [[<span class="built_in">NSMutableArray</span> alloc] init];</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">UIView</span> *view <span class="keyword">in</span> superView.subviews) &#123;</span><br><span class="line">        <span class="keyword">if</span> (![view isHidden]) &#123;</span><br><span class="line">            <span class="comment">// 视图数据</span></span><br><span class="line">            <span class="built_in">NSMutableDictionary</span> *viewData = [[<span class="keyword">self</span> fetchViewData:view] mutableCopy];</span><br><span class="line">            [viewData setObject:@(superViewIndex) forKey:<span class="string">@&quot;parent&quot;</span>];</span><br><span class="line">            [viewData setObject:[@[] mutableCopy] forKey:<span class="string">@&quot;children&quot;</span>];</span><br><span class="line">            [viewsData addObject:viewData];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 遍历子视图</span></span><br><span class="line">            <span class="built_in">NSInteger</span> currentIndex = superViewIndex + [viewsData count];</span><br><span class="line">            <span class="built_in">NSArray</span> *subviewsData = [<span class="keyword">self</span> allRecursiveSubviewsInView:view viewData:viewData viewIndex:currentIndex];</span><br><span class="line">            [viewsData addObjectsFromArray:subviewsData];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 更新父视图的 children 字段</span></span><br><span class="line">            <span class="built_in">NSMutableArray</span> *children = [superViewData objectForKey:<span class="string">@&quot;children&quot;</span>];</span><br><span class="line">            [children addObject:@(currentIndex)];</span><br><span class="line">            [superViewData setObject:children forKey:<span class="string">@&quot;children&quot;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> viewsData;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取根视图</span></span><br><span class="line">+ (<span class="built_in">NSArray</span> *)fetchAllWindows &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取视图数据 e.g. 位置、背景色</span></span><br><span class="line">+ (<span class="built_in">NSDictionary</span> *)fetchViewData:(<span class="built_in">UIView</span> *)view &#123;&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/" data-id="cl4skzbxr0010bhne3ev7djfl" data-title="HttpServerDebug 视图层级之数据结构设计" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/" data-id="cl4v06owj0010g2n57733gg5s" data-title="HttpServerDebug 视图层级之数据结构设计" class="article-share-link">Share</a>
       
       
       

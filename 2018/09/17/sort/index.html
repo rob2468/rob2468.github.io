@@ -6,15 +6,15 @@
   
   <title>排序算法，伪代码实现 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="一、插入排序  1. 直接插入排序  &#x2F;**  * 使用插入排序算法，将目标数组从小到大排列  * @param array  待排序的目标数组  * @param n  数组长度  *&#x2F; void InsertSort(int array[], int n) &amp;#123;     int i, j;     int tmp;     for (i &#x3D; 1; i &lt; n; i++) &amp;#123">
+  <meta name="description" content="一、插入排序  1. 直接插入排序  123456789101112131415161718&#x2F;** * 使用插入排序算法，将目标数组从小到大排列 * @param array  待排序的目标数组 * @param n  数组长度 *&#x2F;void InsertSort(int array[], int n) &amp;#123;    int i, j;    int tmp;    for (i &#x3D; 1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="排序算法，伪代码实现">
 <meta property="og:url" content="https://rob2468.github.io/2018/09/17/sort/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="一、插入排序  1. 直接插入排序  &#x2F;**  * 使用插入排序算法，将目标数组从小到大排列  * @param array  待排序的目标数组  * @param n  数组长度  *&#x2F; void InsertSort(int array[], int n) &amp;#123;     int i, j;     int tmp;     for (i &#x3D; 1; i &lt; n; i++) &amp;#123">
+<meta property="og:description" content="一、插入排序  1. 直接插入排序  123456789101112131415161718&#x2F;** * 使用插入排序算法，将目标数组从小到大排列 * @param array  待排序的目标数组 * @param n  数组长度 *&#x2F;void InsertSort(int array[], int n) &amp;#123;    int i, j;    int tmp;    for (i &#x3D; 1">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-09-17T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
   
@@ -112,55 +112,14 @@
 
 <h3 id="section_1_1">1. 直接插入排序</h3>
 
-<pre><code>/**
- * 使用插入排序算法，将目标数组从小到大排列
- * @param array  待排序的目标数组
- * @param n  数组长度
- */
-void InsertSort(int array[], int n) &#123;
-    int i, j;
-    int tmp;
-    for (i = 1; i < n; i++) &#123;
-        // 遍历待排序元素
-        tmp = array[i];
-        for (j = i - 1; j >= 0 && array[j] > tmp; j--) &#123;
-            // 遍历已排序元素
-            array[j + 1] = array[j];
-        &#125;
-        array[j + 1] = tmp;
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用插入排序算法，将目标数组从小到大排列</span></span><br><span class="line"><span class="comment"> * @param array  待排序的目标数组</span></span><br><span class="line"><span class="comment"> * @param n  数组长度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsertSort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    <span class="keyword">int</span> tmp;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="comment">// 遍历待排序元素</span></span><br><span class="line">        tmp = <span class="built_in">array</span>[i];</span><br><span class="line">        <span class="keyword">for</span> (j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span> &amp;&amp; <span class="built_in">array</span>[j] &gt; tmp; j--) &#123;</span><br><span class="line">            <span class="comment">// 遍历已排序元素</span></span><br><span class="line">            <span class="built_in">array</span>[j + <span class="number">1</span>] = <span class="built_in">array</span>[j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">array</span>[j + <span class="number">1</span>] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>时间复杂度 O(n^2)，空间复杂度 O(1)。直接插入排序是稳定的排序算法。</p>
 <span id="more"></span>
 
 <h3 id="section_1_2">2. 希尔排序</h3>
 
-<pre><code>/**
- * 使用希尔排序算法，将目标数组从小到大排列
- * @param arrray  待排序的目标数组
- * @param n  数组长度
- */
-void ShellSort(int array[], int n) &#123;
-    int dk, i, j;
-    int tmp;
-    for (dk = n / 2; dk >= 1; dk = dk / 2) &#123;
-        // 步长变化
-        for (i = dk; i < n; i++) &#123;
-            // 遍历待排序元素
-            if (array[i] < array[i - dk]) &#123;
-                tmp = array[i];
-                for (j = i - dk; j >= 0 && tmp < array[j]; j -= dk) &#123;
-                    // 遍历已排序元素
-                    array[j + dk] = array[j];
-                &#125;
-                array[j + dk] = tmp;
-            &#125; // if
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用希尔排序算法，将目标数组从小到大排列</span></span><br><span class="line"><span class="comment"> * @param arrray  待排序的目标数组</span></span><br><span class="line"><span class="comment"> * @param n  数组长度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShellSort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> dk, i, j;</span><br><span class="line">    <span class="keyword">int</span> tmp;</span><br><span class="line">    <span class="keyword">for</span> (dk = n / <span class="number">2</span>; dk &gt;= <span class="number">1</span>; dk = dk / <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="comment">// 步长变化</span></span><br><span class="line">        <span class="keyword">for</span> (i = dk; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="comment">// 遍历待排序元素</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[i] &lt; <span class="built_in">array</span>[i - dk]) &#123;</span><br><span class="line">                tmp = <span class="built_in">array</span>[i];</span><br><span class="line">                <span class="keyword">for</span> (j = i - dk; j &gt;= <span class="number">0</span> &amp;&amp; tmp &lt; <span class="built_in">array</span>[j]; j -= dk) &#123;</span><br><span class="line">                    <span class="comment">// 遍历已排序元素</span></span><br><span class="line">                    <span class="built_in">array</span>[j + dk] = <span class="built_in">array</span>[j];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">array</span>[j + dk] = tmp;</span><br><span class="line">            &#125; <span class="comment">// if</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>由于希尔排序的时间复杂度依赖于增量序列的函数，这涉及数学上尚未解决的难题，所以其时间复杂度分析比较困难。当 n 在某个特定范围时，希尔排序的时间复杂度约为 O(n^1.3)。在最坏情况下希尔排序的时间复杂度为 O(n^2)。</p>
 <p>空间复杂度 O(1)。</p>
@@ -169,100 +128,19 @@ void ShellSort(int array[], int n) &#123;
 
 <h3 id="section_2_1">1. 冒泡排序</h3>
 
-<pre><code>/**
- * 使用冒泡排序算法，将目标数组从小到大排列
- * @param array  待排序的目标数组
- * @param n  数组长度
- */
-void BubbleSort(int array[], int n) &#123;
-    for (int i = 0; i < n - 1; i++) &#123;
-        bool flag = false;     // 本趟冒泡是否发生交换的标志
-        for (int j = n - 1; j > i; j--) &#123;
-            if (array[j - 1] > array[j]) &#123;
-                // 交换
-                int tmp = array[j - 1];
-                array[j - 1] = array[j];
-                array[j] = tmp;
-
-                flag = true;
-             &#125;
-         &#125;
-         if (!flag) &#123;
-             // 本趟遍历没有发生交换，说明已有序
-             break;
-         &#125;
-     &#125;
- &#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用冒泡排序算法，将目标数组从小到大排列</span></span><br><span class="line"><span class="comment"> * @param array  待排序的目标数组</span></span><br><span class="line"><span class="comment"> * @param n  数组长度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BubbleSort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">bool</span> flag = <span class="literal">false</span>;     <span class="comment">// 本趟冒泡是否发生交换的标志</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = n - <span class="number">1</span>; j &gt; i; j--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[j - <span class="number">1</span>] &gt; <span class="built_in">array</span>[j]) &#123;</span><br><span class="line">                <span class="comment">// 交换</span></span><br><span class="line">                <span class="keyword">int</span> tmp = <span class="built_in">array</span>[j - <span class="number">1</span>];</span><br><span class="line">                <span class="built_in">array</span>[j - <span class="number">1</span>] = <span class="built_in">array</span>[j];</span><br><span class="line">                <span class="built_in">array</span>[j] = tmp;</span><br><span class="line"></span><br><span class="line">                flag = <span class="literal">true</span>;</span><br><span class="line">             &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">if</span> (!flag) &#123;</span><br><span class="line">             <span class="comment">// 本趟遍历没有发生交换，说明已有序</span></span><br><span class="line">             <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
 <p>时间复杂度 O(n^2)，空间复杂度 O(1)。冒泡排序是稳定的排序算法。</p>
 <h3 id="section_2_2">2. 快速排序</h3>
 
-<pre><code>/**
- * 使用快速排序算法，将目标数组从小到大排列
- * @param array  待排序的目标数组
- * @param low  起始下标
- * @param high  结束下标
- */
-void QuickSort(int array[], int low, int high) &#123;
-    if (low < high) &#123;
-        int pivotPos = Partition(array, low, high); // 划分
-        QuickSort(array, low, pivotPos - 1);
-        QuickSort(array, pivotPos + 1, high);
-    &#125;
-&#125;
-/**
- *  将数组划分成两个部分
- *  @param array  待排序的目标数组
- *  @param low  起始下标
- *  @param high  结束下标
- *  @return  已在最终位置元素的下标
- */
-int Partition(int array[], int low, int high) &#123;
-    int pivot = array[low];             // 将第一个元素设为枢轴值，对表进行划分
-    while (low < high) &#123;
-        while (low < high && array[high] >= pivot) &#123;
-            --high;
-        &#125;
-        array[low] = array[high];       // 将比枢轴值小的元素移动到左端
-        while (low < high && array[low] <= pivot) &#123;
-            ++low;
-        &#125;
-        array[high] = array[low];       // 将比枢轴值大的元素移动到右端
-    &#125;
-    array[low] = pivot;                 // 枢轴值存放到最终位置
-    return low;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用快速排序算法，将目标数组从小到大排列</span></span><br><span class="line"><span class="comment"> * @param array  待排序的目标数组</span></span><br><span class="line"><span class="comment"> * @param low  起始下标</span></span><br><span class="line"><span class="comment"> * @param high  结束下标</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">QuickSort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (low &lt; high) &#123;</span><br><span class="line">        <span class="keyword">int</span> pivotPos = Partition(<span class="built_in">array</span>, low, high); <span class="comment">// 划分</span></span><br><span class="line">        QuickSort(<span class="built_in">array</span>, low, pivotPos - <span class="number">1</span>);</span><br><span class="line">        QuickSort(<span class="built_in">array</span>, pivotPos + <span class="number">1</span>, high);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  将数组划分成两个部分</span></span><br><span class="line"><span class="comment"> *  @param array  待排序的目标数组</span></span><br><span class="line"><span class="comment"> *  @param low  起始下标</span></span><br><span class="line"><span class="comment"> *  @param high  结束下标</span></span><br><span class="line"><span class="comment"> *  @return  已在最终位置元素的下标</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Partition</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> pivot = <span class="built_in">array</span>[low];             <span class="comment">// 将第一个元素设为枢轴值，对表进行划分</span></span><br><span class="line">    <span class="keyword">while</span> (low &lt; high) &#123;</span><br><span class="line">        <span class="keyword">while</span> (low &lt; high &amp;&amp; <span class="built_in">array</span>[high] &gt;= pivot) &#123;</span><br><span class="line">            --high;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">array</span>[low] = <span class="built_in">array</span>[high];       <span class="comment">// 将比枢轴值小的元素移动到左端</span></span><br><span class="line">        <span class="keyword">while</span> (low &lt; high &amp;&amp; <span class="built_in">array</span>[low] &lt;= pivot) &#123;</span><br><span class="line">            ++low;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">array</span>[high] = <span class="built_in">array</span>[low];       <span class="comment">// 将比枢轴值大的元素移动到右端</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">array</span>[low] = pivot;                 <span class="comment">// 枢轴值存放到最终位置</span></span><br><span class="line">    <span class="keyword">return</span> low;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>时间复杂度 O(nlogn)，空间复杂度 O(logn)。快速排序是不稳定的排序算法。</p>
 <h2 id="section_3">三、选择排序</h2>
 
 <h3 id="section_3_1">1. 简单选择排序</h3>
 
-<pre><code>/**
- * 使用简单选择排序算法，将目标数组从小到大排列
- * @param array  待排序的目标数组
- * @param n  数组长度
- */
-void SelectSort(int array[], int n) &#123;
-    for (int i = 0; i < n - 1; i++) &#123;
-        // 遍历所有待排序元素，每一轮遍历，找出最小元素并交换到最终位置
-        int min = i;
-        for (int j = i + 1; j < n; j++) &#123;
-            if (array[j] < array[min]) &#123;
-                min = j;
-            &#125;
-        &#125;
-        if (min != i) &#123;
-            // 交换
-            int tmp = array[min];
-            array[min] = array[i];
-            array[i] = tmp;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用简单选择排序算法，将目标数组从小到大排列</span></span><br><span class="line"><span class="comment"> * @param array  待排序的目标数组</span></span><br><span class="line"><span class="comment"> * @param n  数组长度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SelectSort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="comment">// 遍历所有待排序元素，每一轮遍历，找出最小元素并交换到最终位置</span></span><br><span class="line">        <span class="keyword">int</span> min = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">array</span>[j] &lt; <span class="built_in">array</span>[min]) &#123;</span><br><span class="line">                min = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (min != i) &#123;</span><br><span class="line">            <span class="comment">// 交换</span></span><br><span class="line">            <span class="keyword">int</span> tmp = <span class="built_in">array</span>[min];</span><br><span class="line">            <span class="built_in">array</span>[min] = <span class="built_in">array</span>[i];</span><br><span class="line">            <span class="built_in">array</span>[i] = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>时间复杂度 O(n^2)，空间复杂度 O(1)。简单选择排序是不稳定的排序算法。</p>
 <h3 id="section_3_2">2. 堆排序</h3>
@@ -272,67 +150,9 @@ void SelectSort(int array[], int n) &#123;
 <p>（1 &lt;= i &lt;= n/2）</p>
 <p>满足第(1)种情况的堆称为小根堆（小顶堆），满足第(2)种情况的堆称为大根堆（大顶堆）。</p>
 <p>下面代码都是构造和维护大根堆。</p>
-<pre><code>/**
- * 使用堆排序算法，将目标数组从小到大排列
- */
-void HeapSort(int A[], int len) &#123;
-    BuildMaxHeap(A, len);       // 初始建堆
-    for (i = len; i > 1; i--) &#123;
-        // n - 1 趟的交换和建堆过程
-        // 输出堆顶元素（和堆底元素交换）
-        int tmp = A[i];
-        A[i] = A[1];
-        A[1] = tmp;
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用堆排序算法，将目标数组从小到大排列</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HeapSort</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">    BuildMaxHeap(A, len);       <span class="comment">// 初始建堆</span></span><br><span class="line">    <span class="keyword">for</span> (i = len; i &gt; <span class="number">1</span>; i--) &#123;</span><br><span class="line">        <span class="comment">// n - 1 趟的交换和建堆过程</span></span><br><span class="line">        <span class="comment">// 输出堆顶元素（和堆底元素交换）</span></span><br><span class="line">        <span class="keyword">int</span> tmp = A[i];</span><br><span class="line">        A[i] = A[<span class="number">1</span>];</span><br><span class="line">        A[<span class="number">1</span>] = tmp;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 整理，把剩余的 i - 1 个元素整理成堆</span></span><br><span class="line">        AdjustDown(A, <span class="number">1</span>, i - <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="comment">// for</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 建立大根堆，注意 A[0] 中不存储元素，实际存储从 A[1] 开始</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BuildMaxHeap</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = len/<span class="number">2</span>; i &gt; <span class="number">0</span>; i--) &#123;   <span class="comment">// 从 len/2 ~ 1，反复调整堆</span></span><br><span class="line">        AdjustDown(A, i, len);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将元素 k 向下进行调整</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AdjustDown</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> k, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">    A[<span class="number">0</span>] = A[k];            <span class="comment">// A[0] 暂存</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">2</span> * k; i &lt;= len; i*= <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="comment">// 沿 key 较大的子结点向下筛选</span></span><br><span class="line">        <span class="keyword">if</span> (i &lt; len &amp;&amp; A[i] &lt; A[i + <span class="number">1</span>]) &#123;</span><br><span class="line">            <span class="comment">// 取 key 较大的子结点的下标</span></span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (A[<span class="number">0</span>] &gt;= A[i]) &#123;</span><br><span class="line">            <span class="comment">// 筛选结束</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            A[k] = A[i];    <span class="comment">// 将 A[i] 调整到双亲结点上</span></span><br><span class="line">            k = i;          <span class="comment">// 修改 k 值，以便继续向下筛选</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="comment">// for</span></span><br><span class="line">    A[k] = A[<span class="number">0</span>];            <span class="comment">// 被筛选结点的值放入最终位置</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        // 整理，把剩余的 i - 1 个元素整理成堆
-        AdjustDown(A, 1, i - 1);
-    &#125; // for
-&#125;
-/**
- * 建立大根堆，注意 A[0] 中不存储元素，实际存储从 A[1] 开始
- */
-void BuildMaxHeap(int A[], int len) &#123;
-    for (int i = len/2; i > 0; i--) &#123;   // 从 len/2 ~ 1，反复调整堆
-        AdjustDown(A, i, len);
-    &#125;
-&#125;
-/**
- * 将元素 k 向下进行调整
- */
-void AdjustDown(int A[], int k, int len) &#123;
-    A[0] = A[k];            // A[0] 暂存
-    for (i = 2 * k; i <= len; i*= 2) &#123;
-        // 沿 key 较大的子结点向下筛选
-        if (i < len && A[i] < A[i + 1]) &#123;
-            // 取 key 较大的子结点的下标
-            i++;
-        &#125;
-        if (A[0] >= A[i]) &#123;
-            // 筛选结束
-            break;
-        &#125; else &#123;
-            A[k] = A[i];    // 将 A[i] 调整到双亲结点上
-            k = i;          // 修改 k 值，以便继续向下筛选
-        &#125;
-    &#125; // for
-    A[k] = A[0];            // 被筛选结点的值放入最终位置
-&#125;
-</code></pre>
-
-<pre><code>/**
- * 参数 k 为向上调整的结点，也为堆的元素个数
- */
-void AdjustUp(int A[], int k) &#123;
-    A[0] = A[k];
-    int i = k / 2;  // 若结点值大于双亲结点，则将双亲结点向下调，并继续向上比较
-    while (i > 0 && A[i] < A[0]) &#123;
-        A[k] = A[i];
-        k = i;
-        i = k / 2;
-    &#125; // while
-    A[k] = A[0];
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 参数 k 为向上调整的结点，也为堆的元素个数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AdjustUp</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    A[<span class="number">0</span>] = A[k];</span><br><span class="line">    <span class="keyword">int</span> i = k / <span class="number">2</span>;  <span class="comment">// 若结点值大于双亲结点，则将双亲结点向下调，并继续向上比较</span></span><br><span class="line">    <span class="keyword">while</span> (i &gt; <span class="number">0</span> &amp;&amp; A[i] &lt; A[<span class="number">0</span>]) &#123;</span><br><span class="line">        A[k] = A[i];</span><br><span class="line">        k = i;</span><br><span class="line">        i = k / <span class="number">2</span>;</span><br><span class="line">    &#125; <span class="comment">// while</span></span><br><span class="line">    A[k] = A[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>注意：堆最重要的操作就是函数 AdjustDown 和 AdjustUp，其余操作均通过这两个操作完成。</p>
 <p>时间复杂度 O(nlogn)，空间复杂度 O(1)。堆排序是不稳定的排序算法。</p>
@@ -340,90 +160,11 @@ void AdjustUp(int A[], int k) &#123;
 
 <h3 id="section_4_1">1. 二路归并排序</h3>
 
-<pre><code>/**
- * 使用二路归并排序算法，将目标数组从小到大排列
- * @param array  待排序的目标数组
- * @param low  起始下标
- * @param high  结束下标
- */
-void MergeSort(int array[], int low, int high) &#123;
-    if (low < high) &#123;
-        int mid = (low + high) / 2;
-        MergeSort(array, low, mid);        // 对左侧子序列进行递归排序
-        MergeSort(array, mid + 1, high);   // 对右侧子序列进行递归排序
-        Merge(array, low, mid, high);          // 归并
-    &#125;
-&#125;
-int *B = (int *)malloc((n) * sizeof(int));  // 辅助数组
-void Merge(int array[], int low, int mid, int high) &#123;
-    int i, j, k;
-    for (k = low; k <= high; k++) &#123;
-        // 将 array 中元素拷贝到 B 中
-        B[k] = array[k];
-    &#125;
-    for (i = low, j = mid + 1, k = i; i <= mid && j <= high; k++) &#123;
-        // 比较 B 中左右两段中的元素，将较小值拷贝到 array 中
-        if (B[i] < B[j]) &#123;
-            array[k] = B[i++];
-        &#125; else &#123;
-            array[k] = B[j++];
-        &#125;
-    &#125; // for
-    // 下面两个 while 循环只有一个会执行
-    while (i <= mid) &#123;
-        // 第一个表未检测完
-        array[k++] = B[i++];
-    &#125;
-    while (j <= high) &#123;
-        // 第二个表未检测完
-        array[k++] = B[j++];
-    &#125;
- &#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用二路归并排序算法，将目标数组从小到大排列</span></span><br><span class="line"><span class="comment"> * @param array  待排序的目标数组</span></span><br><span class="line"><span class="comment"> * @param low  起始下标</span></span><br><span class="line"><span class="comment"> * @param high  结束下标</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergeSort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (low &lt; high) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = (low + high) / <span class="number">2</span>;</span><br><span class="line">        MergeSort(<span class="built_in">array</span>, low, mid);        <span class="comment">// 对左侧子序列进行递归排序</span></span><br><span class="line">        MergeSort(<span class="built_in">array</span>, mid + <span class="number">1</span>, high);   <span class="comment">// 对右侧子序列进行递归排序</span></span><br><span class="line">        Merge(<span class="built_in">array</span>, low, mid, high);          <span class="comment">// 归并</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> *B = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>((n) * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));  <span class="comment">// 辅助数组</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Merge</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> low, <span class="keyword">int</span> mid, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j, k;</span><br><span class="line">    <span class="keyword">for</span> (k = low; k &lt;= high; k++) &#123;</span><br><span class="line">        <span class="comment">// 将 array 中元素拷贝到 B 中</span></span><br><span class="line">        B[k] = <span class="built_in">array</span>[k];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (i = low, j = mid + <span class="number">1</span>, k = i; i &lt;= mid &amp;&amp; j &lt;= high; k++) &#123;</span><br><span class="line">        <span class="comment">// 比较 B 中左右两段中的元素，将较小值拷贝到 array 中</span></span><br><span class="line">        <span class="keyword">if</span> (B[i] &lt; B[j]) &#123;</span><br><span class="line">            <span class="built_in">array</span>[k] = B[i++];</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">array</span>[k] = B[j++];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="comment">// for</span></span><br><span class="line">    <span class="comment">// 下面两个 while 循环只有一个会执行</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt;= mid) &#123;</span><br><span class="line">        <span class="comment">// 第一个表未检测完</span></span><br><span class="line">        <span class="built_in">array</span>[k++] = B[i++];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (j &lt;= high) &#123;</span><br><span class="line">        <span class="comment">// 第二个表未检测完</span></span><br><span class="line">        <span class="built_in">array</span>[k++] = B[j++];</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
 <p>时间复杂度 O(nlogn)，空间复杂度 O(n)。二路归并排序是稳定的排序算法。</p>
 <p>原地归并排序不需要辅助数组即可归并，空间复杂度 O(1)。关键在于 Merge 函数，如下所示。</p>
-<pre><code>/**
- * 将长度为 n 的数组逆序
- */
-void reverse(int array[], int n) &#123;
-    int i = 0;
-    int j = n - 1;
-    while (i < j) &#123;
-        int tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
-
-        i++;
-        j--;
-    &#125;
-&#125;
-/**
- * 将含有 n 个元素的数组向左循环移位 i 个位置
- */
-void exchange(int array[], int n, int i) &#123;
-    reverse(array, i);
-    reverse(array + i, n - i);
-    reverse(array, n);
-&#125;
-void Merge(int array[], int low, int mid, int high) &#123;
-    int i = low;
-    int j = mid + 1;
-    while (i < j && j <= high) &#123;
-        int step = 0;
-        while (i < j && array[i] <= array[j]) &#123;
-            i++;
-        &#125;
-        while (j <= high && array[j] <= array[i]) &#123;
-            j++;
-            step++;
-        &#125;
-        // array + i 为子数组首地址，j - i 为子数组元素个数，j - i - step 为左循环移位的个数
-        exchange(array + i, j - i, j - i - step);
-        i += step;
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将长度为 n 的数组逆序</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> j = n - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = <span class="built_in">array</span>[i];</span><br><span class="line">        <span class="built_in">array</span>[i] = <span class="built_in">array</span>[j];</span><br><span class="line">        <span class="built_in">array</span>[j] = tmp;</span><br><span class="line"></span><br><span class="line">        i++;</span><br><span class="line">        j--;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 将含有 n 个元素的数组向左循环移位 i 个位置</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exchange</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> n, <span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    reverse(<span class="built_in">array</span>, i);</span><br><span class="line">    reverse(<span class="built_in">array</span> + i, n - i);</span><br><span class="line">    reverse(<span class="built_in">array</span>, n);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Merge</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> low, <span class="keyword">int</span> mid, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = low;</span><br><span class="line">    <span class="keyword">int</span> j = mid + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; j &amp;&amp; j &lt;= high) &#123;</span><br><span class="line">        <span class="keyword">int</span> step = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; j &amp;&amp; <span class="built_in">array</span>[i] &lt;= <span class="built_in">array</span>[j]) &#123;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (j &lt;= high &amp;&amp; <span class="built_in">array</span>[j] &lt;= <span class="built_in">array</span>[i]) &#123;</span><br><span class="line">            j++;</span><br><span class="line">            step++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// array + i 为子数组首地址，j - i 为子数组元素个数，j - i - step 为左循环移位的个数</span></span><br><span class="line">        exchange(<span class="built_in">array</span> + i, j - i, j - i - step);</span><br><span class="line">        i += step;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="section_4_2">2. 多路归并排序</h3>
 
@@ -436,7 +177,7 @@ void Merge(int array[], int low, int mid, int high) &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="cl4skzbxg000obhne2uoa9w2w" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="cl4v06ow8000og2n58mh41pfn" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
       
       
       

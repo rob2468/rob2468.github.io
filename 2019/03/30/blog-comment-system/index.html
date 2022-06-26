@@ -14,7 +14,7 @@
 <meta property="og:description" content="这个博客站点使用 Github Pages 搭建，能够提供静态页面的展示，但是没有一套现成的评论系统。从前年开始，就一直在尝试各种方法增加评论功能，每次更新都是方案的重大改变。最终的实现还是使用传统方案，自建服务器，使用数据库存储。应该以后就会围绕这个方案完善下去，好在博客一直没啥人气，我可以慢慢折腾 &#x3D;&#x3D;。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-03-30T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
   
@@ -135,9 +135,7 @@
 <h2 id="section_5">证书更新</h2>
 
 <p>服务器使用的证书来自 <a href="https://letsencrypt.org/" target="_blank">Let’s Encrypt</a>。Let’s Encrypt 的证书有效期为60天，可以在 crontab 中配置定时任务，定期更新。</p>
-<div class="code"><pre><code># 定时更新证书，每个月15号执行
-0 0 15 */1 * certbot renew --standalone --pre-hook "pm2 stop server" --post-hook "pm2 start server"
-</code></pre></div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定时更新证书，每个月15号执行</span></span><br><span class="line">0 0 15 */1 * certbot renew --standalone --pre-hook <span class="string">&quot;pm2 stop server&quot;</span> --post-hook <span class="string">&quot;pm2 start server&quot;</span></span><br></pre></td></tr></table></figure>
 
 <h3>参考文献</h3>
 
@@ -146,7 +144,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/03/30/blog-comment-system/" data-id="cl4skzbxl000sbhne865zgkrc" data-title="博客评论系统的更新历程" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/03/30/blog-comment-system/" data-id="cl4v06owd000sg2n53vebcf5z" data-title="博客评论系统的更新历程" class="article-share-link">Share</a>
       
       
       

@@ -125,7 +125,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="cl4skzbxj000pbhne62aofoay" data-title="视图裁剪" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="cl4v06owb000pg2n51rp89tfu" data-title="视图裁剪" class="article-share-link">Share</a>
       
       
       
@@ -176,7 +176,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="cl4skzby3001bbhneg3sza8bi" data-title="Objective-C Block" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="cl4v06owy001bg2n5d07vedxn" data-title="Objective-C Block" class="article-share-link">Share</a>
       
       
       
@@ -219,25 +219,7 @@
 
 <h3 id="section_1_1">1. 直接插入排序</h3>
 
-<pre><code>/**
- * 使用插入排序算法，将目标数组从小到大排列
- * @param array  待排序的目标数组
- * @param n  数组长度
- */
-void InsertSort(int array[], int n) &#123;
-    int i, j;
-    int tmp;
-    for (i = 1; i < n; i++) &#123;
-        // 遍历待排序元素
-        tmp = array[i];
-        for (j = i - 1; j >= 0 && array[j] > tmp; j--) &#123;
-            // 遍历已排序元素
-            array[j + 1] = array[j];
-        &#125;
-        array[j + 1] = tmp;
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用插入排序算法，将目标数组从小到大排列</span></span><br><span class="line"><span class="comment"> * @param array  待排序的目标数组</span></span><br><span class="line"><span class="comment"> * @param n  数组长度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InsertSort</span><span class="params">(<span class="keyword">int</span> <span class="built_in">array</span>[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    <span class="keyword">int</span> tmp;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="comment">// 遍历待排序元素</span></span><br><span class="line">        tmp = <span class="built_in">array</span>[i];</span><br><span class="line">        <span class="keyword">for</span> (j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span> &amp;&amp; <span class="built_in">array</span>[j] &gt; tmp; j--) &#123;</span><br><span class="line">            <span class="comment">// 遍历已排序元素</span></span><br><span class="line">            <span class="built_in">array</span>[j + <span class="number">1</span>] = <span class="built_in">array</span>[j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">array</span>[j + <span class="number">1</span>] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>时间复杂度 O(n^2)，空间复杂度 O(1)。直接插入排序是稳定的排序算法。</p>
         
@@ -248,7 +230,7 @@ void InsertSort(int array[], int n) &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="cl4skzbxg000obhne2uoa9w2w" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="cl4v06ow8000og2n58mh41pfn" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
       
       
       
@@ -287,15 +269,7 @@ void InsertSort(int array[], int n) &#123;
       
         <h1></h1>
 
-<pre><code>/**
- *  二叉树链表存储，结点数据模型
- */
-struct BiTreeNode &#123;
-    int data;
-    BiTreeNode *lchild;
-    BiTreeNode *rchild;
-&#125;;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  二叉树链表存储，结点数据模型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BiTreeNode</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">    BiTreeNode *lchild;</span><br><span class="line">    BiTreeNode *rchild;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
         
           <p class="article-more-link">
             <a href="/2018/09/16/binary-tree-traverse/#more">Read More</a>
@@ -304,7 +278,7 @@ struct BiTreeNode &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="cl4skzbxe000nbhne5xpe9mmo" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="cl4v06ow7000ng2n500ezcfw0" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
       
       
       
@@ -352,7 +326,7 @@ struct BiTreeNode &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="cl4skzby5001dbhneapo0e9t5" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="cl4v06owz001dg2n5e6arb8ea" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
       
       
       
@@ -402,7 +376,7 @@ struct BiTreeNode &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cl4skzbxe000mbhne68hf6q0f" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cl4v06ow6000mg2n55vf68t6r" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
       
       
       
@@ -452,7 +426,7 @@ struct BiTreeNode &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="cl4skzbxd000lbhnehptq8tjd" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="cl4v06ow5000lg2n54ssv35zh" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
       
       
       
@@ -499,7 +473,7 @@ struct BiTreeNode &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="cl4skzbxd000kbhne9wrlgkh3" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="cl4v06ow4000kg2n5cryl91wx" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
       
       
       
@@ -540,24 +514,15 @@ struct BiTreeNode &#123;
 <p>有时，希望在 Pod 验证失败的情况下也能够上传，关于这种做法是否合理 <a href="https://github.com/CocoaPods/CocoaPods/issues/5801" target="_blank">这里</a> 有相关讨论。讨论中 <a href="https://github.com/mxcl" target="_blank">@mxcl</a> 给出了一种绕过发布前验证的方法，如下文所述。</p>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>pod 命令使用 Ruby 写成，使用解释型语言的好处是我们可以方便的修改命令的逻辑。只要找到目标代码，注释掉验证 Pod 的逻辑便能达到目的。</p>
 <p>首先执行 <code>gem env</code>，如下变量给出了 Ruby 库安装的位置。</p>
-<div class="code"><pre><code>  - INSTALLATION DIRECTORY: /usr/local/lib/ruby/gems/2.4.0
-</code></pre></div>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- INSTALLATION DIRECTORY: /usr/<span class="built_in">local</span>/lib/ruby/gems/2.4.0</span><br></pre></td></tr></table></figure>
 
 <p>当前，<code>pod trunk push</code> 命令文件对于 Ruby 库根目录的相对位置是 <code>gems/cocoapods-trunk-1.3.0/lib/pod/command/trunk/push.rb</code>，只要注释掉如下一行代码即可。</p>
-<pre><code>def run
-    update_master_repo
-    # validate_podspec  # 删除验证逻辑
-    status, json = push_to_trunk
-    update_master_repo
-
-    # ...
-end
-</code></pre>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span></span></span><br><span class="line">    update_master_repo</span><br><span class="line">    <span class="comment"># validate_podspec  # 删除验证逻辑</span></span><br><span class="line">    status, json = push_to_trunk</span><br><span class="line">    update_master_repo</span><br><span class="line"></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="cl4skzbxc000jbhne1r1rdldj" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="cl4v06ow3000jg2n530zmbcl4" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
       
       
       
@@ -603,7 +568,7 @@ end
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="cl4skzbxb000ibhnefz4y4kam" data-title="callMethodWithCompletionBlock 中 Block 的内存管理" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="cl4v06ow3000ig2n558eh92us" data-title="callMethodWithCompletionBlock 中 Block 的内存管理" class="article-share-link">Share</a>
       
       
       

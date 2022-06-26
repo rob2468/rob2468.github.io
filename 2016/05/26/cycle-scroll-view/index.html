@@ -13,13 +13,12 @@
 <meta property="og:site_name" content="陈军的博客">
 <meta property="og:description" content="代码：CycleScrollView 上述代码实现可循环滚动的 ScrollView。具体需求有如下2点： 1、支持分页滚动； 2、支持循环滚动。 实现参考了网上搜到的一些方案，经过几次优化，形成最终的版本。许多实现存在一些缺陷，比如，快速滑动时会卡住，等 ScrollView 停止滑动后再滑动就可以了。最初的版本也存在这个问题，因为布局调整是在 scrollViewDidEndDecelerat">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-05-26-Cycle-Scroll-View.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-26-Cycle-Scroll-View.png">
 <meta property="article:published_time" content="2016-05-26T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2016-05-26-Cycle-Scroll-View.png">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-26-Cycle-Scroll-View.png">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -123,32 +122,12 @@
 <p>下面说的就是如何进行布局调整。开头说过，由于最初的实现是在 scrollViewDidEndDecelerating 中调整布局，因此 ScrollView 快速滑动时会卡住，因为没有触发到该方法。为了修复该问题，将布局调整改为在 scrollViewDidScroll 中实现，下面是核心代码。</p>
 <p></p>
 
-<pre><code>if (currentOffsetX < pageWidth && currentOffsetX < lastContentOffsetX) // 右划
-&#123;
-    // 修改布局
-    lastContentOffsetX = currentOffsetX + offset;
-    bounds.origin.x = lastContentOffsetX;
-    scrollView.bounds = bounds;
-&#125;
-else if (currentOffsetX > offset && currentOffsetX > lastContentOffsetX) // 左划
-&#123;
-    // 修改布局
-    lastContentOffsetX = currentOffsetX - offset;
-    bounds.origin.x = lastContentOffsetX;
-    scrollView.bounds = bounds;
-&#125;
-else
-&#123;
-    lastContentOffsetX = currentOffsetX;
-&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (currentOffsetX &lt; pageWidth &amp;&amp; currentOffsetX &lt; lastContentOffsetX) <span class="comment">// 右划</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 修改布局</span></span><br><span class="line">    lastContentOffsetX = currentOffsetX + offset;</span><br><span class="line">    bounds.origin.x = lastContentOffsetX;</span><br><span class="line">    scrollView.bounds = bounds;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (currentOffsetX &gt; offset &amp;&amp; currentOffsetX &gt; lastContentOffsetX) <span class="comment">// 左划</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 修改布局</span></span><br><span class="line">    lastContentOffsetX = currentOffsetX - offset;</span><br><span class="line">    bounds.origin.x = lastContentOffsetX;</span><br><span class="line">    scrollView.bounds = bounds;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    lastContentOffsetX = currentOffsetX;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>以第一个 if 判断分支为例，ScrollView 展示的是原始第一页并开始滑入复制在开头的原始最后一页。此时需要调整布局，调整后的状态是 ScrollView 展示复制在最后的原始第一页并开始滑入原始最后一页。</p>
 <p>还有一个需要注意的是修改 ScrollView 的 contentOffset 的方式<code>scrollView.bounds = bounds</code>，这种方式不会触发 ScrollView 的 delegate 方法。最初的实现是<code>[scrollView setContentOffset: animated:NO]</code>，在 scrollViewDidScroll 中这样修改 contentOffset 又会触发到 scrollViewDidScroll，引起连锁反映。如果慢慢的滑动 ScrollView，会出现分页错误，ScrollView 停留在一页的中间。</p>
 <p>下面是 demo 截图，ScrollView 展示3页视图，左滑和右滑能够无限循环。</p>
 <p></p>
-
-<!-- <p class="post-image"><img src="/resources/figures/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p> -->
 
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-26-Cycle-Scroll-View.png"></p>
 <p class="post-image-title">demo截图</p>
@@ -156,7 +135,7 @@ else
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/26/cycle-scroll-view/" data-id="cl4skzbx8000dbhne6s0t4l3a" data-title="可循环滚动的 ScrollView" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/26/cycle-scroll-view/" data-id="cl4v06ovz000dg2n51pfb6g64" data-title="可循环滚动的 ScrollView" class="article-share-link">Share</a>
       
       
       

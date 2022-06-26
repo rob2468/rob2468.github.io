@@ -13,19 +13,15 @@
 <meta property="og:site_name" content="陈军的博客">
 <meta property="og:description" content="前言  本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考这篇文章。 Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Objective-C-class-and-object.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Objective-C-class-and-object.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Memory-segments-for-Blocks.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Memory-segments-for-Blocks.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Copying-a-__block-variable.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Copying-a-__block-variable.png">
 <meta property="article:published_time" content="2018-09-30T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2016-12-29-Objective-C-class-and-object.png">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Objective-C-class-and-object.png">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -127,54 +123,10 @@
 
 <p>可以使用指令 <code>clang -rewrite-objc file_name_of_the_source_code</code>，将 OC 源代码转换成对应的 C++ 实现，从而探究 Block 的实现原理。</p>
 <p>原始代码：</p>
-<pre><code>int main()
-&#123;
-    void (^blk)(void) = ^&#123;printf("Block\n");&#125;;
-    blk();
-    return 0;
-&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">void</span> (^blk)(<span class="keyword">void</span>) = ^&#123;printf(<span class="string">&quot;Block\n&quot;</span>);&#125;;</span><br><span class="line">    blk();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>转换后代码：</p>
-<pre><code>struct __block_impl &#123;
-    void *isa;
-    int Flags;
-    int Reserved;
-    void *FuncPtr;
-&#125;;
-
-struct __main_block_impl_0 &#123;
-    struct __block_impl impl;
-    struct __main_block_desc_0 *Desc;
-    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int flags=0) &#123;
-        impl.isa = &_NSConcreteStackBlock;
-        impl.Flags = flags;
-        impl.FuncPtr = fp;
-        Desc = desc;
-    &#125;
-&#125;;
-
-static void __main_block_func_0(struct __main_block_impl_0 *__cself)
-&#123;
-    printf("Block\n");
-&#125;
-
-static struct __main_block_desc_0
-&#123;
-    unsigned long reserved;
-    unsigned long Block_size;
-&#125; __main_block_desc_0_DATA = &#123;
-    0,
-    sizeof(struct __main_block_impl_0)
-&#125;;
-
-int main() &#123;
-    void (*blk)(void) =
-        (void (*)(void))&__main_block_impl_0((void *)__main_block_func_0, &__main_block_desc_0_DATA);
-    ((void (*)(struct __block_impl *))((struct __block_impl *)blk)->FuncPtr)((struct __block_impl *)blk);
-    return 0;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> &#123;</span></span><br><span class="line">    <span class="keyword">void</span> *isa;</span><br><span class="line">    <span class="keyword">int</span> Flags;</span><br><span class="line">    <span class="keyword">int</span> Reserved;</span><br><span class="line">    <span class="keyword">void</span> *FuncPtr;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_0</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> <span class="title">impl</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span> *<span class="title">Desc</span>;</span></span><br><span class="line">    __main_block_impl_0(<span class="keyword">void</span> *fp, struct __main_block_desc_0 *desc, <span class="keyword">int</span> flags=<span class="number">0</span>) &#123;</span><br><span class="line">        impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">        impl.Flags = flags;</span><br><span class="line">        impl.FuncPtr = fp;</span><br><span class="line">        Desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_func_0(struct __main_block_impl_0 *__cself)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Block\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> reserved;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> Block_size;</span><br><span class="line">&#125; __main_block_desc_0_DATA = &#123;</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    <span class="keyword">sizeof</span>(struct __main_block_impl_0)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">void</span> (*blk)(<span class="keyword">void</span>) =</span><br><span class="line">        (<span class="keyword">void</span> (*)(<span class="keyword">void</span>))&amp;__main_block_impl_0((<span class="keyword">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA);</span><br><span class="line">    ((<span class="keyword">void</span> (*)(struct __block_impl *))((struct __block_impl *)blk)-&gt;FuncPtr)((struct __block_impl *)blk);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>对比原始代码，转换后的代码增加了三个结构体和一个函数的定义。结构体：__block_impl、__main_block_impl_0、__main_block_desc_0；函数：__main_block_func_0。__main_block_func_0 对应原始代码中的 Block 实现，函数命名的规则是取原始方法名（main）和该 Block 在原始方法中的次序（第0个），结构体的命名规则也是如此。</p>
 <h2 id="section_2">二、isa 和 _NSConcreteStackBlock</h2>
@@ -182,34 +134,13 @@ int main() &#123;
 <p>上小节 __main_block_impl_0 的构造函数中有赋值语句 <code>impl.isa = &amp;_NSConcreteStackBlock</code>，本小节简述 isa 和 _NSConcreteStackBlock 的含义。</p>
 <p>OC 中的对象实例和类编译后都有其对应的结构体定义，如下所示。</p>
 <p>对象实例对应的结构体：</p>
-<pre><code>/* declared in /usr/include/objc/objc.h */
-struct objc_object &#123;
-    Class isa;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* declared in /usr/include/objc/objc.h */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">objc_object</span> &#123;</span></span><br><span class="line">    Class isa;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>类对应的结构体：</p>
-<pre><code>/* declared in /usr/include/objc/runtime.h */
-struct objc_class &#123;
-    Class isa;
-&#125;;
-
-typedef struct objc_class *Class;
-
-/* declared at runtime/objc-runtime-new.h in the objc4 runtime library */
-struct class_t &#123;
-    struct class_t *isa;
-    struct class_t *superclass;
-    Cache cache;
-    IMP *vtable;
-    uintptr_t data_NEVER_USE;
-&#125;;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* declared in /usr/include/objc/runtime.h */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">objc_class</span> &#123;</span></span><br><span class="line">    Class isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">objc_class</span> *<span class="title">Class</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* declared at runtime/objc-runtime-new.h in the objc4 runtime library */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">class_t</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">class_t</span> *<span class="title">isa</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">class_t</span> *<span class="title">superclass</span>;</span></span><br><span class="line">    Cache cache;</span><br><span class="line">    IMP *vtable;</span><br><span class="line">    <span class="keyword">uintptr_t</span> data_NEVER_USE;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>OC 中的类使用 class_t 构造（class_t 本身基于 objc_class），也就是说 OC 中的每个类都使用 class_t 创建了实例。比如，NSObject 有其对应的 class_t 实例，NSMutableArray 有其对应的 class_t 实例。class_t 实例保存了类的信息，如方法名、方法实现、指向父类的指针等，提供给 OC 运行时库使用。</p>
 <p>基于上面描述，下图描述 isa 值的含义。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Objective-C-class-and-object.png" alt="" width="80%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Objective-C-class-and-object.png"></p>
 <p class="post-image-title">图 OC 对象和类中 isa 指针的指向</p>
 
@@ -218,99 +149,20 @@ struct class_t &#123;
 
 <p>Block 能够捕获自动变量。下面使用 <code>clang -rewrite-objc file_name_of_the_source_code</code> 指令转换代码，描述了在这种情况下 Block 实现方式的变化。（__block_impl、__main_block_desc_0、__main_block_desc_0_DATA的声明和定义与上文相同，不再描述）</p>
 <p>原始代码：</p>
-<pre><code>int main() &#123;
-    int dmy = 256;
-    int val = 10;
-    const char *fmt = "val = %d\n";
-    void (^blk)(void) = ^&#123;printf(fmt, val);&#125;;
-    return 0;
-&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main() &#123;</span><br><span class="line">    <span class="keyword">int</span> dmy = <span class="number">256</span>;</span><br><span class="line">    <span class="keyword">int</span> val = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *fmt = <span class="string">&quot;val = %d\n&quot;</span>;</span><br><span class="line">    <span class="keyword">void</span> (^blk)(<span class="keyword">void</span>) = ^&#123;printf(fmt, val);&#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>转换后代码：</p>
-<pre><code>struct __main_block_impl_0 &#123;
-    struct __block_impl impl;
-    struct __main_block_desc_0* Desc;
-    const char *fmt;
-    int val;
-
-    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, const char *_fmt, int _val, int flags=0)
-        : fmt(_fmt), val(_val) &#123;
-        impl.isa = &_NSConcreteStackBlock;
-        impl.Flags = flags;
-        impl.FuncPtr = fp;
-        Desc = desc;
-    &#125;
-&#125;;
-
-static void __main_block_func_0(struct __main_block_impl_0 *__cself)
-&#123;
-    const char *fmt = __cself->fmt;
-    int val = __cself->val;
-    printf(fmt, val);
-&#125;
-
-int main() &#123;
-    int dmy = 256;
-    int val = 10;
-    const char *fmt = "val = %d\n";
-    void (*blk)(void) = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, fmt, val);
-  return 0;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_0</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> <span class="title">impl</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span>* <span class="title">Desc</span>;</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *fmt;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line"></span><br><span class="line">    __main_block_impl_0(<span class="keyword">void</span> *fp, struct __main_block_desc_0 *desc, <span class="keyword">const</span> <span class="keyword">char</span> *_fmt, <span class="keyword">int</span> _val, <span class="keyword">int</span> flags=<span class="number">0</span>)</span><br><span class="line">        : fmt(_fmt), val(_val) &#123;</span><br><span class="line">        impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">        impl.Flags = flags;</span><br><span class="line">        impl.FuncPtr = fp;</span><br><span class="line">        Desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_func_0(struct __main_block_impl_0 *__cself)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *fmt = __cself-&gt;fmt;</span><br><span class="line">    <span class="keyword">int</span> val = __cself-&gt;val;</span><br><span class="line">    <span class="built_in">printf</span>(fmt, val);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> dmy = <span class="number">256</span>;</span><br><span class="line">    <span class="keyword">int</span> val = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *fmt = <span class="string">&quot;val = %d\n&quot;</span>;</span><br><span class="line">    <span class="keyword">void</span> (*blk)(<span class="keyword">void</span>) = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, fmt, val);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>__main_block_impl_0 为 Block 对象的定义，在这种情况下，其中增加了两个成员变量（fmt 和 val）用来存储捕获的自动变量。Block 不会捕获未使用的自动变量（dmy）。</p>
 <h2 id="section_4">四、Block 中修改静态变量、静态全局变量和全局变量</h2>
 
 <p>Block 中能够修改静态变量、静态全局变量和全局变量的值，但是底层实现机制存在差异。下面给出转换前后的代码，并给出说明。</p>
 <p>原始代码：</p>
-<pre><code>int global_val = 1;
-static int static_global_val = 2;
-int main()
-&#123;
-    static int static_val = 3;
-    void (^blk)(void) = ^&#123;
-        global_val *= 1;
-        static_global_val *= 2;
-        static_val *= 3;
-    &#125;;
-    return 0;
-&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> global_val = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> static_global_val = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">int</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> static_val = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">void</span> (^blk)(<span class="keyword">void</span>) = ^&#123;</span><br><span class="line">        global_val *= <span class="number">1</span>;</span><br><span class="line">        static_global_val *= <span class="number">2</span>;</span><br><span class="line">        static_val *= <span class="number">3</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>转换后代码：</p>
-<pre><code>int global_val = 1;
-static int static_global_val = 2;
-
-struct __main_block_impl_0 &#123;
-    struct __block_impl impl;
-    struct __main_block_desc_0 *Desc;
-    int *static_val;
-    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int *_static_val, int flags=0)
-        : static_val(_static_val) &#123;
-        impl.isa = &_NSConcreteStackBlock;
-        impl.Flags = flags;
-        impl.FuncPtr = fp;
-        Desc = desc;
-    &#125;
-&#125;;
-
-static void __main_block_func_0(struct __main_block_impl_0 *__cself) &#123;
-    int *static_val = __cself->static_val;
-
-    global_val *= 1;
-    static_global_val *= 2;
-    (*static_val) *= 3;
-&#125;
-
-int main()
-&#123;
-    static int static_val = 3;
-
-    blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, &static_val);
-    return 0;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> global_val = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> static_global_val = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_0</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> <span class="title">impl</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span> *<span class="title">Desc</span>;</span></span><br><span class="line">    <span class="keyword">int</span> *static_val;</span><br><span class="line">    __main_block_impl_0(<span class="keyword">void</span> *fp, struct __main_block_desc_0 *desc, <span class="keyword">int</span> *_static_val, <span class="keyword">int</span> flags=<span class="number">0</span>)</span><br><span class="line">        : static_val(_static_val) &#123;</span><br><span class="line">        impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">        impl.Flags = flags;</span><br><span class="line">        impl.FuncPtr = fp;</span><br><span class="line">        Desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_func_0(struct __main_block_impl_0 *__cself) &#123;</span><br><span class="line">    <span class="keyword">int</span> *static_val = __cself-&gt;static_val;</span><br><span class="line"></span><br><span class="line">    global_val *= <span class="number">1</span>;</span><br><span class="line">    static_global_val *= <span class="number">2</span>;</span><br><span class="line">    (*static_val) *= <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> static_val = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, &amp;static_val);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>静态全局变量和全局变量的处理方式是一致的，Block 能够直接对其进行读写。</p>
 <p>静态变量的可见性只是当前函数内，转换后的代码中 __main_block_func_0 无法访问。在 __main_block_impl_0 中增加指向静态变量指针的成员变量，通过该成员变量实现读写静态变量。</p>
@@ -318,84 +170,16 @@ int main()
 <h2 id="section_5">五、Block 中修改 __block 变量</h2>
 
 <p>原始代码：</p>
-<pre><code>int main() &#123;
-    __block int val = 10;
-    void (^blk)(void) = ^&#123;val = 1;&#125;;
-    return 0;
-&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main() &#123;</span><br><span class="line">    __block <span class="keyword">int</span> val = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">void</span> (^blk)(<span class="keyword">void</span>) = ^&#123;val = <span class="number">1</span>;&#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>转换后代码：</p>
-<pre><code>struct __Block_byref_val_0 &#123;
-    void *__isa;
-    __Block_byref_val_0 *__forwarding;
-    int __flags;
-    int __size;
-    int val;
-&#125;;
-
-struct __main_block_impl_0 &#123;
-    struct __block_impl impl;
-    struct __main_block_desc_0 *Desc;
-    __Block_byref_val_0 *val;
-    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, __Block_byref_val_0 *_val, int flags=0)
-        : val(_val->__forwarding) &#123;
-        impl.isa = &_NSConcreteStackBlock;
-        impl.Flags = flags;
-        impl.FuncPtr = fp;
-        Desc = desc;
-    &#125;
-&#125;;
-
-static void __main_block_func_0(struct __main_block_impl_0 *__cself)
-&#123;
-    __Block_byref_val_0 *val = __cself->val;
-    (val->__forwarding->val) = 1;
-&#125;
-
-static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
-&#123;
-    _Block_object_assign(&dst->val, src->val, BLOCK_FIELD_IS_BYREF);
-&#125;
-
-static void __main_block_dispose_0(struct __main_block_impl_0 *src)
-&#123;
-    _Block_object_dispose(src->val, BLOCK_FIELD_IS_BYREF);
-&#125;
-
-static struct __main_block_desc_0 &#123;
-    unsigned long reserved;
-    unsigned long Block_size;
-    void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);
-    void (*dispose)(struct __main_block_impl_0*);
-&#125; __main_block_desc_0_DATA = &#123;
-    0,
-    sizeof(struct __main_block_impl_0),
-    __main_block_copy_0,
-    __main_block_dispose_0
-&#125;;
-
-int main()
-&#123;
-    __Block_byref_val_0 val = &#123;
-        0,
-        &val,
-        0,
-        sizeof(__Block_byref_val_0),
-        10
-    &#125;;
-    blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, &val, 0x22000000);
-    return 0;
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">Block_byref_val_0</span> &#123;</span></span><br><span class="line">    <span class="keyword">void</span> *__isa;</span><br><span class="line">    __Block_byref_val_0 *__forwarding;</span><br><span class="line">    <span class="keyword">int</span> __flags;</span><br><span class="line">    <span class="keyword">int</span> __size;</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_0</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> <span class="title">impl</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span> *<span class="title">Desc</span>;</span></span><br><span class="line">    __Block_byref_val_0 *val;</span><br><span class="line">    __main_block_impl_0(<span class="keyword">void</span> *fp, struct __main_block_desc_0 *desc, __Block_byref_val_0 *_val, <span class="keyword">int</span> flags=<span class="number">0</span>)</span><br><span class="line">        : val(_val-&gt;__forwarding) &#123;</span><br><span class="line">        impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">        impl.Flags = flags;</span><br><span class="line">        impl.FuncPtr = fp;</span><br><span class="line">        Desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_func_0(struct __main_block_impl_0 *__cself)</span><br><span class="line">&#123;</span><br><span class="line">    __Block_byref_val_0 *val = __cself-&gt;val;</span><br><span class="line">    (val-&gt;__forwarding-&gt;val) = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)</span><br><span class="line">&#123;</span><br><span class="line">    _Block_object_assign(&amp;dst-&gt;val, src-&gt;val, BLOCK_FIELD_IS_BYREF);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_dispose_0(struct __main_block_impl_0 *src)</span><br><span class="line">&#123;</span><br><span class="line">    _Block_object_dispose(src-&gt;val, BLOCK_FIELD_IS_BYREF);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> reserved;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> Block_size;</span><br><span class="line">    <span class="keyword">void</span> (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);</span><br><span class="line">    <span class="keyword">void</span> (*dispose)(struct __main_block_impl_0*);</span><br><span class="line">&#125; __main_block_desc_0_DATA = &#123;</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    <span class="keyword">sizeof</span>(struct __main_block_impl_0),</span><br><span class="line">    __main_block_copy_0,</span><br><span class="line">    __main_block_dispose_0</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    __Block_byref_val_0 val = &#123;</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        &amp;val,</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        <span class="keyword">sizeof</span>(__Block_byref_val_0),</span><br><span class="line">        <span class="number">10</span></span><br><span class="line">    &#125;;</span><br><span class="line">    blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, &amp;val, <span class="number">0x22000000</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>转换后的代码中，原始 __block 变量转换成了 __Block_byref_val_0 结构体类型。__Block_byref_val_0 的成员变量 val 存储原始值。</p>
 <p>__Block_byref_val_0 实例和 __main_block_impl_0 实例是多对多的关系，即一个 __Block_byref_val_0 实例可以在多个 __main_block_impl_0 实例中使用，一个 __main_block_impl_0 实例也可以使用多个 __Block_byref_val_0 实例。</p>
 <h2 id="section_6">六、Block 的存储类型</h2>
 
 <p>上文可知 Block 本身也是 OC 对象，其在内存中的存储方式有三种：_NSConcreteStackBlock、_NSConcreteGlobalBlock、_NSConcreteMallocBlock，分别对应：栈、全局/静态存储区、堆。内存区域划分方式大致可用下图表示，下图同时描述了不同存储方式的 Block 对应的内存区域。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Memory-segments-for-Blocks.png" alt="" width="70%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Memory-segments-for-Blocks.png"></p>
 <p class="post-image-title">图 Block 不同存储方式对应的内存区域</p>
 
@@ -404,8 +188,6 @@ int main()
 <h2 id="section_7">七、Block 的存储类型 -- 堆上的 Block</h2>
 
 <p>堆上的 Block 即存储类型为 _NSConcreteMallocBlock 的 Block。_NSConcreteStackBlock 存储类型的 Block 可以从栈拷贝到堆上。下图为 Block 从栈拷贝到堆的示意图，同样的，__block 变量也可以从栈拷贝到堆。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png" alt="" width="80%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-A-Block-and-__block-copied-from-the-stack-to-the-heap.png"></p>
 <p class="post-image-title">图 Block 和 __block 变量从栈拷贝到堆</p>
 
@@ -422,15 +204,9 @@ int main()
 
 <p>当 Block 使用了 __block 变量并且 Block 从栈拷贝到堆时：如果 __block 变量存储在栈上，__block 变量会被拷贝到堆上，并且 Block 对象拥有 __block 变量的所有权；如果 __block 变量本来即存储在堆上，Block 也会拥有 __block 变量的所有权。</p>
 <p>__block 变量编译后也是普通的结构体实例，其中有个特别的成员变量 __forwarding。通过 __forwarding 成员变量保证访问 __block 变量的一致性。如下代码片段，__block 变量随着 Block 从栈拷贝到堆上。</p>
-<pre><code>__block int val = 0;
-void (^blk)(void) = [^&#123;++val;&#125; copy];
-++val;
-blk();
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__block <span class="keyword">int</span> val = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">void</span> (^blk)(<span class="keyword">void</span>) = [^&#123;++val;&#125; <span class="keyword">copy</span>];</span><br><span class="line">++val;</span><br><span class="line">blk();</span><br></pre></td></tr></table></figure>
 
 <p>Block 内部会修改堆上的 __block 变量，Block 外部会修改栈上的 __block 变量。转换后，这两种行为是一致的，即<code>++(val.__forwarding-&gt;val)</code>。栈和堆上 __block 变量中的 __forwarding 指针都指向堆上的 __block 变量，下图描述了这种机制。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2016-12-29-Copying-a-__block-variable.png" alt="" width="80%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-12-29-Copying-a-__block-variable.png"></p>
 <p class="post-image-title">图 __block 变量拷贝到堆</p>
 
@@ -438,74 +214,10 @@ blk();
 
 <p>前文讲述的 Block 捕获自动变量，自动变量的类型为整型变量。当 Block 捕获的自动变量为 OC 对象时：</p>
 <p>原始代码：</p>
-<pre><code>blk_t blk;
-&#123;
-    id array = [[NSMutableArray alloc] init];
-    blk = [^(id obj) &#123;
-        [array addObject:obj];
-        NSLog(@"array count = %ld", [array count]);
-    &#125; copy];
-&#125;
-blk([[NSObject alloc] init]);
-blk([[NSObject alloc] init]);
-blk([[NSObject alloc] init]);
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">blk_t blk;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">id</span> array = [[<span class="built_in">NSMutableArray</span> alloc] init];</span><br><span class="line">    blk = [^(<span class="keyword">id</span> obj) &#123;</span><br><span class="line">        [array addObject:obj];</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;array count = %ld&quot;</span>, [array count]);</span><br><span class="line">    &#125; <span class="keyword">copy</span>];</span><br><span class="line">&#125;</span><br><span class="line">blk([[<span class="built_in">NSObject</span> alloc] init]);</span><br><span class="line">blk([[<span class="built_in">NSObject</span> alloc] init]);</span><br><span class="line">blk([[<span class="built_in">NSObject</span> alloc] init]);</span><br></pre></td></tr></table></figure>
 
 <p>转换后代码：</p>
-<pre><code>/* a struct for the Block and some functions */
-struct __main_block_impl_0 &#123;
-    struct __block_impl impl;
-    struct __main_block_desc_0 *Desc;
-    id __strong array;
-    __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, id __strong _array, int flags=0)
-        : array(_array) &#123;
-        impl.isa = &_NSConcreteStackBlock;
-        impl.Flags = flags;
-        impl.FuncPtr = fp;
-        Desc = desc;
-    &#125;
-&#125;;
-
-static void __main_block_func_0(struct __main_block_impl_0 *__cself, id obj)
-&#123;
-    id __strong array = __cself->array;
-    [array addObject:obj];
-    NSLog(@"array count = %ld", [array count]);
-&#125;
-
-static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
-&#123;
-    _Block_object_assign(&dst->array, src->array, BLOCK_FIELD_IS_OBJECT);
-&#125;
-
-static void __main_block_dispose_0(struct __main_block_impl_0 *src)
-&#123;
-    _Block_object_dispose(src->array, BLOCK_FIELD_IS_OBJECT);
-&#125;
-
-static struct __main_block_desc_0 &#123;
-    unsigned long reserved;
-    unsigned long Block_size;
-    void (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);
-    void (*dispose)(struct __main_block_impl_0*);
-&#125; __main_block_desc_0_DATA = &#123;
-    0,
-    sizeof(struct __main_block_impl_0),
-    __main_block_copy_0,
-    __main_block_dispose_0
-&#125;;
-
-/* Block literal and executing the Block */
-blk_t blk;
-&#123;
-    id __strong array = [[NSMutableArray alloc] init];
-    blk = &__main_block_impl_0(__main_block_func_0, &__main_block_desc_0_DATA, array, 0x22000000);
-    blk = [blk copy];
-&#125;
-(*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
-(*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
-(*blk->impl.FuncPtr)(blk, [[NSObject alloc] init]);
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* a struct for the Block and some functions */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_0</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> <span class="title">impl</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span> *<span class="title">Desc</span>;</span></span><br><span class="line">    id __strong <span class="built_in">array</span>;</span><br><span class="line">    __main_block_impl_0(<span class="keyword">void</span> *fp, struct __main_block_desc_0 *desc, id __strong _array, <span class="keyword">int</span> flags=<span class="number">0</span>)</span><br><span class="line">        : <span class="built_in">array</span>(_array) &#123;</span><br><span class="line">        impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">        impl.Flags = flags;</span><br><span class="line">        impl.FuncPtr = fp;</span><br><span class="line">        Desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_func_0(struct __main_block_impl_0 *__cself, id obj)</span><br><span class="line">&#123;</span><br><span class="line">    id __strong <span class="built_in">array</span> = __cself-&gt;<span class="built_in">array</span>;</span><br><span class="line">    [<span class="built_in">array</span> addObject:obj];</span><br><span class="line">    NSLog(@<span class="string">&quot;array count = %ld&quot;</span>, [<span class="built_in">array</span> count]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)</span><br><span class="line">&#123;</span><br><span class="line">    _Block_object_assign(&amp;dst-&gt;<span class="built_in">array</span>, src-&gt;<span class="built_in">array</span>, BLOCK_FIELD_IS_OBJECT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_dispose_0(struct __main_block_impl_0 *src)</span><br><span class="line">&#123;</span><br><span class="line">    _Block_object_dispose(src-&gt;<span class="built_in">array</span>, BLOCK_FIELD_IS_OBJECT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> reserved;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> Block_size;</span><br><span class="line">    <span class="keyword">void</span> (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);</span><br><span class="line">    <span class="keyword">void</span> (*dispose)(struct __main_block_impl_0*);</span><br><span class="line">&#125; __main_block_desc_0_DATA = &#123;</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    <span class="keyword">sizeof</span>(struct __main_block_impl_0),</span><br><span class="line">    __main_block_copy_0,</span><br><span class="line">    __main_block_dispose_0</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Block literal and executing the Block */</span></span><br><span class="line"><span class="keyword">blk_t</span> blk;</span><br><span class="line">&#123;</span><br><span class="line">    id __strong <span class="built_in">array</span> = [[NSMutableArray alloc] init];</span><br><span class="line">    blk = &amp;__main_block_impl_0(__main_block_func_0, &amp;__main_block_desc_0_DATA, <span class="built_in">array</span>, <span class="number">0x22000000</span>);</span><br><span class="line">    blk = [blk copy];</span><br><span class="line">&#125;</span><br><span class="line">(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);</span><br><span class="line">(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);</span><br><span class="line">(*blk-&gt;impl.FuncPtr)(blk, [[NSObject alloc] init]);</span><br></pre></td></tr></table></figure>
 
 <h2 id="section_10">十、内存管理</h2>
 
@@ -514,67 +226,19 @@ blk_t blk;
 
 <p>在前文中，当 Block 对象需要引用对象时，比如捕获 __block 变量、捕获 OC 对象实例，__main_block_desc_0 结构体中多了两个成员变量 copy 和 dispose，他们都为函数指针，函数实现如下代码所示。copy 和 dispose 分别对应对象的初始化和销毁，OC 运行时检测到 Block 从栈拷贝到堆或者 Block 对象被销毁时，能够适时调用 copy 和 dispose 实现 Block 内的内存管理。</p>
 <p>Block 捕获 __block 变量内存管理相关代码：</p>
-<pre><code>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
-&#123;
-    _Block_object_assign(&dst->val, src->val, BLOCK_FIELD_IS_BYREF);
-&#125;
-
-static void __main_block_dispose_0(struct __main_block_impl_0 *src)
-&#123;
-    _Block_object_dispose(src->val, BLOCK_FIELD_IS_BYREF);
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)</span><br><span class="line">&#123;</span><br><span class="line">    _Block_object_assign(&amp;dst-&gt;val, src-&gt;val, BLOCK_FIELD_IS_BYREF);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_dispose_0(struct __main_block_impl_0 *src)</span><br><span class="line">&#123;</span><br><span class="line">    _Block_object_dispose(src-&gt;val, BLOCK_FIELD_IS_BYREF);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>Block 捕获对象实例内存管理相关代码：</p>
-<pre><code>static void __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)
-&#123;
-    _Block_object_assign(&dst->array, src->array, BLOCK_FIELD_IS_OBJECT);
-&#125;
-
-static void __main_block_dispose_0(struct __main_block_impl_0 *src)
-&#123;
-    _Block_object_dispose(src->array, BLOCK_FIELD_IS_OBJECT);
-&#125;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_copy_0(struct __main_block_impl_0 *dst, struct __main_block_impl_0 *src)</span><br><span class="line">&#123;</span><br><span class="line">    _Block_object_assign(&amp;dst-&gt;<span class="built_in">array</span>, src-&gt;<span class="built_in">array</span>, BLOCK_FIELD_IS_OBJECT);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_dispose_0(struct __main_block_impl_0 *src)</span><br><span class="line">&#123;</span><br><span class="line">    _Block_object_dispose(src-&gt;<span class="built_in">array</span>, BLOCK_FIELD_IS_OBJECT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4>10.2 __block 变量内的内存管理实现</h4>
 
 <p>当 __block 修饰的变量为 OC 对象实例时，__block 内部需要负责该对象实例的内存管理。如下代码所示。__block 变量内的内存管理实现和 Block 内的内存管理类似。该情况下，__Block_byref_obj_0 结构体中多了两个成员变量 __Block_byref_id_object_copy 和 __Block_byref_id_object_dispose，都为函数指针，作用与上小节的 copy 和 dispose 相同，OC 运行时检测到 __block 变量从栈拷贝到堆或者 __block 变量被销毁时，适时调用这对方法，实现 __block 变量内的内存管理。</p>
 <p>原始代码：</p>
-<pre><code>__block id obj = [[NSObject alloc] init];
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__block <span class="keyword">id</span> obj = [[<span class="built_in">NSObject</span> alloc] init];</span><br></pre></td></tr></table></figure>
 
 <p>转换后代码：</p>
-<pre><code>/* struct for __block variable */
-struct __Block_byref_obj_0 &#123;
-    void *__isa;
-    __Block_byref_obj_0 *__forwarding;
-    int __flags;
-    int __size;
-    void (*__Block_byref_id_object_copy)(void*, void*);
-    void (*__Block_byref_id_object_dispose)(void*);
-    __strong id obj;
-&#125;;
-
-static void __Block_byref_id_object_copy_131(void *dst, void *src) &#123;
-    _Block_object_assign((char*)dst + 40, *(void * *) ((char*)src + 40), 131);
-&#125;
-
-static void __Block_byref_id_object_dispose_131(void *src) &#123;
-    _Block_object_dispose(*(void * *) ((char*)src + 40), 131);
-&#125;
-
-/* __block variable declaration */
-__Block_byref_obj_0 obj = &#123;
-    0,
-    &obj,
-    0x2000000,
-    sizeof(__Block_byref_obj_0),
-    __Block_byref_id_object_copy_131,
-    __Block_byref_id_object_dispose_131,
-    [[NSObject alloc] init]
-&#125;;
-</code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* struct for __block variable */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">Block_byref_obj_0</span> &#123;</span></span><br><span class="line">    <span class="keyword">void</span> *__isa;</span><br><span class="line">    __Block_byref_obj_0 *__forwarding;</span><br><span class="line">    <span class="keyword">int</span> __flags;</span><br><span class="line">    <span class="keyword">int</span> __size;</span><br><span class="line">    <span class="keyword">void</span> (*__Block_byref_id_object_copy)(<span class="keyword">void</span>*, <span class="keyword">void</span>*);</span><br><span class="line">    <span class="keyword">void</span> (*__Block_byref_id_object_dispose)(<span class="keyword">void</span>*);</span><br><span class="line">    __strong id obj;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __Block_byref_id_object_copy_131(<span class="keyword">void</span> *dst, <span class="keyword">void</span> *src) &#123;</span><br><span class="line">    _Block_object_assign((<span class="keyword">char</span>*)dst + <span class="number">40</span>, *(<span class="keyword">void</span> * *) ((<span class="keyword">char</span>*)src + <span class="number">40</span>), <span class="number">131</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __Block_byref_id_object_dispose_131(<span class="keyword">void</span> *src) &#123;</span><br><span class="line">    _Block_object_dispose(*(<span class="keyword">void</span> * *) ((<span class="keyword">char</span>*)src + <span class="number">40</span>), <span class="number">131</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* __block variable declaration */</span></span><br><span class="line">__Block_byref_obj_0 obj = &#123;</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    &amp;obj,</span><br><span class="line">    <span class="number">0x2000000</span>,</span><br><span class="line">    <span class="keyword">sizeof</span>(__Block_byref_obj_0),</span><br><span class="line">    __Block_byref_id_object_copy_131,</span><br><span class="line">    __Block_byref_id_object_dispose_131,</span><br><span class="line">    [[NSObject alloc] init]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h2 id="section_11">十一、ARC 下 Block 得存储类型变化</h2>
 
@@ -587,25 +251,7 @@ __Block_byref_obj_0 obj = &#123;
 <h3>案例</h3>
 
 <p>下面的代码显然存在内存泄漏，有 self -&gt; blk -&gt; self 这样的循环引用。那内存泄漏是哪个环节导致的，是位置 A，还是位置 B？</p>
-<pre><code>@interface TestObject : NSObject
-@property (nonatomic, copy) dispatch_block_t blk;
-@end
-@implementation TestObject
-- (instancetype)init &#123;
-    self = [super init];
-    if (self) &#123;
-        self.blk = ^&#123;               // A
-            [self emptyMethod];
-        &#125;;
-        self.blk();                 // B
-    &#125;
-    return self;
-&#125;
-- (void)emptyMethod &#123;
-    NSLog(@"hello");
-&#125;
-@end
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">TestObject</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) dispatch_block_t blk;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">TestObject</span></span></span><br><span class="line">- (<span class="keyword">instancetype</span>)init &#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.blk = ^&#123;               <span class="comment">// A</span></span><br><span class="line">            [<span class="keyword">self</span> emptyMethod];</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">self</span>.blk();                 <span class="comment">// B</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)emptyMethod &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;hello&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 
 <p>使用 Instruments 能够分析出位置 A 便引入了循环引用。参考 <a href="#section_9">九、Block 捕获对象实例</a>，Block 实例化的时候，外部对象实例在其构造函数中就被强引用。所以 Block 定义的时候就已经产生了循环引用，而不用等到执行的时候。</p>
 <h3>参考文献：</h3>
@@ -617,7 +263,7 @@ __Block_byref_obj_0 obj = &#123;
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="cl4skzby3001bbhneg3sza8bi" data-title="Objective-C Block" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="cl4v06owy001bg2n5d07vedxn" data-title="Objective-C Block" class="article-share-link">Share</a>
       
       
       

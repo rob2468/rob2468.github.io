@@ -13,13 +13,12 @@
 <meta property="og:site_name" content="陈军的博客">
 <meta property="og:description" content="开发中不时会遇到 [obj callMethodWithCompletionBlock:^&amp;#123; [obj doSomething] &amp;#125;] 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-02-08-Memory-Leak.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-02-08-Memory-Leak.png">
 <meta property="article:published_time" content="2018-02-08T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-02-08-Memory-Leak.png">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-02-08-Memory-Leak.png">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -115,30 +114,7 @@
 <p>本文的讨论都是基于 ARC，并且一般性的 block 内存管理说明可以参考<a href="/2018/09/30/block.html">这篇文章</a>。</p>
 <h2>Demo 1</h2>
 
-<pre><code>@interface CustomUIView : UIView
-@end
-@implementation CustomUIView
-- (void)doSomeThing:(void(^)(void))block &#123;
-    block();
-&#125;
-- (void)emptyMethod &#123;&#125;
-- (void)dealloc &#123;
-    NSLog(@"CustomUIView dealloc");
-&#125;
-@end
-
-@interface ViewController ()
-@end
-@implementation ViewController
-- (void)viewDidLoad &#123;
-    [super viewDidLoad];
-    CustomUIView *customView = [[CustomUIView alloc] init];
-    [customView doSomeThing:^&#123;
-        [customView emptyMethod];
-    &#125;];
-&#125;
-@end
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CustomUIView</span> : <span class="title">UIView</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CustomUIView</span></span></span><br><span class="line">- (<span class="keyword">void</span>)doSomeThing:(<span class="keyword">void</span>(^)(<span class="keyword">void</span>))block &#123;</span><br><span class="line">    block();</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)emptyMethod &#123;&#125;</span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;CustomUIView dealloc&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    CustomUIView *customView = [[CustomUIView alloc] init];</span><br><span class="line">    [customView doSomeThing:^&#123;</span><br><span class="line">        [customView emptyMethod];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 
 <p>运行结果：</p>
 <pre><code>2018-02-08 15:56:53.638344+0800 Test[41287:2545568] CustomUIView dealloc
@@ -148,41 +124,7 @@
 <p>结论：block 引用了 customView，但是 customView 没有引用 block。见 Demo 2。</p>
 <h2>Demo 2</h2>
 
-<pre><code>@interface CustomUIView0 : UIView
-@end
-@implementation CustomUIView0
-- (void)emptyMethod &#123;&#125;
-- (void)dealloc &#123;
-    NSLog(@"CustomUIView0 dealloc");
-&#125;
-@end
-
-@interface CustomUIView : UIView
-@end
-@implementation CustomUIView
-- (void)doSomeThing:(void(^)(void))block &#123;
-    block();
-&#125;
-- (void)emptyMethod &#123;&#125;
-- (void)dealloc &#123;
-    NSLog(@"CustomUIView dealloc");
-&#125;
-@end
-
-@interface ViewController ()
-@property (strong, nonatomic) CustomUIView *customView;
-@end
-@implementation ViewController
-- (void)viewDidLoad &#123;
-    [super viewDidLoad];
-    CustomUIView0 *view0 = [[CustomUIView0 alloc] init];
-    self.customView = [[CustomUIView alloc] init];
-    [self.customView doSomeThing:^&#123;
-        [view0 emptyMethod];
-    &#125;];
-&#125;
-@end
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CustomUIView0</span> : <span class="title">UIView</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CustomUIView0</span></span></span><br><span class="line">- (<span class="keyword">void</span>)emptyMethod &#123;&#125;</span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;CustomUIView0 dealloc&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CustomUIView</span> : <span class="title">UIView</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CustomUIView</span></span></span><br><span class="line">- (<span class="keyword">void</span>)doSomeThing:(<span class="keyword">void</span>(^)(<span class="keyword">void</span>))block &#123;</span><br><span class="line">    block();</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)emptyMethod &#123;&#125;</span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;CustomUIView dealloc&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>) CustomUIView *customView;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    CustomUIView0 *view0 = [[CustomUIView0 alloc] init];</span><br><span class="line">    <span class="keyword">self</span>.customView = [[CustomUIView alloc] init];</span><br><span class="line">    [<span class="keyword">self</span>.customView doSomeThing:^&#123;</span><br><span class="line">        [view0 emptyMethod];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 
 <p>运行结果：</p>
 <pre><code>2018-02-08 15:58:54.662221+0800 Test[41318:2553382] CustomUIView0 dealloc
@@ -191,52 +133,11 @@
 <p>该示例中 customView 被强引用，不会释放。因为 block 引用了 view0，如果 customView 引用 block，那么 view0 便不会被释放。但是实际上 view0 正常释放，说明 Demo 1 的结论是正确的。</p>
 <h2>Demo 3</h2>
 
-<pre><code>@interface CustomUIView0 : UIView
-@end
-@implementation CustomUIView0
-- (void)emptyMethod &#123;&#125;
-- (void)dealloc &#123;
-    NSLog(@"CustomUIView0 dealloc");
-&#125;
-@end
-
-@interface CustomUIView : UIView
-@property (strong, nonatomic) void(^strongBlock)(void);
-@end
-@implementation CustomUIView
-- (void)doSomeThing:(void(^)(void))block &#123;
-    self.strongBlock = block;
-    block();
-&#125;
-- (void)emptyMethod &#123;&#125;
-- (void)dealloc &#123;
-    NSLog(@"CustomUIView dealloc");
-&#125;
-@end
-
-@interface ViewController ()
-@property (strong, nonatomic) CustomUIView *customView;
-@end
-@implementation ViewController
-- (void)viewDidLoad &#123;
-    [super viewDidLoad];
-    CustomUIView0 *view0 = [[CustomUIView0 alloc] init];
-    self.customView = [[CustomUIView alloc] init];
-    [self.customView doSomeThing:^&#123;
-        [view0 emptyMethod];
-    &#125;];
-&#125;
-@end
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CustomUIView0</span> : <span class="title">UIView</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CustomUIView0</span></span></span><br><span class="line">- (<span class="keyword">void</span>)emptyMethod &#123;&#125;</span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;CustomUIView0 dealloc&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CustomUIView</span> : <span class="title">UIView</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>) <span class="keyword">void</span>(^strongBlock)(<span class="keyword">void</span>);</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CustomUIView</span></span></span><br><span class="line">- (<span class="keyword">void</span>)doSomeThing:(<span class="keyword">void</span>(^)(<span class="keyword">void</span>))block &#123;</span><br><span class="line">    <span class="keyword">self</span>.strongBlock = block;</span><br><span class="line">    block();</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)emptyMethod &#123;&#125;</span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;CustomUIView dealloc&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>) CustomUIView *customView;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    CustomUIView0 *view0 = [[CustomUIView0 alloc] init];</span><br><span class="line">    <span class="keyword">self</span>.customView = [[CustomUIView alloc] init];</span><br><span class="line">    [<span class="keyword">self</span>.customView doSomeThing:^&#123;</span><br><span class="line">        [view0 emptyMethod];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 
 <p>Demo 3 与 Demo 2 的区别是 CustomUIView 中强引用了 block，此时 view0 不会释放，存在 self -&gt; customView -&gt; block -&gt; view0 这样的强引用关系。</p>
 <p>这样的强引用关系是单向的，只要打破其中一个环节便能释放，比如作如下修改：</p>
-<pre><code>    CustomUIView0 *view0 = [[CustomUIView0 alloc] init];
-    CustomUIView *customView = [[CustomUIView alloc] init];
-    [customView doSomeThing:^&#123;
-        [view0 emptyMethod];
-    &#125;];
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CustomUIView0 *view0 = [[CustomUIView0 alloc] init];</span><br><span class="line">CustomUIView *customView = [[CustomUIView alloc] init];</span><br><span class="line">[customView doSomeThing:^&#123;</span><br><span class="line">    [view0 emptyMethod];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
 
 <p>运行结果：</p>
 <pre><code>2018-02-08 16:48:27.802266+0800 Test[41900:2865267] CustomUIView dealloc
@@ -246,37 +147,9 @@
 <p>此时 customView 成为局部变量，上下文结束便释放。被引用的 block 和 view0 也会依次释放。</p>
 <h2>Demo 4</h2>
 
-<pre><code>@interface CustomUIView : UIView
-@property (strong, nonatomic) void(^strongBlock)(void);
-@end
-@implementation CustomUIView
-- (void)doSomeThing:(void(^)(void))block &#123;
-    self.strongBlock = block;
-    block();
-&#125;
-- (void)emptyMethod &#123;&#125;
-- (void)dealloc &#123;
-    NSLog(@"CustomUIView dealloc");
-&#125;
-@end
-
-@interface ViewController ()
-@property (strong, nonatomic) CustomUIView *customView;
-@end
-@implementation ViewController
-- (void)viewDidLoad &#123;
-    [super viewDidLoad];
-    CustomUIView *customView = [[CustomUIView alloc] init];
-    [customView doSomeThing:^&#123;
-        [customView emptyMethod];
-    &#125;];
-&#125;
-@end
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CustomUIView</span> : <span class="title">UIView</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>) <span class="keyword">void</span>(^strongBlock)(<span class="keyword">void</span>);</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CustomUIView</span></span></span><br><span class="line">- (<span class="keyword">void</span>)doSomeThing:(<span class="keyword">void</span>(^)(<span class="keyword">void</span>))block &#123;</span><br><span class="line">    <span class="keyword">self</span>.strongBlock = block;</span><br><span class="line">    block();</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)emptyMethod &#123;&#125;</span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;CustomUIView dealloc&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>) CustomUIView *customView;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    CustomUIView *customView = [[CustomUIView alloc] init];</span><br><span class="line">    [customView doSomeThing:^&#123;</span><br><span class="line">        [customView emptyMethod];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 
 <p>最后，我们来看一个会产生循环引用的例子。Demo 4 和 Demo 1 的区别是 CustomUIView 中强引用了 block。此时存在 customView -&gt; block -&gt; customView 这样的循环引用，除非显式打破这个环状引用（比如 customView 中有逻辑能解除对 block 的引用），否则便产生了内存泄漏。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2018-02-08-Memory-Leak.png" alt="" width="70%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-02-08-Memory-Leak.png"></p>
 <h2>总结</h2>
 
@@ -286,7 +159,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="cl4skzbxb000ibhnefz4y4kam" data-title="callMethodWithCompletionBlock 中 Block 的内存管理" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="cl4v06ow3000ig2n558eh92us" data-title="callMethodWithCompletionBlock 中 Block 的内存管理" class="article-share-link">Share</a>
       
       
       

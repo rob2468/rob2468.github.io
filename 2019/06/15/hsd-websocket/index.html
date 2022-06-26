@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2019-06-15-websocket-retain.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2019-06-15-websocket-retain.png">
 <meta property="article:published_time" content="2019-06-15T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2019-06-15-websocket-retain.png">
@@ -127,25 +127,10 @@
 <h2 id="section_3">WebSocket 协议</h2>
 
 <p>WebSocket 协议是借用 HTTP 101 switch protocol 来完成协议转换，从 HTTP 协议切换成 WebSocket 通信协议。一个典型的建立连接请求和响应头如下，具体含义见参考文献链接。</p>
-<div class="code"><pre><code>Request Headers
-GET ws://localhost:5555/ HTTP/1.1
-Host: localhost:5555
-Connection: Upgrade
-Pragma: no-cache
-Cache-Control: no-cache
-Upgrade: websocket
-Origin: http://localhost:5555
-Sec-WebSocket-Version: 13
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36
-Accept-Encoding: gzip, deflate, br
-Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
-Cookie: locale=zh-cn
-Sec-WebSocket-Key: qtAGynUVRNU3JdTH1dsQiA==
-Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Request Headers</span><br><span class="line">GET ws://localhost:5555/ HTTP/1.1</span><br><span class="line">Host: localhost:5555</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Pragma: no-cache</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Upgrade: websocket</span><br><span class="line">Origin: http://localhost:5555</span><br><span class="line">Sec-WebSocket-Version: 13</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9,en;q=0.8</span><br><span class="line">Cookie: locale=zh-cn</span><br><span class="line">Sec-WebSocket-Key: qtAGynUVRNU3JdTH1dsQiA==</span><br><span class="line">Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits</span><br><span class="line"></span><br><span class="line">Response Headers</span><br><span class="line">HTTP/1.1 101 Web Socket Protocol Handshake</span><br><span class="line">WebSocket-Location: ws://localhost:5555/</span><br><span class="line">Sec-WebSocket-Accept: We1qmJgFvf8w3cDqTuUO5B6lrNA=</span><br><span class="line">Upgrade: WebSocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">WebSocket-Origin: http://localhost:5555</span><br></pre></td></tr></table></figure>
 
-<p>Response Headers<br>HTTP/1.1 101 Web Socket Protocol Handshake<br>WebSocket-Location: ws://localhost:5555/<br>Sec-WebSocket-Accept: We1qmJgFvf8w3cDqTuUO5B6lrNA=<br>Upgrade: WebSocket<br>Connection: Upgrade<br>WebSocket-Origin: <a target="_blank" rel="noopener" href="http://localhost:5555/">http://localhost:5555</a><br></code></pre></div></p>
 <p>WebSocket 协议传输的数据以 Frame 为单位，每个 Frame 都有严格的数据结构，如下表所示。其中每个位以字节流形式考察，具体含义见参考文献链接。</p>
-<div class="code"><pre><code>  0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
+<pre><code>  0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
  +-+-+-+-+-------+-+-------------+-------------------------------+
  |F|R|R|R| opcode|M| Payload len |    Extended payload length    |
  |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |
@@ -162,7 +147,7 @@ Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
  + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
  |                     Payload Data continued ...                |
  +---------------------------------------------------------------+
-</code></pre></div>
+</code></pre>
 
 <h2 id="section_4">持有关系</h2>
 
@@ -177,158 +162,17 @@ Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
 <p>HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConnection 检测到当前请求为 WebSocket 请求时，实例出 HSDGWebSocket 对象，并显示持有。他们的对应关系是 1 : 1。</p>
 <h2 id="section_5">建立连接</h2>
 
-<pre><code>+ (BOOL)isWebSocketRequest:(NSDictionary *)requestHeaders &#123;
-    NSString *connectionHeaderValue = [requestHeaders objectForKey:@"Connection"];
-    NSString *upgradeHeaderValue = [requestHeaders objectForKey:@"Upgrade"];
-
-    BOOL isWebSocket = YES;
-    if (!upgradeHeaderValue || !connectionHeaderValue) &#123;
-        isWebSocket = NO;
-    &#125; else if ([upgradeHeaderValue caseInsensitiveCompare:@"WebSocket"] != NSOrderedSame) &#123;
-        isWebSocket = NO;
-    &#125; else if ([connectionHeaderValue rangeOfString:@"Upgrade" options:NSCaseInsensitiveSearch].location == NSNotFound) &#123;
-        isWebSocket = NO;
-    &#125;
-    return isWebSocket;
-&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">BOOL</span>)isWebSocketRequest:(<span class="built_in">NSDictionary</span> *)requestHeaders &#123;</span><br><span class="line">    <span class="built_in">NSString</span> *connectionHeaderValue = [requestHeaders objectForKey:<span class="string">@&quot;Connection&quot;</span>];</span><br><span class="line">    <span class="built_in">NSString</span> *upgradeHeaderValue = [requestHeaders objectForKey:<span class="string">@&quot;Upgrade&quot;</span>];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">BOOL</span> isWebSocket = <span class="literal">YES</span>;</span><br><span class="line">    <span class="keyword">if</span> (!upgradeHeaderValue || !connectionHeaderValue) &#123;</span><br><span class="line">        isWebSocket = <span class="literal">NO</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ([upgradeHeaderValue caseInsensitiveCompare:<span class="string">@&quot;WebSocket&quot;</span>] != <span class="built_in">NSOrderedSame</span>) &#123;</span><br><span class="line">        isWebSocket = <span class="literal">NO</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ([connectionHeaderValue rangeOfString:<span class="string">@&quot;Upgrade&quot;</span> options:<span class="built_in">NSCaseInsensitiveSearch</span>].location == <span class="built_in">NSNotFound</span>) &#123;</span><br><span class="line">        isWebSocket = <span class="literal">NO</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> isWebSocket;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如上代码所示，接收到请求后，根据请求头判断是否是 WebSocket 请求。如果是 WekSocket 请求，则发送对应的响应头，如下代码所示。请求和响应的格式和值见 WebSocket 协议的定义。</p>
-<pre><code>- (void)sendResponseHeaders &#123;
-    // request info
-    NSDictionary *requestHeaders = CFBridgingRelease(CFHTTPMessageCopyAllHeaderFields(self.requestMessage));
-    NSString *origin = [requestHeaders objectForKey:@"Origin"];
-    NSString *host = [requestHeaders objectForKey:@"Host"];
-    NSString *secWebSocketKey = [requestHeaders objectForKey:@"Sec-WebSocket-Key"];
-
-    NSURL *requestURL = CFBridgingRelease(CFHTTPMessageCopyRequestURL(self.requestMessage));
-    NSString *relativeString = [requestURL relativeString];
-
-    // response
-    CFHTTPMessageRef responseMessage = CFHTTPMessageCreateResponse(kCFAllocatorDefault, 101, CFSTR("Web Socket Protocol Handshake"), kCFHTTPVersion1_1);
-    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("Connection"), CFSTR("Upgrade"));
-    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("Upgrade"), CFSTR("WebSocket"));
-
-    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("WebSocket-Origin"), (__bridge CFStringRef)origin);
-    NSString *locationValue = [NSString stringWithFormat:@"ws://%@%@", host, relativeString];
-    CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("WebSocket-Location"), (__bridge CFStringRef)locationValue);
-
-    // Sec-WebSocket-Accept
-    NSString *guid = @"258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-    NSString *acceptValue = [[secWebSocketKey stringByAppendingString:guid] dataUsingEncoding: NSUTF8StringEncoding].sha1Digest.base64Encoded;
-    if (acceptValue.length > 0) &#123;
-        CFHTTPMessageSetHeaderFieldValue(responseMessage, CFSTR("Sec-WebSocket-Accept"), (__bridge CFStringRef)acceptValue);
-    &#125;
-
-    CFDataRef data = CFHTTPMessageCopySerializedMessage(responseMessage);
-    [self writeData:(__bridge NSData*)data withCompletionBlock:^(BOOL sucess) &#123;&#125;];
-    CFRelease(data);
-&#125;</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)sendResponseHeaders &#123;</span><br><span class="line">    <span class="comment">// request info</span></span><br><span class="line">    <span class="built_in">NSDictionary</span> *requestHeaders = <span class="built_in">CFBridgingRelease</span>(<span class="built_in">CFHTTPMessageCopyAllHeaderFields</span>(<span class="keyword">self</span>.requestMessage));</span><br><span class="line">    <span class="built_in">NSString</span> *origin = [requestHeaders objectForKey:<span class="string">@&quot;Origin&quot;</span>];</span><br><span class="line">    <span class="built_in">NSString</span> *host = [requestHeaders objectForKey:<span class="string">@&quot;Host&quot;</span>];</span><br><span class="line">    <span class="built_in">NSString</span> *secWebSocketKey = [requestHeaders objectForKey:<span class="string">@&quot;Sec-WebSocket-Key&quot;</span>];</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSURL</span> *requestURL = <span class="built_in">CFBridgingRelease</span>(<span class="built_in">CFHTTPMessageCopyRequestURL</span>(<span class="keyword">self</span>.requestMessage));</span><br><span class="line">    <span class="built_in">NSString</span> *relativeString = [requestURL relativeString];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// response</span></span><br><span class="line">    <span class="built_in">CFHTTPMessageRef</span> responseMessage = <span class="built_in">CFHTTPMessageCreateResponse</span>(kCFAllocatorDefault, <span class="number">101</span>, <span class="built_in">CFSTR</span>(<span class="string">&quot;Web Socket Protocol Handshake&quot;</span>), kCFHTTPVersion1_1);</span><br><span class="line">    <span class="built_in">CFHTTPMessageSetHeaderFieldValue</span>(responseMessage, <span class="built_in">CFSTR</span>(<span class="string">&quot;Connection&quot;</span>), <span class="built_in">CFSTR</span>(<span class="string">&quot;Upgrade&quot;</span>));</span><br><span class="line">    <span class="built_in">CFHTTPMessageSetHeaderFieldValue</span>(responseMessage, <span class="built_in">CFSTR</span>(<span class="string">&quot;Upgrade&quot;</span>), <span class="built_in">CFSTR</span>(<span class="string">&quot;WebSocket&quot;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CFHTTPMessageSetHeaderFieldValue</span>(responseMessage, <span class="built_in">CFSTR</span>(<span class="string">&quot;WebSocket-Origin&quot;</span>), (__bridge <span class="built_in">CFStringRef</span>)origin);</span><br><span class="line">    <span class="built_in">NSString</span> *locationValue = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@&quot;ws://%@%@&quot;</span>, host, relativeString];</span><br><span class="line">    <span class="built_in">CFHTTPMessageSetHeaderFieldValue</span>(responseMessage, <span class="built_in">CFSTR</span>(<span class="string">&quot;WebSocket-Location&quot;</span>), (__bridge <span class="built_in">CFStringRef</span>)locationValue);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Sec-WebSocket-Accept</span></span><br><span class="line">    <span class="built_in">NSString</span> *guid = <span class="string">@&quot;258EAFA5-E914-47DA-95CA-C5AB0DC85B11&quot;</span>;</span><br><span class="line">    <span class="built_in">NSString</span> *acceptValue = [[secWebSocketKey stringByAppendingString:guid] dataUsingEncoding: <span class="built_in">NSUTF8StringEncoding</span>].sha1Digest.base64Encoded;</span><br><span class="line">    <span class="keyword">if</span> (acceptValue.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">CFHTTPMessageSetHeaderFieldValue</span>(responseMessage, <span class="built_in">CFSTR</span>(<span class="string">&quot;Sec-WebSocket-Accept&quot;</span>), (__bridge <span class="built_in">CFStringRef</span>)acceptValue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">CFDataRef</span> data = <span class="built_in">CFHTTPMessageCopySerializedMessage</span>(responseMessage);</span><br><span class="line">    [<span class="keyword">self</span> writeData:(__bridge <span class="built_in">NSData</span>*)data withCompletionBlock:^(<span class="built_in">BOOL</span> sucess) &#123;&#125;];</span><br><span class="line">    <span class="built_in">CFRelease</span>(data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="section_6">发送和接收信息</h2>
 
 <p>下面两段代码分别是，从服务端发送信息到前端和服务端接收前端发来的信息。其中关于字节流的处理见 WebSocket 协议 Frame 的定义。</p>
-<pre><code>- (void)sendMessage:(NSString *)msg &#123;
-    NSData *msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
-    NSMutableData *data = nil;
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)sendMessage:(<span class="built_in">NSString</span> *)msg &#123;</span><br><span class="line">    <span class="built_in">NSData</span> *msgData = [msg dataUsingEncoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">    <span class="built_in">NSMutableData</span> *data = <span class="literal">nil</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSUInteger</span> length = msgData.length;</span><br><span class="line">    <span class="keyword">if</span> (length &lt;= <span class="number">125</span>) &#123;</span><br><span class="line">        data = [<span class="built_in">NSMutableData</span> dataWithCapacity:(length + <span class="number">2</span>)];</span><br><span class="line">        [data appendBytes:<span class="string">&quot;\x81&quot;</span> length:<span class="number">1</span>];</span><br><span class="line">        <span class="built_in">UInt8</span> len = (<span class="built_in">UInt8</span>)length;</span><br><span class="line">        [data appendBytes:&amp;len length:<span class="number">1</span>];</span><br><span class="line">        [data appendData:msgData];</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (length &lt;= <span class="number">0xFFFF</span>) &#123;</span><br><span class="line">        data = [<span class="built_in">NSMutableData</span> dataWithCapacity:(length + <span class="number">4</span>)];</span><br><span class="line">        [data appendBytes:<span class="string">&quot;\x81\x7E&quot;</span> length:<span class="number">2</span>];</span><br><span class="line">        <span class="built_in">UInt16</span> len = (<span class="built_in">UInt16</span>)length;</span><br><span class="line">        [data appendBytes:(<span class="built_in">UInt8</span>[])&#123;len &gt;&gt; <span class="number">8</span>, len &amp; <span class="number">0xFF</span>&#125; length:<span class="number">2</span>];</span><br><span class="line">        [data appendData:msgData];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        data = [<span class="built_in">NSMutableData</span> dataWithCapacity:(length + <span class="number">10</span>)];</span><br><span class="line">        [data appendBytes:<span class="string">&quot;\x81\x7F&quot;</span> length:<span class="number">2</span>];</span><br><span class="line">        [data appendBytes:(<span class="built_in">UInt8</span>[])&#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, (<span class="built_in">UInt8</span>)(length &gt;&gt; <span class="number">24</span>), (<span class="built_in">UInt8</span>)(length &gt;&gt; <span class="number">16</span>), (<span class="built_in">UInt8</span>)(length &gt;&gt; <span class="number">8</span>), length &amp; <span class="number">0xFF</span>&#125; length:<span class="number">8</span>];</span><br><span class="line">        [data appendData:msgData];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="keyword">self</span> writeData:data withCompletionBlock:^(<span class="built_in">BOOL</span> success) &#123;&#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-    NSUInteger length = msgData.length;
-    if (length <= 125) &#123;
-        data = [NSMutableData dataWithCapacity:(length + 2)];
-        [data appendBytes:"\x81" length:1];
-        UInt8 len = (UInt8)length;
-        [data appendBytes:&len length:1];
-        [data appendData:msgData];
-    &#125; else if (length <= 0xFFFF) &#123;
-        data = [NSMutableData dataWithCapacity:(length + 4)];
-        [data appendBytes:"\x81\x7E" length:2];
-        UInt16 len = (UInt16)length;
-        [data appendBytes:(UInt8[])&#123;len >> 8, len & 0xFF&#125; length:2];
-        [data appendData:msgData];
-    &#125; else &#123;
-        data = [NSMutableData dataWithCapacity:(length + 10)];
-        [data appendBytes:"\x81\x7F" length:2];
-        [data appendBytes:(UInt8[])&#123;0, 0, 0, 0, (UInt8)(length >> 24), (UInt8)(length >> 16), (UInt8)(length >> 8), length & 0xFF&#125; length:8];
-        [data appendData:msgData];
-    &#125;
-
-    [self writeData:data withCompletionBlock:^(BOOL success) &#123;&#125;];
-&#125;</code></pre>
-
-<pre><code>- (void)handleReceivedData:(NSData *)data &#123;
-    NSUInteger curPointPos = 0;     // pointer postion cursor
-    NSUInteger msgLength;           // payload length
-    NSUInteger opCode;
-    BOOL frameMasked;
-    NSData *maskingKey;
-
-    NSData *tmp = [[NSData alloc] initWithBytes:(UInt8 *)[data bytes] length:1];// first byte
-    curPointPos++;
-
-    UInt8 frame = *(UInt8 *)[tmp bytes];
-    if ([self isValidWebSocketFrame:frame]) &#123;
-        opCode = frame & 0x0F;
-    &#125; else &#123;
-        [self closeWebSocket];
-        return;
-    &#125;
-
-    tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:1];
-    curPointPos++;
-
-    frame = *(UInt8 *)[tmp bytes];
-    frameMasked = WS_PAYLOAD_IS_MASKED(frame);
-    NSUInteger length = WS_PAYLOAD_LENGTH(frame);
-
-    if (length <= 125) &#123;
-        if (frameMasked) &#123;
-            maskingKey = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:4];
-            curPointPos += 4;
-        &#125;
-        msgLength = length;
-    &#125; else if (length == 126) &#123;
-        tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:2];
-        curPointPos += 2;
-
-        UInt8 *pFrame = (UInt8 *)[tmp bytes];
-        NSUInteger length = ((NSUInteger)pFrame[0] << 8) | (NSUInteger)pFrame[1];
-        if (frameMasked) &#123;
-            maskingKey = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:4];
-            curPointPos += 4;
-        &#125;
-        msgLength = length;
-    &#125; else &#123;
-        tmp = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:8];
-        curPointPos += 8;
-        // FIXME: 64bit data size in memory?
-        [self closeWebSocket];
-        return;
-    &#125;
-
-    NSData *remainingData = [[NSData alloc] initWithBytes:((UInt8 *)[data bytes] + curPointPos) length:msgLength];
-    if (frameMasked && maskingKey) &#123;
-        NSMutableData *masked = [remainingData mutableCopy];
-        UInt8 *pData = (UInt8 *)masked.mutableBytes;
-        UInt8 *pMask = (UInt8 *)maskingKey.bytes;
-        for (NSUInteger i = 0; i < msgLength; i++) &#123;
-            pData[i] = pData[i] ^ pMask[i % 4];
-        &#125;
-        remainingData = masked;
-    &#125;
-    if (opCode == WS_OP_TEXT_FRAME) &#123;
-        NSString *msg = [[NSString alloc] initWithBytes:[remainingData bytes] length:msgLength encoding:NSUTF8StringEncoding];
-        [self didReceiveMessage:msg];
-
-        if (self.isReadSourceSuspended) &#123;
-            // current reading finished, prepare for the next read event
-            dispatch_resume(self.readSource);
-            self.socketFDBytesAvailable = 0;
-        &#125;
-    &#125; else &#123;
-        [self closeWebSocket];
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)handleReceivedData:(<span class="built_in">NSData</span> *)data &#123;</span><br><span class="line">    <span class="built_in">NSUInteger</span> curPointPos = <span class="number">0</span>;     <span class="comment">// pointer postion cursor</span></span><br><span class="line">    <span class="built_in">NSUInteger</span> msgLength;           <span class="comment">// payload length</span></span><br><span class="line">    <span class="built_in">NSUInteger</span> opCode;</span><br><span class="line">    <span class="built_in">BOOL</span> frameMasked;</span><br><span class="line">    <span class="built_in">NSData</span> *maskingKey;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSData</span> *tmp = [[<span class="built_in">NSData</span> alloc] initWithBytes:(<span class="built_in">UInt8</span> *)[data bytes] length:<span class="number">1</span>];<span class="comment">// first byte</span></span><br><span class="line">    curPointPos++;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UInt8</span> frame = *(<span class="built_in">UInt8</span> *)[tmp bytes];</span><br><span class="line">    <span class="keyword">if</span> ([<span class="keyword">self</span> isValidWebSocketFrame:frame]) &#123;</span><br><span class="line">        opCode = frame &amp; <span class="number">0x0F</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [<span class="keyword">self</span> closeWebSocket];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    tmp = [[<span class="built_in">NSData</span> alloc] initWithBytes:((<span class="built_in">UInt8</span> *)[data bytes] + curPointPos) length:<span class="number">1</span>];</span><br><span class="line">    curPointPos++;</span><br><span class="line"></span><br><span class="line">    frame = *(<span class="built_in">UInt8</span> *)[tmp bytes];</span><br><span class="line">    frameMasked = WS_PAYLOAD_IS_MASKED(frame);</span><br><span class="line">    <span class="built_in">NSUInteger</span> length = WS_PAYLOAD_LENGTH(frame);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (length &lt;= <span class="number">125</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (frameMasked) &#123;</span><br><span class="line">            maskingKey = [[<span class="built_in">NSData</span> alloc] initWithBytes:((<span class="built_in">UInt8</span> *)[data bytes] + curPointPos) length:<span class="number">4</span>];</span><br><span class="line">            curPointPos += <span class="number">4</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        msgLength = length;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (length == <span class="number">126</span>) &#123;</span><br><span class="line">        tmp = [[<span class="built_in">NSData</span> alloc] initWithBytes:((<span class="built_in">UInt8</span> *)[data bytes] + curPointPos) length:<span class="number">2</span>];</span><br><span class="line">        curPointPos += <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">UInt8</span> *pFrame = (<span class="built_in">UInt8</span> *)[tmp bytes];</span><br><span class="line">        <span class="built_in">NSUInteger</span> length = ((<span class="built_in">NSUInteger</span>)pFrame[<span class="number">0</span>] &lt;&lt; <span class="number">8</span>) | (<span class="built_in">NSUInteger</span>)pFrame[<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">if</span> (frameMasked) &#123;</span><br><span class="line">            maskingKey = [[<span class="built_in">NSData</span> alloc] initWithBytes:((<span class="built_in">UInt8</span> *)[data bytes] + curPointPos) length:<span class="number">4</span>];</span><br><span class="line">            curPointPos += <span class="number">4</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        msgLength = length;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        tmp = [[<span class="built_in">NSData</span> alloc] initWithBytes:((<span class="built_in">UInt8</span> *)[data bytes] + curPointPos) length:<span class="number">8</span>];</span><br><span class="line">        curPointPos += <span class="number">8</span>;</span><br><span class="line">        <span class="comment">// <span class="doctag">FIXME:</span> 64bit data size in memory?</span></span><br><span class="line">        [<span class="keyword">self</span> closeWebSocket];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSData</span> *remainingData = [[<span class="built_in">NSData</span> alloc] initWithBytes:((<span class="built_in">UInt8</span> *)[data bytes] + curPointPos) length:msgLength];</span><br><span class="line">    <span class="keyword">if</span> (frameMasked &amp;&amp; maskingKey) &#123;</span><br><span class="line">        <span class="built_in">NSMutableData</span> *masked = [remainingData mutableCopy];</span><br><span class="line">        <span class="built_in">UInt8</span> *pData = (<span class="built_in">UInt8</span> *)masked.mutableBytes;</span><br><span class="line">        <span class="built_in">UInt8</span> *pMask = (<span class="built_in">UInt8</span> *)maskingKey.bytes;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">NSUInteger</span> i = <span class="number">0</span>; i &lt; msgLength; i++) &#123;</span><br><span class="line">            pData[i] = pData[i] ^ pMask[i % <span class="number">4</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        remainingData = masked;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (opCode == WS_OP_TEXT_FRAME) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *msg = [[<span class="built_in">NSString</span> alloc] initWithBytes:[remainingData bytes] length:msgLength encoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">        [<span class="keyword">self</span> didReceiveMessage:msg];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">self</span>.isReadSourceSuspended) &#123;</span><br><span class="line">            <span class="comment">// current reading finished, prepare for the next read event</span></span><br><span class="line">            dispatch_resume(<span class="keyword">self</span>.readSource);</span><br><span class="line">            <span class="keyword">self</span>.socketFDBytesAvailable = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [<span class="keyword">self</span> closeWebSocket];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="section_7">遇到的问题</h2>
 
@@ -345,7 +189,7 @@ Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/06/15/hsd-websocket/" data-id="cl4skzbxn000wbhnedex941dx" data-title="为 GCDWebServer 引入 WebSocket 支持" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/06/15/hsd-websocket/" data-id="cl4v06owf000wg2n5704ccepm" data-title="为 GCDWebServer 引入 WebSocket 支持" class="article-share-link">Share</a>
       
       
       

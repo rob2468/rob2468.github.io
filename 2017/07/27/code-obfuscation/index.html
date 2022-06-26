@@ -14,7 +14,7 @@
 <meta property="og:description" content="class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-07-27T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
   
@@ -119,50 +119,7 @@
 <h2 id="section_2">二、实用工具</h2>
 
 <p>下面的脚本片段从参考文献[1]中拷贝而来，并作了部分调整，增加了随机字符串去重的功能。</p>
-<pre><code>#!/usr/bin/env bash
-TABLENAME="symbols"
-SYMBOL_DB_FILE="symbols"
-STRING_SYMBOL_FILE="obfuscation.list"
-HEAD_FILE="CodeObfuscation.h"
-export LC_CTYPE=C
-createTable() &#123;
-    echo "create table $TABLENAME (src text, des text);" | sqlite3 $SYMBOL_DB_FILE
-&#125;
-insertValue() &#123;
-    echo "insert into $TABLENAME values('$1' ,'$2');" | sqlite3 $SYMBOL_DB_FILE
-&#125;
-isUnique() &#123;
-    echo "select count(*) from $TABLENAME where des='$1';" | sqlite3 $SYMBOL_DB_FILE
-&#125;
-randomString() &#123;
-    random=`openssl rand -base64 64 | tr -cd 'a-zA-Z' |head -c 16`
-    count=`isUnique $random`
-    if [[ $count -eq 0 ]]; then
-        echo $random
-    else
-        randomString
-    fi
-&#125;
-
-rm -f $SYMBOL_DB_FILE
-rm -f $HEAD_FILE
-touch $HEAD_FILE
-createTable
-echo '#ifndef CodeObfuscation_h
-#define CodeObfuscation_h' >> $HEAD_FILE
-echo "// obfuscate string at `date`" >> $HEAD_FILE
-cat "$STRING_SYMBOL_FILE" | while read -ra line; do
-    if [[ -n "$line" ]]; then
-        random=`randomString`
-        insertValue $line $ramdom
-        res="#define $line $random"
-        echo $res
-        echo "$res" >> $HEAD_FILE
-    fi
-done
-echo "#endif" >> $HEAD_FILE
-rm -f $SYMBOL_DB_FILE
-</code></pre>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line">TABLENAME=<span class="string">&quot;symbols&quot;</span></span><br><span class="line">SYMBOL_DB_FILE=<span class="string">&quot;symbols&quot;</span></span><br><span class="line">STRING_SYMBOL_FILE=<span class="string">&quot;obfuscation.list&quot;</span></span><br><span class="line">HEAD_FILE=<span class="string">&quot;CodeObfuscation.h&quot;</span></span><br><span class="line"><span class="built_in">export</span> LC_CTYPE=C</span><br><span class="line"><span class="function"><span class="title">createTable</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;create table <span class="variable">$TABLENAME</span> (src text, des text);&quot;</span> | sqlite3 <span class="variable">$SYMBOL_DB_FILE</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">insertValue</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;insert into <span class="variable">$TABLENAME</span> values(&#x27;<span class="variable">$1</span>&#x27; ,&#x27;<span class="variable">$2</span>&#x27;);&quot;</span> | sqlite3 <span class="variable">$SYMBOL_DB_FILE</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">isUnique</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;select count(*) from <span class="variable">$TABLENAME</span> where des=&#x27;<span class="variable">$1</span>&#x27;;&quot;</span> | sqlite3 <span class="variable">$SYMBOL_DB_FILE</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="title">randomString</span></span>() &#123;</span><br><span class="line">    random=`openssl rand -base64 64 | tr -<span class="built_in">cd</span> <span class="string">&#x27;a-zA-Z&#x27;</span> |head -c 16`</span><br><span class="line">    count=`isUnique <span class="variable">$random</span>`</span><br><span class="line">    <span class="keyword">if</span> [[ <span class="variable">$count</span> -eq 0 ]]; <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="variable">$random</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        randomString</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">rm -f <span class="variable">$SYMBOL_DB_FILE</span></span><br><span class="line">rm -f <span class="variable">$HEAD_FILE</span></span><br><span class="line">touch <span class="variable">$HEAD_FILE</span></span><br><span class="line">createTable</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;#ifndef CodeObfuscation_h</span></span><br><span class="line"><span class="string">#define CodeObfuscation_h&#x27;</span> &gt;&gt; <span class="variable">$HEAD_FILE</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;// obfuscate string at `date`&quot;</span> &gt;&gt; <span class="variable">$HEAD_FILE</span></span><br><span class="line">cat <span class="string">&quot;<span class="variable">$STRING_SYMBOL_FILE</span>&quot;</span> | <span class="keyword">while</span> <span class="built_in">read</span> -ra line; <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">if</span> [[ -n <span class="string">&quot;<span class="variable">$line</span>&quot;</span> ]]; <span class="keyword">then</span></span><br><span class="line">        random=`randomString`</span><br><span class="line">        insertValue <span class="variable">$line</span> <span class="variable">$ramdom</span></span><br><span class="line">        res=<span class="string">&quot;#define <span class="variable">$line</span> <span class="variable">$random</span>&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="variable">$res</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$res</span>&quot;</span> &gt;&gt; <span class="variable">$HEAD_FILE</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;#endif&quot;</span> &gt;&gt; <span class="variable">$HEAD_FILE</span></span><br><span class="line">rm -f <span class="variable">$SYMBOL_DB_FILE</span></span><br></pre></td></tr></table></figure>
 
 <p>STRING_SYMBOL_FILE 为文件名，文件内容为希望替换的字符串列表。HEAD_FILE 为文件名，文件内容为脚本生成的包含宏定义的头文件。randomString 函数用于生成一段随机字符串。脚本主体功能是不断读取 STRING_SYMBOL_FILE 中的行，每行一个原始字符串，然后生成一个随机字符串，将原始字符串和随机字符串组成一行 #define 语句。</p>
 <p>脚本文件、资源文件和生成的文件都在同一个文件夹内，将生成的头文件加入 Xcode 工程运行即可。</p>
@@ -325,7 +282,7 @@ JPDevMenuDelegate
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="cl4skzbxa000gbhne3t57g9r4" data-title="代码混淆" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="cl4v06ow1000gg2n5668vdkco" data-title="代码混淆" class="article-share-link">Share</a>
       
       
       

@@ -13,17 +13,15 @@
 <meta property="og:site_name" content="陈军的博客">
 <meta property="og:description" content="前言  最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-image-rendering-pipeline.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-image-rendering-pipeline.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-uiimage-uiimageview.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-uiimage-uiimageview.png">
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-time-profiler-applejpeg-decode-image-all.png">
 <meta property="article:published_time" content="2018-08-22T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-24T15:01:05.110Z">
+<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-08-22-image-rendering-pipeline.png">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-image-rendering-pipeline.png">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -129,20 +127,12 @@
 <p>Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM）中，而 Image Buffer 存储在 RAM 中。</p>
 <p>解码就是从 Data Buffer 生成 Image Buffer 的过程。Image Buffer 会上传到 GPU 成为 Frame Buffer，GPU 以每秒60次的速度使用 Frame Buffer 更新屏幕。</p>
 <p>下图描述了图像从文件到渲染到屏幕上的流程。</p>
-<!-- <p class="post-image">
-    <img src="/resources/figures/2018-08-22-image-rendering-pipeline.png" alt="图像渲染流程" width="90%">
-</p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-image-rendering-pipeline.png"></p>
 <p class="post-image-title">图像渲染流程</p>
 
 <h2 id="section_2">2. UIImage 和 UIImageView</h2>
 
 <p>UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图，如下图所示。</p>
-<!-- <p class="post-image">
-    <img src="/resources/figures/2018-08-22-uiimage-uiimageview.png" alt="UIImage 和 UIImageView" width="90%">
-</p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-08-22-uiimage-uiimageview.png"></p>
 <p class="post-image-title">UIImage 和 UIImageView 的角色</p>
 
@@ -154,42 +144,17 @@
 <h3>隐式解码</h3>
 
 <p>将图像显示到屏幕上会触发隐式解码。（必须同时满足图像被设置到 UIImageView 中、UIImageView 添加到视图，才会触发图像解码。)</p>
-<pre><code>UIImageView *imageView = [[UIImageView alloc] init];
-[self.view addSubview:imageView];
-[imageView setImage:image];
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UIImageView</span> *imageView = [[<span class="built_in">UIImageView</span> alloc] init];</span><br><span class="line">[<span class="keyword">self</span>.view addSubview:imageView];</span><br><span class="line">[imageView setImage:image];</span><br></pre></td></tr></table></figure>
 
 <p></p>
 
 <h3>Core Graphics</h3>
 
 <p>手动绘制图像能完成图像解码，下面代码中的 newImage 实例的图像已完成解码。</p>
-<pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
-[image drawAtPoint:CGPointZero];
-UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-UIGraphicsEndImageContext();
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UIGraphicsBeginImageContextWithOptions</span>(image.size, <span class="literal">YES</span>, [<span class="built_in">UIScreen</span> mainScreen].scale);</span><br><span class="line">[image drawAtPoint:<span class="built_in">CGPointZero</span>];</span><br><span class="line"><span class="built_in">UIImage</span> *newImage = <span class="built_in">UIGraphicsGetImageFromCurrentImageContext</span>();</span><br><span class="line"><span class="built_in">UIGraphicsEndImageContext</span>();</span><br></pre></td></tr></table></figure>
 
 <p>下面的代码片段截取自 <a href="https://github.com/ibireme/YYKit.git" target="_blank">YYKit</a>，其中 newImage 实例的图像已完成解码。在测试工程中，该代码比上面直接绘制代码快约7倍。</p>
-<pre><code>size_t width = CGImageGetWidth(imageRef);
-size_t height = CGImageGetHeight(imageRef);
-CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
-size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
-size_t bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
-size_t bytesPerRow = CGImageGetBytesPerRow(imageRef);
-CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
-
-CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);
-CFDataRef data = CGDataProviderCopyData(dataProvider);      // 主要耗时操作（解码）
-
-CGDataProviderRef newProvider = CGDataProviderCreateWithCFData(data);
-CFRelease(data);
-
-CGImageRef newImageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, NULL, false, kCGRenderingIntentDefault);
-UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];
-CGImageRelease(newImageRef);
-CFRelease(newProvider);
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">size_t width = <span class="built_in">CGImageGetWidth</span>(imageRef);</span><br><span class="line">size_t height = <span class="built_in">CGImageGetHeight</span>(imageRef);</span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> space = <span class="built_in">CGImageGetColorSpace</span>(imageRef);</span><br><span class="line">size_t bitsPerComponent = <span class="built_in">CGImageGetBitsPerComponent</span>(imageRef);</span><br><span class="line">size_t bitsPerPixel = <span class="built_in">CGImageGetBitsPerPixel</span>(imageRef);</span><br><span class="line">size_t bytesPerRow = <span class="built_in">CGImageGetBytesPerRow</span>(imageRef);</span><br><span class="line"><span class="built_in">CGBitmapInfo</span> bitmapInfo = <span class="built_in">CGImageGetBitmapInfo</span>(imageRef);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CGDataProviderRef</span> dataProvider = <span class="built_in">CGImageGetDataProvider</span>(imageRef);</span><br><span class="line"><span class="built_in">CFDataRef</span> data = <span class="built_in">CGDataProviderCopyData</span>(dataProvider);      <span class="comment">// 主要耗时操作（解码）</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">CGDataProviderRef</span> newProvider = <span class="built_in">CGDataProviderCreateWithCFData</span>(data);</span><br><span class="line"><span class="built_in">CFRelease</span>(data);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CGImageRef</span> newImageRef = <span class="built_in">CGImageCreate</span>(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, <span class="literal">NULL</span>, <span class="literal">false</span>, kCGRenderingIntentDefault);</span><br><span class="line"><span class="built_in">UIImage</span> *newImage = [[<span class="built_in">UIImage</span> alloc] initWithCGImage:newImageRef];</span><br><span class="line"><span class="built_in">CGImageRelease</span>(newImageRef);</span><br><span class="line"><span class="built_in">CFRelease</span>(newProvider);</span><br></pre></td></tr></table></figure>
 
 <h3>Image I/O</h3>
 
@@ -201,34 +166,7 @@ CFRelease(newProvider);
 
 <p>大的图像会占用较多的内存资源，解码和传输到 GPU 也会耗费较多时间。实际需要显示的图像尺寸可能并不是很大，如果能将大图缩小，便能达到优化的目的。</p>
 <p>下面的代码片段来自 WWDC 2018，功能是缩小图像并解码。原始代码为 Swift，这里转成了 Objective-C。</p>
-<pre><code>// 大图缩小为显示尺寸的图
-- (UIImage *)downsampleImageAt:(NSURL *)imageURL to:(CGSize)pointSize scale:(CGFloat)scale &#123;
-    // 利用图像文件地址创建 image source
-    NSDictionary *imageSourceOptions =
-  @&#123;
-    (__bridge NSString *)kCGImageSourceShouldCache: @NO // 原始图像不要解码
-    &#125;;
-    CGImageSourceRef imageSource =
-    CGImageSourceCreateWithURL((__bridge CFURLRef)imageURL, (__bridge CFDictionaryRef)imageSourceOptions);
-
-    // 下采样
-    CGFloat maxDimensionInPixels = MAX(pointSize.width, pointSize.height) * scale;
-    NSDictionary *downsampleOptions =
-    @&#123;
-      (__bridge NSString *)kCGImageSourceCreateThumbnailFromImageAlways: @YES,
-      (__bridge NSString *)kCGImageSourceShouldCacheImmediately: @YES,  // 缩小图像的同时进行解码
-      (__bridge NSString *)kCGImageSourceCreateThumbnailWithTransform: @YES,
-      (__bridge NSString *)kCGImageSourceThumbnailMaxPixelSize: @(maxDimensionInPixels)
-       &#125;;
-    CGImageRef downsampledImage =
-    CGImageSourceCreateThumbnailAtIndex(imageSource, 0, (__bridge CFDictionaryRef)downsampleOptions);
-    UIImage *image = [[UIImage alloc] initWithCGImage:downsampledImage];
-    CGImageRelease(downsampledImage);
-    CFRelease(imageSource);
-
-    return image;
-&#125;
-</code></pre>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 大图缩小为显示尺寸的图</span></span><br><span class="line">- (<span class="built_in">UIImage</span> *)downsampleImageAt:(<span class="built_in">NSURL</span> *)imageURL to:(<span class="built_in">CGSize</span>)pointSize scale:(<span class="built_in">CGFloat</span>)scale &#123;</span><br><span class="line">    <span class="comment">// 利用图像文件地址创建 image source</span></span><br><span class="line">    <span class="built_in">NSDictionary</span> *imageSourceOptions =</span><br><span class="line">  @&#123;</span><br><span class="line">    (__bridge <span class="built_in">NSString</span> *)kCGImageSourceShouldCache: @NO <span class="comment">// 原始图像不要解码</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">CGImageSourceRef</span> imageSource =</span><br><span class="line">    <span class="built_in">CGImageSourceCreateWithURL</span>((__bridge <span class="built_in">CFURLRef</span>)imageURL, (__bridge <span class="built_in">CFDictionaryRef</span>)imageSourceOptions);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 下采样</span></span><br><span class="line">    <span class="built_in">CGFloat</span> maxDimensionInPixels = MAX(pointSize.width, pointSize.height) * scale;</span><br><span class="line">    <span class="built_in">NSDictionary</span> *downsampleOptions =</span><br><span class="line">    @&#123;</span><br><span class="line">      (__bridge <span class="built_in">NSString</span> *)kCGImageSourceCreateThumbnailFromImageAlways: @YES,</span><br><span class="line">      (__bridge <span class="built_in">NSString</span> *)kCGImageSourceShouldCacheImmediately: @YES,  <span class="comment">// 缩小图像的同时进行解码</span></span><br><span class="line">      (__bridge <span class="built_in">NSString</span> *)kCGImageSourceCreateThumbnailWithTransform: @YES,</span><br><span class="line">      (__bridge <span class="built_in">NSString</span> *)kCGImageSourceThumbnailMaxPixelSize: @(maxDimensionInPixels)</span><br><span class="line">       &#125;;</span><br><span class="line">    <span class="built_in">CGImageRef</span> downsampledImage =</span><br><span class="line">    <span class="built_in">CGImageSourceCreateThumbnailAtIndex</span>(imageSource, <span class="number">0</span>, (__bridge <span class="built_in">CFDictionaryRef</span>)downsampleOptions);</span><br><span class="line">    <span class="built_in">UIImage</span> *image = [[<span class="built_in">UIImage</span> alloc] initWithCGImage:downsampledImage];</span><br><span class="line">    <span class="built_in">CGImageRelease</span>(downsampledImage);</span><br><span class="line">    <span class="built_in">CFRelease</span>(imageSource);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> image;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3>优化 CPU 使用</h3>
 
@@ -248,7 +186,7 @@ CFRelease(newProvider);
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cl4skzbxe000mbhne68hf6q0f" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cl4v06ow6000mg2n55vf68t6r" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
       
       
       
