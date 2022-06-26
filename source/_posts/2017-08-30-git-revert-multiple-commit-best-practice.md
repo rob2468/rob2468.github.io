@@ -29,9 +29,10 @@ git-revert 有 -n 或 --no-commit 选项，当执行提交回滚时添加该选�
 
 上面两个方法不能同时满足保留产生一次提交和保留回滚日志信息的要求。在 stackoverflow 发现了一个非常好的方法，使用 `git revert` 回滚代码和自动生成提交日志，使用 `git rebase` 将多次提交日志压缩成一个。
 
-<pre><code>git revert <# all commits #>
+{% codeblock lang:objc %}
+git revert <# all commits #>
 git rebase -i
-</code></pre>
+{% endcodeblock %}
 
 <h2>三、Demo</h2>
 

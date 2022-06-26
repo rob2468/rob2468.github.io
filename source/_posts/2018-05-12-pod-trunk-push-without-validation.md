@@ -18,12 +18,14 @@ pod 命令使用 Ruby 写成，使用解释型语言的好处是我们可以方�
 
 首先执行 `gem env`，如下变量给出了 Ruby 库安装的位置。
 
-<div class="code"><pre><code>  - INSTALLATION DIRECTORY: /usr/local/lib/ruby/gems/2.4.0
-</code></pre></div>
+{% codeblock lang:sh %}
+- INSTALLATION DIRECTORY: /usr/local/lib/ruby/gems/2.4.0
+{% endcodeblock %}
 
 当前，`pod trunk push` 命令文件对于 Ruby 库根目录的相对位置是 `gems/cocoapods-trunk-1.3.0/lib/pod/command/trunk/push.rb`，只要注释掉如下一行代码即可。
 
-<pre><code>def run
+{% codeblock lang:ruby %}
+def run
     update_master_repo
     # validate_podspec  # 删除验证逻辑
     status, json = push_to_trunk
@@ -31,4 +33,4 @@ pod 命令使用 Ruby 写成，使用解释型语言的好处是我们可以方�
 
     # ...
 end
-</code></pre>
+{% endcodeblock %}

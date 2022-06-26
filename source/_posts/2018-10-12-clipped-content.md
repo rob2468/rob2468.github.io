@@ -16,17 +16,9 @@ page_id: id-2018-10-12
 
 <h2>效果图</h2>
 
-<!-- <p class="post-image">
-    <img src="/resources/figures/2018-10-12-hsd-clipped-content.png" alt="HttpServerDebug Show Clipped Content" width="90%">
-</p> -->
-
 ![](/images/2018-10-12-hsd-clipped-content.png)
 
 <p class="post-image-title">HttpServerDebug 效果截图</p>
-
-<!-- <p class="post-image">
-    <img src="/resources/figures/2018-10-12-xcode-clipped-content.png" alt="Xcode Show Clipped Content" width="90%">
-</p> -->
 
 ![](/images/2018-10-12-xcode-clipped-content.png)
 
@@ -40,7 +32,8 @@ page_id: id-2018-10-12
 
 需要注意的是，代码中获取的 CGRect 信息来自于视图的 bounds 属性而不是 frame。bounds 可以理解为目标视图的内容在自己的坐标系统中的位置和尺寸，frame 是目标视图在父视图坐标系统中的位置和尺寸。我们使用了一系列转换函数实现不同坐标系统中的位置和尺寸转换，所以不需要直接获取 frame 属性。
 
-<pre><code>// view：UIView，目标视图
+{% codeblock lang:objc %}
+// view：UIView，目标视图
 // window：UIWindow，view 属于该 window 视图层级
 CGRect tryClippedRect = view.bounds;
 UIView *tryView = view;
@@ -61,13 +54,14 @@ while (tryView.superview) {
 }
 // 在 window 坐标系统中的位置和尺寸
 CGRect clippedFrameRoot = tryClippedRect;
-</code></pre>
+{% endcodeblock %}
 
 上面代码只是计算出了位置和尺寸，调试界面显示还需要对目标视图进行截图，如下面代码所示。
 
 （默认截图会包含目标视图的子视图，否则需要在截图前先移除或隐藏所有的子视图。）
 
-<pre><code>// 目标视图坐标系统中的裁剪位置
+{% codeblock lang:objc %}
+// 目标视图坐标系统中的裁剪位置
 CGPoint clippedOrigin = [view convertPoint:clippedFrameRoot.origin fromView:window];
 
 // 截图
@@ -79,4 +73,4 @@ CGContextTranslateCTM(context, tx, ty);
 [view.layer renderInContext:context];
 UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
 UIGraphicsEndImageContext();
-</code></pre>
+{% endcodeblock %}

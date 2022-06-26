@@ -30,7 +30,8 @@ GCDWebServer 中，Socket 的建立使用 POSIX C 函数实现。生成的核心
 
 WebSocket 协议是借用 HTTP 101 switch protocol 来完成协议转换，从 HTTP 协议切换成 WebSocket 通信协议。一个典型的建立连接请求和响应头如下，具体含义见参考文献链接。
 
-<div class="code"><pre><code>Request Headers
+{% codeblock %}
+Request Headers
 GET ws://localhost:5555/ HTTP/1.1
 Host: localhost:5555
 Connection: Upgrade
@@ -53,11 +54,11 @@ Sec-WebSocket-Accept: We1qmJgFvf8w3cDqTuUO5B6lrNA=
 Upgrade: WebSocket
 Connection: Upgrade
 WebSocket-Origin: http://localhost:5555
-</code></pre></div>
+{% endcodeblock %}
 
 WebSocket 协议传输的数据以 Frame 为单位，每个 Frame 都有严格的数据结构，如下表所示。其中每个位以字节流形式考察，具体含义见参考文献链接。
 
-<div class="code"><pre><code>  0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
+<pre><code>  0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
  +-+-+-+-+-------+-+-------------+-------------------------------+
  |F|R|R|R| opcode|M| Payload len |    Extended payload length    |
  |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |
@@ -74,7 +75,7 @@ WebSocket 协议传输的数据以 Frame 为单位，每个 Frame 都有严格�
  + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +
  |                     Payload Data continued ...                |
  +---------------------------------------------------------------+
-</code></pre></div>
+</code></pre>
 
 <h2 id="section_4">持有关系</h2>
 
@@ -94,7 +95,8 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
 
 <h2 id="section_5">建立连接</h2>
 
-<pre><code>+ (BOOL)isWebSocketRequest:(NSDictionary *)requestHeaders {
+{% codeblock lang:objc %}
++ (BOOL)isWebSocketRequest:(NSDictionary *)requestHeaders {
     NSString *connectionHeaderValue = [requestHeaders objectForKey:@"Connection"];
     NSString *upgradeHeaderValue = [requestHeaders objectForKey:@"Upgrade"];
 
@@ -108,11 +110,12 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
     }
     return isWebSocket;
 }
-</code></pre>
+{% endcodeblock %}
 
 如上代码所示，接收到请求后，根据请求头判断是否是 WebSocket 请求。如果是 WekSocket 请求，则发送对应的响应头，如下代码所示。请求和响应的格式和值见 WebSocket 协议的定义。
 
-<pre><code>- (void)sendResponseHeaders {
+{% codeblock lang:objc %}
+- (void)sendResponseHeaders {
     // request info
     NSDictionary *requestHeaders = CFBridgingRelease(CFHTTPMessageCopyAllHeaderFields(self.requestMessage));
     NSString *origin = [requestHeaders objectForKey:@"Origin"];
@@ -141,13 +144,15 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
     CFDataRef data = CFHTTPMessageCopySerializedMessage(responseMessage);
     [self writeData:(__bridge NSData*)data withCompletionBlock:^(BOOL sucess) {}];
     CFRelease(data);
-}</code></pre>
+}
+{% endcodeblock %}
 
 <h2 id="section_6">发送和接收信息</h2>
 
 下面两段代码分别是，从服务端发送信息到前端和服务端接收前端发来的信息。其中关于字节流的处理见 WebSocket 协议 Frame 的定义。
 
-<pre><code>- (void)sendMessage:(NSString *)msg {
+{% codeblock lang:objc %}
+- (void)sendMessage:(NSString *)msg {
     NSData *msgData = [msg dataUsingEncoding:NSUTF8StringEncoding];
     NSMutableData *data = nil;
 
@@ -172,9 +177,11 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
     }
 
     [self writeData:data withCompletionBlock:^(BOOL success) {}];
-}</code></pre>
+}
+{% endcodeblock %}
 
-<pre><code>- (void)handleReceivedData:(NSData *)data {
+{% codeblock lang:objc %}
+- (void)handleReceivedData:(NSData *)data {
     NSUInteger curPointPos = 0;     // pointer postion cursor
     NSUInteger msgLength;           // payload length
     NSUInteger opCode;
@@ -247,7 +254,7 @@ HSDGWebSocket 是新增的负责处理 WebSocket 协议的类。GCDWebServerConn
         [self closeWebSocket];
     }
 }
-</code></pre>
+{% endcodeblock %}
 
 <h2 id="section_7">遇到的问题</h2>
 

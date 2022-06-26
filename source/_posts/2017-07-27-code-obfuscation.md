@@ -22,7 +22,8 @@ class-dump 可以方便的导出 app 的类名和方法名，即使编译好的�
 
 下面的脚本片段从参考文献[1]中拷贝而来，并作了部分调整，增加了随机字符串去重的功能。
 
-<pre><code>#!/usr/bin/env bash
+{% codeblock lang:sh %}
+#!/usr/bin/env bash
 TABLENAME="symbols"
 SYMBOL_DB_FILE="symbols"
 STRING_SYMBOL_FILE="obfuscation.list"
@@ -65,7 +66,7 @@ cat "$STRING_SYMBOL_FILE" | while read -ra line; do
 done
 echo "#endif" >> $HEAD_FILE
 rm -f $SYMBOL_DB_FILE
-</code></pre>
+{% endcodeblock %}
 
 STRING_SYMBOL_FILE 为文件名，文件内容为希望替换的字符串列表。HEAD_FILE 为文件名，文件内容为脚本生成的包含宏定义的头文件。randomString 函数用于生成一段随机字符串。脚本主体功能是不断读取 STRING_SYMBOL_FILE 中的行，每行一个原始字符串，然后生成一个随机字符串，将原始字符串和随机字符串组成一行 #define 语句。
 

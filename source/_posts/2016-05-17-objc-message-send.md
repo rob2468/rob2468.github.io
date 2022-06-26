@@ -55,20 +55,22 @@ objc_msgSend 获取到方法实现后，便调用该方法实现。该方法实�
 
 下面的代码片段说明了如何主动调用消息传递解析后的函数。
 
-<pre><code>void (*setter)(id, SEL, BOOL);
+{% codeblock lang:objc %}
+void (*setter)(id, SEL, BOOL);
 setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
 setter(target, @selector(setFilled:), YES);
-</code></pre>
+{% endcodeblock %}
 
 objc_msgSend 自动调用函数时，会自动传如两个隐藏参数，但是主动调用需要显式的传入。
 
 主动调用函数能够节省消息传递与解析的时间，比如上面的代码段在如下的一个 for 循环中。
 
-<pre><code>void (*setter)(id, SEL, BOOL);
+{% codeblock lang:objc %}
+void (*setter)(id, SEL, BOOL);
 setter = (void (*)(id, SEL, BOOL))[target methodForSelector:@selector(setFilled:)];
 for (int i = 0 ; i < 1000 ; i++ )
     setter(targetList[i], @selector(setFilled:), YES);
-</code></pre>
+{% endcodeblock %}
 
 附 methodForSelector: 方法的[说明](https://developer.apple.com/documentation/objectivec/nsobject/1418863-methodforselector?language=objc)：
 

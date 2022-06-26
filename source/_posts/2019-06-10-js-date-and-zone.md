@@ -32,7 +32,8 @@ JS 中 Date 实例提供的接口包含本地化（时区有关）接口和时�
 
 1、如果当前执行环境所在的时区为 UTC+8，那么直接使用 Date 实例的本地化接口就能获得北京时间的表达。Date 实例的 getTimezoneOffset() 接口可以判断当前所处的时区，其返回值表示本地时区与 UTC±0 时区分钟差。
 
-<div class="code"><pre><code>/* 本地化接口 */
+{% codeblock lang:js %}
+/* 本地化接口 */
 getDate()
 getDay()
 getMonth()
@@ -41,11 +42,12 @@ getHours()
 getMinutes()
 getSeconds()
 ...
-</code></pre></div>
+{% endcodeblock %}
 
 2、如果不想考虑当前执行环境所在时区带来的影响，Date 也提供了一系列时区无关的接口。如下代码所示，核心思想是将原始时间和转换后的时间都当成 UTC±0 的时间来处理。
 
-<div class="code"><pre><code>function getFormattedBeijingDateString(timestamp) {
+{% codeblock lang:js %}
+function getFormattedBeijingDateString(timestamp) {
   const utcDate = new Date(timestamp + 8 * 60 * 60 * 1000); // 时区时间差
   const year = `${utcDate.getUTCFullYear()}`;
   let month;
@@ -62,7 +64,7 @@ getSeconds()
   }
   return `${year}-${month}-${day}`;
 }
-</code></pre></div>
+{% endcodeblock %}
 
 <h2 id='section_5'><a href="https://momentjs.com" target="_blank">moment.js</a></h2>
 

@@ -24,12 +24,13 @@ _objc_msgForward 是 IMP 类型，当 objc_msgSend 未找到某个 selector 的 
 
 _objc_msgForward 消息转发会依次调用如下的方法。
 
-<pre><code>+ (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
+{% codeblock lang:objc %}
++ (BOOL)resolveInstanceMethod:(SEL)name; / + (BOOL)resolveClassMethod:(SEL)name;
 - (id)forwardingTargetForSelector:(SEL)aSelector;
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector;
 - (void)forwardInvocation:(NSInvocation *)anInvocation;
 - (void)doesNotRecognizeSelector:(SEL)aSelector;
-</code></pre>
+{% endcodeblock %}
 
 <h3>2. Method Swizzling</h3>
 
@@ -37,14 +38,16 @@ Method Swizzling 用于修改目标类的方法名和方法实现的对应关系
 
 常用函数如下所示：
 
-<pre><code>BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);
+{% codeblock lang:objc %}
+BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);
 IMP class_replaceMethod(Class cls, SEL name, IMP imp, const char *types);
 void method_exchangeImplementations(Method m1, Method m2);
-</code></pre>
+{% endcodeblock %}
 
 下面代码片段是一种情况下的使用示例：
 
-<pre><code>SEL originalSelector = @selector(viewWillAppear:);
+{% codeblock lang:objc %}
+SEL originalSelector = @selector(viewWillAppear:);
 SEL swizzledSelector = @selector(xxx_viewWillAppear:);
 
 Method originalMethod = class_getInstanceMethod(class, originalSelector);
@@ -63,7 +66,7 @@ if (didAddMethod) {
 } else {
     method_exchangeImplementations(originalMethod, swizzledMethod);
 }
-</code></pre>
+{% endcodeblock %}
 
 <h2 id="section_2">二、JavaScriptCore.framework</h2>
 
@@ -73,12 +76,13 @@ JSCore 是从 UIWebView 提取出的 JS 解析引擎，封装了 JS 和 OC 桥�
 
 JSCore 提供了多种方式实现 JS 和 OC 的通信，最常用的方式是使用 Block，如下代码所示：
 
-<pre><code>JSContext *context = [[JSContext alloc] init];
+{% codeblock lang:objc %}
+JSContext *context = [[JSContext alloc] init];
 context[@"log"] = ^() {
     NSLog(@"-------Log-------");
 };
 [context evaluateScript:@"log()"];
-</code></pre>
+{% endcodeblock %}
 
 JSContext 是 JS 的运行环境。上述代码中，在 JSContext 中声明了名为 log 的函数，该函数的实现是 OC block，实现了在 JS 环境中调用 OC 方法。
 
@@ -112,8 +116,6 @@ JSPatch 通过运行时系统，将错误的 OC 代码逻辑替换为正确的 J
 
 <h3 id="section_3_1">1. 调用修改后方法</h3>
 
-<!-- <p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_MessageSend.png" alt="" width="80%"></p> -->
-
 ![](/images/2016-05-16-JSPatch_MessageSend.png)
 
 上图描述了调用修改后方法的程序执行流程。
@@ -121,8 +123,6 @@ JSPatch 通过运行时系统，将错误的 OC 代码逻辑替换为正确的 J
 每个方法可以看作两部分组成，selector 和 IMP，分别表示方法的名称和方法的实现。JSPatch 希望将类中错误方法实现修改为 JS 实现时，会执行两处方法修改。一是，将错误方法的实现修改为 _objc_msgForward；二是，将该类的 forwardInvocation 实现替换为自定义的方法实现（JPForwardInvocation）。这样，在调用该错误方法时便会执行到该类的 forwardInvocation 方法中，而 JPForwardInvocation 会判断是否执行相应的 JS 实现。
 
 <h3 id="section_3_2">2. 调用原始方法</h3>
-
-<!-- <p class="post-image"><img src="/resources/figures/2016-05-16-JSPatch_callSelector.png" alt="" width="100%"></p> -->
 
 ![](/images/2016-05-16-JSPatch_callSelector.png)
 

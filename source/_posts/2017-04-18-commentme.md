@@ -27,8 +27,6 @@ page_id: id-2017-04-18
 
 不考虑技术细节，整个评论系统可以分为三个部分。一是评论入口，由前端提供表单，可输入评论内容并提交。二是评论内容存储，实现评论内容持久化。三是评论展示，能够读取已持久化存储的评论内容。如下图所示。
 
-<!-- <p class="post-image"><img src="/resources/figures/2017-04-18-overall-architecture.png" alt="" width="60%"></p> -->
-
 ![](/images/2017-04-18-overall-architecture.png)
 
 评论入口使用 HTML 和 JS 实现评论表单的展现和交互逻辑。评论内容采用约定组织结构，存储于同一个 Git 仓库中，由前端页面利用 GitHub API 实现。评论展示利用 Jekyll 实现，生成静态站点时解析有固定结构的评论内容，并将内容填充在网页中。
@@ -51,7 +49,8 @@ Git 中的文件内容以 blob 类型存储，blob 对象只存储文件的内�
 
 所有评论以纯文本方式存储，置于 _data/comments.json 文件中。单条评论信息的结构如下所示：
 
-<pre><code>{
+{% codeblock lang:json %}
+{
   "email": <# email #>,
   "date": <# date #>,
   "author": {
@@ -59,21 +58,24 @@ Git 中的文件内容以 blob 类型存储，blob 对象只存储文件的内�
   },
   "content": content
 }
-</code></pre>
+{% endcodeblock %}
 
 _data/comments.json 中所有评论信息的结构如下所示。每篇文章使用键 page_id 唯一标示，page_id 的值为该篇文章的所有评论。
 
-<pre><code>{
+{% codeblock lang:json %}
+{
   <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
   <# page_id #>: [<# comment_info #>, <# comment_info #>, ...],
   ...
-}</code></pre>
+}
+{% endcodeblock %}
 
 <h3>2. 评论信息的获取</h3>
 
 根据上一小节说明的评论的存储结构，使用如下代码获取评论内容。Jekyll 将内容编译成静态站点时执行下面代码的逻辑，将评论填充到网页中。
 
-<pre><code>assign pageid = page.page_id    # 获取文章标识符
+{% codeblock %}
+assign pageid = page.page_id    # 获取文章标识符
 if site.data.comments[pageid]   # 如果该文章有评论
   assign sorted_comments = (site.data.comments[pageid] | sort: 'date') # 获取评论并按时间排序
 endif
@@ -83,15 +85,13 @@ for c in sorted_comments reversed # 按时间倒序遍历
 else
   这篇文章暂没有评论。
 endfor
-</code></pre>
+{% endcodeblock %}
 
 <h3>3. 提交评论</h3>
 
 提交评论是整个评论系统的核心操作。利用 GitHub API，使用 XMLHttpRequest 实现客户端和 GitHub 的通信。提交评论操作的本质是在博客代码库的 comments 分支基于当前最新提交创建一次提交，并将分支引用指向该次提交。新创建提交的内容是，_data/raw_comments/ 下创建的一个临时文件，保存评论者提交的评论信息。
 
 下面描述客户端和 GitHub 通信的流程。
-
-<!-- <p class="post-image"><img src="/resources/figures/2017-04-18-UA-and-GitHub-communication-process.png" alt="" width="70%"></p> -->
 
 ![](/images/2017-04-18-UA-and-GitHub-communication-process.png)
 
@@ -105,7 +105,8 @@ c）基于取得的 tree id，创建新的 tree 对象，并取得该对象的 i
 
 POST 请求发送的数据格式如下所示。path 字段指明评论信息存储的临时文件，content 字段是评论信息，base_tree 字段是最新提交对应的 tree 对象的 id。
 
-<pre><code>{
+{% codeblock lang:json %}
+{
   "tree": [{
     "path": "_data/raw_comments/comment_" + new Date().getTime(),
     "mode": "100644",
@@ -114,18 +115,19 @@ POST 请求发送的数据格式如下所示。path 字段指明评论信息存�
   }],
   "base_tree": treeID,
 }
-</code></pre>
+{% endcodeblock %}
 
 d）基于新创建的 tree 对象，创建提交，并取得提交对象的 id；
 
 POST 请求发送的数据格式如下所示。message 字段为提交日志，tree 字段为新创建的 tree 对象的 id，parents 字段是最新提交的 id。服务端接受到这个请求后创建新的提交对象，并返回该对象的 id。
 
-<pre><code>{
+{% codeblock lang:js %}
+{
   "message": "comment by " + display_name + " on " + date,
   "tree": newTreeID,
   "parents": [lastCommitID]
 }
-</code></pre>
+{% endcodeblock %}
 
 e）修改分支引用为最新提交。
 

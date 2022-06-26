@@ -14,7 +14,8 @@ page_id: id-2018-02-08
 
 <h2>Demo 1</h2>
 
-<pre><code>@interface CustomUIView : UIView
+{% codeblock lang:objc %}
+@interface CustomUIView : UIView
 @end
 @implementation CustomUIView
 - (void)doSomeThing:(void(^)(void))block {
@@ -37,7 +38,7 @@ page_id: id-2018-02-08
     }];
 }
 @end
-</code></pre>
+{% endcodeblock %}
 
 运行结果：
 
@@ -50,7 +51,8 @@ Demo 1 演示的即是本文开头说的情况，运行结果显示没有产生�
 
 <h2>Demo 2</h2>
 
-<pre><code>@interface CustomUIView0 : UIView
+{% codeblock lang:objc %}
+@interface CustomUIView0 : UIView
 @end
 @implementation CustomUIView0
 - (void)emptyMethod {}
@@ -84,7 +86,7 @@ Demo 1 演示的即是本文开头说的情况，运行结果显示没有产生�
     }];
 }
 @end
-</code></pre>
+{% endcodeblock %}
 
 运行结果：
 
@@ -95,7 +97,8 @@ Demo 1 演示的即是本文开头说的情况，运行结果显示没有产生�
 
 <h2>Demo 3</h2>
 
-<pre><code>@interface CustomUIView0 : UIView
+{% codeblock lang:objc %}
+@interface CustomUIView0 : UIView
 @end
 @implementation CustomUIView0
 - (void)emptyMethod {}
@@ -131,18 +134,19 @@ Demo 1 演示的即是本文开头说的情况，运行结果显示没有产生�
     }];
 }
 @end
-</code></pre>
+{% endcodeblock %}
 
 Demo 3 与 Demo 2 的区别是 CustomUIView 中强引用了 block，此时 view0 不会释放，存在 self -> customView -> block -> view0 这样的强引用关系。
 
 这样的强引用关系是单向的，只要打破其中一个环节便能释放，比如作如下修改：
 
-<pre><code>    CustomUIView0 *view0 = [[CustomUIView0 alloc] init];
-    CustomUIView *customView = [[CustomUIView alloc] init];
-    [customView doSomeThing:^{
-        [view0 emptyMethod];
-    }];
-</code></pre>
+{% codeblock lang:objc %}
+CustomUIView0 *view0 = [[CustomUIView0 alloc] init];
+CustomUIView *customView = [[CustomUIView alloc] init];
+[customView doSomeThing:^{
+    [view0 emptyMethod];
+}];
+{% endcodeblock %}
 
 运行结果：
 
@@ -154,7 +158,8 @@ Demo 3 与 Demo 2 的区别是 CustomUIView 中强引用了 block，此时 view0
 
 <h2>Demo 4</h2>
 
-<pre><code>@interface CustomUIView : UIView
+{% codeblock lang:objc %}
+@interface CustomUIView : UIView
 @property (strong, nonatomic) void(^strongBlock)(void);
 @end
 @implementation CustomUIView
@@ -180,11 +185,9 @@ Demo 3 与 Demo 2 的区别是 CustomUIView 中强引用了 block，此时 view0
     }];
 }
 @end
-</code></pre>
+{% endcodeblock %}
 
 最后，我们来看一个会产生循环引用的例子。Demo 4 和 Demo 1 的区别是 CustomUIView 中强引用了 block。此时存在 customView -> block -> customView 这样的循环引用，除非显式打破这个环状引用（比如 customView 中有逻辑能解除对 block 的引用），否则便产生了内存泄漏。
-
-<!-- <p class="post-image"><img src="/resources/figures/2018-02-08-Memory-Leak.png" alt="" width="70%"></p> -->
 
 ![](/images/2018-02-08-Memory-Leak.png)
 

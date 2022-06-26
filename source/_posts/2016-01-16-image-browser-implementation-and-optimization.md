@@ -64,8 +64,6 @@ UIScrollView中有如下3个属性，通过设置这些属性，能够实现内�
 
 图2是双击缩放图片时的处理流程图。
 
-<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p> -->
-
 ![](/images/2016-01-16-%E5%8F%8C%E5%87%BB%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png)
 
 <p class="post-image-title">图2. 双击缩放图片处理流程</p>
@@ -75,8 +73,6 @@ UIScrollView中有如下3个属性，通过设置这些属性，能够实现内�
 通过此种方式缩放图片，在图片缩放的过程中不会有其它事件的干预，因此在缩放操作刚开始时便已知道缩放结束后的最终状态。如图2所示，在用户双击图片后计算出图片缩放最终状态下的Scroll View的contentInset，并修改Scroll View的contentInset。因为修改Scroll View的contentInset会导致contentOffset发生改变，所以需要先存储contentOffset，设置好contentInset后再恢复contentOffset。将Scroll View的属性修改为其最终状态的值后，通过setZoomScale:animated:方法或者zoomToRect:animated:方法缩放图片。
 
 图3是手指捏合缩放图片时的处理流程。
-
-<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png" alt="" width="80%"></p> -->
 
 ![](/images/2016-01-16-%E6%8D%8F%E5%90%88%E7%BC%A9%E6%94%BE%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png)
 

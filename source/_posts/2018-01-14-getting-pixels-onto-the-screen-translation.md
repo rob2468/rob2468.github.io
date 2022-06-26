@@ -174,7 +174,8 @@ Quartz 2D 更多的是因为它被包含在 Core Graphics 框架中，而被人�
 
 比如我们希望绘制一个八边形，可以使用如下的 UIKit 代码：
 
-<pre><code>UIBezierPath *path = [UIBezierPath bezierPath];
+{% codeblock lang:objc %}
+UIBezierPath *path = [UIBezierPath bezierPath];
 [path moveToPoint:CGPointMake(16.72, 7.22)];
 [path addLineToPoint:CGPointMake(3.29, 20.83)];
 [path addLineToPoint:CGPointMake(0.4, 18.05)];
@@ -189,11 +190,12 @@ Quartz 2D 更多的是因为它被包含在 Core Graphics 框架中，而被人�
 path.lineWidth = 1;
 [[UIColor redColor] setStroke];
 [path stroke];
-</code></pre>
+{% endcodeblock %}
 
 如下使用 Core Graphics 的代码可以实现相同的效果：
 
-<pre><code>CGContextBeginPath(ctx);
+{% codeblock lang:objc %}
+CGContextBeginPath(ctx);
 CGContextMoveToPoint(ctx, 16.72, 7.22);
 CGContextAddLineToPoint(ctx, 3.29, 20.83);
 CGContextAddLineToPoint(ctx, 0.4, 18.05);
@@ -208,7 +210,7 @@ CGContextClosePath(ctx);
 CGContextSetLineWidth(ctx, 1);
 CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);
 CGContextStrokePath(ctx);
-</code></pre>
+{% endcodeblock %}
 
 上述代码中，绘制在被称为 CGContext 的地方完成。我们传入的 ctx 参数，就是在这个上下文中。这个上下文定义了我们将要绘制的地方。如果实现了 CALayer 的 -drawInContext: 接口，那我们就会被传入一个上下文。在这个上下文的绘制会写入到该图层的缓冲区中。我们也可以创建自己的上下文，比如使用 CGBitmapContextCreate() 创建一个基于位图的上下文。这个函数返回一个上下文，然后我们可以把这个上下文传给需要 CGContext 的函数用于绘制。
 
@@ -216,7 +218,8 @@ CGContextStrokePath(ctx);
 
 需要特别留意的是，UIKit 有两个便捷的方法 UIGraphicsBeginImageContextWithOptions() 和 UIGraphicsEndImageContext() 可以用来创建一个位图上下文，达到和 CGBitmapContextCreate() 一样的效果。混合进行 UIKit 和 Core Graphics 的调用非常简单：
 
-<pre><code>UIGraphicsBeginImageContextWithOptions(CGSizeMake(45, 45), YES, 2);
+{% codeblock lang:objc %}
+UIGraphicsBeginImageContextWithOptions(CGSizeMake(45, 45), YES, 2);
 CGContextRef ctx = UIGraphicsGetCurrentContext();
 CGContextBeginPath(ctx);
 CGContextMoveToPoint(ctx, 16.72, 7.22);
@@ -224,11 +227,12 @@ CGContextAddLineToPoint(ctx, 3.29, 20.83);
 ...
 CGContextStrokePath(ctx);
 UIGraphicsEndImageContext();
-</code></pre>
+{% endcodeblock %}
 
 或者以另一种方式：
 
-<pre><code>CGContextRef ctx = CGBitmapContextCreate(NULL, 90, 90, 8, 90 * 4, space, bitmapInfo);
+{% codeblock lang:objc %}
+CGContextRef ctx = CGBitmapContextCreate(NULL, 90, 90, 8, 90 * 4, space, bitmapInfo);
 CGContextScaleCTM(ctx, 0.5, 0.5);
 UIGraphicsPushContext(ctx);
 UIBezierPath *path = [UIBezierPath bezierPath];
@@ -238,7 +242,7 @@ UIBezierPath *path = [UIBezierPath bezierPath];
 [path stroke];
 UIGraphicsPopContext(ctx);
 CGContextRelease(ctx);
-</code></pre>
+{% endcodeblock %}
 
 <h2 id="section_5">5. 像素（Pixels）</h2>
 
@@ -356,13 +360,14 @@ UIKit 中的每个视图都有一个自己的图层 CALayer。这个图层通常
 
 看下面这个例子：
 
-<pre><code>// Don't do this
+{% codeblock lang:objc %}
+// Don't do this
 - (void)drawRect:(CGRect)rect
 {
     [[UIColor redColor] setFill];
     UIRectFill([self bounds]);
 }
-</code></pre>
+{% endcodeblock %}
 
 我们现在知道这种做法是不好的。Core Animation 会创建一个后台存储，Core Graphics 使用纯色填充这个后台存储，再上传到 GPU。
 
@@ -390,7 +395,8 @@ Core Animation 可以使用 CALayer 的 contentsCenter 属性调整图片，但�
 
 添加如下的绘制代码：
 
-<pre><code>- (UIImage *)renderInImageOfSize:(CGSize)size;
+{% codeblock lang:objc %}
+- (UIImage *)renderInImageOfSize:(CGSize)size;
 {
     UIGraphicsBeginImageContextWithOptions(size, NO, 0);
 
@@ -400,7 +406,7 @@ Core Animation 可以使用 CALayer 的 contentsCenter 属性调整图片，但�
     UIGraphicsEndImageContext();
     return result;
 }
-</code></pre>
+{% endcodeblock %}
 
 这个方法通过 UIGraphicsBeginImageContextWithOptions() 函数创建了一个新的位图 CGContextRef。这个函数同时将这个新的上下文设为当前上下文。现在，你可以跟通常在 -drawRect: 中一样进行绘图操作。然后，我们使用 UIGraphicsGetImageFromCurrentImageContext() 函数从这个上下文中获取 UIImage。最后，结束这个上下文。
 
@@ -410,7 +416,8 @@ UIKit 的所有绘制 API 都是可以在子线程中使用的。仅仅需要确
 
 你可以使用下面的代码使用上面绘图方法：
 
-<pre><code>UIImageView *view; // assume we have this
+{% codeblock lang:objc %}
+UIImageView *view; // assume we have this
 NSOperationQueue *renderQueue; // assume we have this
 CGSize size = view.bounds.size;
 [renderQueue addOperationWithBlock:^(){
@@ -419,7 +426,7 @@ CGSize size = view.bounds.size;
         view.image = image;
     }];
 }];
-</code></pre>
+{% endcodeblock %}
 
 我们在主线程中执行了 `view.image = image`。这是非常重要的一点，你不能在子线程中执行这条语句。
 

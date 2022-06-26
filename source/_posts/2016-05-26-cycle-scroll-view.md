@@ -30,7 +30,8 @@ page_id: id-2016-05-26
 
 <p></p>
 
-<pre><code>if (currentOffsetX < pageWidth && currentOffsetX < lastContentOffsetX) // 右划
+{% codeblock lang:objc %}
+if (currentOffsetX < pageWidth && currentOffsetX < lastContentOffsetX) // 右划
 {
     // 修改布局
     lastContentOffsetX = currentOffsetX + offset;
@@ -48,7 +49,7 @@ else
 {
     lastContentOffsetX = currentOffsetX;
 }
-</code></pre>
+{% endcodeblock %}
 
 以第一个 if 判断分支为例，ScrollView 展示的是原始第一页并开始滑入复制在开头的原始最后一页。此时需要调整布局，调整后的状态是 ScrollView 展示复制在最后的原始第一页并开始滑入原始最后一页。
 
@@ -57,8 +58,6 @@ else
 下面是 demo 截图，ScrollView 展示3页视图，左滑和右滑能够无限循环。
 
 <p></p>
-
-<!-- <p class="post-image"><img src="/resources/figures/2016-05-26-Cycle-Scroll-View.png" alt="demo" width="50%" height="50%"></p> -->
 
 ![](/images/2016-05-26-Cycle-Scroll-View.png)
 

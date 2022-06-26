@@ -28,10 +28,6 @@ Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM
 
 下图描述了图像从文件到渲染到屏幕上的流程。
 
-<!-- <p class="post-image">
-    <img src="/resources/figures/2018-08-22-image-rendering-pipeline.png" alt="图像渲染流程" width="90%">
-</p> -->
-
 ![](/images/2018-08-22-image-rendering-pipeline.png)
 
 <p class="post-image-title">图像渲染流程</p>
@@ -39,10 +35,6 @@ Frame Buffer 和 Image Buffer 内容相同，不过其存储在 vRAM（video RAM
 <h2 id="section_2">2. UIImage 和 UIImageView</h2>
 
 UIImage 和 UIImageView 的角色类似于 MVC 架构模式中的数据和视图，如下图所示。
-
-<!-- <p class="post-image">
-    <img src="/resources/figures/2018-08-22-uiimage-uiimageview.png" alt="UIImage 和 UIImageView" width="90%">
-</p> -->
 
 ![](/images/2018-08-22-uiimage-uiimageview.png)
 
@@ -60,10 +52,11 @@ UIImage 关联的图像是否已解码对外部是透明的（如本文最后的
 
 将图像显示到屏幕上会触发隐式解码。（必须同时满足图像被设置到 UIImageView 中、UIImageView 添加到视图，才会触发图像解码。)
 
-<pre><code>UIImageView *imageView = [[UIImageView alloc] init];
+{% codeblock lang:objc %}
+UIImageView *imageView = [[UIImageView alloc] init];
 [self.view addSubview:imageView];
 [imageView setImage:image];
-</code></pre>
+{% endcodeblock %}
 
 <p></p>
 
@@ -71,15 +64,17 @@ UIImage 关联的图像是否已解码对外部是透明的（如本文最后的
 
 手动绘制图像能完成图像解码，下面代码中的 newImage 实例的图像已完成解码。
 
-<pre><code>UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
+{% codeblock lang:objc %}
+UIGraphicsBeginImageContextWithOptions(image.size, YES, [UIScreen mainScreen].scale);
 [image drawAtPoint:CGPointZero];
 UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
 UIGraphicsEndImageContext();
-</code></pre>
+{% endcodeblock %}
 
 下面的代码片段截取自 <a href="https://github.com/ibireme/YYKit.git" target="_blank">YYKit</a>，其中 newImage 实例的图像已完成解码。在测试工程中，该代码比上面直接绘制代码快约7倍。
 
-<pre><code>size_t width = CGImageGetWidth(imageRef);
+{% codeblock lang:objc %}
+size_t width = CGImageGetWidth(imageRef);
 size_t height = CGImageGetHeight(imageRef);
 CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
 size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
@@ -97,7 +92,7 @@ CGImageRef newImageRef = CGImageCreate(width, height, bitsPerComponent, bitsPerP
 UIImage *newImage = [[UIImage alloc] initWithCGImage:newImageRef];
 CGImageRelease(newImageRef);
 CFRelease(newProvider);
-</code></pre>
+{% endcodeblock %}
 
 <h3>Image I/O</h3>
 
@@ -113,7 +108,8 @@ Image I/O 提供了多种处理图像的接口，但是我并没有找到一个�
 
 下面的代码片段来自 WWDC 2018，功能是缩小图像并解码。原始代码为 Swift，这里转成了 Objective-C。
 
-<pre><code>// 大图缩小为显示尺寸的图
+{% codeblock lang:objc %}
+// 大图缩小为显示尺寸的图
 - (UIImage *)downsampleImageAt:(NSURL *)imageURL to:(CGSize)pointSize scale:(CGFloat)scale {
     // 利用图像文件地址创建 image source
     NSDictionary *imageSourceOptions =
@@ -140,7 +136,7 @@ Image I/O 提供了多种处理图像的接口，但是我并没有找到一个�
 
     return image;
 }
-</code></pre>
+{% endcodeblock %}
 
 <h3>优化 CPU 使用</h3>
 

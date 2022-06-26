@@ -18,10 +18,11 @@ app 工程创建后通常会自动生成一些源代码文件，通过这些源�
 
 `main.m` 文件中的 `main` 函数在一个 autorelease 池中调用 `UIApplicationMain` 函数。
 
-<pre><code>@autoreleasepool {
+{% codeblock lang:objc %}
+@autoreleasepool {
     return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
 }
-</code></pre>
+{% endcodeblock %}
 
 `@autoreleasepool` 语句支持 app 内存管理。ARC（Automatic Reference Counting）机制让编译器跟踪对象的持有者，使得内存管理工作变得简单；`@autoreleasepool` 是内存管理架构的一部分。
 
