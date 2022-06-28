@@ -22,7 +22,8 @@ hexo.extend.filter.register('marked:renderer', function(renderer) {
 
     let out = '';
     const argv = process.argv;
-    if (argv[argv.length - 1] === 'server') {
+    if (argv[argv.length - 1] === 'server' || argv[argv.length - 1] === '--draft') {
+      // 本地运行
       out += `<img src="${encodeURL(href)}"`;
     } else {
       // 因为图片放在了 lfs，默认地址无法访问，需要修改

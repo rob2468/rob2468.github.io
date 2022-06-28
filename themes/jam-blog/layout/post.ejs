@@ -10,7 +10,7 @@
           <%- partial('_partial/article', { post: page, index: false, pageType: 'post' }) %>
         </section>
         <% if (theme.sidebar && theme.sidebar !== 'bottom'){ %>
-          <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
+          <%- partial('_partial/sidebar') %>
         <% } %>
       </div>
       <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>

@@ -1,0 +1,14 @@
+<!-- 目录 table of content -->
+<% if (page.content) { %>
+  <% var toc = toc(page.content, { min_depth: 2, list_number: false }); %>
+  <% if (toc) { %>
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><%- toc %></p>
+      </div>
+    </div>
+  <% } %>
+<% } %>
+
+
