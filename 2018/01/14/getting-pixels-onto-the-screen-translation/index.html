@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-01-14-pixels-hardware.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-01-14-pixels-hardware.png">
 <meta property="article:published_time" content="2018-01-14T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
+<meta property="article:modified_time" content="2022-06-28T15:11:25.181Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-01-14-pixels-software-stack.png">
@@ -361,7 +361,7 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="cl4v06owz001cg2n53f1c0rtv" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="cl4yb431z001d9tn7dswj67f6" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
       
       
       
@@ -442,6 +442,22 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
         </section>
         
           <aside id="sidebar">
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-text">正文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_1"><span class="toc-text">1. 图形栈（Graphics Stack）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#section_1_1"><span class="toc-text">1.1 软件组件（The Software Components）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_1_2"><span class="toc-text">1.2 硬件组件（The Hardware Players）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_2"><span class="toc-text">2. 合成（Compositing）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#section_2_1"><span class="toc-text">2.1 是否透明（Opaque vs. Transparent）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_2_2"><span class="toc-text">2.2 像素是否对齐（Pixel Alignment and Misalignment）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_2_3"><span class="toc-text">2.3 遮罩（Masks）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_2_4"><span class="toc-text">2.4 离屏渲染（Offscreen Rendering）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_3"><span class="toc-text">3. Core Animation &amp; OpenGL ES</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#section_3_1"><span class="toc-text">3.1 CPU 受限与 GPU 受限（CPU bound vs. GPU bound）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_4"><span class="toc-text">4. Core Graphics 或 Quartz 2D（Core Graphics &#x2F; Quartz 2D）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_5"><span class="toc-text">5. 像素（Pixels）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#section_5_1"><span class="toc-text">5.1 默认像素布局（Default Pixel Layouts）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_5_2"><span class="toc-text">5.2 “深奥的”布局（Esoteric Layouts）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_5_3"><span class="toc-text">5.3 平面数据（Planar Data）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_5_4"><span class="toc-text">5.4 YCbCr</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_6"><span class="toc-text">6. 图片格式（Image Formats）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#section_6_1"><span class="toc-text">6.1 JPEG</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_6_2"><span class="toc-text">6.2 PNG</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_6_3"><span class="toc-text">6.3 选择一种格式（Picking a Format）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_7"><span class="toc-text">7. UIKit 和像素（UIKit and Pixels）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#section_7_1"><span class="toc-text">7.1 使用 -drawRect:（With -drawRect:）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_7_2"><span class="toc-text">7.2 不使用 -drawRect（Without -drawRect:）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_7_3"><span class="toc-text">7.3 是否使用 -drawRect（To -drawRect: or Not to -drawRect:）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_7_4"><span class="toc-text">7.4 纯色（Solid Colors）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_7_5"><span class="toc-text">7.5 可调整的图片（Resizable Images）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_7_6"><span class="toc-text">7.6 并发绘图（Concurrent Drawing）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_8"><span class="toc-text">8. 其它 CALayer 相关内容(CALayer Odds and Ends)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#section_8_1"><span class="toc-text">8.1 自定义绘画的图层（Layers with Custom Drawing）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_8_2"><span class="toc-text">8.2 形状和文本图层（Shape and Text Layers）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_8_3"><span class="toc-text">8.3 异步绘画（Asynchronous Drawing）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">参考文献：</span></a></li></ol></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
   
     
 

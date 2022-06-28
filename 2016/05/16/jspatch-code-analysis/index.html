@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-16-JSPatch_MessageSend.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-16-JSPatch_callSelector.png">
 <meta property="article:published_time" content="2016-05-16T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
+<meta property="article:modified_time" content="2022-06-28T15:11:25.181Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2016-05-16-JSPatch_MessageSend.png">
@@ -204,7 +204,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="cl4v06ovx000ag2n5awd89c5v" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="cl4yb430t000b9tn7fk1wa0zi" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
       
       
       
@@ -285,6 +285,22 @@
         </section>
         
           <aside id="sidebar">
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#section_1"><span class="toc-text">一、OC (Objective-C) 运行时</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">1. 消息转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">2. Method Swizzling</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_2"><span class="toc-text">二、JavaScriptCore.framework</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">1. 方法互调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">2. 类型转换关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_3"><span class="toc-text">三、方法调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#section_3_1"><span class="toc-text">1. 调用修改后方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#section_3_2"><span class="toc-text">2. 调用原始方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#section_4"><span class="toc-text">四、问题发现与解释</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">1. 在 OC 中使用快速遍历访问NSArray 中的元素，转换为 JS 后，快速遍历无法得到数组元素。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">2. 通过调用未实现方法以测试自定义的 forwardInvocation 时，在一些情况下直接抛出方法未实现错误，而不是执行 forwardInvocation 中逻辑。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-text">参考文献:</span></a></li></ol></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
   
     
 

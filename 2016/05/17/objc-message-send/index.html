@@ -14,7 +14,7 @@
 <meta property="og:description" content="OC 为动态运行时语言，其将许多决策从编译和链接时延迟到运行时执行。OC 中的方法调用本质为消息传递，[receiver message] 可以解释为向 receiver 对象发送 message 消息。今天阅读了 Apple 开发文档的 Messaging 章节，利用运行时系统提供的相关方法，OC 消息传递式的方法调用最终转换成了标准 C 语言函数调用方式，实现了统一。 本文以 Apple 开发">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-05-17T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-06-26T07:42:10.216Z">
+<meta property="article:modified_time" content="2022-06-28T15:11:25.181Z">
 <meta property="article:author" content="陈军">
 <meta name="twitter:card" content="summary">
   
@@ -169,7 +169,7 @@ If the receiver is an instance, aSelector should refer to an instance method; if
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="cl4v06ovx000bg2n53pr2ep7a" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="cl4yb430u000c9tn7aki08stk" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
       
       
       
@@ -250,6 +250,22 @@ If the receiver is an instance, aSelector should refer to an instance method; if
         </section>
         
           <aside id="sidebar">
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81objc-msgSend-%E5%87%BD%E6%95%B0"><span class="toc-text">一、objc_msgSend 函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AF%BB%E6%89%BE%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-text">二、寻找方法实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C"><span class="toc-text">三、方法执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">四、总结</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
   
     
 
