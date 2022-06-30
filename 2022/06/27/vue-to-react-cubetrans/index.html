@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>将 &#34;Vue&#34; 转译为 React | 陈军的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本文记录了如何将 Vue 语言转译为 React 语言。主要目的是，当你面对此类源代码分析工作时，能够找到一些结构化处理的思路。 背景  标题中的 Vue 加上了引号，因为要转译的 Vue 代码不是包含了所有 Vue 语言特性的代码，而是 Vue 的一个子集。Cube 技术解读 | 支付宝新一代动态化技术架构与选型综述 这篇文章介绍了支付宝中使用的动态化框架，“对于Cube卡片，支持基于精简v">
+<meta property="og:type" content="article">
+<meta property="og:title" content="将 &quot;Vue&quot; 转译为 React">
+<meta property="og:url" content="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/index.html">
+<meta property="og:site_name" content="陈军的博客">
+<meta property="og:description" content="本文记录了如何将 Vue 语言转译为 React 语言。主要目的是，当你面对此类源代码分析工作时，能够找到一些结构化处理的思路。 背景  标题中的 Vue 加上了引号，因为要转译的 Vue 代码不是包含了所有 Vue 语言特性的代码，而是 Vue 的一个子集。Cube 技术解读 | 支付宝新一代动态化技术架构与选型综述 这篇文章介绍了支付宝中使用的动态化框架，“对于Cube卡片，支持基于精简v">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-astexplorer-screenshot.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E4%BB%A3%E7%A0%81%E7%B2%92%E5%BA%A6.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E5%A4%84%E7%90%86script%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E5%A4%84%E7%90%86script%E9%80%92%E5%BD%92%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E5%A4%84%E7%90%86template%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E5%A4%84%E7%90%86template%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png">
+<meta property="article:published_time" content="2022-06-27T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-06-30T13:46:55.368Z">
+<meta property="article:author" content="陈军">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-astexplorer-screenshot.png">
+  
+    <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article id="post-vue-to-react-cubetrans" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/06/27/vue-to-react-cubetrans/" class="article-date">
+  <time class="dt-published" datetime="2022-06-27T00:00:00.000Z" itemprop="datePublished">2022-06-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      将 &#34;Vue&#34; 转译为 React
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 class=""></h1>
+
+<p>本文记录了如何将 Vue 语言转译为 React 语言。主要目的是，当你面对此类源代码分析工作时，能够找到一些结构化处理的思路。</p>
+<h2 id="background">背景</h2>
+
+<p>标题中的 Vue 加上了引号，因为要转译的 Vue 代码不是包含了所有 Vue 语言特性的代码，而是 Vue 的一个子集。<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg4MDY0ODk0Ng==&mid=2247483885&idx=1&sn=f3a6a1993bf7b867d9ecf421c454e5bf&chksm=cf70b670f8073f66188329e479a37b4d8866686f98a2fc3a101d9ff8c972b835dd0eb453e785&mpshare=1&scene=1&srcid=0627Aj7Dl7Gj79iaUf7aQ3CP&sharer_sharetime=1656314563040&sharer_shareid=e31ba76f7466506e9f6b0c0056037e45&exportkey=AYxF2XQbEeP5I93T2nntDVI=&acctmode=0&pass_ticket=jGXWXRnxf1OTy8uzRI+uwUCe2k/z1/l5kervjNbaYHcrNHil38F7XZauvj7FMqy/&wx_header=0#rd">Cube 技术解读 | 支付宝新一代动态化技术架构与选型综述</a> 这篇文章介绍了支付宝中使用的动态化框架，“对于Cube卡片，支持基于精简vue的card-dsl。”</p>
+<p>Cube 卡片是一种客户端技术，进行 Cube 卡片研发需要进行繁琐的开发环境配置，将 Vue 转译为 React 能够在浏览器中实时预览，提升研发效率。将精简的 Vue 语法转译为标准的 Vue 语法也能实现浏览器预览，但公司里的 H5 项目均采用 React 开发，转译为 React 能够在 H5 项目中复用已有的 Cube 卡片。</p>
+<p>暂将这个工具命名为 CubeTrans。</p>
+<span id="more"></span>
+
+<h2 id="tools">工具</h2>
+
+<h3 id="tool-libs">工具库</h3>
+
+<h4 id="vue-template-compiler">vue-template-compiler</h4>
+
+<p>从 *.vue 文件中解析出 template / script / style。</p>
+<h4 id="babel-parser">@babel/parser</h4>
+
+<p>将源代码解析成 AST (Abstract Syntax Tree，抽象语法树)。</p>
+<h4 id="babel-traverse">@babel/traverse</h4>
+
+<p>遍历 AST。@babel/traverse 会以深度优先搜索的方式遍历 AST。</p>
+<h4 id="babel-types">@babel/types</h4>
+
+<p>AST 中节点类型的定义，也可以创建新的 AST 节点。比如：</p>
+<ul>
+<li><p>判断节点类型： <code>t.isMemberExpression()</code> / <code>t.isIdentifier()</code></p>
+</li>
+<li><p>创建节点: <code>t.memberExpression(t.thisExpression(), t.identifier(&#39;state&#39;));</code></p>
+</li>
+</ul>
+<h4 id="babel-generator">@babel/generator</h4>
+
+<p>从 AST 生成源代码。</p>
+<h3 id="helper-tools">辅助工具</h3>
+
+<h4 id="ast-explorer">AST Explorer</h4>
+
+<p><a target="_blank" rel="noopener" href="https://astexplorer.net/">https://astexplorer.net/</a></p>
+<p>查看源代码对应的 AST。AST 相关开发必备工具。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-astexplorer-screenshot.png"></p>
+<h2 id="problem-analysis">问题分析</h2>
+
+<h3 id="preview">效果预览</h3>
+
+<p>下面是转译前后的代码。</p>
+<p>Vue 代码：</p>
+<figure class="highlight js"><figcaption><span>Vue</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;example&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">data</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="attr">msg</span>: <span class="string">&#x27;Hello world!&#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="function"><span class="title">constructor</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">methods</span>: &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="function"><span class="title">clickBtn</span>(<span class="params"></span>)</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="keyword">let</span> cur = <span class="built_in">this</span>.count;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="built_in">this</span>.count = cur + <span class="number">1</span>;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></span></span><br><span class="line"><span class="css"><span class="xml"><span class="selector-class">.example</span> &#123;</span></span></span><br><span class="line"><span class="css"><span class="xml">  <span class="attribute">color</span>: red;</span></span></span><br><span class="line"><span class="css"><span class="xml">&#125;</span></span></span><br><span class="line"><span class="css"><span class="xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>React 代码：</p>
+<figure class="highlight js"><figcaption><span>React</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./index.css&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">props</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(props);</span><br><span class="line">    <span class="keyword">const</span> _uid = &#123;</span><br><span class="line">      ...&#123;</span><br><span class="line">        <span class="attr">msg</span>: <span class="string">&#x27;Hello world!&#x27;</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      ...props,</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">this</span>.state = _uid;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">clickBtn</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> cur = <span class="built_in">this</span>.state.count;</span><br><span class="line">    <span class="built_in">this</span>.setState(&#123; <span class="attr">count</span>: cur + <span class="number">1</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;example&quot;</span>&gt;</span>&#123;this.state.msg&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><figcaption><span>CSS</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.example</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="problem-dissemble">问题拆解</h3>
+
+<ul>
+<li>React 与 Vue 的差异点在哪里？需要做什么样的转换？</li>
+</ul>
+<p>如上面效果预览所示，转译前的 Vue 代码为单文件组件，转译后为 React 类组件。</p>
+<p>从代码结构来说，Vue 的 template 部分转译为 React 的 render 方法，Vue 的 script 部分转译为 React 的类方法，Vue 的 style 部分转译为 CSS。CubeTrans 的处理模块与此一一对应，即针对 template / script / style 分而治之、处理 script 时以类方法作为突破口。</p>
+<p>从代码语句来说，主要任务是修改访问类属性的方式。Vue 中类属性挂在 this 下面，React 中类属性挂在 this.state 下面。</p>
+<ul>
+<li>如何遍历代码？</li>
+</ul>
+<p>我们需要一种方式来遍历 Vue 的每一行代码，当遍历到目标代码时，将其转移为 React 的实现。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E4%BB%A3%E7%A0%81%E7%B2%92%E5%BA%A6.png"></p>
+<p>上图描述了 CubeTrans 视角的 Vue 代码的组成结构。最小结构是<code>表达式</code>，其次是<code>语句</code>，再然后是<code>代码块</code>，最后是 <code>template / script / style 结构</code>。</p>
+<p><code>template / script / style 结构</code>很简单，直接硬编码就能遍历到。<code>语句</code>也很简单，每一行代码对应一条语句，可以直接顺序遍历。</p>
+<p><code>代码块</code>是包含在一对花括号之间的代码，比如函数体、条件分支、循环体、try catch 块、switch case 块等。CubeTrans 使用广度优先搜索算法来遍历<code>代码块</code>。</p>
+<p><code>表达式</code>虽然是最小组成结构，但它的复杂程度也各不相同。比如，三元运算表达式可能包含了函数调用表达式和逻辑计算表达式。遍历<code>表达式</code>使用深度优先算法来实现，即不断的进行函数递归调用，直至找到最简单的<code>表达式</code>，然后进行转译。</p>
+<h2 id="transpile">转译</h2>
+
+<h3 id="data-struct">数据结构</h3>
+
+<h4 id="data-struct-custom">自定义数据结构</h4>
+
+<ul>
+<li>Collect</li>
+</ul>
+<p>保存所有已完成转译的 AST 节点。基于此数据结构数据，可以生成 React 代码。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Collect &#123;</span><br><span class="line">  <span class="attr">imports</span>: <span class="built_in">any</span>[];     <span class="comment">// import 语句</span></span><br><span class="line">  functions: <span class="built_in">any</span>[];   <span class="comment">// 全局声明的函数</span></span><br><span class="line">  classMethods: &#123;     <span class="comment">// 类方案</span></span><br><span class="line">    [key: <span class="built_in">string</span>]: <span class="built_in">any</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>State</li>
+</ul>
+<p>保存全局上下文信息。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> State &#123;</span><br><span class="line">  <span class="attr">classMethodNames</span>: <span class="built_in">string</span>[]; <span class="comment">// 类下面所有的方法名</span></span><br><span class="line">  data?: t.ObjectExpression; 	<span class="comment">// Vue 代码中的 data 节点</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>MethodTraverseContext</li>
+</ul>
+<p>上文说到 CubeTrans 处理 script 时以类方法作为突破口，MethodTraverseContext 即用于保存类方法处理过程的上下文信息。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> MethodTraverseContext &#123;</span><br><span class="line">  <span class="attr">pathsToVisit</span>: <span class="built_in">any</span>[];  <span class="comment">// 待遍历的队列，保存代码块节点</span></span><br><span class="line">  isCtro: <span class="built_in">boolean</span>;      <span class="comment">// 是否是构造函数</span></span><br><span class="line">  thisAlias: <span class="built_in">string</span>[];  <span class="comment">// this 别名</span></span><br><span class="line">  rootPath: <span class="built_in">any</span>;        <span class="comment">// 本次遍历的根节点</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="data-struct-lib">工具库的数据结构</h4>
+
+<ul>
+<li>node</li>
+</ul>
+<p>AST 中的节点称为 node。</p>
+<p><code>@babel/types</code> 判断节点类型，传入的参数即为 node。<code>@babel/types</code> 创建节点，生成的实例也是 node。</p>
+<ul>
+<li>path</li>
+</ul>
+<p><code>@babel/traverse</code> 遍历 AST 会生成 path 对象。<code>@babel/traverse</code> 提供的遍历函数，会以深度优先搜索的方式遍历 AST。</p>
+<p>使用 path 可以在 AST 中移动，如： <code>path.parentPath</code> -&gt; 获取父节点，<code>path.get(&#39;xxoo.xxoo&#39;)</code> -&gt; 获取子节点，<code>path.skip()</code> -&gt; 跳过子节点。</p>
+<p><code>path.node</code> 返回对应的 AST node 节点。</p>
+<ul>
+<li>修改 node 或 path，都能够修改 AST</li>
+</ul>
+<p>如： <code>path.replaceWith()</code>，<code>node.callee = t.memberExpression(node, node)</code></p>
+<h3 id="whole-process">整体流程</h3>
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B.png"></p>
+<ol>
+<li>使用 <code>vue-template-compiler</code> 从原始代码中解析出 template / script / style 三部分。</li>
+</ol>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sourceCode = fs.readFileSync(srcPath, <span class="string">&#x27;utf8&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从源代码中解析出 template、script、style</span></span><br><span class="line"><span class="keyword">const</span> vueParsedRes = vueTemplateCompiler.parseComponent(sourceCode);</span><br><span class="line"><span class="built_in">console</span>.log(&#123;</span><br><span class="line">  <span class="attr">template</span>: vueParsedRes?.template?.content,</span><br><span class="line">  <span class="attr">script</span>: vueParsedRes?.script?.content,</span><br><span class="line">  <span class="attr">style</span>: vueParsedRes?.styles?.content,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>分别处理 template / script / style 转译为 React 代码。其中 script 部分的处理逻辑最复杂，需要多次循环处理，收集数据；template 的处理难度次之；最后是 style。</p>
+</li>
+<li><p>处理过程中生成的数据保存在 Collect 数据结构中。遍历并处理完所有代码后，CubeTrans 从 Collect 中取出数据并组装成 AST。</p>
+</li>
+<li><p>使用 <code>@babel/generator</code> 从 AST 生成 React 源代码。</p>
+</li>
+</ol>
+<h3 id="handle-script">处理 script</h3>
+
+<h4 id="handle-script-one-word">一句话说明</h4>
+
+<p>遍历所有代码，并在访问到特定代码时进行转译，如：</p>
+<ul>
+<li><code>this.xxoo</code> 写法转译成 <code>this.state.xxoo</code>；</li>
+<li><code>this.xxoo = &#39;aabb&#39;</code> 写法转译成 <code>this.setState(&#123; xxoo: &#39;aabb&#39; &#125;)</code>；</li>
+</ul>
+<h4 id="handle-script-whole-process">整体流程</h4>
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E5%A4%84%E7%90%86script%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B.png"></p>
+<h4 id="handle-script-method">类方法处理流程</h4>
+
+<ul>
+<li><p>CubeTrans 的最小处理单元是类方法。</p>
+</li>
+<li><p>使用广度优先搜索(Breadth-First Search，BFS)算法遍历<code>代码块</code>。</p>
+</li>
+<li><p>使用深度优先算法(Depth-First-Search，DFS)遍历<code>表达式</code>。</p>
+<ul>
+<li>一次处理流程从类方法进入。</li>
+<li><code>pathsToVisit</code> 是进行广度优先搜索的核心数据结构，保存了待访问的代码块节点。</li>
+<li>visitor 负责从 <code>pathsToVisit</code> 中取出待处理节点，执行遍历。</li>
+<li>handler 需要理解并处理 AST：转译代码，或者将代码块放入 <code>pathsToVisit</code> 中。</li>
+<li>handler 包含了语句处理器和表达式处理器。遍历表达式时，若遇到复杂表达式则递归处理(深度优先遍历)，直至遍历到最简单的表达式后执行转译。</li>
+<li>astHelper 中提供了常用的转译处理函数。即执行上面<a href="#handle-script-one-word">一句话说明</a>里的任务。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E5%A4%84%E7%90%86script%E9%80%92%E5%BD%92%E6%B5%81%E7%A8%8B.png"></p>
+<ul>
+<li>递归处理表达式</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 表达式递归处理</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">nestedExpressionHandler</span>(<span class="params">&#123; path, state, ctx &#125;: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">  path: <span class="built_in">any</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  state: State;</span></span></span><br><span class="line"><span class="params"><span class="function">  ctx: MethodTraverseContext;</span></span></span><br><span class="line"><span class="params"><span class="function">&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (t.isMemberExpression(path.node) || t.isOptionalMemberExpression(path.node)) &#123;</span><br><span class="line">    handleAtomicReadExpression(&#123; path, ctx &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t.isObjectExpression(path.node)) &#123;</span><br><span class="line">    processObjectExpression(&#123; path, state, ctx &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t.isAssignmentExpression(path.node)) &#123;</span><br><span class="line">    processAssignmentExpression(&#123; path, state, ctx &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t.isCallExpression(path.node)) &#123;</span><br><span class="line">    processCallExpression(&#123; path, state, ctx &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t.isLogicalExpression(path.node)) &#123;</span><br><span class="line">    processLogicalExpression(&#123; path, state, ctx &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t.isConditionalExpression(path.node)) &#123;</span><br><span class="line">    processConditionalExpression(&#123; path, state, ctx &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t.isBinaryExpression(path.node)) &#123;</span><br><span class="line">    processBinaryExpression(&#123; path, state, ctx &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">processLogicalExpression</span>(<span class="params">&#123; path, state, ctx &#125;: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">  path: <span class="built_in">any</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  state: State;</span></span></span><br><span class="line"><span class="params"><span class="function">  ctx: MethodTraverseContext;</span></span></span><br><span class="line"><span class="params"><span class="function">&#125;</span>) </span>&#123;</span><br><span class="line">  assert(t.isLogicalExpression(path.node));</span><br><span class="line">  nestedExpressionHandler(&#123; <span class="attr">path</span>: path.get(<span class="string">&#x27;left&#x27;</span>), state, ctx &#125;);</span><br><span class="line">  nestedExpressionHandler(&#123; <span class="attr">path</span>: path.get(<span class="string">&#x27;right&#x27;</span>), state, ctx &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="handle-template">处理 template</h3>
+
+<h4 id="handle-template-one-word">一句话说明</h4>
+
+<p>遍历所有代码，并在访问到特定代码时进行转译。需要转译的代码有两类：一类是 Vue 模板；一类是 JS，包括 Vue 指令和 JSXExpression。</p>
+<h4 id="handle-template-whole-process">整体流程</h4>
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E5%A4%84%E7%90%86template%E6%95%B4%E4%BD%93%E6%B5%81%E7%A8%8B.png"></p>
+<p>template 需要使用正则表达式进行预处理，随后才能被 <code>@babel/parser</code> 解析为 AST。</p>
+<h4 id="handle-template-detail">处理流程</h4>
+
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-06-27-%E5%A4%84%E7%90%86template%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png"></p>
+<ul>
+<li><p>使用广度优先搜索算法遍历 AST。</p>
+</li>
+<li><p>template 的处理分为 JSX 与 JS 两部分。</p>
+</li>
+<li><p>JSX 部分的工作是将 Vue 模板转译为 React JSX 语法。比如下面这些 Vue 指令都需要进行处理：</p>
+<ul>
+<li>v-if / v-if-else / v-else</li>
+<li>v-for</li>
+<li>v-show</li>
+<li>v-on</li>
+<li>v-bind</li>
+</ul>
+</li>
+<li><p>JSXElement 预处理的工作是删除或转换 Cube 卡片自定义的标签，如 image 标签转为 img 标签。</p>
+</li>
+<li><p>涉及到 JS 语言的部分，如 Vue 指令和 JSXExpression，会交给 JS 部分处理。具体逻辑如下：</p>
+</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wrapIdentifier</span>(<span class="params">path, scopeVars</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (scopeVars.indexOf(path.node.name) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  path.replaceWith(</span><br><span class="line">    t.memberExpression(</span><br><span class="line">      t.memberExpression(t.thisExpression(), t.identifier(<span class="string">&#x27;state&#x27;</span>)),</span><br><span class="line">      path.node</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="handle-style">处理 style</h3>
+
+<p>CSS 通常遵循 web 规范，无需额外处理。如果需要处理，有些工具库可以利用，如 <a target="_blank" rel="noopener" href="https://github.com/csstree/csstree/blob/master/docs/traversal.md">csstress</a>。</p>
+<h2 id="best-practise">最佳实践</h2>
+
+<h3 id="vscode-debug">vscode debug</h3>
+
+<ul>
+<li><p>断点调试功能对此类纯逻辑功能项目的开发非常有用。</p>
+</li>
+<li><p>创建一份配置，即可以使用 vscode 的调试功能。</p>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.2.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;configurations&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;CubeTrans调试配置&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;node&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;request&quot;</span>: <span class="string">&quot;launch&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;cwd&quot;</span>: <span class="string">&quot;$&#123;workspaceRoot&#125;/packages/core&quot;</span>, <span class="comment">// 项目根目录</span></span><br><span class="line">      <span class="attr">&quot;outFiles&quot;</span>: [</span><br><span class="line">        <span class="comment">// outFiles are necessary if you want to be able to set breakpoints in TypeScript (instead of the generated JavaScript).</span></span><br><span class="line">        <span class="comment">// ts 构建产物路径</span></span><br><span class="line">        <span class="string">&quot;$&#123;workspaceRoot&#125;/packages/core/build/*.js&quot;</span>,</span><br><span class="line">        <span class="string">&quot;$&#123;workspaceRoot&#125;/packages/core/build/**/*.js&quot;</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">&quot;runtimeExecutable&quot;</span>: <span class="string">&quot;npm&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;runtimeArgs&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;run&quot;</span>, <span class="string">&quot;cube:demo&quot;</span>, <span class="comment">// 对应 package.json scripts 下的脚本名</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="attr">&quot;port&quot;</span>: <span class="number">5858</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="tdd">测试驱动的开发</h3>
+
+<ul>
+<li><p>测试库： <code>jest</code></p>
+</li>
+<li><p>方案：snapshot 比对。</p>
+<ul>
+<li>输入为各种 case 的 Cube 卡片代码；输出为转译后的 React 代码，保存为 snapshot；</li>
+<li>测试通过的条件是，本次转译后的 React 代码与 snapshot 一致；</li>
+</ul>
+</li>
+</ul>
+<h2 id="conclusion">总结</h2>
+
+<p>最初的灵感来源是 <a target="_blank" rel="noopener" href="https://github.com/dwqs/vue-to-react">vue-to-react</a> 这个库，在此表示感谢。vue-to-react 尝试将标准的 Vue 代码转译为 React，但是看代码并没有一套结构化的处理流程，转换失败的 case 很多。目前是无人维护的状态。</p>
+<p>AST 处理的工具库很多，看 <a target="_blank" rel="noopener" href="https://astexplorer.net/">https://astexplorer.net/</a> 下拉列表的长度就能发现。本文以 Vue 代码转译为 React 代码作为实际案例，进行剖析。希望你在进行其它 AST 分析的任务时，本文中的知识点能有所启发。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="cl512z2n4001ab9p250gzf0t4" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/12/26/fun-facts-about-raising-a-baby/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">养娃趣事</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+
+
+        </section>
+        
+          <aside id="sidebar">
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#background"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tools"><span class="toc-text">工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tool-libs"><span class="toc-text">工具库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vue-template-compiler"><span class="toc-text">vue-template-compiler</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#babel-parser"><span class="toc-text">@babel&#x2F;parser</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#babel-traverse"><span class="toc-text">@babel&#x2F;traverse</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#babel-types"><span class="toc-text">@babel&#x2F;types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#babel-generator"><span class="toc-text">@babel&#x2F;generator</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#helper-tools"><span class="toc-text">辅助工具</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ast-explorer"><span class="toc-text">AST Explorer</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#problem-analysis"><span class="toc-text">问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#preview"><span class="toc-text">效果预览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#problem-dissemble"><span class="toc-text">问题拆解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#transpile"><span class="toc-text">转译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#data-struct"><span class="toc-text">数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#data-struct-custom"><span class="toc-text">自定义数据结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#data-struct-lib"><span class="toc-text">工具库的数据结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#whole-process"><span class="toc-text">整体流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#handle-script"><span class="toc-text">处理 script</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#handle-script-one-word"><span class="toc-text">一句话说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#handle-script-whole-process"><span class="toc-text">整体流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#handle-script-method"><span class="toc-text">类方法处理流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#handle-template"><span class="toc-text">处理 template</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#handle-template-one-word"><span class="toc-text">一句话说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#handle-template-whole-process"><span class="toc-text">整体流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#handle-template-detail"><span class="toc-text">处理流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#handle-style"><span class="toc-text">处理 style</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#best-practise"><span class="toc-text">最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vscode-debug"><span class="toc-text">vscode debug</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tdd"><span class="toc-text">测试驱动的开发</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#conclusion"><span class="toc-text">总结</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/06/27/vue-to-react-cubetrans/">将 &#34;Vue&#34; 转译为 React</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/26/fun-facts-about-raising-a-baby/">养娃趣事</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/11/jing-imagination/">儿子的想象力</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/09/different-problems/">简单问题、复杂问题、混沌问题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
