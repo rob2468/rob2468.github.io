@@ -355,6 +355,20 @@ function wrapIdentifier(path, scopeVars) {
 
 CSS 通常遵循 web 规范，无需额外处理。如果需要处理，有些工具库可以利用，如 [csstress](https://github.com/csstree/csstree/blob/master/docs/traversal.md)。
 
+<h2 id="bad-case">Bad Case</h2>
+
+[React setState 在一些情况下异步执行](https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/17)，下面的代码转译后，运行时效果可能不符合预期。
+
+{% codeblock Vue lang:js %}
+this.a = 1;
+console.log(this.a); // 输出: 1
+{% endcodeblock %}
+
+{% codeblock React lang:js %}
+this.setState({ a: 1 });
+console.log(this.state.a); // 输出: 仍然是上一行代码执行前的值
+{% endcodeblock %}
+
 <h2 id="best-practise">最佳实践</h2>
 
 <h3 id="vscode-debug">vscode debug</h3>
@@ -398,6 +412,6 @@ CSS 通常遵循 web 规范，无需额外处理。如果需要处理，有些�
 
 <h2 id="conclusion">总结</h2>
 
-最初的灵感来源是 [vue-to-react](https://github.com/dwqs/vue-to-react) 这个库，在此表示感谢。vue-to-react 尝试将标准的 Vue 代码转译为 React，但是看代码并没有一套结构化的处理流程，转换失败的 case 很多。目前是无人维护的状态。
+最初的灵感来源是 [vue-to-react](https://github.com/dwqs/vue-to-react) 这个库。vue-to-react 尝试将标准的 Vue 代码转译为 React，但是看代码并没有一套结构化的处理流程，转换失败的 case 很多。目前是无人维护的状态。
 
 AST 处理的工具库很多，看 [https://astexplorer.net/](https://astexplorer.net/) 下拉列表的长度就能发现。本文以 Vue 代码转译为 React 代码作为实际案例，进行剖析。希望你在进行其它 AST 分析的任务时，本文中的知识点能有所启发。
