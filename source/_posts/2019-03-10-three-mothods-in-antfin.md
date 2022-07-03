@@ -2,6 +2,8 @@
 layout: post
 title: 蚂蚁金服三个月
 page_id: id-2019-03-10
+tags:
+- 思考
 ---
 
 <h1>{{ page.title }}</h1>

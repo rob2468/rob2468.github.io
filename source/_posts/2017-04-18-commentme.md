@@ -2,6 +2,10 @@
 layout: post
 title: 实现 GitHub Pages 的评论系统
 page_id: id-2017-04-18
+tags:
+- 工程实践
+- Git
+- GitHub
 ---
 
 <h1>{{ page.title }}</h1>

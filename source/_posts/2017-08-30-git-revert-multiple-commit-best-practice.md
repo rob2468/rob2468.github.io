@@ -2,6 +2,8 @@
 layout: post
 title: Git 回滚多次提交最佳实践
 page_id: id-2017-08-30
+tags:
+- Git
 ---
 
 <h1>{{ page.title }}</h1>

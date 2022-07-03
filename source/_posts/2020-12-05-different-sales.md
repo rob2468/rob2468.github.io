@@ -2,6 +2,9 @@
 layout: post
 title: 不同的销售
 page_id: id-2020-12-05
+tags:
+- 观察
+- 思考
 ---
 
 <h1>{{ page.title }}</h1>

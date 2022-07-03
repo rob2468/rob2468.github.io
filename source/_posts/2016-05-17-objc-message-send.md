@@ -2,6 +2,8 @@
 layout: post
 title: Objective-C 消息传递
 page_id: id-2016-05-17
+tags:
+- iOS
 ---
 
 # {{ page.title }}

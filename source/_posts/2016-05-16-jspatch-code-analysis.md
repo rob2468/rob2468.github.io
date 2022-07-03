@@ -2,6 +2,9 @@
 layout: post
 title: JSPatch 代码分析
 page_id: id-2016-05-16
+tags:
+- iOS
+- 动态化
 ---
 
 <h1 class="title">{{ page.title }}</h1>

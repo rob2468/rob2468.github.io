@@ -2,6 +2,8 @@
 layout: post
 title: 初试项目管理，个人经验小结
 page_id: id-2016-05-20
+tags:
+- 思考
 ---
 
 # {{ page.title }}

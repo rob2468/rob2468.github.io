@@ -1,5 +1,6 @@
 ---
 title: 将 "Vue" 转译为 React
+tags: AST
 ---
 
 <h1 class="">{{ page.title }}</h1>

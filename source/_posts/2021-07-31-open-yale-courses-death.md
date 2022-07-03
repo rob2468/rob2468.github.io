@@ -1,6 +1,7 @@
 ---
 title: 耶鲁大学公开课:死亡-读后感
 page_id: id-2021-07-31
+tags: 读书笔记
 ---
 
 <h1 class="">{{ page.title }}</h1>

@@ -2,6 +2,8 @@
 layout: post
 title: 管理的实践，读书笔记
 page_id: id-2018-08-26
+tags:
+- 读书笔记
 ---
 
 <h1>{{ page.title }}</h1>

@@ -2,6 +2,7 @@
 layout: post
 title: 指数基金基础知识
 page_id: id-2019-07-28
+tags: 读书笔记
 ---
 
 <h1 class="title">{{ page.title }}</h1>

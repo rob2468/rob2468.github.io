@@ -2,6 +2,9 @@
 layout: post
 title: ARC 内存管理和 GCD
 page_id: id-2016-12-29
+tags:
+- 读书笔记
+- iOS
 ---
 
 <h1 class="title">{{ page.title }}</h1>

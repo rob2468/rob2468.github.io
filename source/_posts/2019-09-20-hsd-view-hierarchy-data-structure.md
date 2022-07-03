@@ -2,6 +2,10 @@
 layout: post
 title: HttpServerDebug 视图层级之数据结构设计
 page_id: id-2019-09-20
+tag:
+- iOS
+- HttpServerDebug
+- 工程实践
 ---
 
 <h1 class="title">{{ page.title }}</h1>
@@ -12,10 +16,6 @@ page_id: id-2019-09-20
 
 <!-- more -->
 
-<!-- <p class="post-image">
-    <img src="/resources/figures/2019-09-20-view-hierarchy-demo.png" alt="HttpServerDebug view debug demo" width="100%">
-</p> -->
-
 ![](/images/2019-09-20-view-hierarchy-demo.png)
 
 <p class="post-image-title">图1 HttpServerDebug 视图调试</p>
@@ -25,10 +25,6 @@ page_id: id-2019-09-20
 <h2 id="section_2">数据结构</h2>
 
 按前文分析，数据结构的设计需要同时利于顺序和树状访问。下图是一个示例。
-
-<!-- <p class="post-image">
-    <img src="/resources/figures/2019-09-20-data-structure.png" alt="" width="100%">
-</p> -->
 
 ![](/images/2019-09-20-data-structure.png)
 

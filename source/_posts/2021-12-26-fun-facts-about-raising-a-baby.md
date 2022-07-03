@@ -1,6 +1,7 @@
 ---
 title: 养娃趣事
 page_id: id-2021-12-26
+tags: 生活
 ---
 
 <h1 class="">{{ page.title }}</h1>

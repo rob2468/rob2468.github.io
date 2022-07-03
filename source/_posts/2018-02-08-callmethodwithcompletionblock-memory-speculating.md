@@ -2,6 +2,8 @@
 layout: post
 title: callMethodWithCompletionBlock 中 Block 的内存管理
 page_id: id-2018-02-08
+tags:
+- iOS
 ---
 
 # {{ page.title }}

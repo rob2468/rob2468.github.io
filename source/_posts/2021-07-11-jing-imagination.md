@@ -1,6 +1,7 @@
 ---
 title: 儿子的想象力
 page_id: id-2021-07-11
+tags: 生活
 ---
 
 <h1 class="">{{ page.title }}</h1>

@@ -2,6 +2,8 @@
 layout: post
 title: iOS 图像解码和最佳实践
 page_id: id-2018-08-22
+tags:
+- iOS
 ---
 
 <h1 class="title">{{ page.title }}</h1>
@@ -143,10 +145,6 @@ Image I/O 提供了多种处理图像的接口，但是我并没有找到一个�
 CPU 使用的优化我们考虑的是，利用设备的多核芯片（多线程）和采用预处理策略。
 
 值得关注的 CPU 计算工作是，Data Buffer 转 Image Buffer 这一过程，也就是解码过程。在一个测试工程中，大量的设置了图像的 UIImageView 被显示到屏幕上，图像解码是性能瓶颈。如下图所示。
-
-<!-- <p class="post-image">
-    <img src="/resources/figures/2018-08-22-time-profiler-applejpeg-decode-image-all.png" alt="" width="100%">
-</p> -->
 
 ![](/images/2018-08-22-time-profiler-applejpeg-decode-image-all.png)
 

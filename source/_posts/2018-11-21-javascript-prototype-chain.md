@@ -2,11 +2,13 @@
 layout: post
 title: JavaScript 原型链和继承机制
 page_id: id-2018-11-21
+tags:
+- JavaScript
 ---
 
-<h1>{{ page.title }}</h1>
+# {{ page.title }}
 
-<h2>核心概念</h2>
+## 核心概念
 
 js 中的继承不同于 C++、Java 此类面向对象语言，其继承机制基于原型链。当需要在 js 中使用继承机制时，构造正确的原型链即可实现继承。
 
@@ -14,7 +16,7 @@ js 中的继承不同于 C++、Java 此类面向对象语言，其继承机制�
 
 js 原型链机制中的各对象之间的关系如上图所示。构造正确的符合继承行为的原型链的关键在于，构造函数的 prototype 属性以及 prototype 的 constructor 属性。
 
-<h2>为构造函数构造原型链</h2>
+## 为构造函数构造原型链
 
 {% codeblock lang:js %}
 function extend(Child, Parent) {
@@ -27,7 +29,7 @@ function extend(Child, Parent) {
 
 为构造函数构造原型链处理的是构造函数，用于实例化出任意多的对象实例。
 
-<h2>为对象实例构造原型链</h2>
+## 为对象实例构造原型链
 
 {% codeblock lang:js %}
 function object(o) {
@@ -39,7 +41,7 @@ function object(o) {
 
 为对象实例构造原型链是一次性的行为，所以 F.prototype.constructor 不需要严格设定。
 
-<h3>参考文献：</h3>
+## 参考文献
 
 <a href="http://www.mollypages.org/tutorials/js.mp" target="_blank">http://www.mollypages.org/tutorials/js.mp</a>
 

@@ -2,6 +2,8 @@
 layout: post
 title: 如何在验证失败的情况下发布 Pod
 page_id: id-2018-05-12
+tags:
+- 经验
 ---
 
 # {{ page.title }}

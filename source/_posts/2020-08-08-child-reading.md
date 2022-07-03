@@ -2,6 +2,7 @@
 layout: post
 title: 如何开发孩子的阅读潜力
 page_id: id-2020-08-08
+tags: 读书笔记
 ---
 
 <h1 class="title">{{ page.title }}</h1>

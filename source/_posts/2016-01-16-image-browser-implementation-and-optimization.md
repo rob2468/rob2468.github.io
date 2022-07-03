@@ -2,6 +2,9 @@
 layout: post
 title: 图片查看器中单张图片浏览的实现与优化
 page_id: id-2016-01-16
+tags:
+- iOS
+- 工程实践
 ---
 
 # {{ page.title }}
@@ -26,8 +29,6 @@ page_id: id-2016-01-16
 2. UIScrollView的内容视图尺寸需占满UIScrollView的视图尺寸范围，否则UIScrollView无法正确的响应用户的手势，如拖动、缩放。
 
 在开发过程中经历了三套设计方案。
-
-<!-- <p class="post-image"><img src="/resources/figures/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png" alt="" width="80%"></p> -->
 
 ![](/images/2016-01-16-%E4%B8%8D%E5%90%8C%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%A1%88%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E7%BA%A7.png)
 

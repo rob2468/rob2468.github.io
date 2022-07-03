@@ -2,6 +2,9 @@
 layout: post
 title: 可循环滚动的 ScrollView
 page_id: id-2016-05-26
+tags:
+- iOS
+- 工程实践
 ---
 
 # {{ page.title }}

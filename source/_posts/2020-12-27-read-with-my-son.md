@@ -2,6 +2,7 @@
 layout: post
 title: 与儿子一起的睡前阅读
 page_id: id-2020-12-27
+tag: 生活
 ---
 
 <h1>{{ page.title }}</h1>

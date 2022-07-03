@@ -2,6 +2,10 @@
 layout: post
 title: 使用 xcodeproj 构建脚本
 page_id: id-2019-12-29
+tag:
+- iOS
+- xcodeproj
+- 工程实践
 ---
 
 <h1 class="">{{ page.title }}</h1>

@@ -2,6 +2,9 @@
 layout: post
 title: iOS 工程默认源代码文件简介（译）
 page_id: id-2015-04-11
+tags:
+- iOS
+- 翻译
 ---
 
 # {{ page.title }}

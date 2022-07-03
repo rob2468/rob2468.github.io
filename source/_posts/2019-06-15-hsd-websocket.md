@@ -2,6 +2,9 @@
 layout: post
 title: 为 GCDWebServer 引入 WebSocket 支持
 page_id: id-2019-06-15
+tag:
+- HttpServerDebug
+- WebSocket
 ---
 
 <h1 class="title">{{ page.title }}</h1>
@@ -78,10 +81,6 @@ WebSocket 协议传输的数据以 Frame 为单位，每个 Frame 都有严格�
 </code></pre>
 
 <h2 id="section_4">持有关系</h2>
-
-<!-- <p class="post-image">
-  <img src="/resources/figures/2019-06-15-websocket-retain.png" alt="Retain Relationship" width="60%">
-</p> -->
 
 ![](/images/2019-06-15-websocket-retain.png)
 

@@ -30,7 +30,7 @@ sidebar: right
 widgets:
 - toc
 - category
-- tag
+# - tag
 - tagcloud
 - archive
 - recent_posts

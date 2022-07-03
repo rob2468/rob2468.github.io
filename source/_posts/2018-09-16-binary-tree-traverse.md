@@ -2,6 +2,8 @@
 layout: post
 title: 二叉树的遍历，伪代码实现
 page_id: id-2018-09-16
+tags:
+- 算法
 ---
 
 <h1>{{ page.title }}</h1>

@@ -1,8 +1,13 @@
-# Landscape
+# 陈军的博客自定义主题
 
-A brand new default theme for [Hexo].
+从 Hexo 的默认主题 [landscape](https://hexojs.github.io/hexo-theme-landscape/) 复制而来。
 
-- [Preview](https://hexojs.github.io/hexo-theme-landscape/)
+页面类型 pageType 常量：
+index: 首页
+post: 文章
+archive: 归档
+tag: 标签
+about: 关于
 
 ## Installation
 
