@@ -13,15 +13,14 @@
 <meta property="og:site_name" content="陈军的博客">
 <meta property="og:description" content="前言 之前看到一篇很好的关于视图渲染的文章（Getting Pixels onto the Screen），最近项目中遇到一些帧率优化的问题，想起来又阅读了一遍，并且抽时间进行了翻译，以便今后学习查阅。  正文  将内容显示到屏幕上，有许多方式可以实现。这个过程包含许多框架，依靠许多函数和方法的组合实现。本文讨论该过程的底层原理。当你需要考虑相关性能问题时，本文内容能够帮助挑选最优的 API。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-01-14-pixels-software-stack.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-01-14-pixels-software-stack.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2018-01-14-pixels-hardware.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-01-14-pixels-hardware.png">
 <meta property="article:published_time" content="2018-01-14T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-01T06:25:11.086Z">
+<meta property="article:modified_time" content="2022-07-03T14:28:53.539Z">
 <meta property="article:author" content="陈军">
+<meta property="article:tag" content="翻译">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2018-01-14-pixels-software-stack.png">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-01-14-pixels-software-stack.png">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -91,8 +90,17 @@
         <section id="main">
           <article id="post-getting-pixels-onto-the-screen-translation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/01/14/getting-pixels-onto-the-screen-translation/" class="article-date">
-  <time class="dt-published" datetime="2018-01-14T00:00:00.000Z" itemprop="datePublished">2018-01-14</time>
+    <a
+  href="/2018/01/14/getting-pixels-onto-the-screen-translation/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-01-14T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-01-14
+  </time>
 </a>
     
   </div>
@@ -102,8 +110,13 @@
       <header class="article-header">
         
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      像素如何被绘制到屏幕上（译）
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2018/01/14/getting-pixels-onto-the-screen-translation/"
+      >
+        像素如何被绘制到屏幕上（译）
+      </a>
     </h1>
   
 
@@ -127,8 +140,6 @@
 <h3 id="section_1_1">1.1 软件组件（The Software Components）</h3>
 
 <p>下面相关软件组件的简图：</p>
-<!-- <p class="post-image"><img src="/resources/figures/2018-01-14-pixels-software-stack.png" alt="" width="90%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-01-14-pixels-software-stack.png"></p>
 <p>紧靠着 Display 的是 GPU（graphics processing unit）。GPU 为图形并行计算量身定制，是一个高度并发的处理器单元。因此，它能够处理大量的像素计算并将处理结果显示到屏幕上。GPU 的并行计算能力也使得 Texture 的合成非常高效，本文后面会详细讨论。重点是，GPU 是非常专业的处理器，擅长处理这种类型的计算，比起 CPU，它计算更快，功耗更小。普通 CPU 的设计考虑的是一般性的计算，它可以做很多不同类型的事情，但是比如纹理合成这种工作，执行起来会比 GPU 慢一点。</p>
 <p>GPU Driver 是一些直接与 GPU 通信的代码。GPU Driver 可以看成是对各种复杂 GPU 的封装，为调用方提供标准化的接口。相邻 GPU Driver 的调用方通常是 OpenGL / OpenGL ES。</p>
@@ -137,8 +148,6 @@
 <p>上面说了这么多，需要记住以下几点。GPU 是一个非常强大的图形硬件，在显示内容过程中起着中心作用。GPU 通过一些总线与 CPU 相连。OpenGL、Core Animation、Core Graphics 这些框架组织着 GPU 和 CPU 之间的数据传输。为了在屏幕上显示内容，首先需要在 CPU 上进行一些处理，然后数据被传输到 GPU，再经过 GPU 处理，最后像素在屏幕上显示出来。</p>
 <p>这个过程中的每一步都有自己的挑战，并且需要做各种权衡。</p>
 <h3 id="section_1_2">1.2 硬件组件（The Hardware Players）</h3>
-
-<!-- <p class="post-image"><img src="/resources/figures/2018-01-14-pixels-hardware.png" alt="" width="70%"></p> -->
 
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-01-14-pixels-hardware.png"></p>
 <p>上文说的挑战一个非常简单的例子可能是这样的：GPU 有许多合成好的 Texture（位图），这些 Texture 是为每一帧（1秒钟60次）准备的。每一个 Texture 需要占用部分 VRAM（video RAM），GPU 能够持有的 Texture 总数存在上限。虽然 GPU 很擅长合成，但总有一些合成任务要比另一些任务更加复杂，GPU 在16.7毫秒（1/60秒）内能够完成的工作存在上限。</p>
@@ -361,10 +370,12 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="cl522mw4o001dcjp0f5bs0t8r" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="cl55esmip0046ckoj6mkh8yq6" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li></ul>
+
     </footer>
   </div>
   
@@ -463,9 +474,13 @@ R = S + D * (1 - Sa) = 0   + 0 * (1 - 0.5) = 0
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.67px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 13.33px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 11.67px;">JavaScript</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.33px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 13.33px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.67px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 13.33px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.67px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 15px;">资源</a>
+    </div>
+  </div>
 
-  
-    
   
     
   <div class="widget-wrap">

@@ -13,17 +13,16 @@
 <meta property="og:site_name" content="陈军的博客">
 <meta property="og:description" content="源代码：BDPhoneHeadTabView">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-11-02-HeadTabView_Screenshot.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView_Screenshot.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-11-02-HeadTabView的代码整体结构.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView%E7%9A%84%E4%BB%A3%E7%A0%81%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-BDPhoneHeadTabView%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E6%AC%A1.png">
 <meta property="article:published_time" content="2015-11-02T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-01T06:25:11.086Z">
+<meta property="article:modified_time" content="2022-07-03T14:28:53.539Z">
 <meta property="article:author" content="陈军">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="工程实践">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2015-11-02-HeadTabView_Screenshot.png">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView_Screenshot.png">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -93,8 +92,17 @@
         <section id="main">
           <article id="post-bdphoneheadtabview" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2015/11/02/bdphoneheadtabview/" class="article-date">
-  <time class="dt-published" datetime="2015-11-02T00:00:00.000Z" itemprop="datePublished">2015-11-02</time>
+    <a
+  href="/2015/11/02/bdphoneheadtabview/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2015-11-02T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2015-11-02
+  </time>
 </a>
     
   </div>
@@ -104,8 +112,13 @@
       <header class="article-header">
         
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      Head Tab View
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2015/11/02/bdphoneheadtabview/"
+      >
+        Head Tab View
+      </a>
     </h1>
   
 
@@ -117,32 +130,28 @@
 <span id="more"></span>
 
 <p>截图：如图1所示</p>
-<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView_Screenshot.png" alt="" width="30%"/></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView_Screenshot.png"></p>
 <p class="post-image-title">图1. 效果截图</p>
 
 <h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>在开发iOS百度浏览器时，有若干视图需要使用Head Tab View，因此Head Tab View作为一个独立的模块隔离开来。之前的Head Tab View采用了修改frame的方式实现布局。考虑到目前浏览器最低支持iOS 7.0，并且修改frame实现布局的方式不太优雅，因此在浏览器最新版重写了Head Tab View，使用autolayout方式实现布局。</p>
 <h2 id="二、代码结构"><a href="#二、代码结构" class="headerlink" title="二、代码结构"></a>二、代码结构</h2><p>Head Tab View的整体结构如图2所示。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-HeadTabView的代码整体结构.png" alt="HeadTabView的代码整体结构" width="80%"/></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-HeadTabView%E7%9A%84%E4%BB%A3%E7%A0%81%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84.png"></p>
 <p class="post-image-title">图2. HeadTabView的代码整体结构</p>
 
 <p>图2中圆角矩形表示各个模块，有向箭头表示数据通信，数据从弧尾流向弧头。Head Tab View的设计遵循MVC。外部只与BDPhoneHeadTabViewController实例打交道，从BDPhoneHeadTabViewController实例读取Head Tab View的信息，通过BDPhoneHeadTabViewController实例修改Head Tab View。</p>
 <h2 id="三、视图层次"><a href="#三、视图层次" class="headerlink" title="三、视图层次"></a>三、视图层次</h2><p>在源代码中，BDPhoneHeadTabView表示Head Tab View的视图，其视图层次结构如图3所示。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2015-11-02-BDPhoneHeadTabView的视图层次.png" alt="BDPhoneHeadTabView的视图层次" width="80%"/></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-11-02-BDPhoneHeadTabView%E7%9A%84%E8%A7%86%E5%9B%BE%E5%B1%82%E6%AC%A1.png"></p>
 <p class="post-image-title">图3. BDPhoneHeadTabView的视图层次</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="cl522mw3b0008cjp00g229gjb" data-title="Head Tab View" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="cl55esmh0000bckoj6b4m19xp" data-title="Head Tab View" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
+
     </footer>
   </div>
   
@@ -241,9 +250,13 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.67px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 13.33px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 11.67px;">JavaScript</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.33px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 13.33px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.67px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 13.33px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.67px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 15px;">资源</a>
+    </div>
+  </div>
 
-  
-    
   
     
   <div class="widget-wrap">

@@ -89,74 +89,19 @@
         <section id="main">
           
   
-    <article id="post-javascript-prototype-chain" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2018/11/21/javascript-prototype-chain/" class="article-date">
-  <time class="dt-published" datetime="2018-11-21T00:00:00.000Z" itemprop="datePublished">2018-11-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/11/21/javascript-prototype-chain/">JavaScript 原型链和继承机制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1></h1>
-
-<h2>核心概念</h2>
-
-<p>js 中的继承不同于 C++、Java 此类面向对象语言，其继承机制基于原型链。当需要在 js 中使用继承机制时，构造正确的原型链即可实现继承。</p>
-<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-11-21-javascript-object-layout.jpg"></p>
-<p>js 原型链机制中的各对象之间的关系如上图所示。构造正确的符合继承行为的原型链的关键在于，构造函数的 prototype 属性以及 prototype 的 constructor 属性。</p>
-<h2>为构造函数构造原型链</h2>
-
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">extend</span>(<span class="params">Child, Parent</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> F = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line">    F.prototype = Parent.prototype;</span><br><span class="line">    Child.prototype = <span class="keyword">new</span> F();</span><br><span class="line">    Child.prototype.constructor = Child;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>为构造函数构造原型链处理的是构造函数，用于实例化出任意多的对象实例。</p>
-<h2>为对象实例构造原型链</h2>
-
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">    F.prototype = o;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>为对象实例构造原型链是一次性的行为，所以 F.prototype.constructor 不需要严格设定。</p>
-<h3>参考文献：</h3>
-
-<p><a href="http://www.mollypages.org/tutorials/js.mp" target="_blank">http://www.mollypages.org/tutorials/js.mp</a></p>
-<p><a href="http://blog.vjeux.com/2011/javascript/how-prototypal-inheritance-really-works.html" target="_blank">Javascript – How Prototypal Inheritance really works</a></p>
-<p><a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance.html" target="_blank">Javascript面向对象编程（二）：构造函数的继承</a></p>
-<p><a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance_continued.html" target="_blank">Javascript面向对象编程（三）：非构造函数的继承</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/11/21/javascript-prototype-chain/" data-id="cl522mw3v000qcjp07x61fuj9" data-title="JavaScript 原型链和继承机制" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
     <article id="post-clipped-content" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/10/12/clipped-content/" class="article-date">
-  <time class="dt-published" datetime="2018-10-12T00:00:00.000Z" itemprop="datePublished">2018-10-12</time>
+    <a
+  href="/2018/10/12/clipped-content/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-10-12T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-10-12
+  </time>
 </a>
     
   </div>
@@ -167,7 +112,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/10/12/clipped-content/">视图裁剪</a>
+      <a
+        class="p-name article-title"
+        href="/2018/10/12/clipped-content/"
+      >
+        视图裁剪
+      </a>
     </h1>
   
 
@@ -189,10 +139,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="cl522mw3r000ocjp0921hdzmc" data-title="视图裁剪" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="cl55esmhl001eckojeeaz3rqv" data-title="视图裁剪" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HttpServerDebug/" rel="tag">HttpServerDebug</a></li></ul>
+
     </footer>
   </div>
   
@@ -206,8 +158,17 @@
   
     <article id="post-block" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/09/30/block/" class="article-date">
-  <time class="dt-published" datetime="2018-09-30T00:00:00.000Z" itemprop="datePublished">2018-09-30</time>
+    <a
+  href="/2018/09/30/block/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-09-30T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-09-30
+  </time>
 </a>
     
   </div>
@@ -218,7 +179,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/09/30/block/">Objective-C Block</a>
+      <a
+        class="p-name article-title"
+        href="/2018/09/30/block/"
+      >
+        Objective-C Block
+      </a>
     </h1>
   
 
@@ -230,7 +196,7 @@
 
 <h2>前言</h2>
 
-<p>本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考<a href="/2016/12/29/Reading-Notes-Pro-Multithreading-and-Memory-Management-for-iOS-and-OSX-with-ARC-Grand_Central-Dispatch-and-Blocks.html">这篇文章</a>。</p>
+<p>本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考<a href="/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/">这篇文章</a>。</p>
 <p>Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions together with automatic (local) variables）”。本文不多说 Block 的使用方法，着重讨论 Block 的实现机制。</p>
         
           <p class="article-more-link">
@@ -240,10 +206,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="cl522mw4n001ccjp0gn0uct2u" data-title="Objective-C Block" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="cl55esmin003zckoj50t78fhq" data-title="Objective-C Block" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Objective-C/" rel="tag">Objective-C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+
     </footer>
   </div>
   
@@ -257,8 +225,17 @@
   
     <article id="post-sort" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/09/17/sort/" class="article-date">
-  <time class="dt-published" datetime="2018-09-17T00:00:00.000Z" itemprop="datePublished">2018-09-17</time>
+    <a
+  href="/2018/09/17/sort/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-09-17T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-09-17
+  </time>
 </a>
     
   </div>
@@ -269,7 +246,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/09/17/sort/">排序算法，伪代码实现</a>
+      <a
+        class="p-name article-title"
+        href="/2018/09/17/sort/"
+      >
+        排序算法，伪代码实现
+      </a>
     </h1>
   
 
@@ -294,10 +276,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="cl522mw3u000pcjp05pql5dan" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="cl55esmhk001bckoj7e4q4u5x" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
     </footer>
   </div>
   
@@ -311,8 +295,17 @@
   
     <article id="post-binary-tree-traverse" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/09/16/binary-tree-traverse/" class="article-date">
-  <time class="dt-published" datetime="2018-09-16T00:00:00.000Z" itemprop="datePublished">2018-09-16</time>
+    <a
+  href="/2018/09/16/binary-tree-traverse/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-09-16T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-09-16
+  </time>
 </a>
     
   </div>
@@ -323,7 +316,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/09/16/binary-tree-traverse/">二叉树的遍历，伪代码实现</a>
+      <a
+        class="p-name article-title"
+        href="/2018/09/16/binary-tree-traverse/"
+      >
+        二叉树的遍历，伪代码实现
+      </a>
     </h1>
   
 
@@ -342,10 +340,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="cl522mw3q000ncjp050vjd844" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="cl55esmhj0019ckojclva5eoc" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
+
     </footer>
   </div>
   
@@ -359,8 +359,17 @@
   
     <article id="post-the-practice-of-management-reading-notes" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/08/26/the-practice-of-management-reading-notes/" class="article-date">
-  <time class="dt-published" datetime="2018-08-26T00:00:00.000Z" itemprop="datePublished">2018-08-26</time>
+    <a
+  href="/2018/08/26/the-practice-of-management-reading-notes/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-08-26T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-08-26
+  </time>
 </a>
     
   </div>
@@ -371,7 +380,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/08/26/the-practice-of-management-reading-notes/">管理的实践，读书笔记</a>
+      <a
+        class="p-name article-title"
+        href="/2018/08/26/the-practice-of-management-reading-notes/"
+      >
+        管理的实践，读书笔记
+      </a>
     </h1>
   
 
@@ -390,10 +404,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="cl522mw4p001ecjp01zn787tv" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="cl55esmiq0047ckojgokshgz8" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
+
     </footer>
   </div>
   
@@ -407,8 +423,17 @@
   
     <article id="post-image-and-graphics-best-practices" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/08/22/image-and-graphics-best-practices/" class="article-date">
-  <time class="dt-published" datetime="2018-08-22T00:00:00.000Z" itemprop="datePublished">2018-08-22</time>
+    <a
+  href="/2018/08/22/image-and-graphics-best-practices/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-08-22T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-08-22
+  </time>
 </a>
     
   </div>
@@ -419,7 +444,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/08/22/image-and-graphics-best-practices/">iOS 图像解码和最佳实践</a>
+      <a
+        class="p-name article-title"
+        href="/2018/08/22/image-and-graphics-best-practices/"
+      >
+        iOS 图像解码和最佳实践
+      </a>
     </h1>
   
 
@@ -440,10 +470,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cl522mw3p000mcjp03svkg1vw" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cl55esmhi0016ckoj6zk90lq2" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+
     </footer>
   </div>
   
@@ -457,8 +489,17 @@
   
     <article id="post-how-to-choose-opensource-liscence" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/06/27/how-to-choose-opensource-liscence/" class="article-date">
-  <time class="dt-published" datetime="2018-06-27T00:00:00.000Z" itemprop="datePublished">2018-06-27</time>
+    <a
+  href="/2018/06/27/how-to-choose-opensource-liscence/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-06-27T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-06-27
+  </time>
 </a>
     
   </div>
@@ -469,7 +510,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/06/27/how-to-choose-opensource-liscence/">如何选择开源许可证？（转）</a>
+      <a
+        class="p-name article-title"
+        href="/2018/06/27/how-to-choose-opensource-liscence/"
+      >
+        如何选择开源许可证？（转）
+      </a>
     </h1>
   
 
@@ -481,19 +527,17 @@
 
 <p>原文链接，<a href="http://www.ruanyifeng.com/blog/2011/05/how_to_choose_free_software_licenses.html" target="_blank">阮一峰的网络日志-如何选择开源许可证</a>。</p>
 <p>下图说明了如何选择一个合适的开源许可证书。</p>
-<!-- <p class="post-image">
-    <img src="/resources/figures/2018-06-27-opensource-liscences.png" alt="opensource liscences" width="100%">
-</p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-06-27-opensource-liscences.png"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="cl522mw3p000lcjp0huli7a1m" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="cl55esmhh0014ckojc3qda8dw" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B5%84%E6%BA%90/" rel="tag">资源</a></li></ul>
+
     </footer>
   </div>
   
@@ -507,8 +551,17 @@
   
     <article id="post-event-dispatch-and-dom-event-flow-translation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/" class="article-date">
-  <time class="dt-published" datetime="2018-06-19T00:00:00.000Z" itemprop="datePublished">2018-06-19</time>
+    <a
+  href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-06-19T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-06-19
+  </time>
 </a>
     
   </div>
@@ -519,7 +572,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/">事件分发和 DOM 事件流（译）</a>
+      <a
+        class="p-name article-title"
+        href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/"
+      >
+        事件分发和 DOM 事件流（译）
+      </a>
     </h1>
   
 
@@ -537,10 +595,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="cl522mw3o000kcjp0cjos1l0n" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="cl55esmhe0011ckoj2zv88asu" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
     </footer>
   </div>
   
@@ -554,8 +614,17 @@
   
     <article id="post-pod-trunk-push-without-validation" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2018/05/12/pod-trunk-push-without-validation/" class="article-date">
-  <time class="dt-published" datetime="2018-05-12T00:00:00.000Z" itemprop="datePublished">2018-05-12</time>
+    <a
+  href="/2018/05/12/pod-trunk-push-without-validation/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-05-12T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-05-12
+  </time>
 </a>
     
   </div>
@@ -566,7 +635,12 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2018/05/12/pod-trunk-push-without-validation/">如何在验证失败的情况下发布 Pod</a>
+      <a
+        class="p-name article-title"
+        href="/2018/05/12/pod-trunk-push-without-validation/"
+      >
+        如何在验证失败的情况下发布 Pod
+      </a>
     </h1>
   
 
@@ -586,10 +660,74 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="cl522mw3n000jcjp0eyeqbqay" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="cl55esmhd000zckojcsqnanx1" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%8F%E9%AA%8C/" rel="tag">经验</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-callmethodwithcompletionblock-memory-speculating" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a
+  href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-02-08T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-02-08
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/"
+      >
+        callMethodWithCompletionBlock 中 Block 的内存管理
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>开发中不时会遇到 <code>[obj callMethodWithCompletionBlock:^&#123; [obj doSomething] &#125;]</code> 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="cl55esmhc000wckoj8is3axs4" data-title="callMethodWithCompletionBlock 中 Block 的内存管理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+
     </footer>
   </div>
   
@@ -623,9 +761,13 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.67px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 13.33px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 11.67px;">JavaScript</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.33px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 13.33px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.67px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 13.33px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.67px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 15px;">资源</a>
+    </div>
+  </div>
 
-  
-    
   
     
   <div class="widget-wrap">

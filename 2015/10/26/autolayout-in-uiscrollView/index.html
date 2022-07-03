@@ -13,19 +13,17 @@
 <meta property="og:site_name" content="陈军的博客">
 <meta property="og:description" content="通过为控件设定约束，Autolayout 能够实现控件布局的自适应。当 app 运行时，iOS 根据预先设定的约束布局界面元素。 以约束的方式为控件 A 设定布局，控件 A 的实际布局数据是通过约束的依赖关系计算出来的。比如，控件 A 的 leading 始终和控件 B 的 trailing 相等，则控件 A 的 leading 数据依赖于控件 B 的 trailing 数据。 一、问题当在 UI">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-10-26-UIScrollView简单布局依赖示意图.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-UIScrollView%E7%AE%80%E5%8D%95%E5%B8%83%E5%B1%80%E4%BE%9D%E8%B5%96%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-10-26-xib文件中UIScrollView简单布局.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-xib%E6%96%87%E4%BB%B6%E4%B8%ADUIScrollView%E7%AE%80%E5%8D%95%E5%B8%83%E5%B1%80.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-10-26-UIScrollView布局依赖示意图.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-UIScrollView%E5%B8%83%E5%B1%80%E4%BE%9D%E8%B5%96%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://rob2468.github.io/resources/figures/2015-10-26-xib文件中UIScrollView布局.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-xib%E6%96%87%E4%BB%B6%E4%B8%ADUIScrollView%E5%B8%83%E5%B1%80.png">
 <meta property="article:published_time" content="2015-10-26T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-01T06:25:11.086Z">
+<meta property="article:modified_time" content="2022-07-03T14:28:53.539Z">
 <meta property="article:author" content="陈军">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="工程实践">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://rob2468.github.io/resources/figures/2015-10-26-UIScrollView简单布局依赖示意图.png">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-UIScrollView%E7%AE%80%E5%8D%95%E5%B8%83%E5%B1%80%E4%BE%9D%E8%B5%96%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -95,8 +93,17 @@
         <section id="main">
           <article id="post-autolayout-in-uiscrollView" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2015/10/26/autolayout-in-uiscrollView/" class="article-date">
-  <time class="dt-published" datetime="2015-10-26T00:00:00.000Z" itemprop="datePublished">2015-10-26</time>
+    <a
+  href="/2015/10/26/autolayout-in-uiscrollView/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2015-10-26T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2015-10-26
+  </time>
 </a>
     
   </div>
@@ -106,8 +113,13 @@
       <header class="article-header">
         
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      在 UIScrollView 中使用 Autolayout
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2015/10/26/autolayout-in-uiscrollView/"
+      >
+        在 UIScrollView 中使用 Autolayout
+      </a>
     </h1>
   
 
@@ -120,27 +132,19 @@
 <h2 id="一、问题"><a href="#一、问题" class="headerlink" title="一、问题"></a>一、问题</h2><p>当在 UIScrollView 中采用 Autolayout 方式布局时，情况变得有些复杂。UIScrollView 的 contentSize 依赖于其子视图的布局，而其子视图的布局依赖于 UIScrollView 的 contentSize。如图1所示。</p>
 <span id="more"></span>
 
-<!-- <p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView简单布局依赖示意图.png" alt="UIScrollView简单布局依赖示意图" width="80%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-UIScrollView%E7%AE%80%E5%8D%95%E5%B8%83%E5%B1%80%E4%BE%9D%E8%B5%96%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="UIScrollView简单布局依赖示意图"></p>
 <p class="post-image-title">图1. UIScrollView 简单布局依赖示意图</p>
 
 <p>图1中箭头代表布局的依赖关系，弧尾依赖弧头。如图所示，ScrollView_ContentSize 和 ScrollView_SubviewFrame 互相依赖，iOS 无法计算出控件的布局数据。这种简单的约束设置方案无法满足要求，Xcode 会出现约束无法满足的提醒，如图2所示。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2015-10-26-xib文件中UIScrollView简单布局.png" alt="xib文件中UIScrollView简单布局" width="80%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-xib%E6%96%87%E4%BB%B6%E4%B8%ADUIScrollView%E7%AE%80%E5%8D%95%E5%B8%83%E5%B1%80.png" alt="xib文件中UIScrollView简单布局"></p>
 <p class="post-image-title">图2. xib 文件中 UIScrollView 简单布局</p>
 
 <h2 id="二、方案"><a href="#二、方案" class="headerlink" title="二、方案"></a>二、方案</h2><p>解决 UIScrollView 中的布局问题，关键在于消除图1中所示循环依赖的问题。</p>
 <p>ScrollView_SubviewFrame 对应的是目标控件视图，它的布局可以不依赖 ScrollView_ContentSize，而是依赖于 ParentViewFrame，如图3所示。</p>
-<!-- <p class="post-image"><img src="/resources/figures/2015-10-26-UIScrollView布局依赖示意图.png" alt="UIScrollView布局依赖示意图" width="80%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-UIScrollView%E5%B8%83%E5%B1%80%E4%BE%9D%E8%B5%96%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="UIScrollView布局依赖示意图"></p>
 <p class="post-image-title">图3. UIScrollView 布局依赖示意图</p>
 
 <h2 id="三、经验分享"><a href="#三、经验分享" class="headerlink" title="三、经验分享"></a>三、经验分享</h2><p>上一节叙述了解决 UIScrollView 中布局问题的解决方案，这一节分享开发经验，如图4所示。图4对应的需求如下，UIScrollView 左右贴边，其中内容仅支持上下滚动，</p>
-<!-- <p class="post-image"><img src="/resources/figures/2015-10-26-xib文件中UIScrollView布局.png" alt="xib文件中UIScrollView布局" width="80%"></p> -->
-
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2015-10-26-xib%E6%96%87%E4%BB%B6%E4%B8%ADUIScrollView%E5%B8%83%E5%B1%80.png" alt="xib文件中UIScrollView布局"></p>
 <p class="post-image-title">图4. xib 文件中 UIScrollView 布局</p>
 
@@ -154,10 +158,12 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/" data-id="cl522mw3a0007cjp0egia24hy" data-title="在 UIScrollView 中使用 Autolayout" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/" data-id="cl55esmgz0008ckojb8l9bdkf" data-title="在 UIScrollView 中使用 Autolayout" class="article-share-link">Share</a>
       
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
+
     </footer>
   </div>
   
@@ -256,9 +262,13 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.67px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 13.33px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 11.67px;">JavaScript</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.33px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 13.33px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.67px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 13.33px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.67px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 15px;">资源</a>
+    </div>
+  </div>
 
-  
-    
   
     
   <div class="widget-wrap">
