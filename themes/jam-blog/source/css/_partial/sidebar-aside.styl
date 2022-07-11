@@ -1,6 +1,10 @@
 #sidebar
   @media mq-normal
     column(sidebar-column)
+    position: sticky
+    top: 0
+    overflow-y: scroll
+    height: 100vh
 
 .widget-wrap
   margin: block-margin 0
@@ -10,7 +14,7 @@
 
 .widget
   color: color-sidebar-text
-  text-shadow: 0 1px #fff
+  // text-shadow: 0 1px #fff
   background: color-widget-background
   box-shadow: 0 -1px 4px color-widget-border inset
   border: 1px solid color-widget-border
