@@ -1304,6 +1304,10 @@ pre .javascript .function {
     float: left;
     width: 23.333333333333332%;
     margin: 0 0.833333333333333%;
+    position: sticky;
+    top: 0;
+    overflow-y: scroll;
+    height: 100vh;
   }
 }
 .widget-wrap {
@@ -1311,7 +1315,6 @@ pre .javascript .function {
 }
 .widget {
   color: #777;
-  text-shadow: 0 1px #fff;
   background: #ddd;
   -webkit-box-shadow: 0 -1px 4px #ccc inset;
   box-shadow: 0 -1px 4px #ccc inset;
