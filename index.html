@@ -132,33 +132,15 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>之前做了一个工具 CubeTrans，可以将 “Vue” 代码转译成了 React 代码，具体参考这篇文章 <a href="/2022/06/27/vue-to-react-cubetrans/" title="将 &quot;Vue&quot; 转译为 React">将 &quot;Vue&quot; 转译为 React</a>。为了让 CubeTrans 有用，又做了 CubeTransDev 工具，核心功能是实时监听文件变化。当监听到代码或 mock data 变化时，能够自动编译并实时预览。</p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-18-cubetransdev-file-watch.png"></p>
-<p>使用 nodejs 原生提供的 fs.watch API 来监听 Cube 工程代码，示例代码如下。当监听到文件发生变化时，则使用 CubeTrans 将 Cube 代码转译为 React 代码。</p>
-<p>另外，示例代码中使用了 debounce 处理防抖，避免 fs.watch 回调过于频繁的问题；检查文件路径，忽略了无关文件的改动。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">&#x27;fs&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; debounce &#125; <span class="keyword">from</span> <span class="string">&#x27;lodash&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> nodeModulesDir = path.resolve(process.cwd(), <span class="string">&#x27;node_modules&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> gitDir = path.resolve(process.cwd(), <span class="string">&#x27;.git&#x27;</span>);</span><br><span class="line"></span><br><span class="line">fs.watch(curPath, &#123; <span class="attr">recursive</span>: <span class="literal">true</span> &#125;, debounce(<span class="function">(<span class="params">event, filename</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> watchedFile = path.resolve(process.cwd(), filename);</span><br><span class="line">  <span class="keyword">if</span> (</span><br><span class="line">    watchedFile.startsWith(nodeModulesDir) ||</span><br><span class="line">    watchedFile.startsWith(gitDir) ||</span><br><span class="line">    <span class="comment">// ... 其它需要忽略的路径</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="comment">// 忽略的路径</span></span><br><span class="line">    <span class="comment">// node_modules 目录 || .git 目录</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 使用 CubeTrans 转译源代码 */</span></span><br><span class="line">&#125;, <span class="number">300</span>));</span><br></pre></td></tr></table></figure>
-
-<p>转译后的 React 代码使用 webpack-dev-server 实现实时预览，示例代码如下。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 webpack-dev-server 来 serve 转译后的 react 组件</span></span><br><span class="line"><span class="keyword">const</span> Webpack = <span class="built_in">require</span>(<span class="string">&#x27;webpack&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> WebpackDevServer = <span class="built_in">require</span>(<span class="string">&#x27;webpack-dev-server&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> webpackConfig = <span class="built_in">require</span>(<span class="string">&#x27;./webpack.config.js&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> compiler = Webpack(webpackConfig);</span><br><span class="line"><span class="keyword">const</span> server = <span class="keyword">new</span> WebpackDevServer(webpackConfig.devServer, compiler);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> runServer = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> server.start();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = runServer;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight js"><figcaption><span>webpack.config.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// CubeTrans 构建产物 (即转译后的 React 代码) 的文件夹名称</span></span><br><span class="line"><span class="keyword">const</span> BUILD_PATH_NAME = <span class="string">&#x27;build&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// webpack 入口文件名</span></span><br><span class="line"><span class="keyword">const</span> ENTRY_JS_FILE_NAME = <span class="string">&#x27;entry.js&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 预览的 html 内容</span></span><br><span class="line"><span class="keyword">const</span> HTML_TEMPLATE_CONTENT = <span class="string">`</span></span><br><span class="line"><span class="string">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">&lt;html lang=&quot;en&quot;&gt;</span></span><br><span class="line"><span class="string">  &lt;head&gt;</span></span><br><span class="line"><span class="string">    &lt;meta charset=&quot;utf-8&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;</span></span><br><span class="line"><span class="string">    &lt;title&gt;&lt;/title&gt;</span></span><br><span class="line"><span class="string">  &lt;/head&gt;</span></span><br><span class="line"><span class="string">  &lt;body&gt;</span></span><br><span class="line"><span class="string">    &lt;div id=&quot;the_root_of_your_reactJS_component&quot;&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">  &lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;`</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> appDirectory = path.resolve(process.cwd(), BUILD_PATH_NAME); <span class="comment">// App directory</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Gets absolute path of file within app directory</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resolveAppPath</span>(<span class="params">relativePath</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> path.resolve(appDirectory, relativePath || <span class="string">&#x27;&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Host</span></span><br><span class="line"><span class="keyword">const</span> host = process.env.HOST || <span class="string">&#x27;localhost&#x27;</span>;</span><br><span class="line"></span><br><span class="line">process.env.NODE_ENV = <span class="string">&#x27;development&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="attr">entry</span>: resolveAppPath(ENTRY_JS_FILE_NAME), <span class="comment">// 入口文件路径</span></span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="attr">path</span>: resolveAppPath(<span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;static/js/bundle.js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;development&#x27;</span>,</span><br><span class="line">  <span class="attr">resolve</span>: &#123;</span><br><span class="line">    <span class="attr">extensions</span>: [<span class="string">&#x27;.js&#x27;</span>, <span class="string">&#x27;.jsx&#x27;</span>, <span class="string">&#x27;.ts&#x27;</span>, <span class="string">&#x27;.tsx&#x27;</span>],</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">devServer</span>: &#123;</span><br><span class="line">    <span class="attr">compress</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">hot</span>: <span class="literal">true</span>,</span><br><span class="line">    host,</span><br><span class="line">    <span class="attr">open</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.(js|jsx)$/</span>,</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">        include: appDirectory,</span><br><span class="line">        <span class="attr">loader</span>: <span class="string">&#x27;babel-loader&#x27;</span>,</span><br><span class="line">        <span class="attr">options</span>: &#123;</span><br><span class="line">          <span class="attr">presets</span>: [<span class="built_in">require</span>.resolve(<span class="string">&#x27;babel-preset-react-app&#x27;</span>)],</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.css$/</span>,</span><br><span class="line">        use: [<span class="string">&#x27;style-loader&#x27;</span>, <span class="string">&#x27;css-loader&#x27;</span>],</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">      <span class="attr">inject</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">templateContent</span>: HTML_TEMPLATE_CONTENT,</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>CubeTrans 转译后的产物只是一个 React 组件，若需要运行起来，还需要一个入口文件，即上文原理图中的 entry.js 文件。</p>
-<p>下面示例代码是是一个入口文件内容，其中 {MOCK_DATA} 是 mock data，需要替换为实际的值。</p>
-<figure class="highlight js"><figcaption><span>entry.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&#x27;./index.jsx&#x27;</span>;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">App</span></span></span></span><br><span class="line"><span class="tag"><span class="xml">  &#123; <span class="attr">...</span>&#123;<span class="attr">MOCK_DATA</span>&#125; &#125;</span></span></span><br><span class="line"><span class="tag"><span class="xml">/&gt;</span></span>, <span class="built_in">document</span>.getElementById(<span class="string">&#x27;the_root_of_your_reactJS_component&#x27;</span>));</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要介绍两种实时监听文件变化的方案。</p>
-<ol>
-<li><p>nodejs 原生提供的 fs.watch API；</p>
-</li>
-<li><p>webpack-dev-server；</p>
-</li>
-</ol>
-<p>另外，提供了一种在实际场景下的应用这两种方案的案例。</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2022/07/18/cubetransdev/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/07/18/cubetransdev/" data-id="cl5qcs70r002tavoidxeo5l2g" data-title="监听文件变化" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/07/18/cubetransdev/" data-id="cl5qd8enx002tbkoygyqmbruu" data-title="监听文件变化" class="article-share-link">Share</a>
       
       
       
@@ -231,7 +213,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="cl5qcs70q002ravoiggyc4aud" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="cl5qd8enw002rbkoyaw9o4wr3" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
       
       
       
@@ -303,7 +285,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="cl5qcs70p002pavoiedxuhidp" data-title="养娃趣事" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="cl5qd8env002pbkoy2v7l2hzo" data-title="养娃趣事" class="article-share-link">Share</a>
       
       
       
@@ -375,7 +357,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="cl5qcs70o002mavoigo8l9jia" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="cl5qd8ent002mbkoyh8mkenz6" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
       
       
       
@@ -447,7 +429,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="cl5qcs70n002kavoicxjy73p1" data-title="儿子的想象力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="cl5qd8ens002kbkoygcij0vud" data-title="儿子的想象力" class="article-share-link">Share</a>
       
       
       
@@ -517,7 +499,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="cl5qcs70m002havoi8jrcbiq7" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="cl5qd8enr002hbkoy1dja402a" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
       
       
       
@@ -587,7 +569,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/12/27/read-with-my-son/" data-id="cl5qcs70l002favoi8owjhhvv" data-title="与儿子一起的睡前阅读" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/12/27/read-with-my-son/" data-id="cl5qd8enp002fbkoy5oljhx23" data-title="与儿子一起的睡前阅读" class="article-share-link">Share</a>
       
       
       
@@ -657,7 +639,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/12/05/different-sales/" data-id="cl5qcs70k002cavoieq6pd272" data-title="不同的销售" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/12/05/different-sales/" data-id="cl5qd8eno002cbkoy0co77d92" data-title="不同的销售" class="article-share-link">Share</a>
       
       
       
@@ -727,7 +709,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/08/08/child-reading/" data-id="cl5qcs70j002aavoi1ctdapps" data-title="如何开发孩子的阅读潜力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/08/08/child-reading/" data-id="cl5qd8enn002abkoygyju65jh" data-title="如何开发孩子的阅读潜力" class="article-share-link">Share</a>
       
       
       
@@ -798,7 +780,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/" data-id="cl5qcs70i0027avoi0bqtboa1" data-title="高效能人士的七个习惯，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/" data-id="cl5qd8enm0027bkoy35h34qwj" data-title="高效能人士的七个习惯，读书笔记" class="article-share-link">Share</a>
       
       
       
