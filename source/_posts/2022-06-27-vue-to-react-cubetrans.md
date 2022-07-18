@@ -3,7 +3,7 @@ title: 将 "Vue" 转译为 React
 tags: AST
 ---
 
-<h1 class="">{{ page.title }}</h1>
+# {{ page.title }}
 
 本文记录了如何将 Vue 语言转译为 React 语言。主要目的是，当你面对此类源代码分析工作时，能够找到一些结构化处理的思路。
 
