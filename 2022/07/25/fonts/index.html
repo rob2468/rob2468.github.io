@@ -6,19 +6,19 @@
   
   <title>字体 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="CSS @font-face一个字体家族可能包含多个字型。 比如下图 Garamond 字体。第一个是正常的字型。第二个是将正常字型倾斜一定的角度，变成斜体字。第三个是真正的由字体设计师设计的 Garamond 斜体。    1 2 3         使用 @font-face 可以声明字体，下面示例代码提供了两种写法。 写法一： 123456789101112@font-face &amp;#123;">
+  <meta name="description" content="CSS @font-face一个字体家族可能包含多个字型。 比如下图 Garamond 字体。第一个是正常的字型。第二个是将正常字型倾斜一定的角度，变成斜体字。第三个是真正的由字体设计师设计的 Garamond 斜体。    1 2 3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字体">
 <meta property="og:url" content="https://rob2468.github.io/2022/07/25/fonts/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="CSS @font-face一个字体家族可能包含多个字型。 比如下图 Garamond 字体。第一个是正常的字型。第二个是将正常字型倾斜一定的角度，变成斜体字。第三个是真正的由字体设计师设计的 Garamond 斜体。    1 2 3         使用 @font-face 可以声明字体，下面示例代码提供了两种写法。 写法一： 123456789101112@font-face &amp;#123;">
+<meta property="og:description" content="CSS @font-face一个字体家族可能包含多个字型。 比如下图 Garamond 字体。第一个是正常的字型。第二个是将正常字型倾斜一定的角度，变成斜体字。第三个是真正的由字体设计师设计的 Garamond 斜体。    1 2 3">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamondunstyled.jpeg">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamondartificialstyle.jpeg">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamonditalic.jpeg">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-codepen-sample.png">
 <meta property="article:published_time" content="2022-07-25T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-25T08:27:33.404Z">
+<meta property="article:modified_time" content="2022-07-25T08:31:01.707Z">
 <meta property="article:author" content="陈军">
 <meta property="article:tag" content="CSS">
 <meta name="twitter:card" content="summary">
@@ -148,6 +148,8 @@
 <td align="center"><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamonditalic.jpeg"></td>
 </tr>
 </tbody></table>
+<span id="more"></span>
+
 <p>使用 @font-face 可以声明字体，下面示例代码提供了两种写法。</p>
 <p>写法一：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerifRegular&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Regular-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerifItalic&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Italic-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerifBold&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Bold-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -165,7 +167,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/07/25/fonts/" data-id="cl60hknoo002vg5nd2dak6rek" data-title="字体" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/07/25/fonts/" data-id="cl60hpb03002vn9os6pbl16yw" data-title="字体" class="article-share-link">Share</a>
       
       
       
