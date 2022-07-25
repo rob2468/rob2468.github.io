@@ -90,6 +90,98 @@
           
   
     <article
+  id="post-fonts"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2022/07/25/fonts/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2022-07-25T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2022-07-25
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2022/07/25/fonts/"
+      >
+        字体
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="CSS-font-face"><a href="#CSS-font-face" class="headerlink" title="CSS @font-face"></a>CSS @font-face</h2><p>一个字体家族可能包含多个字型。</p>
+<p>比如下图 Garamond 字体。第一个是正常的字型。第二个是将正常字型倾斜一定的角度，变成斜体字。第三个是真正的由字体设计师设计的 Garamond 斜体。</p>
+<table>
+<thead>
+<tr>
+<th align="center">1</th>
+<th align="center">2</th>
+<th align="center">3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamondunstyled.jpeg"></td>
+<td align="center"><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamondartificialstyle.jpeg"></td>
+<td align="center"><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamonditalic.jpeg"></td>
+</tr>
+</tbody></table>
+<p>使用 @font-face 可以声明字体，下面示例代码提供了两种写法。</p>
+<p>写法一：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerifRegular&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Regular-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerifItalic&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Italic-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerifBold&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Bold-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写法二：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerif&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Regular-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">  <span class="attribute">font-weight</span>: normal;</span><br><span class="line">  <span class="attribute">font-style</span>: normal;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerif&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Italic-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">  <span class="attribute">font-weight</span>: normal;</span><br><span class="line">  <span class="attribute">font-style</span>: italic;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@font-face</span> &#123;</span><br><span class="line">  <span class="attribute">font-family</span>: <span class="string">&#x27;DroidSerif&#x27;</span>;</span><br><span class="line">  <span class="attribute">src</span>: <span class="built_in">url</span>(<span class="string">&#x27;DroidSerif-Bold-webfont.ttf&#x27;</span>) <span class="built_in">format</span>(<span class="string">&#x27;truetype&#x27;</span>);</span><br><span class="line">  <span class="attribute">font-weight</span>: bold;</span><br><span class="line">  <span class="attribute">font-style</span>: normal;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面两种写法都是正确的，分别声明了正常的、斜体的、加粗的 DroidSerif 字体。</p>
+<p>建议使用第二种写法作为最佳实践。</p>
+<p>@font-face 内的 font-weight / font-style 的作用不同于设置 CSS 样式时作用。在此处，font-weight / font-style 是用于描述一种规则。当使用 @font-face 声明的字体设置样式时，如果 font-family / font-weight / font-style 都命中，则应用该字体。</p>
+<p>参考下面的截图和 <a target="_blank" rel="noopener" href="https://codepen.io/rob2468/pen/QWmMdrW">codepen 示例</a>。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-codepen-sample.png"></p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a target="_blank" rel="noopener" href="https://www.456bereastreet.com/archive/201012/font-face_tip_define_font-weight_and_font-style_to_keep_your_css_simple/">@font-face tip: define font-weight and font-style to keep your CSS simple</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2022/07/25/fonts/" data-id="cl60hknoo002vg5nd2dak6rek" data-title="字体" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article
   id="post-cubetransdev"
   class="h-entry article article-type-post"
   itemprop="blogPost"
@@ -140,7 +232,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/07/18/cubetransdev/" data-id="cl5zhcajk002umzom4lpb5bup" data-title="监听文件变化" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/07/18/cubetransdev/" data-id="cl60hknon002ug5ndahokbh2s" data-title="监听文件变化" class="article-share-link">Share</a>
       
       
       
@@ -213,7 +305,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="cl5zhcajj002smzom0pby24yr" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="cl60hknom002sg5nd3lih5mm0" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
       
       
       
@@ -285,7 +377,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="cl5zhcaji002qmzom60p12l0q" data-title="养娃趣事" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="cl60hknom002qg5ndeucg6g85" data-title="养娃趣事" class="article-share-link">Share</a>
       
       
       
@@ -357,7 +449,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="cl5zhcajh002omzom537659z3" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="cl60hknol002og5nd7li3g4il" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
       
       
       
@@ -429,7 +521,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="cl5zhcajg002lmzomfq0uh3bk" data-title="儿子的想象力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="cl60hknok002lg5ndht2sczkf" data-title="儿子的想象力" class="article-share-link">Share</a>
       
       
       
@@ -499,7 +591,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="cl5zhcajf002jmzomfstvb037" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="cl60hknoj002jg5nd3tgnc6oi" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
       
       
       
@@ -569,7 +661,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/12/27/read-with-my-son/" data-id="cl5zhcajb002gmzom1lyde2tv" data-title="与儿子一起的睡前阅读" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/12/27/read-with-my-son/" data-id="cl60hknoi002gg5nddxs2hf9i" data-title="与儿子一起的睡前阅读" class="article-share-link">Share</a>
       
       
       
@@ -639,7 +731,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/12/05/different-sales/" data-id="cl5zhcaja002emzom2j4t2sif" data-title="不同的销售" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/12/05/different-sales/" data-id="cl60hknoh002eg5nd4k096eah" data-title="不同的销售" class="article-share-link">Share</a>
       
       
       
@@ -709,78 +801,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/08/08/child-reading/" data-id="cl5zhcaj9002bmzomdl8r7c3b" data-title="如何开发孩子的阅读潜力" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article
-  id="post-the-7-habits-of-highly-effectivce-people"
-  class="h-entry article article-type-post"
-  itemprop="blogPost"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
-  <div class="article-meta">
-    <a
-  href="/2020/05/24/the-7-habits-of-highly-effectivce-people/"
-  class="article-date"
->
-  <time
-    class="dt-published"
-    datetime="2020-05-24T00:00:00.000Z"
-    itemprop="datePublished"
-  >
-    2020-05-24
-  </time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a
-        class="p-name article-title"
-        href="/2020/05/24/the-7-habits-of-highly-effectivce-people/"
-      >
-        高效能人士的七个习惯，读书笔记
-      </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 class="title"></h1>
-
-<p>作者 史蒂芬.科维</p>
-<p>得之太易必不受珍惜。唯有付出代价，万物始有价值。上苍深知如何为其产品制定合理的价格。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/24/the-7-habits-of-highly-effectivce-people/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/" data-id="cl5zhcaj80029mzom3nqe3zvg" data-title="高效能人士的七个习惯，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/08/08/child-reading/" data-id="cl60hknog002bg5nd5bewchr7" data-title="如何开发孩子的阅读潜力" class="article-share-link">Share</a>
       
       
       
@@ -825,7 +846,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 10px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.67px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 13.33px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 13.33px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.33px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 13.33px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.67px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 13.33px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.67px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 15px;">资源</a>
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.67px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.67px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 13.33px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 13.33px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.33px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 13.33px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.67px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 13.33px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 16.67px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 15px;">资源</a>
     </div>
   </div>
 
@@ -847,6 +868,10 @@
       <ul>
         
           <li>
+            <a href="/2022/07/25/fonts/">字体</a>
+          </li>
+        
+          <li>
             <a href="/2022/07/18/cubetransdev/">监听文件变化</a>
           </li>
         
@@ -860,10 +885,6 @@
         
           <li>
             <a href="/2021/07/31/open-yale-courses-death/">耶鲁大学公开课:死亡-读后感</a>
-          </li>
-        
-          <li>
-            <a href="/2021/07/11/jing-imagination/">儿子的想象力</a>
           </li>
         
       </ul>
