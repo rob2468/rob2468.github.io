@@ -4,19 +4,19 @@
   <meta charset="utf-8">
   
   
-  <title>Objective-C 消息传递 | 陈军的博客</title>
+  <title>高效篮球实战经验 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="OC 为动态运行时语言，其将许多决策从编译和链接时延迟到运行时执行。OC 中的方法调用本质为消息传递，[receiver message] 可以解释为向 receiver 对象发送 message 消息。今天阅读了 Apple 开发文档的 Messaging 章节，利用运行时系统提供的相关方法，OC 消息传递式的方法调用最终转换成了标准 C 语言函数调用方式，实现了统一。 本文以 Apple 开发">
+  <meta name="description" content="下面这些点是我在野球场的实战经验：  投篮时手臂夹紧，保持持球手的小臂、大臂形成的平面与地面垂直。这样投篮时，手臂能提供更多的力量，更好的控制球出手的力度和角度。  中投是最好的武器，当出现合适位置时要果断出手，不要有多余的运球和突破。（前提要多练习，提高中投命中率）  突破时用速度来突破防守，特别是第一步的速度。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Objective-C 消息传递">
-<meta property="og:url" content="https://rob2468.github.io/2016/05/17/objc-message-send/index.html">
+<meta property="og:title" content="高效篮球实战经验">
+<meta property="og:url" content="https://rob2468.github.io/2022/08/03/efficient-basketball/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="OC 为动态运行时语言，其将许多决策从编译和链接时延迟到运行时执行。OC 中的方法调用本质为消息传递，[receiver message] 可以解释为向 receiver 对象发送 message 消息。今天阅读了 Apple 开发文档的 Messaging 章节，利用运行时系统提供的相关方法，OC 消息传递式的方法调用最终转换成了标准 C 语言函数调用方式，实现了统一。 本文以 Apple 开发">
+<meta property="og:description" content="下面这些点是我在野球场的实战经验：  投篮时手臂夹紧，保持持球手的小臂、大臂形成的平面与地面垂直。这样投篮时，手臂能提供更多的力量，更好的控制球出手的力度和角度。  中投是最好的武器，当出现合适位置时要果断出手，不要有多余的运球和突破。（前提要多练习，提高中投命中率）  突破时用速度来突破防守，特别是第一步的速度。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2016-05-17T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-03T15:17:16.266Z">
+<meta property="article:published_time" content="2022-08-03T00:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-03T15:17:16.270Z">
 <meta property="article:author" content="陈军">
-<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="生活">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
@@ -86,7 +86,7 @@
       <div class="outer">
         <section id="main">
           <article
-  id="post-objc-message-send"
+  id="post-efficient-basketball"
   class="h-entry article article-type-post"
   itemprop="blogPost"
   itemscope
@@ -94,15 +94,15 @@
 >
   <div class="article-meta">
     <a
-  href="/2016/05/17/objc-message-send/"
+  href="/2022/08/03/efficient-basketball/"
   class="article-date"
 >
   <time
     class="dt-published"
-    datetime="2016-05-17T00:00:00.000Z"
+    datetime="2022-08-03T00:00:00.000Z"
     itemprop="datePublished"
   >
-    2016-05-17
+    2022-08-03
   </time>
 </a>
     
@@ -116,9 +116,9 @@
     <h1 itemprop="name">
       <a
         class="p-name article-title"
-        href="/2016/05/17/objc-message-send/"
+        href="/2022/08/03/efficient-basketball/"
       >
-        Objective-C 消息传递
+        高效篮球实战经验
       </a>
     </h1>
   
@@ -127,74 +127,24 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>OC 为动态运行时语言，其将许多决策从编译和链接时延迟到运行时执行。OC 中的方法调用本质为消息传递，[receiver message] 可以解释为向 receiver 对象发送 message 消息。今天阅读了 Apple 开发文档的 <a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html#//apple_ref/doc/uid/TP40008048-CH104-SW1]">Messaging 章节</a>，利用运行时系统提供的相关方法，OC 消息传递式的方法调用最终转换成了标准 C 语言函数调用方式，实现了统一。</p>
-<p>本文以 Apple 开发文档为基础，讲述 OC 以消息传递方式实现方法调用的执行流程。第一节介绍执行消息解析的函数；第二节讲述消息解析过程中，消息对应的方法实现是如何寻找的；第三节讲述方法实现找到后，如何执行。</p>
-<span id="more"></span>
-
-<h2 id="一、objc-msgSend-函数"><a href="#一、objc-msgSend-函数" class="headerlink" title="一、objc_msgSend 函数"></a>一、objc_msgSend 函数</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/ObjCRuntimeRef/index.html#//apple_ref/c/func/objc_msgSend">objc_msgSend</a> 为 OC 运行时系统提供的函数。</p>
-<p></p>
-
-<pre><code>Declaration
-id objc_msgSend(id self, SEL op, ...)
-
-Parameters
-self
-A pointer that points to the instance of the class that is to receive the message.
-op
-The selector of the method that handles the message.
-...
-A variable argument list containing the arguments to the method.
-
-Return Value
-The return value of the method.
-</code></pre>
-
-<p>编译后，OC 中的消息传递实现将转换为 objc_msgSend 函数调用。比如，[receiver message] 会转换成相应的 objc_msgSend(receiver, selector)。selector 的类型是 SEL，为要执行方法的名称，objc_msgSend 的重要工作就是找到 selector 对应的方法实现。</p>
-<h2 id="二、寻找方法实现"><a href="#二、寻找方法实现" class="headerlink" title="二、寻找方法实现"></a>二、寻找方法实现</h2><p>上节说到 selector 为要执行方法的名称，但是真正的方法实现还需进一步寻找。</p>
-<p>OC 类结构体中有两个属性：指向父类的指针；分发表（dispatch table）。</p>
-<p>分发表中保存的是方法名和相应的方法实现的对应关系。若已取得某个方法的方法名，查询分发表即可获得相应的方法实现。</p>
-<p>如果在分发表中未找到某个方法的实现，通过 OC 类结构体中的指向父类的指针获取到父类的分发表，在父类的分发表中寻找。若未找到，再获取父类的父类，以此类推，直到找到为止。</p>
-<p>如果执行完所有的查找操作后，仍未找到，运行时系统会继续转发消息，最终调用到 forwardInvocation。具体参考<a href="http://rob2468.github.io/2016/05/16/JSPatch-Code-Analysis.html">上一篇博客</a>。</p>
-<p>此外，运行时系统为寻找方法实现提供了缓存机制，如果缓存命中，就直接从缓存中取方法实现。</p>
-<h2 id="三、方法执行"><a href="#三、方法执行" class="headerlink" title="三、方法执行"></a>三、方法执行</h2><p>objc_msgSend 获取到方法实现后，便调用该方法实现。该方法实现为普通 C 函数，objc_msgSend 会传入所需的参数。传递的参数除了最初发送消息时传入的参数，还有两个隐藏参数，分别是接收消息的对象和相应的 selector。</p>
-<p>下面的代码片段说明了如何主动调用消息传递解析后的函数。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*<span class="keyword">setter</span>)(<span class="keyword">id</span>, SEL, <span class="built_in">BOOL</span>);</span><br><span class="line"><span class="keyword">setter</span> = (<span class="keyword">void</span> (*)(<span class="keyword">id</span>, SEL, <span class="built_in">BOOL</span>))[target methodForSelector:<span class="keyword">@selector</span>(setFilled:)];</span><br><span class="line"><span class="keyword">setter</span>(target, <span class="keyword">@selector</span>(setFilled:), <span class="literal">YES</span>);</span><br></pre></td></tr></table></figure>
-
-<p>objc_msgSend 自动调用函数时，会自动传如两个隐藏参数，但是主动调用需要显式的传入。</p>
-<p>主动调用函数能够节省消息传递与解析的时间，比如上面的代码段在如下的一个 for 循环中。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (*<span class="keyword">setter</span>)(<span class="keyword">id</span>, SEL, <span class="built_in">BOOL</span>);</span><br><span class="line"><span class="keyword">setter</span> = (<span class="keyword">void</span> (*)(<span class="keyword">id</span>, SEL, <span class="built_in">BOOL</span>))[target methodForSelector:<span class="keyword">@selector</span>(setFilled:)];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">1000</span> ; i++ )</span><br><span class="line">    <span class="keyword">setter</span>(targetList[i], <span class="keyword">@selector</span>(setFilled:), <span class="literal">YES</span>);</span><br></pre></td></tr></table></figure>
-
-<p>附 methodForSelector: 方法的<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/objectivec/nsobject/1418863-methodforselector?language=objc">说明</a>：</p>
-<p></p>
-
-<pre><code>Locates and returns the address of the receiver’s implementation of a method so it can be called as a function.
-
-Declaration
-- (IMP)methodForSelector:(SEL)aSelector;
-
-Parameters
-aSelector
-A Selector that identifies the method for which to return the implementation address. The selector must be a valid and non-NULL. If in doubt, use the respondsToSelector: method to check before passing the selector to methodForSelector:.
-
-Return Value
-The address of the receiver’s implementation of the aSelector.
-
-Discussion
-If the receiver is an instance, aSelector should refer to an instance method; if the receiver is a class, it should refer to a class method.
-</code></pre>
-
-<p></p>
-
-<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>OC 消息传递经过一系列 C 函数处理，最终也转变成标准 C 语言函数调用方式。运行时系统给 OC 语言带来了极大的灵活性，但最终的执行方式与 C 语言并没有什么不同。</p>
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>下面这些点是我在野球场的实战经验：</p>
+<ol>
+<li><p><strong>投篮时手臂夹紧，保持持球手的小臂、大臂形成的平面与地面垂直。</strong>这样投篮时，手臂能提供更多的力量，更好的控制球出手的力度和角度。</p>
+</li>
+<li><p><strong>中投是最好的武器，当出现合适位置时要果断出手，不要有多余的运球和突破。</strong>（前提要多练习，提高中投命中率）</p>
+</li>
+<li><p><strong>突破时用速度来突破防守，特别是第一步的速度。</strong></p>
+</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="cl6dr6d31000ferou9pa2ffb4" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/08/03/efficient-basketball/" data-id="cl6dr6d44002yerouceq3f264" data-title="高效篮球实战经验" class="article-share-link">Share</a>
       
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li></ul>
 
     </footer>
   </div>
@@ -202,19 +152,10 @@ If the receiver is an instance, aSelector should refer to an instance method; if
     
 <nav id="article-nav">
   
-    <a href="/2016/05/20/project-management-summary/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          初试项目管理，个人经验小结
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/05/16/jspatch-code-analysis/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/07/25/fonts/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">JSPatch 代码分析</div>
+      <div class="article-nav-title">字体</div>
     </a>
   
 </nav>
@@ -280,13 +221,6 @@ If the receiver is an instance, aSelector should refer to an instance method; if
     <!-- 目录 table of content -->
 
   
-  
-    <div class="widget-wrap">
-      <h3 class="widget-title">Contents</h3>
-      <div class="widget">
-        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81objc-msgSend-%E5%87%BD%E6%95%B0"><span class="toc-text">一、objc_msgSend 函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%AF%BB%E6%89%BE%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-text">二、寻找方法实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C"><span class="toc-text">三、方法执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-text">四、总结</span></a></li></ol></p>
-      </div>
-    </div>
   
 
 
