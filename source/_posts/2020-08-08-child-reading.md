@@ -17,10 +17,6 @@ tags: 读书笔记
 
 指物命名、丰富形容、口语延展
 
-<!-- <p class="post-image">
-  <img src="/resources/figures/2020-08-08-hungry.jpeg" alt="" width="60%">
-</p> -->
-
 ![](/images/2020-08-08-hungry.jpeg)
 
 

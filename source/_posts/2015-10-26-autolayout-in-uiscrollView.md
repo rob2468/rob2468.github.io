@@ -35,17 +35,13 @@ tags:
 
 ScrollView\_SubviewFrame 对应的是目标控件视图，它的布局可以不依赖 ScrollView\_ContentSize，而是依赖于 ParentViewFrame，如图3所示。
 
-![UIScrollView布局依赖示意图](/images/2015-10-26-UIScrollView布局依赖示意图.png)
-
-<p class="post-image-title">图3. UIScrollView 布局依赖示意图</p>
+![UIScrollView 布局依赖示意图](/images/2015-10-26-UIScrollView布局依赖示意图.png)
 
 ## 三、经验分享
 
 上一节叙述了解决 UIScrollView 中布局问题的解决方案，这一节分享开发经验，如图4所示。图4对应的需求如下，UIScrollView 左右贴边，其中内容仅支持上下滚动，
 
-![xib文件中UIScrollView布局](/images/2015-10-26-xib文件中UIScrollView布局.png)
-
-<p class="post-image-title">图4. xib 文件中 UIScrollView 布局</p>
+![xib 文件中 UIScrollView 布局](/images/2015-10-26-xib文件中UIScrollView布局.png)
 
 该方法的关键在于添加了一个 ContainerView，ContainerView 为 UIScrolView 的子视图，并且所有原本应该直接添加到 UIScrollView 中的视图现在都添加为 ContainerView 的子视图。
 
