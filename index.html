@@ -90,6 +90,78 @@
           
   
     <article
+  id="post-how-browser-work"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2023/01/17/how-browser-work/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2023-01-17T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2023-01-17
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2023/01/17/how-browser-work/"
+      >
+        浏览器工作原理
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="DOM-事件流"><a href="#DOM-事件流" class="headerlink" title="DOM 事件流"></a>DOM 事件流</h2><a href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/" title="事件分发和 DOM 事件流（译）">事件分发和 DOM 事件流（译）</a>
+
+<h2 id="事件循环-Event-Loop"><a href="#事件循环-Event-Loop" class="headerlink" title="事件循环 (Event Loop)"></a>事件循环 (Event Loop)</h2><p>并发模型与事件循环: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop</a></p>
+<p>众所周知，JavaScript 是单线程语言。如果 JS 执行的时候，网页会卡顿，比如滑动卡顿、点击链接不响应等。但我们实际浏览网页时并不会感到卡顿，这是因为 JS 有事件循环的机制，这种机制能够保证 JS 不会一直占用着线程。</p>
+<p>不同的 JS 引擎对事件循环的实现不会完全相同，但我们可以用理论模型来理解。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-the_javascript_runtime_environment_example.svg" alt="the javascript runtime environment example"></p>
+<p>上图中的 Queue 是事件循环机制里最主要的部分。JS 函数调用、网络请求(的回调)等等，这些任务都需要先放到 Queue 里，再以先进先出的顺序执行。（虽说 JS 是单线程的，但并不是说所有的事情都只能在主线程里执行。比如 JS 发起一个网络请求：调用网络请求 API 的代码在主线程中执行，随后浏览器的某个子线程会负责维护这个网络请求直至请求完成，最后，请求回调代码又会回到主线程执行。）</p>
+<p>问题：setTimeout 延迟时间设为 0，会不会立即执行？</p>
+<p>答：不会。setTimeout 的回调函数会放到事件循环里调度。当延迟时间已到，回调函数被加到 Queue 里，但如果之前还有任务未完成，那么需要先等待之前的任务完成。所以 setTimeout 的延迟时间是 <em>最小等待时间</em>，不是 <em>保证准确的时间</em>。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2023/01/17/how-browser-work/" data-id="clczzumow0033d8p40cm510vt" data-title="浏览器工作原理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article
   id="post-encrypted-communication"
   class="h-entry article article-type-post"
   itemprop="blogPost"
@@ -168,7 +240,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2023/01/12/encrypted-communication/" data-id="clcsw4lxq0031g1orgh8yb9wy" data-title="加密通信" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2023/01/12/encrypted-communication/" data-id="clczzumov0031d8p4gzonfu3h" data-title="加密通信" class="article-share-link">Share</a>
       
       
       
@@ -238,7 +310,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/10/06/national-day/" data-id="clcsw4lxp002zg1ordltj8dyk" data-title="2022年国庆回家" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/10/06/national-day/" data-id="clczzumou002zd8p451193dm1" data-title="2022年国庆回家" class="article-share-link">Share</a>
       
       
       
@@ -310,7 +382,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/08/03/efficient-basketball/" data-id="clcsw4lxp002yg1or8a8wa0vx" data-title="高效篮球实战经验" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/08/03/efficient-basketball/" data-id="clczzumou002yd8p4e6xh52u8" data-title="高效篮球实战经验" class="article-share-link">Share</a>
       
       
       
@@ -393,7 +465,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/07/25/fonts/" data-id="clcsw4lxo002vg1or2lknfhe0" data-title="字体" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/07/25/fonts/" data-id="clczzumot002vd8p4djl72fju" data-title="字体" class="article-share-link">Share</a>
       
       
       
@@ -461,7 +533,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/07/18/cubetransdev/" data-id="clcsw4lxn002ug1or6azu73xw" data-title="监听文件变化" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/07/18/cubetransdev/" data-id="clczzumos002ud8p472268afb" data-title="监听文件变化" class="article-share-link">Share</a>
       
       
       
@@ -534,7 +606,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="clcsw4lxn002sg1or6m7b6jjy" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="clczzumos002sd8p49qqvbt1i" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
       
       
       
@@ -606,7 +678,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="clcsw4lxm002qg1or9hkiher8" data-title="养娃趣事" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="clczzumor002qd8p44tr1h9ya" data-title="养娃趣事" class="article-share-link">Share</a>
       
       
       
@@ -678,7 +750,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="clcsw4lxl002og1or9ijf18vw" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="clczzumoq002od8p4cwe5b5m5" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
       
       
       
@@ -750,81 +822,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="clcsw4lxk002lg1ordbye0zap" data-title="儿子的想象力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="clczzumoo002ld8p4hxx6bh53" data-title="儿子的想象力" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article
-  id="post-different-problems"
-  class="h-entry article article-type-post"
-  itemprop="blogPost"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
-  <div class="article-meta">
-    <a
-  href="/2021/01/09/different-problems/"
-  class="article-date"
->
-  <time
-    class="dt-published"
-    datetime="2021-01-09T00:00:00.000Z"
-    itemprop="datePublished"
-  >
-    2021-01-09
-  </time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a
-        class="p-name article-title"
-        href="/2021/01/09/different-problems/"
-      >
-        简单问题、复杂问题、混沌问题
-      </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 class=""></h1>
-
-<p>生活里需要解决各类问题，如果加以分类，可以分成简单问题、复杂问题、混沌问题三类。之前的领导，在跟我一次面对面的沟通中，提到了这种分类方式。感觉角度很有意思，并且细想起来，跟个人的体会也很相似。</p>
-        
-          <p class="article-more-link">
-            <a href="/2021/01/09/different-problems/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="clcsw4lxj002jg1orfstr8bdu" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%9D%E8%80%83/" rel="tag">思考</a></li></ul>
 
     </footer>
   </div>
@@ -865,7 +867,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
     </div>
   </div>
 
@@ -887,6 +889,10 @@
       <ul>
         
           <li>
+            <a href="/2023/01/17/how-browser-work/">浏览器工作原理</a>
+          </li>
+        
+          <li>
             <a href="/2023/01/12/encrypted-communication/">加密通信</a>
           </li>
         
@@ -900,10 +906,6 @@
         
           <li>
             <a href="/2022/07/25/fonts/">字体</a>
-          </li>
-        
-          <li>
-            <a href="/2022/07/18/cubetransdev/">监听文件变化</a>
           </li>
         
       </ul>
