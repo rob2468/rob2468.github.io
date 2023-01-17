@@ -14,9 +14,7 @@ tags:
 
 <!-- more -->
 
-![](/images/2018-06-19-eventflow.svg)
-
-<p class="post-image-title">事件分发示意图</p>
+![事件分发示意图](/images/2018-06-19-eventflow.svg)
 
 事件对象会被分发给事件目标（event target），事件目标是指最终被选中的响应事件的对象，可以从事件的 `target` 属性获取。
 
