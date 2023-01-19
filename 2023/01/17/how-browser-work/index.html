@@ -6,20 +6,23 @@
   
   <title>浏览器工作原理 | 陈军的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="DOM 事件流事件分发和 DOM 事件流（译）  事件循环 (Event Loop)并发模型与事件循环: https:&#x2F;&#x2F;developer.mozilla.org&#x2F;zh-CN&#x2F;docs&#x2F;Web&#x2F;JavaScript&#x2F;EventLoop 众所周知，JavaScript 是单线程语言。如果 JS 执行的时候，网页会卡顿，比如滑动卡顿、点击链接不响应等。但我们实际浏览网页时并不会感到卡顿，这是因为 J">
+  <meta name="description" content="浏览器如何渲染页面Populating the page: how browsers work 用户体验好的网页的标准：1、快速加载；2、交互流畅。 获取页面建立连接 不考虑缓存，一个基于 HTTPS 的网页需要在客户端与服务端之间进行 10 次交互，才能建立链接。其中包括，2 次 DNS 查询、TCP 3 次握手、5 次 TLS 协商。 获取数据浏览器打开网页，建立连接后第一个请求的内容是 HT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浏览器工作原理">
 <meta property="og:url" content="https://rob2468.github.io/2023/01/17/how-browser-work/index.html">
 <meta property="og:site_name" content="陈军的博客">
-<meta property="og:description" content="DOM 事件流事件分发和 DOM 事件流（译）  事件循环 (Event Loop)并发模型与事件循环: https:&#x2F;&#x2F;developer.mozilla.org&#x2F;zh-CN&#x2F;docs&#x2F;Web&#x2F;JavaScript&#x2F;EventLoop 众所周知，JavaScript 是单线程语言。如果 JS 执行的时候，网页会卡顿，比如滑动卡顿、点击链接不响应等。但我们实际浏览网页时并不会感到卡顿，这是因为 J">
+<meta property="og:description" content="浏览器如何渲染页面Populating the page: how browsers work 用户体验好的网页的标准：1、快速加载；2、交互流畅。 获取页面建立连接 不考虑缓存，一个基于 HTTPS 的网页需要在客户端与服务端之间进行 10 次交互，才能建立链接。其中包括，2 次 DNS 查询、TCP 3 次握手、5 次 TLS 协商。 获取数据浏览器打开网页，建立连接后第一个请求的内容是 HT">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-ssl.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-CRP.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-js-script.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-the_javascript_runtime_environment_example.svg">
 <meta property="article:published_time" content="2023-01-17T00:00:00.000Z">
-<meta property="article:modified_time" content="2023-01-17T08:49:20.054Z">
+<meta property="article:modified_time" content="2023-01-19T08:25:02.598Z">
 <meta property="article:author" content="陈军">
 <meta property="article:tag" content="Web">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-the_javascript_runtime_environment_example.svg">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-ssl.jpg">
   
     <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
   
@@ -129,7 +132,26 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="DOM-事件流"><a href="#DOM-事件流" class="headerlink" title="DOM 事件流"></a>DOM 事件流</h2><a href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/" title="事件分发和 DOM 事件流（译）">事件分发和 DOM 事件流（译）</a>
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="浏览器如何渲染页面"><a href="#浏览器如何渲染页面" class="headerlink" title="浏览器如何渲染页面"></a>浏览器如何渲染页面</h2><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work">Populating the page: how browsers work</a></p>
+<p>用户体验好的网页的标准：1、快速加载；2、交互流畅。</p>
+<h3 id="获取页面"><a href="#获取页面" class="headerlink" title="获取页面"></a>获取页面</h3><h4 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h4><p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-ssl.jpg"></p>
+<p>不考虑缓存，一个基于 HTTPS 的网页需要在客户端与服务端之间进行 10 次交互，才能建立链接。其中包括，2 次 DNS 查询、TCP 3 次握手、5 次 TLS 协商。</p>
+<h4 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h4><p>浏览器打开网页，建立连接后第一个请求的内容是 HTML 文件。按照 TCP 慢启动的算法，第一个响应数据包的大小为 14KB (若未达阈值或未遇到拥塞控制，后续数据包的大小成倍增加，28KB/56KB…)。</p>
+<p>基于 TCP 的这个特性，Web 性能优化需要将此 14KB 作为优化重点。如，浏览器拿到首次返回的 14KB 数据，便能将页面渲染出来。</p>
+<h3 id="关键渲染路径-CRP-Critical-Rendering-Path"><a href="#关键渲染路径-CRP-Critical-Rendering-Path" class="headerlink" title="关键渲染路径 (CRP, Critical Rendering Path)"></a>关键渲染路径 (CRP, Critical Rendering Path)</h3><p>“关键渲染路径是浏览器将 HTML，CSS 和 JavaScript 转换为屏幕上的像素所经历的步骤序列。优化关键渲染路径可提高渲染性能。”</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-CRP.png" alt="关键渲染路径"></p>
+<p>关键渲染路径包含五个部分，构建 DOM、构建 CSSOM、构建渲染树、布局、绘制。如果文档有内容绘制在单独的图层中，还会有合成操作。</p>
+<p>构建 DOM 环节的产物是 DOM 树。DOM 树的构建过程是流式的，即浏览器边读取 HTML 文档边解析。如果遇到 CSS、图像、字体等会并行的下载和解析，不会阻塞 DOM 树的构建流程。JS 脚本的处理比较特殊，下小节单独说明。</p>
+<p>构建 CSSOM 环节的产物是 CSSOM 树。构建 CSSOM 的速度非常快，通常不会成为性能瓶颈。</p>
+<p>当浏览器解析出 DOM 和 CSSOM 两个基本的数据结构后，后续操作便是将其绘制到屏幕上。</p>
+<h3 id="JS-脚本的处理"><a href="#JS-脚本的处理" class="headerlink" title="JS 脚本的处理"></a>JS 脚本的处理</h3><p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-js-script.png" alt="JS 脚本的加载与执行"></p>
+<p>上图中的箭头表示依赖关系，即箭头尾部的对象依赖箭头头部的对象先完成。如，所有资源都要经历先下载再解析的过程。</p>
+<p>如上文所述，HTML 文档是边读取边解析，大部分的资源都是并行下载和执行的，不会阻塞主线程解析构建 DOM 树。</p>
+<p>如果在解析过程中遇到 JS 脚本，则浏览器会等待 JS 脚本下载和执行完成后，再继续处理 DOM；而 JS 脚本的执行又会先等待 CSSOM 处理完成。如上图的第一部分。</p>
+<p>如果在 script 标签加上 defer 属性。那么，当 DOM 解析时遇到 JS 脚本，浏览器会并行下载 JS 脚本且下载完成后也不会立即执行。当 DOM 已经解析完成，则浏览器会按顺序执行 defer 声明过的 JS 脚本，并在这些脚本执行完成后，发出 DOMContentLoaded 事件。如上图的第二部分。</p>
+<p>如果在 script 标签加上 async 属性。则 JS 脚本的表现与其它普通资源的行为一致，遇到时立即下载、下载完立即执行。如上图的第三部分。</p>
+<p>上面的描述为理论模型，现代浏览器有预加载扫描器的功能，预加载扫描器可以在后台线程扫描文档，不用等待 DOM 树解析到而提前下载和执行文档中的资源文件。</p>
+<h2 id="DOM-事件流"><a href="#DOM-事件流" class="headerlink" title="DOM 事件流"></a>DOM 事件流</h2><a href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/" title="事件分发和 DOM 事件流（译）">事件分发和 DOM 事件流（译）</a>
 
 <h2 id="事件循环-Event-Loop"><a href="#事件循环-Event-Loop" class="headerlink" title="事件循环 (Event Loop)"></a>事件循环 (Event Loop)</h2><p>并发模型与事件循环: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop</a></p>
 <p>众所周知，JavaScript 是单线程语言。如果 JS 执行的时候，网页会卡顿，比如滑动卡顿、点击链接不响应等。但我们实际浏览网页时并不会感到卡顿，这是因为 JS 有事件循环的机制，这种机制能够保证 JS 不会一直占用着线程。</p>
@@ -142,7 +164,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2023/01/17/how-browser-work/" data-id="clczzumow0033d8p40cm510vt" data-title="浏览器工作原理" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2023/01/17/how-browser-work/" data-id="cld2tv6pa0033cpok8yojev7b" data-title="浏览器工作原理" class="article-share-link">Share</a>
       
       
       
@@ -227,7 +249,7 @@
     <div class="widget-wrap">
       <h3 class="widget-title">Contents</h3>
       <div class="widget">
-        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DOM-%E4%BA%8B%E4%BB%B6%E6%B5%81"><span class="toc-text">DOM 事件流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF-Event-Loop"><span class="toc-text">事件循环 (Event Loop)</span></a></li></ol></p>
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%A6%82%E4%BD%95%E6%B8%B2%E6%9F%93%E9%A1%B5%E9%9D%A2"><span class="toc-text">浏览器如何渲染页面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E9%A1%B5%E9%9D%A2"><span class="toc-text">获取页面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-text">建立连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-text">获取数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84-CRP-Critical-Rendering-Path"><span class="toc-text">关键渲染路径 (CRP, Critical Rendering Path)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JS-%E8%84%9A%E6%9C%AC%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-text">JS 脚本的处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DOM-%E4%BA%8B%E4%BB%B6%E6%B5%81"><span class="toc-text">DOM 事件流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF-Event-Loop"><span class="toc-text">事件循环 (Event Loop)</span></a></li></ol></p>
       </div>
     </div>
   

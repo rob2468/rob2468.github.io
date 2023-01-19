@@ -131,7 +131,26 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="DOM-事件流"><a href="#DOM-事件流" class="headerlink" title="DOM 事件流"></a>DOM 事件流</h2><a href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/" title="事件分发和 DOM 事件流（译）">事件分发和 DOM 事件流（译）</a>
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="浏览器如何渲染页面"><a href="#浏览器如何渲染页面" class="headerlink" title="浏览器如何渲染页面"></a>浏览器如何渲染页面</h2><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work">Populating the page: how browsers work</a></p>
+<p>用户体验好的网页的标准：1、快速加载；2、交互流畅。</p>
+<h3 id="获取页面"><a href="#获取页面" class="headerlink" title="获取页面"></a>获取页面</h3><h4 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h4><p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-ssl.jpg"></p>
+<p>不考虑缓存，一个基于 HTTPS 的网页需要在客户端与服务端之间进行 10 次交互，才能建立链接。其中包括，2 次 DNS 查询、TCP 3 次握手、5 次 TLS 协商。</p>
+<h4 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h4><p>浏览器打开网页，建立连接后第一个请求的内容是 HTML 文件。按照 TCP 慢启动的算法，第一个响应数据包的大小为 14KB (若未达阈值或未遇到拥塞控制，后续数据包的大小成倍增加，28KB/56KB…)。</p>
+<p>基于 TCP 的这个特性，Web 性能优化需要将此 14KB 作为优化重点。如，浏览器拿到首次返回的 14KB 数据，便能将页面渲染出来。</p>
+<h3 id="关键渲染路径-CRP-Critical-Rendering-Path"><a href="#关键渲染路径-CRP-Critical-Rendering-Path" class="headerlink" title="关键渲染路径 (CRP, Critical Rendering Path)"></a>关键渲染路径 (CRP, Critical Rendering Path)</h3><p>“关键渲染路径是浏览器将 HTML，CSS 和 JavaScript 转换为屏幕上的像素所经历的步骤序列。优化关键渲染路径可提高渲染性能。”</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-CRP.png" alt="关键渲染路径"></p>
+<p>关键渲染路径包含五个部分，构建 DOM、构建 CSSOM、构建渲染树、布局、绘制。如果文档有内容绘制在单独的图层中，还会有合成操作。</p>
+<p>构建 DOM 环节的产物是 DOM 树。DOM 树的构建过程是流式的，即浏览器边读取 HTML 文档边解析。如果遇到 CSS、图像、字体等会并行的下载和解析，不会阻塞 DOM 树的构建流程。JS 脚本的处理比较特殊，下小节单独说明。</p>
+<p>构建 CSSOM 环节的产物是 CSSOM 树。构建 CSSOM 的速度非常快，通常不会成为性能瓶颈。</p>
+<p>当浏览器解析出 DOM 和 CSSOM 两个基本的数据结构后，后续操作便是将其绘制到屏幕上。</p>
+<h3 id="JS-脚本的处理"><a href="#JS-脚本的处理" class="headerlink" title="JS 脚本的处理"></a>JS 脚本的处理</h3><p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-01-17-js-script.png" alt="JS 脚本的加载与执行"></p>
+<p>上图中的箭头表示依赖关系，即箭头尾部的对象依赖箭头头部的对象先完成。如，所有资源都要经历先下载再解析的过程。</p>
+<p>如上文所述，HTML 文档是边读取边解析，大部分的资源都是并行下载和执行的，不会阻塞主线程解析构建 DOM 树。</p>
+<p>如果在解析过程中遇到 JS 脚本，则浏览器会等待 JS 脚本下载和执行完成后，再继续处理 DOM；而 JS 脚本的执行又会先等待 CSSOM 处理完成。如上图的第一部分。</p>
+<p>如果在 script 标签加上 defer 属性。那么，当 DOM 解析时遇到 JS 脚本，浏览器会并行下载 JS 脚本且下载完成后也不会立即执行。当 DOM 已经解析完成，则浏览器会按顺序执行 defer 声明过的 JS 脚本，并在这些脚本执行完成后，发出 DOMContentLoaded 事件。如上图的第二部分。</p>
+<p>如果在 script 标签加上 async 属性。则 JS 脚本的表现与其它普通资源的行为一致，遇到时立即下载、下载完立即执行。如上图的第三部分。</p>
+<p>上面的描述为理论模型，现代浏览器有预加载扫描器的功能，预加载扫描器可以在后台线程扫描文档，不用等待 DOM 树解析到而提前下载和执行文档中的资源文件。</p>
+<h2 id="DOM-事件流"><a href="#DOM-事件流" class="headerlink" title="DOM 事件流"></a>DOM 事件流</h2><a href="/2018/06/19/event-dispatch-and-dom-event-flow-translation/" title="事件分发和 DOM 事件流（译）">事件分发和 DOM 事件流（译）</a>
 
 <h2 id="事件循环-Event-Loop"><a href="#事件循环-Event-Loop" class="headerlink" title="事件循环 (Event Loop)"></a>事件循环 (Event Loop)</h2><p>并发模型与事件循环: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop</a></p>
 <p>众所周知，JavaScript 是单线程语言。如果 JS 执行的时候，网页会卡顿，比如滑动卡顿、点击链接不响应等。但我们实际浏览网页时并不会感到卡顿，这是因为 JS 有事件循环的机制，这种机制能够保证 JS 不会一直占用着线程。</p>
@@ -144,7 +163,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2023/01/17/how-browser-work/" data-id="clczzumow0033d8p40cm510vt" data-title="浏览器工作原理" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2023/01/17/how-browser-work/" data-id="cld2tv6pa0033cpok8yojev7b" data-title="浏览器工作原理" class="article-share-link">Share</a>
       
       
       
@@ -240,7 +259,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2023/01/12/encrypted-communication/" data-id="clczzumov0031d8p4gzonfu3h" data-title="加密通信" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2023/01/12/encrypted-communication/" data-id="cld2tv6p90031cpokdnn6b5gf" data-title="加密通信" class="article-share-link">Share</a>
       
       
       
@@ -310,7 +329,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/10/06/national-day/" data-id="clczzumou002zd8p451193dm1" data-title="2022年国庆回家" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/10/06/national-day/" data-id="cld2tv6p7002zcpokhna26axh" data-title="2022年国庆回家" class="article-share-link">Share</a>
       
       
       
@@ -382,7 +401,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/08/03/efficient-basketball/" data-id="clczzumou002yd8p4e6xh52u8" data-title="高效篮球实战经验" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/08/03/efficient-basketball/" data-id="cld2tv6p6002ycpokdixxbfym" data-title="高效篮球实战经验" class="article-share-link">Share</a>
       
       
       
@@ -465,7 +484,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/07/25/fonts/" data-id="clczzumot002vd8p4djl72fju" data-title="字体" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/07/25/fonts/" data-id="cld2tv6p5002vcpok56m531fc" data-title="字体" class="article-share-link">Share</a>
       
       
       
@@ -533,7 +552,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/07/18/cubetransdev/" data-id="clczzumos002ud8p472268afb" data-title="监听文件变化" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/07/18/cubetransdev/" data-id="cld2tv6p4002ucpok4avoenug" data-title="监听文件变化" class="article-share-link">Share</a>
       
       
       
@@ -606,7 +625,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="clczzumos002sd8p49qqvbt1i" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="cld2tv6p2002scpok7sc19msa" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
       
       
       
@@ -678,7 +697,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="clczzumor002qd8p44tr1h9ya" data-title="养娃趣事" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="cld2tv6p1002qcpokhxbraeet" data-title="养娃趣事" class="article-share-link">Share</a>
       
       
       
@@ -750,7 +769,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="clczzumoq002od8p4cwe5b5m5" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="cld2tv6oz002ocpokg62v1twj" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
       
       
       
@@ -822,7 +841,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="clczzumoo002ld8p4hxx6bh53" data-title="儿子的想象力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="cld2tv6oy002lcpokh61max8k" data-title="儿子的想象力" class="article-share-link">Share</a>
       
       
       
