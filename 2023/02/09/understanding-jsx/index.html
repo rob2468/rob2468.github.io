@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>理解 JSX | 陈军的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="JSX 简介JSX 的介绍参考 React 官方文档 JSX 简介。 JSX 编译后会转为名为 React.createElement 的函数调用。 React.createElement 函数签名1function createElement(type: any, props?: any, ...children: ReactNode[])  createElement 函数接收三个参数。 第一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 JSX">
+<meta property="og:url" content="https://rob2468.github.io/2023/02/09/understanding-jsx/index.html">
+<meta property="og:site_name" content="陈军的博客">
+<meta property="og:description" content="JSX 简介JSX 的介绍参考 React 官方文档 JSX 简介。 JSX 编译后会转为名为 React.createElement 的函数调用。 React.createElement 函数签名1function createElement(type: any, props?: any, ...children: ReactNode[])  createElement 函数接收三个参数。 第一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-09-JSX%E7%BC%96%E8%AF%91%E6%88%90JS.jpg">
+<meta property="article:published_time" content="2023-02-09T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-09T13:59:50.465Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-09-JSX%E7%BC%96%E8%AF%91%E6%88%90JS.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-understanding-jsx"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2023/02/09/understanding-jsx/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2023-02-09T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2023-02-09
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2023/02/09/understanding-jsx/"
+      >
+        理解 JSX
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="JSX-简介"><a href="#JSX-简介" class="headerlink" title="JSX 简介"></a>JSX 简介</h2><p>JSX 的介绍参考 React 官方文档 <a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/introducing-jsx.html">JSX 简介</a>。</p>
+<p>JSX 编译后会转为名为 React.createElement 的函数调用。</p>
+<h2 id="React-createElement-函数签名"><a href="#React-createElement-函数签名" class="headerlink" title="React.createElement 函数签名"></a>React.createElement 函数签名</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createElement</span>(<span class="params"><span class="keyword">type</span>: <span class="built_in">any</span>, props?: <span class="built_in">any</span>, ...children: ReactNode[]</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>createElement 函数接收三个参数。</p>
+<p>第一个参数为节点类型 type。比如，若在 JSX 中是 div，则 type 为 “div” 字符串；若在 JSX 中是自定义函数组件 CustomComponent，则 type 为 CustomComponent 函数。</p>
+<p>第二个参数为节点属性 props。比如，若 JSX 中声明 <code>&lt;div className=&quot;wrap&quot;&gt;</code>，则 props 为 <code>&#123; className: &quot;wrap&quot; &#125;</code>；若 JSX 中声明 <code>&lt;div&gt;</code>，则 props 为 null。</p>
+<p>第三个参数为不定参数，每个参数值对应一个当前节点的子节点。</p>
+<p>React.createElement 执行后的结果为 JSON 结构。</p>
+<span id="more"></span>
+
+<h2 id="JSX-编译"><a href="#JSX-编译" class="headerlink" title="JSX 编译"></a>JSX 编译</h2><p>可以在 <a target="_blank" rel="noopener" href="https://babeljs.io/repl">这里</a> 验证 JSX 编译为 JS 的效果。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-09-JSX%E7%BC%96%E8%AF%91%E6%88%90JS.jpg" alt="JSX 编译成 JS"></p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><h4 id="JSX"><a href="#JSX" class="headerlink" title="JSX"></a>JSX</h4><figure class="highlight js"><figcaption><span>JSX 示例</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;div className=<span class="string">&quot;container&quot;</span>&gt;</span><br><span class="line">  &#123;</span><br><span class="line">  isSimple</span><br><span class="line">    ? <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;name&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line">    : <span class="xml"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;formatName(name)&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &lt;div className=<span class="string">&quot;wrap&quot;</span>&gt;</span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;second-wrap&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">      <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;https://www.reactjs.org&quot;</span> /&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    <span class="xml"><span class="tag">&lt;<span class="name">CustomComponent</span> /&gt;</span></span></span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="JS"><a href="#JS" class="headerlink" title="JS"></a>JS</h4><figure class="highlight js"><figcaption><span>编译且美化后的 JS</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">React.createElement(</span><br><span class="line">  <span class="string">&quot;div&quot;</span>,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">className</span>: <span class="string">&quot;container&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  isSimple</span><br><span class="line">    ? React.createElement(<span class="string">&quot;h1&quot;</span>, <span class="literal">null</span>, name)</span><br><span class="line">    : React.createElement(<span class="string">&quot;h2&quot;</span>, <span class="literal">null</span>, formatName(name)),</span><br><span class="line">  React.createElement(</span><br><span class="line">    <span class="string">&quot;div&quot;</span>,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">className</span>: <span class="string">&quot;wrap&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    React.createElement(</span><br><span class="line">      <span class="string">&quot;div&quot;</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">className</span>: <span class="string">&quot;second-wrap&quot;</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      React.createElement(<span class="string">&quot;img&quot;</span>, &#123;</span><br><span class="line">        <span class="attr">src</span>: <span class="string">&quot;https://www.reactjs.org&quot;</span>,</span><br><span class="line">      &#125;)</span><br><span class="line">    ),</span><br><span class="line">    React.createElement(CustomComponent, <span class="literal">null</span>)</span><br><span class="line">  )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="在-React-中执行-JSX"><a href="#在-React-中执行-JSX" class="headerlink" title="在 React 中执行 JSX"></a>在 React 中执行 JSX</h2><p>由于 Babel 会把 JSX 转译成 JS 函数，执行 JSX 也就是调用转译后的 JS 函数。</p>
+<p>假设 <code>const isSimple = true; const name = &quot;Hello&quot;; const CustomComponent = () =&gt; &lt;div /&gt;;</code>，基于上面一小节的例子，分步执行的结果如下：</p>
+<ol>
+<li>执行最外层的 React.createElement</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;div&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;className&quot;</span>: <span class="string">&quot;container&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;children&quot;</span>: [</span><br><span class="line">      isSimple</span><br><span class="line">        ? React.createElement(<span class="string">&quot;h1&quot;</span>, <span class="literal">null</span>, name)</span><br><span class="line">        : React.createElement(<span class="string">&quot;h2&quot;</span>, <span class="literal">null</span>, formatName(name)),</span><br><span class="line">      React.createElement(</span><br><span class="line">        <span class="string">&quot;div&quot;</span>,</span><br><span class="line">        &#123;</span><br><span class="line">          className: <span class="string">&quot;wrap&quot;</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        React.createElement(</span><br><span class="line">          <span class="string">&quot;div&quot;</span>,</span><br><span class="line">          &#123;</span><br><span class="line">            className: <span class="string">&quot;second-wrap&quot;</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">          React.createElement(<span class="string">&quot;img&quot;</span>, &#123;</span><br><span class="line">            src: <span class="string">&quot;https://www.reactjs.org&quot;</span>,</span><br><span class="line">          &#125;)</span><br><span class="line">        ),</span><br><span class="line">        React.createElement(CustomComponent, <span class="literal">null</span>)</span><br><span class="line">      )</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>执行最外层节点的第一个孩子节点</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;div&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;className&quot;</span>: <span class="string">&quot;container&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;children&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;h1&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;children&quot;</span>: <span class="string">&quot;Hello&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      React.createElement(</span><br><span class="line">        <span class="string">&quot;div&quot;</span>,</span><br><span class="line">        &#123;</span><br><span class="line">          className: <span class="string">&quot;wrap&quot;</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        React.createElement(</span><br><span class="line">          <span class="string">&quot;div&quot;</span>,</span><br><span class="line">          &#123;</span><br><span class="line">            className: <span class="string">&quot;second-wrap&quot;</span>,</span><br><span class="line">          &#125;,</span><br><span class="line">          React.createElement(<span class="string">&quot;img&quot;</span>, &#123;</span><br><span class="line">            src: <span class="string">&quot;https://www.reactjs.org&quot;</span>,</span><br><span class="line">          &#125;)</span><br><span class="line">        ),</span><br><span class="line">        React.createElement(CustomComponent, <span class="literal">null</span>)</span><br><span class="line">      )</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>执行最外层节点的第二个孩子节点</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;div&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;className&quot;</span>: <span class="string">&quot;container&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;children&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;h1&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;children&quot;</span>: <span class="string">&quot;Hello&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;div&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;className&quot;</span>: <span class="string">&quot;wrap&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;children&quot;</span>: [</span><br><span class="line">            React.createElement(</span><br><span class="line">              <span class="string">&quot;div&quot;</span>,</span><br><span class="line">              &#123;</span><br><span class="line">                className: <span class="string">&quot;second-wrap&quot;</span>,</span><br><span class="line">              &#125;,</span><br><span class="line">              React.createElement(<span class="string">&quot;img&quot;</span>, &#123;</span><br><span class="line">                src: <span class="string">&quot;https://www.reactjs.org&quot;</span>,</span><br><span class="line">              &#125;)</span><br><span class="line">            ),</span><br><span class="line">            React.createElement(CustomComponent, <span class="literal">null</span>)</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>所有函数执行完成</li>
+</ol>
+<p>注意：</p>
+<ul>
+<li><p>若只有一个子节点，则 children 字段的值是子节点，见第9行、第21行；若有多个子节点，则 children 字段的值为子节点数组，见第5行、第16行。</p>
+</li>
+<li><p>React.createElement 的函数签名有 type/props/children 的概念，React.createElement 返回的 JSON 数据里也有 type/props/children 字段。二者需要分开理解，注意不要混淆。</p>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;div&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;className&quot;</span>: <span class="string">&quot;container&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;children&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;h1&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;children&quot;</span>: <span class="string">&quot;Hello&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;div&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;className&quot;</span>: <span class="string">&quot;wrap&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;children&quot;</span>: [</span><br><span class="line">            &#123;</span><br><span class="line">              <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;div&quot;</span>,</span><br><span class="line">              <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;className&quot;</span>: <span class="string">&quot;second-wrap&quot;</span>,</span><br><span class="line">                <span class="attr">&quot;children&quot;</span>: &#123;</span><br><span class="line">                  <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;img&quot;</span>,</span><br><span class="line">                  <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">                    <span class="attr">&quot;src&quot;</span>: <span class="string">&quot;https://www.reactjs.org&quot;</span></span><br><span class="line">                  &#125;</span><br><span class="line">                &#125;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;div&quot;</span>,</span><br><span class="line">              <span class="attr">&quot;props&quot;</span>: &#123;</span><br><span class="line">                <span class="attr">&quot;children&quot;</span>: <span class="literal">null</span></span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>JSX 不神秘，编译后也是普通的 JS 函数。</p>
+</li>
+<li><p>在 React 中执行 JSX，所有函数调用完成后，便能得到一棵 DOM 树。</p>
+</li>
+<li><p>React 中虚拟 DOM 的概念总所周知，上文得到的 JSON 结构的 DOM 即为虚拟 DOM。</p>
+</li>
+<li><p>最新版本的 React 的执行过程异步可中断，其执行过程分为 render 阶段和 commit 阶段。（render 阶段处理虚拟 DOM，可中断；commit 阶段将虚拟 DOM 转为真实 DOM，不可中断。）</p>
+</li>
+<li><p>本文讲述的 “在 React 中执行 JSX” 对应 React 的 render 阶段，真正的 React 代码在执行过程中需要就行 DIFF 计算，并做好增/删/改的标志。（commit 阶段将根据这些增/删/改的标志更新真实 DOM。）</p>
+</li>
+</ul>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/introducing-jsx.html">JSX 简介</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2023/02/09/understanding-jsx/" data-id="cldx62m330035blou4mmeh66a" data-title="理解 JSX" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/01/17/how-browser-work/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">浏览器工作原理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JSX-%E7%AE%80%E4%BB%8B"><span class="toc-text">JSX 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#React-createElement-%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D"><span class="toc-text">React.createElement 函数签名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSX-%E7%BC%96%E8%AF%91"><span class="toc-text">JSX 编译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-text">例子</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#JSX"><span class="toc-text">JSX</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JS"><span class="toc-text">JS</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-React-%E4%B8%AD%E6%89%A7%E8%A1%8C-JSX"><span class="toc-text">在 React 中执行 JSX</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-text">参考文档</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 10px;">React</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/02/09/understanding-jsx/">理解 JSX</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/17/how-browser-work/">浏览器工作原理</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/12/encrypted-communication/">加密通信</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/06/national-day/">2022年国庆回家</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/03/efficient-basketball/">高效篮球实战经验</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
