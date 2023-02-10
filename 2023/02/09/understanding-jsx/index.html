@@ -15,7 +15,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-09-JSX%E7%BC%96%E8%AF%91%E6%88%90JS.jpg">
 <meta property="article:published_time" content="2023-02-09T00:00:00.000Z">
-<meta property="article:modified_time" content="2023-02-10T04:00:20.664Z">
+<meta property="article:modified_time" content="2023-02-10T08:13:11.684Z">
 <meta property="article:author" content="陈军">
 <meta property="article:tag" content="React">
 <meta name="twitter:card" content="summary">
@@ -147,14 +147,9 @@
 
 <h2 id="JSX-执行"><a href="#JSX-执行" class="headerlink" title="JSX 执行"></a>JSX 执行</h2><h3 id="React-createElement-的实现"><a href="#React-createElement-的实现" class="headerlink" title="React.createElement 的实现"></a>React.createElement 的实现</h3><p>下面的代码是简化版的 createElement 函数的实现。</p>
 <p>注意：React.createElement 的函数签名有 type/props/children 的概念，React.createElement 返回的对象里里也有 type/props/children 字段。二者需要分开理解，注意不要混淆。</p>
-<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createElement</span>(<span class="params"><span class="keyword">type</span>: <span class="built_in">any</span>, props?: <span class="built_in">any</span>, ...children: ReactNode[]</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="keyword">type</span>,</span><br><span class="line">    <span class="attr">props</span>: &#123;</span><br><span class="line">      ...props,</span><br><span class="line">      <span class="attr">children</span>: children.flat().map(<span class="function">(<span class="params">child</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">typeof</span> child !== <span class="string">&#x27;object&#x27;</span> ? createTextElement(child) : child;</span><br><span class="line">      &#125;),</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createElement</span>(<span class="params"><span class="keyword">type</span>: <span class="built_in">any</span>, props?: <span class="built_in">any</span>, ...children: ReactNode[]</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="keyword">type</span>,</span><br><span class="line">    <span class="attr">props</span>: &#123;</span><br><span class="line">      ...props,</span><br><span class="line">      <span class="attr">children</span>: children.map(<span class="function">(<span class="params">child</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">typeof</span> child !== <span class="string">&#x27;object&#x27;</span> ? createTextElement(child) : child;</span><br><span class="line">      &#125;),</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><p>第6行 <code>flat()</code> 的作用：在 React 中，组件通过 props.children 这个特殊属性接收父组件传递过来的组件，且该属性以数组的形式封装。flat() 可以将数组排平，这样组件内的节点便与父组件传递过来的节点保持在同一层级。</p>
-</li>
-<li><p>第7行条件运算的作用：在编译后的 JSX 中，纯文本节点不是对象，如 <a href="#JS">上文示例中的第6行</a>，”hello” 为字符串类型。createTextElement 会将纯文本节点构造成与其它对象节点类似的结构。</p>
-</li>
-</ul>
+<p>第7行条件运算的作用：在编译后的 JSX 中，纯文本节点不是对象，如 <a href="#JS">上文示例中的第6行</a> “hello” 为字符串类型。createTextElement 会将纯文本节点构造成与其它对象节点类似的结构。</p>
 <h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><p>如 <a href="#JS">上文例子所示</a>，JSX 是嵌套的 React.createElement 函数调用。内层的 React.createElement 的执行结果将作为外层的 React.createElement 函数的参数。</p>
 <p>当最外层的 React.createElement 函数运行时，执行顺序是优先执行最内层的函数，然后再执行次内层的函数，如此反复，直至最外层的函数返回。(执行顺序类似深度优先搜索算法。)</p>
 <p><a href="#JS">上文例子</a> 的函数运行结果如下：</p>
@@ -179,7 +174,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2023/02/09/understanding-jsx/" data-id="cldy03fxh0035dcomdk4fh3nq" data-title="理解 JSX" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2023/02/09/understanding-jsx/" data-id="cldy94m3w004pbfoj7j4ad7r2" data-title="理解 JSX" class="article-share-link">Share</a>
       
       
       
