@@ -1,7 +1,5 @@
 ---
-layout: post
 title: Chrome DevTools Protocol
-page_id: id-2019-12-29
 ---
 
 <h1 class="">{{ page.title }}</h1>
