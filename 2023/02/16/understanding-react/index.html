@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>React 实现原理之异步渲染 | 陈军的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="React 从 v16 开始逐步引入异步可中断的渲染架构。 React 渲染过程可以分为三个阶段 Scheduling、Reconciliation、Commit。 Scheduling 阶段执行任务调度，Reconciliation 阶段更新虚拟 DOM，本文主要讲述这两个阶段。(Commit 阶段更新 UI。e.g. 在浏览器环境中更新 DOM、在移动端环境中更新 Native 视图。) 本文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React 实现原理之异步渲染">
+<meta property="og:url" content="https://rob2468.github.io/2023/02/16/understanding-react/index.html">
+<meta property="og:site_name" content="陈军的博客">
+<meta property="og:description" content="React 从 v16 开始逐步引入异步可中断的渲染架构。 React 渲染过程可以分为三个阶段 Scheduling、Reconciliation、Commit。 Scheduling 阶段执行任务调度，Reconciliation 阶段更新虚拟 DOM，本文主要讲述这两个阶段。(Commit 阶段更新 UI。e.g. 在浏览器环境中更新 DOM、在移动端环境中更新 Native 视图。) 本文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-16-Fiber%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-16-%E4%B8%AD%E6%96%AD.png">
+<meta property="article:published_time" content="2023-02-16T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-05T09:15:14.222Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-16-Fiber%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png">
+  
+    <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-understanding-react"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2023/02/16/understanding-react/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2023-02-16T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2023-02-16
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2023/02/16/understanding-react/"
+      >
+        React 实现原理之异步渲染
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>React 从 v16 开始逐步引入异步可中断的渲染架构。</p>
+<p>React 渲染过程可以分为三个阶段 Scheduling、Reconciliation、Commit。</p>
+<p>Scheduling 阶段执行任务调度，Reconciliation 阶段更新虚拟 DOM，本文主要讲述这两个阶段。(Commit 阶段更新 UI。e.g. 在浏览器环境中更新 DOM、在移动端环境中更新 Native 视图。)</p>
+<p>本文基于目前最新的 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/tree/v18.2.0">React v18.2.0</a> 代码。</p>
+<span id="more"></span>
+
+<h2 id="Scheduling"><a href="#Scheduling" class="headerlink" title="Scheduling"></a>Scheduling</h2><p>Scheduling 阶段执行调度操作，调度的对象是任务。该模块在 React 中的命名为 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/tree/v18.2.0/packages/scheduler">scheduler</a>。虽然 scheduler 目前仅在 React 内部使用，但是它的设计目标是成为一个通用的解决方案。</p>
+<h3 id="任务的数据结构"><a href="#任务的数据结构" class="headerlink" title="任务的数据结构"></a>任务的数据结构</h3><p>任务的数据结构如下所示，其中关键字段是 callback。对于外部来说，你传递给 scheduler 的函数即等同于一个任务，scheduler 会适时调用这个函数。<a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/v18.2.0/packages/scheduler/src/forks/Scheduler.js#L345">相关 React 代码</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">callback</span>: <span class="built_in">Function</span>;</span><br><span class="line">  priorityLevel: number; <span class="comment">// 任务优先级</span></span><br><span class="line">  sortIndex: number; <span class="comment">// 用于构造小顶堆</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h3><p>任务队列使用小顶堆保存。排序的值是上文任务模型中的 sortIndex 字段。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tasks are stored on a min heap</span></span><br><span class="line"><span class="keyword">var</span> timerQueue = [];</span><br><span class="line"><span class="keyword">var</span> taskQueue = [];</span><br></pre></td></tr></table></figure>
+
+<p>有两个队列，timerQueue 和 taskQueue。</p>
+<p>可以延迟执行的任务，放在 timerQueue 里，任务的 sortIndex 为任务开始时间，即越早开始的任务排在队列的前面。非延迟执行的任务，放在 taskQueue 里，任务的 sortIndex 为任务结束时间，即越早结束的任务排在队列的前面。</p>
+<p>taskQueue 中的任务才会真正被执行。timerQueue 中的任务等到延迟时间结束后，会先被加到 taskQueue 中，然后再被调度执行。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>taskQueue 中的任务被取出后，会放到浏览器的事件队列中，然后由浏览器的 <a href="/2023/01/17/how-browser-work/" title="事件循环机制">事件循环机制</a>  进行调度。最简化的方案是设置一个时长为 0 的 setTimeout 调用，即 <code>setTimeout(任务, 0)</code> 。</p>
+<p>下面代码示例描述了调度是如何执行的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">performWorkUntilDeadline</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> hasMoreWork = scheduledHostCallback();</span><br><span class="line">  <span class="keyword">if</span> (hasMoreWork) &#123;</span><br><span class="line">    schedulePerformWorkUntilDeadline();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调度任务</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">schedulePerformWorkUntilDeadline</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(performWorkUntilDeadline, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>scheduledHostCallback()</code> 内实现了一个 workloop，持续执行任务队列中的任务。workloop 中有中断机制，详见下文。</p>
+<h2 id="Reconciliation"><a href="#Reconciliation" class="headerlink" title="Reconciliation"></a>Reconciliation</h2><p>源代码：<a target="_blank" rel="noopener" href="https://github.com/facebook/react/tree/v18.2.0/packages/react-reconciler">react-reconciler</a></p>
+<p>Reconciliation 阶段更新虚拟 DOM。本小节主要讲述 Fiber 架构和 DOM Diff 算法。</p>
+<p>Fiber 架构可以参考 <a target="_blank" rel="noopener" href="https://github.com/acdlite/react-fiber-architecture">React Fiber Architecture</a> 这篇文章。简单来说，一个 Fiber 实例，是虚拟 DOM 中的一个节点，也是一个普通的 js 对象。在 <a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/ReactInternalTypes.js#L67">React 源代码</a> 这个对象的类型命名为 Fiber，所以这套架构也被称为 Fiber 架构。</p>
+<h3 id="Fiber"><a href="#Fiber" class="headerlink" title="Fiber"></a>Fiber</h3><h4 id="Stack-VS-Fiber"><a href="#Stack-VS-Fiber" class="headerlink" title="Stack VS Fiber"></a>Stack VS Fiber</h4><p>DOM 是一个树状结构，使用递归算法可以很容易的完成树的遍历，这种方式称为 Stack。在 Fiber 架构之前，React 便是采用的这种方式。Stack 方式的缺点是不够灵活，处理过程无法中断，性能较差。</p>
+<p>Fiber 架构则重新设计了一套数据结构。</p>
+<h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><ul>
+<li>节点数据结构</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Fiber &#123;</span><br><span class="line">  <span class="attr">type</span>: <span class="built_in">any</span>;</span><br><span class="line">  <span class="keyword">return</span>: Fiber | <span class="literal">null</span>,</span><br><span class="line">  <span class="attr">child</span>: Fiber | <span class="literal">null</span>,</span><br><span class="line">  <span class="attr">sibling</span>: Fiber | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">/* 其它属性 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/ReactInternalTypes.js#L67">React 源代码</a></p>
+<ul>
+<li>节点之间的数据结构</li>
+</ul>
+<p>下面左图是一个 Fiber 树示例，以及每个 Fiber 节点 return/child/sibling 属性的值。return 指向当前节点的父亲节点，child 指向当前节点的第一个孩子节点，sibling 指向当前节点的兄弟节点。</p>
+<p>下面右图是对应示例的节点遍历的顺序。算法是先处理 child 再处理 sibling，当最后没有可处理节点时，则 Fiber 树全部处理完成。</p>
+<p>这种处理将树结构转换成了链表结构，并通过 workInProgress 指针完成链表的遍历。workInProgress 即为当前正在处理的节点。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-16-Fiber%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt="Fiber结构"></p>
+<h3 id="DOM-Diff"><a href="#DOM-Diff" class="headerlink" title="DOM Diff"></a>DOM Diff</h3><p>DOM Diff 算法可参考 <a target="_blank" rel="noopener" href="https://reactjs.org/docs/reconciliation.html">React 官方文档</a>。目前性能最好的通用算法的时间复杂度为 <a target="_blank" rel="noopener" href="https://grfia.dlsi.ua.es/ml/algorithms/references/editsurvey_bille.pdf">O(n^3)</a>，React 采用了一种经验算法，其时间复杂度能够降到 O(n)。这个经验算法基于以下两个假设：</p>
+<ol>
+<li><p>如果节点类型不同，则认为是两棵不同的树。比如： <code>&lt;div&gt;hello world&lt;/div&gt;</code> vs <code>&lt;p&gt;hello world&lt;/p&gt;</code>，类型分别是 div 和 p。</p>
+</li>
+<li><p>开发者可以用 <code>key</code> 属性来标识一个组件。</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://beta.reactjs.org/learn/preserving-and-resetting-state">Preserving and Resetting State</a> 这篇文章提供了许多生动的案例。</p>
+<h2 id="异步可中断的实现"><a href="#异步可中断的实现" class="headerlink" title="异步可中断的实现"></a>异步可中断的实现</h2><p>异步可中断需要具备两项能力。</p>
+<ol>
+<li><p>如果执行时长超过阈值，能够中断执行。</p>
+</li>
+<li><p>如果浏览器空闲，能够从中断的地方恢复执行。</p>
+</li>
+</ol>
+<h3 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h3><p>Scheduling 阶段与 Reconciliation 阶段各有一个 workloop。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/v18.2.0/packages/scheduler/src/forks/Scheduler.js#L199">Scheduling 阶段的 workloop</a> 处理的是 taskQueue 中的任务。<a target="_blank" rel="noopener" href="https://github.com/facebook/react/blob/v18.2.0/packages/react-reconciler/src/ReactFiberWorkLoop.new.js#L1831">Reconciliation 阶段的 workloop</a> 处理的是 Fiber 树中的节点。它们在各自 workloop 的开头，都会检查当前已经执行的时长，若时长超过阈值，则会中断执行。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-02-16-%E4%B8%AD%E6%96%AD.png"></p>
+<p>(上图 ReactFiberWorkLoop.new.js 中的 <code>shouldYield</code> 也是从 Scheduler.js import 而来，与 <code>shouldYieldToHost</code> 是同一个函数。)</p>
+<h3 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h3><p>Scheduling 阶段的任务使用小顶堆保存，恢复后从堆顶获取任务执行。</p>
+<p>Reconciliation 阶段的 Fiber 树为链表结构，workInProgress 指针指向当前正在处理的节点，恢复后则从 workInProgress 节点继续执行。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>React 的实现原理有许多主题，本文主要讲述其异步可中断的能力是如何实现的。</p>
+<p>React 整个渲染过程，除了本文所讲的 Scheduling 和 Recociliation 阶段，还有 Commit 阶段。Commit 阶段才会真正将虚拟 DOM 的变更更新到视图上，且这一阶段的执行是不可中断的。</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a target="_blank" rel="noopener" href="https://github.com/facebook/react/tree/v18.2.0">React v18.2.0</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/acdlite/react-fiber-architecture">React Fiber Architecture</a></p>
+<p><a target="_blank" rel="noopener" href="https://reactjs.org/docs/reconciliation.html">Reconciliation</a></p>
+<p><a target="_blank" rel="noopener" href="https://beta.reactjs.org/learn/preserving-and-resetting-state">Preserving and Resetting State</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2023/02/16/understanding-react/" data-id="clev6h0gw0037bwomfdy8bghz" data-title="React 实现原理之异步渲染" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/02/09/understanding-jsx/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">理解 JSX</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Scheduling"><span class="toc-text">Scheduling</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">任务的数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97"><span class="toc-text">任务队列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reconciliation"><span class="toc-text">Reconciliation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fiber"><span class="toc-text">Fiber</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Stack-VS-Fiber"><span class="toc-text">Stack VS Fiber</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">数据结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DOM-Diff"><span class="toc-text">DOM Diff</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%8F%AF%E4%B8%AD%E6%96%AD%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">异步可中断的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD"><span class="toc-text">中断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%81%A2%E5%A4%8D"><span class="toc-text">恢复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-text">参考文档</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 11.43px;">React</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 10px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/02/16/understanding-react/">React 实现原理之异步渲染</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/09/understanding-jsx/">理解 JSX</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/17/how-browser-work/">浏览器工作原理</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/12/encrypted-communication/">加密通信</a>
+          </li>
+        
+          <li>
+            <a href="/2022/10/06/national-day/">2022年国庆回家</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
