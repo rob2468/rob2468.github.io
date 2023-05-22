@@ -9,6 +9,8 @@ tags:
 
 阅读本文需要的基础知识：Chrome Extensions、webpack、React。
 
+<!-- more -->
+
 ## 背景
 
 Chrome Extensions 是什么？见下面截图。
