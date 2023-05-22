@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Chrome Extensions 开发最佳实践 | 陈军的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="阅读本文需要的基础知识：Chrome Extensions、webpack、React。 背景Chrome Extensions 是什么？见下面截图。   如何开发 Chrome Extensions 可参考 Google 开发者文档。 Extensions 使用 vanilla-js 开发，开发复杂项目有点痛苦。本文讲述如何为 Extensions 项目配置 webpack&#x2F;React&#x2F;Type">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chrome Extensions 开发最佳实践">
+<meta property="og:url" content="https://rob2468.github.io/2023/05/17/chrome-extensions-best-practice/index.html">
+<meta property="og:site_name" content="陈军的博客">
+<meta property="og:description" content="阅读本文需要的基础知识：Chrome Extensions、webpack、React。 背景Chrome Extensions 是什么？见下面截图。   如何开发 Chrome Extensions 可参考 Google 开发者文档。 Extensions 使用 vanilla-js 开发，开发复杂项目有点痛苦。本文讲述如何为 Extensions 项目配置 webpack&#x2F;React&#x2F;Type">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-chrome-extensions-entry.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-chrome-extensions.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-project-structure.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-webpackJsonpchecker-error.jpg">
+<meta property="article:published_time" content="2023-05-17T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-22T09:36:56.299Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="webpack">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-chrome-extensions-entry.png">
+  
+    <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-chrome-extensions-best-practice"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2023/05/17/chrome-extensions-best-practice/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2023-05-17T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2023-05-17
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2023/05/17/chrome-extensions-best-practice/"
+      >
+        Chrome Extensions 开发最佳实践
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>阅读本文需要的基础知识：Chrome Extensions、webpack、React。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Chrome Extensions 是什么？见下面截图。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-chrome-extensions-entry.png"></p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-chrome-extensions.png" alt="Chrome Extensions"></p>
+<p>如何开发 Chrome Extensions 可参考 <a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/">Google 开发者文档</a>。</p>
+<p>Extensions 使用 <a target="_blank" rel="noopener" href="https://www.carrentalgateway.com/glossary/vanilla-javascript/">vanilla-js</a> 开发，开发复杂项目有点痛苦。本文讲述如何为 Extensions 项目配置 <a target="_blank" rel="noopener" href="https://v4.webpack.js.org/concepts/">webpack</a>/React/Typescript，完整代码可跳到 <a href="#%E4%BB%A3%E7%A0%81">文章最后</a> 获取。</p>
+<p>有许多文章讲过这个话题，比如 <a target="_blank" rel="noopener" href="https://blog.logrocket.com/creating-chrome-extension-react-typescript/">Creating a Chrome extension with React and TypeScript</a>。最近自己做了一个 Extension 工具，于是从自己的视角总结出这篇文章。</p>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>项目顶层结构与 <a target="_blank" rel="noopener" href="https://create-react-app.dev/">create-react-app</a> 创建的应用类似。<code>src/</code> 存放主要的业务代码；<code>public/</code> 存放需要输出的文件如模版文件、图片、配置等；<a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/package.json#L7">项目构建</a>后的产物放在 <code>build/</code> 文件夹中，该文件夹可以直接加载成 Chrome Extension 执行。</p>
+<p><code>src/</code> 下的文件按 Chrome Extensions 的概念进行了组织，看文件名就能看懂。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-project-structure.png"></p>
+<h2 id="支持多文件打包"><a href="#支持多文件打包" class="headerlink" title="支持多文件打包"></a>支持多文件打包</h2><p>webpack 相关的配置在 <a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/craco.config.js">craco.config.js</a> 文件中。(<a target="_blank" rel="noopener" href="https://craco.js.org/">craco 官网</a>)</p>
+<p>下面的配置按 MPA(Multi-Page Application) 的思想对项目进行了打包。如，Extension 每个页面的脚本打包成了 main.js/setting.js/log.js、Content Scripts 打包成了 content.js、Service Workers 打包成了 background.js。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">entry</span>: &#123;</span><br><span class="line">    <span class="comment">// 页面</span></span><br><span class="line">    <span class="attr">main</span>: <span class="string">&#x27;./src/pages/popup/index.tsx&#x27;</span>,</span><br><span class="line">    <span class="attr">setting</span>: <span class="string">&#x27;./src/pages/setting/index.tsx&#x27;</span>,</span><br><span class="line">    <span class="attr">log</span>: <span class="string">&#x27;./src/pages/log/index.tsx&#x27;</span>,</span><br><span class="line">    <span class="comment">// content scripts</span></span><br><span class="line">    <span class="attr">content</span>: <span class="string">&#x27;./src/content-scripts/index.ts&#x27;</span>,</span><br><span class="line">    <span class="comment">// service worker</span></span><br><span class="line">    <span class="attr">background</span>: <span class="string">&#x27;./src/service-worker/index.ts&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    ...webpackConfig.output,</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;static/js/[name].js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="支持多页面打包"><a href="#支持多页面打包" class="headerlink" title="支持多页面打包"></a>支持多页面打包</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> htmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>);</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    ...webpackConfig.plugins,</span><br><span class="line">    <span class="keyword">new</span> htmlWebpackPlugin(&#123;</span><br><span class="line">      <span class="attr">title</span>: <span class="string">&#x27;popup&#x27;</span>,</span><br><span class="line">      <span class="attr">filename</span>: <span class="string">&#x27;popup.html&#x27;</span>,</span><br><span class="line">      <span class="attr">template</span>: <span class="string">&#x27;public/index.html&#x27;</span>,</span><br><span class="line">      <span class="attr">chunks</span>: [<span class="string">&#x27;main&#x27;</span>],</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> htmlWebpackPlugin(&#123;</span><br><span class="line">      <span class="attr">title</span>: <span class="string">&#x27;setting&#x27;</span>,</span><br><span class="line">      <span class="attr">filename</span>: <span class="string">&#x27;setting.html&#x27;</span>,</span><br><span class="line">      <span class="attr">template</span>: <span class="string">&#x27;public/index.html&#x27;</span>,</span><br><span class="line">      <span class="attr">chunks</span>: [<span class="string">&#x27;setting&#x27;</span>],</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> htmlWebpackPlugin(&#123;</span><br><span class="line">      <span class="attr">title</span>: <span class="string">&#x27;log&#x27;</span>,</span><br><span class="line">      <span class="attr">filename</span>: <span class="string">&#x27;log.html&#x27;</span>,</span><br><span class="line">      <span class="attr">template</span>: <span class="string">&#x27;public/index.html&#x27;</span>,</span><br><span class="line">      <span class="attr">chunks</span>: [<span class="string">&#x27;log&#x27;</span>],</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><h3 id="webpackJsonpchecker-错误"><a href="#webpackJsonpchecker-错误" class="headerlink" title="webpackJsonpchecker 错误"></a>webpackJsonpchecker 错误</h3><p>Extension 加载报错 Uncaught TypeError: Cannot read properties of undefined (reading ‘webpackJsonpchecker’)</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-webpackJsonpchecker-error.jpg" alt="undefined reading webpackJsonpchecker"></p>
+<p>webpack 打包会根据一定的策略将代码拆成多个 chunk，参考 <a target="_blank" rel="noopener" href="https://v4.webpack.js.org/plugins/split-chunks-plugin/">官方文档</a>；webpack 构建产物的运行环境默认为 web，参考 <a target="_blank" rel="noopener" href="https://v4.webpack.js.org/concepts/targets/">官方文档</a>，但是 Chrome Extensions Service Workers 的运行环境既不是 web，也不是 node。webpack 使用 webpackJsonp 在 web 环境中加载其它 chunk。如果 Service Workers 的代码被打包到了多个 chunk 中，那 Extension 加载时只会加载 manifest 中显式声明了的那个<a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/public/manifest.json#L10">文件</a>，而其它的 chunk 无法加载 (因为 Chrome Extensions Service Workers 不是 web 环境)，便会出现这个错误。</p>
+<p>最简单的解法是让 webpack 打包时不要拆包。</p>
+<p>webpack 配置中 <code>optimization.splitChunks.minSize</code> 字段的含义是，若构建后的文件大小超过该值，则需要拆包。该值默认为 30000，即 30kb。将该值改成一个极大值，比如 <a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/craco.config.js#L32">150000</a> (150kb)，可以解决该问题。</p>
+<h3 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h3><p>不同的运行环境提供的 API 不同，开发时不加注意可能会出现一些不合预期的效果。</p>
+<p>比如在 Service Workers 中调用 web 的 API 会报错，如 DOMParser。</p>
+<p>比如在 web 页面中调用 <a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/reference/notifications/#method-create">chrome.notifications.create</a> 创建推送，会发现推送的内容无法显示。</p>
+<h3 id="notification-与-alarms"><a href="#notification-与-alarms" class="headerlink" title="notification 与 alarms"></a><a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/reference/notifications/">notification</a> 与 <a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/reference/alarms/">alarms</a></h3><p>创建 notification 有个 eventTime 参数，但是该参数并不能实现定时推送。若要实现定时推送功能，需要再结合 alarms 接口。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/src/pages/popup/util.ts#L120-L122">代码示例-创建 alarms</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/src/service-worker/index.ts#L86-L111">代码示例-创建 notification</a></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice">chrome-extension-best-practice</a></p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p><a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/">Chrome Extensions</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/mv3/service_workers/basics/">Extension service worker basics</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.logrocket.com/creating-chrome-extension-react-typescript/">Creating a Chrome extension with React and TypeScript</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2023/05/17/chrome-extensions-best-practice/" data-id="clhynldju0039d6oyh7v67gef" data-title="Chrome Extensions 开发最佳实践" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/" rel="tag">webpack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/02/16/understanding-react/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React 实现原理之异步渲染</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%A4%9A%E6%96%87%E4%BB%B6%E6%89%93%E5%8C%85"><span class="toc-text">支持多文件打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E6%89%93%E5%8C%85"><span class="toc-text">支持多页面打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FAQ"><span class="toc-text">FAQ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpackJsonpchecker-%E9%94%99%E8%AF%AF"><span class="toc-text">webpackJsonpchecker 错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">运行环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#notification-%E4%B8%8E-alarms"><span class="toc-text">notification 与 alarms</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-text">参考文档</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/17/chrome-extensions-best-practice/">Chrome Extensions 开发最佳实践</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/16/understanding-react/">React 实现原理之异步渲染</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/09/understanding-jsx/">理解 JSX</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/17/how-browser-work/">浏览器工作原理</a>
+          </li>
+        
+          <li>
+            <a href="/2023/01/12/encrypted-communication/">加密通信</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
