@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>陈军的博客</title>
+  <icon>https://rob2468.github.io/icon.png</icon>
+  
+  <link href="https://rob2468.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://rob2468.github.io/"/>
+  <updated>2023-05-23T07:13:46.127Z</updated>
+  <id>https://rob2468.github.io/</id>
+  
+  <author>
+    <name>陈军</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Chrome Extensions 开发最佳实践</title>
+    <link href="https://rob2468.github.io/2023/05/17/chrome-extensions-best-practice/"/>
+    <id>https://rob2468.github.io/2023/05/17/chrome-extensions-best-practice/</id>
+    <published>2023-05-17T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;阅读本文需要的基础知识：Chrome Extensions、webpack、React。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="webpack" scheme="https://rob2468.github.io/tags/webpack/"/>
+    
+    <category term="React" scheme="https://rob2468.github.io/tags/React/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>React 实现原理之异步渲染</title>
+    <link href="https://rob2468.github.io/2023/02/16/understanding-react/"/>
+    <id>https://rob2468.github.io/2023/02/16/understanding-react/</id>
+    <published>2023-02-16T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;React 从 v16 开始逐步引入异步可中断的渲染架构。&lt;/p&gt;
+&lt;p&gt;React 渲染过程可以分为三个阶段 Scheduling、Reconciliation、Commit。&lt;/p&gt;
+&lt;p&gt;Scheduling 阶段执行任务调度，Reconciliation 阶段更新虚拟 DOM，本文主要讲述这两个阶段。(Commit 阶段更新 UI。e.g. 在浏览器环境中更新 DOM、在移动端环境中更新 Native 视图。)&lt;/p&gt;
+&lt;p&gt;本文基于目前最新的 &lt;a href=&quot;https://github.com/facebook/react/tree/v18.2.0&quot;&gt;React v18.2.0&lt;/a&gt; 代码。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="React" scheme="https://rob2468.github.io/tags/React/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>理解 JSX</title>
+    <link href="https://rob2468.github.io/2023/02/09/understanding-jsx/"/>
+    <id>https://rob2468.github.io/2023/02/09/understanding-jsx/</id>
+    <published>2023-02-09T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;JSX-简介&quot;&gt;&lt;a href=&quot;#JSX-简介&quot; class=&quot;headerlink&quot; title=&quot;JSX 简介&quot;&gt;&lt;/a&gt;JSX 简介&lt;/h2&gt;&lt;p&gt;JSX 的介绍参考 React 官方文档 &lt;a href=&quot;https://zh-hans.reactjs.org/docs/introducing-jsx.html&quot;&gt;JSX 简介&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;JSX 编译后会转为名为 React.createElement 的函数调用。&lt;/p&gt;
+&lt;h2 id=&quot;React-createElement-函数签名&quot;&gt;&lt;a href=&quot;#React-createElement-函数签名&quot; class=&quot;headerlink&quot; title=&quot;React.createElement 函数签名&quot;&gt;&lt;/a&gt;React.createElement 函数签名&lt;/h2&gt;&lt;figure class=&quot;highlight ts&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;createElement&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;type&lt;/span&gt;: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;, props?: &lt;span class=&quot;built_in&quot;&gt;any&lt;/span&gt;, ...children: ReactNode[]&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;createElement 函数接收三个参数。&lt;/p&gt;
+&lt;p&gt;第一个参数为节点类型 type。比如，若在 JSX 中是 div，则 type 为 “div” 字符串；若在 JSX 中是自定义函数组件 CustomComponent，则 type 为 CustomComponent 函数。&lt;/p&gt;
+&lt;p&gt;第二个参数为节点属性 props。比如，若 JSX 中声明 &lt;code&gt;&amp;lt;div className=&amp;quot;wrap&amp;quot;&amp;gt;&lt;/code&gt;，则 props 为 &lt;code&gt;&amp;#123; className: &amp;quot;wrap&amp;quot; &amp;#125;&lt;/code&gt;；若 JSX 中声明 &lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt;，则 props 为 null。&lt;/p&gt;
+&lt;p&gt;第三个参数为不定参数，每个参数值对应一个当前节点的子节点。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="React" scheme="https://rob2468.github.io/tags/React/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浏览器工作原理</title>
+    <link href="https://rob2468.github.io/2023/01/17/how-browser-work/"/>
+    <id>https://rob2468.github.io/2023/01/17/how-browser-work/</id>
+    <published>2023-01-17T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;浏览器如何渲染页面&quot;&gt;&lt;a href=&quot;#浏览器如何渲染页面&quot; class=&quot;headerlink&quot; title=&quot;浏览器如何渲染页面&quot;&gt;&lt;/a&gt;浏览器如何渲染页面&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work&quot;&gt;Populating the page: how browsers work&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;用户体验好的网页的标准：1、快速加载；2、交互流畅。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Web" scheme="https://rob2468.github.io/tags/Web/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>加密通信</title>
+    <link href="https://rob2468.github.io/2023/01/12/encrypted-communication/"/>
+    <id>https://rob2468.github.io/2023/01/12/encrypted-communication/</id>
+    <published>2023-01-12T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;OSI-模型&quot;&gt;&lt;a href=&quot;#OSI-模型&quot; class=&quot;headerlink&quot; title=&quot;OSI 模型&quot;&gt;&lt;/a&gt;OSI 模型&lt;/h</summary>
+        
+      
+    
+    
+    
+    
+    <category term="网络" scheme="https://rob2468.github.io/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2022年国庆回家</title>
+    <link href="https://rob2468.github.io/2022/10/06/national-day/"/>
+    <id>https://rob2468.github.io/2022/10/06/national-day/</id>
+    <published>2022-10-06T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;今年国庆提前请了两天假回老家，儿子终于实现了他的坐着高铁去旅行的梦想。&lt;/p&gt;
+&lt;h2 id=&quot;儿子的行程&quot;&gt;&lt;a href=&quot;#儿子的行程&quot; class=&quot;headerlink&quot; title=&quot;儿子的行程&quot;&gt;&lt;/a&gt;儿子的行程&lt;/h2&gt;&lt;p&gt;儿子现在三岁半，越来越可爱，与亲戚朋友聚会时，无论什么时候都是焦点。这个国庆节他的行程最忙，先是坐高铁到盐城，第二天又被爷爷开车接到扬州，三天后爷爷又开车送回盐城，5号随我们坐高铁回到上海。在盐城和扬州还随着爷爷奶奶外公外婆到处走亲访友。&lt;/p&gt;
+&lt;p&gt;儿子正处于快速学习说话的阶段，大人不经意说过的话也能记住，然后不知道在什么时候说出来，让我们惊叹不已。不过大人说的一些不好的话，他也会学着说，着实让人苦恼。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="生活" scheme="https://rob2468.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>高效篮球实战经验</title>
+    <link href="https://rob2468.github.io/2022/08/03/efficient-basketball/"/>
+    <id>https://rob2468.github.io/2022/08/03/efficient-basketball/</id>
+    <published>2022-08-03T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;下面这些点是我在野球场的实战经验：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;投篮时手臂夹紧，保持持球手的小臂、大臂形成的平面与地面垂直</summary>
+        
+      
+    
+    
+    
+    
+    <category term="生活" scheme="https://rob2468.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>字体</title>
+    <link href="https://rob2468.github.io/2022/07/25/fonts/"/>
+    <id>https://rob2468.github.io/2022/07/25/fonts/</id>
+    <published>2022-07-25T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;CSS-font-face&quot;&gt;&lt;a href=&quot;#CSS-font-face&quot; class=&quot;headerlink&quot; title=&quot;CSS @font-face&quot;&gt;&lt;/a&gt;CSS @font-face&lt;/h2&gt;&lt;p&gt;一个字体家族可能包含多个字型。&lt;/p&gt;
+&lt;p&gt;比如下图 Garamond 字体。第一个是正常的字型。第二个是将正常字型倾斜一定的角度，变成斜体字。第三个是真正的由字体设计师设计的 Garamond 斜体。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&quot;center&quot;&gt;1&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;2&lt;/th&gt;
+&lt;th align=&quot;center&quot;&gt;3&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;
+&lt;td align=&quot;center&quot;&gt;&lt;img src=&quot;https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamondunstyled.jpeg&quot;&gt;&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;&lt;img src=&quot;https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamondartificialstyle.jpeg&quot;&gt;&lt;/td&gt;
+&lt;td align=&quot;center&quot;&gt;&lt;img src=&quot;https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2022-07-25-garamonditalic.jpeg&quot;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;</summary>
+    
+    
+    
+    
+    <category term="CSS" scheme="https://rob2468.github.io/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>监听文件变化</title>
+    <link href="https://rob2468.github.io/2022/07/18/cubetransdev/"/>
+    <id>https://rob2468.github.io/2022/07/18/cubetransdev/</id>
+    <published>2022-07-18T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;之前做了一个工具 CubeTrans，可以将 “Vue” 代码转译成了 React 代码，具体参考这篇文章 &lt;a href=&quot;/2022/06/27/vue-to-react-cubetrans/&quot; title=&quot;将 &amp;quot;Vue&amp;quot; 转译为 React&quot;&gt;将 &amp;quot;Vue&amp;quot; 转译为 React&lt;/a&gt;。为了让 CubeTrans 有用，又做了 CubeTransDev 工具，核心功能是实时监听文件变化。当监听到代码或 mock data 变化时，能够自动编译并实时预览。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="JavaScript" scheme="https://rob2468.github.io/tags/JavaScript/"/>
+    
+    <category term="webpack" scheme="https://rob2468.github.io/tags/webpack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>将 &quot;Vue&quot; 转译为 React</title>
+    <link href="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/"/>
+    <id>https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/</id>
+    <published>2022-06-27T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;本文记录了如何将 Vue 语言转译为 React 语言。主要目的是，当你面对此类源代码分析工作时，能够找到一些结构化处理的思路。&lt;/p&gt;
+&lt;h2 id=&quot;background&quot;&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;标题中的 Vue 加上了引号，因为要转译的 Vue 代码不是包含了所有 Vue 语言特性的代码，而是 Vue 的一个子集。&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=Mzg4MDY0ODk0Ng==&amp;mid=2247483885&amp;idx=1&amp;sn=f3a6a1993bf7b867d9ecf421c454e5bf&amp;chksm=cf70b670f8073f66188329e479a37b4d8866686f98a2fc3a101d9ff8c972b835dd0eb453e785&amp;mpshare=1&amp;scene=1&amp;srcid=0627Aj7Dl7Gj79iaUf7aQ3CP&amp;sharer_sharetime=1656314563040&amp;sharer_shareid=e31ba76f7466506e9f6b0c0056037e45&amp;exportkey=AYxF2XQbEeP5I93T2nntDVI=&amp;acctmode=0&amp;pass_ticket=jGXWXRnxf1OTy8uzRI+uwUCe2k/z1/l5kervjNbaYHcrNHil38F7XZauvj7FMqy/&amp;wx_header=0#rd&quot;&gt;Cube 技术解读 | 支付宝新一代动态化技术架构与选型综述&lt;/a&gt; 这篇文章介绍了支付宝中使用的动态化框架，“对于Cube卡片，支持基于精简vue的card-dsl。”&lt;/p&gt;
+&lt;p&gt;Cube 卡片是一种客户端技术，进行 Cube 卡片研发需要进行繁琐的开发环境配置，将 Vue 转译为 React 能够在浏览器中实时预览，提升研发效率。将精简的 Vue 语法转译为标准的 Vue 语法也能实现浏览器预览，但公司里的 H5 项目均采用 React 开发，转译为 React 能够在 H5 项目中复用已有的 Cube 卡片。&lt;/p&gt;
+&lt;p&gt;暂将这个工具命名为 CubeTrans。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="AST" scheme="https://rob2468.github.io/tags/AST/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>养娃趣事</title>
+    <link href="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/"/>
+    <id>https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/</id>
+    <published>2021-12-26T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
+
+&lt;h2&gt;2021-12-15&lt;/h2&gt;
+
+&lt;p&gt;妈妈带着宝宝看“好饿的小蛇”这本书，用手指一个字一个字的指，教宝宝认字。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="生活" scheme="https://rob2468.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>耶鲁大学公开课:死亡-读后感</title>
+    <link href="https://rob2468.github.io/2021/07/31/open-yale-courses-death/"/>
+    <id>https://rob2468.github.io/2021/07/31/open-yale-courses-death/</id>
+    <published>2021-07-31T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
+
+&lt;h2 class=&quot;&quot;&gt;为什么要思考死亡&lt;/h2&gt;
+
+&lt;p&gt;由于对死亡的认识所带来的反省，致使人类获得形而上学的见解，并由此得到一种慰藉。所有宗教和哲学体系，主要即为针对这种目的而发，以帮助人们培养反省的理性，作为对死亡观念的解毒剂。（叔本华）&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="读书笔记" scheme="https://rob2468.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>儿子的想象力</title>
+    <link href="https://rob2468.github.io/2021/07/11/jing-imagination/"/>
+    <id>https://rob2468.github.io/2021/07/11/jing-imagination/</id>
+    <published>2021-07-11T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在席子上尿了尿，看到形状，说像云朵。又好气，又好笑。&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="生活" scheme="https://rob2468.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>简单问题、复杂问题、混沌问题</title>
+    <link href="https://rob2468.github.io/2021/01/09/different-problems/"/>
+    <id>https://rob2468.github.io/2021/01/09/different-problems/</id>
+    <published>2021-01-09T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
+
+&lt;p&gt;生活里需要解决各类问题，如果加以分类，可以分成简单问题、复杂问题、混沌问题三类。之前的领导，在跟我一次面对面的沟通中，提到了这种分类方式。感觉角度很有意思，并且细想起来，跟个人的体会也很相似。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="思考" scheme="https://rob2468.github.io/tags/%E6%80%9D%E8%80%83/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>与儿子一起的睡前阅读</title>
+    <link href="https://rob2468.github.io/2020/12/27/read-with-my-son/"/>
+    <id>https://rob2468.github.io/2020/12/27/read-with-my-son/</id>
+    <published>2020-12-27T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;p&gt;今天周末，白天加班，晚上回家吃晚饭。可能一天没见到爸爸，儿子晚上跟我特别亲，叫了好多声“爸爸”。吃晚饭时爬到我腿上讨吃的。睡觉前跑到书架前翻书看，我顺势把他抱到腿上，一起看起书来。小家伙安安静静的跟我待了好久。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="生活" scheme="https://rob2468.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>不同的销售</title>
+    <link href="https://rob2468.github.io/2020/12/05/different-sales/"/>
+    <id>https://rob2468.github.io/2020/12/05/different-sales/</id>
+    <published>2020-12-05T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;p&gt;之前跟几个房产中介打过交道，房产中介就是做房屋销售的人。销售 A 从事二手房交易，是在附近的中介门面认识的，当时毕业不久，筹划购买住房。跟着销售 A 看了不少房子，交往了挺久。销售 A 人很好，工作认真负责，也有销售那种圆滑，永远不会让你感受到冒犯。其实我对房屋销售了解的不多，只能发表一些网上看到的简单观点，挺希望从销售身上学习更多的知识。但是销售 A 对于我发表的观点基本上全部表示赞同，甚至还会举出一些例子来证明我的观点，让人哭笑不得。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="思考" scheme="https://rob2468.github.io/tags/%E6%80%9D%E8%80%83/"/>
+    
+    <category term="观察" scheme="https://rob2468.github.io/tags/%E8%A7%82%E5%AF%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何开发孩子的阅读潜力</title>
+    <link href="https://rob2468.github.io/2020/08/08/child-reading/"/>
+    <id>https://rob2468.github.io/2020/08/08/child-reading/</id>
+    <published>2020-08-08T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;p&gt;周育如·台湾清华大学幼教系主任, 得到 App&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="读书笔记" scheme="https://rob2468.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>高效能人士的七个习惯，读书笔记</title>
+    <link href="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/"/>
+    <id>https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/</id>
+    <published>2020-05-24T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;p&gt;作者 史蒂芬.科维&lt;/p&gt;
+&lt;p&gt;得之太易必不受珍惜。唯有付出代价，万物始有价值。上苍深知如何为其产品制定合理的价格。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="读书笔记" scheme="https://rob2468.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 xcodeproj 构建脚本</title>
+    <link href="https://rob2468.github.io/2020/05/14/xcodeproj/"/>
+    <id>https://rob2468.github.io/2020/05/14/xcodeproj/</id>
+    <published>2020-05-14T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/CocoaPods/Xcodeproj&quot; target=&quot;_blank&quot;&gt;xcodeproj&lt;/a&gt; 是 CocoaPods 的一个子项目，能够创建和修改 Xcode 工程。基于 xcodeproj 的能力编写脚本，可以完成许多 Xcode 工程配置的自动化工作。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    <category term="xcodeproj" scheme="https://rob2468.github.io/tags/xcodeproj/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HttpServerDebug 视图层级之数据结构设计</title>
+    <link href="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/"/>
+    <id>https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/</id>
+    <published>2019-09-20T00:00:00.000Z</published>
+    <updated>2023-05-23T07:13:46.127Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2 id=&quot;section_1&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/rob2468/HttpServerDebug&quot; target=&quot;_blank&quot;&gt;HSD（HttpServerDebug）&lt;/a&gt; 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    <category term="HttpServerDebug" scheme="https://rob2468.github.io/tags/HttpServerDebug/"/>
+    
+  </entry>
+  
+</feed>
