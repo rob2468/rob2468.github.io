@@ -6,7 +6,7 @@
   <link href="https://rob2468.github.io/atom.xml" rel="self"/>
   
   <link href="https://rob2468.github.io/"/>
-  <updated>2023-05-23T07:13:46.127Z</updated>
+  <updated>2023-05-23T07:24:52.910Z</updated>
   <id>https://rob2468.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://rob2468.github.io/2023/05/17/chrome-extensions-best-practice/"/>
     <id>https://rob2468.github.io/2023/05/17/chrome-extensions-best-practice/</id>
     <published>2023-05-17T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;阅读本文需要的基础知识：Chrome Extensions、webpack、React。&lt;/p&gt;</summary>
@@ -40,7 +40,7 @@
     <link href="https://rob2468.github.io/2023/02/16/understanding-react/"/>
     <id>https://rob2468.github.io/2023/02/16/understanding-react/</id>
     <published>2023-02-16T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;React 从 v16 开始逐步引入异步可中断的渲染架构。&lt;/p&gt;
@@ -60,7 +60,7 @@
     <link href="https://rob2468.github.io/2023/02/09/understanding-jsx/"/>
     <id>https://rob2468.github.io/2023/02/09/understanding-jsx/</id>
     <published>2023-02-09T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;JSX-简介&quot;&gt;&lt;a href=&quot;#JSX-简介&quot; class=&quot;headerlink&quot; title=&quot;JSX 简介&quot;&gt;&lt;/a&gt;JSX 简介&lt;/h2&gt;&lt;p&gt;JSX 的介绍参考 React 官方文档 &lt;a href=&quot;https://zh-hans.reactjs.org/docs/introducing-jsx.html&quot;&gt;JSX 简介&lt;/a&gt;。&lt;/p&gt;
@@ -84,7 +84,7 @@
     <link href="https://rob2468.github.io/2023/01/17/how-browser-work/"/>
     <id>https://rob2468.github.io/2023/01/17/how-browser-work/</id>
     <published>2023-01-17T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;浏览器如何渲染页面&quot;&gt;&lt;a href=&quot;#浏览器如何渲染页面&quot; class=&quot;headerlink&quot; title=&quot;浏览器如何渲染页面&quot;&gt;&lt;/a&gt;浏览器如何渲染页面&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Performance/How_browsers_work&quot;&gt;Populating the page: how browsers work&lt;/a&gt;&lt;/p&gt;
@@ -102,7 +102,7 @@
     <link href="https://rob2468.github.io/2023/01/12/encrypted-communication/"/>
     <id>https://rob2468.github.io/2023/01/12/encrypted-communication/</id>
     <published>2023-01-12T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
       
@@ -125,7 +125,7 @@
     <link href="https://rob2468.github.io/2022/10/06/national-day/"/>
     <id>https://rob2468.github.io/2022/10/06/national-day/</id>
     <published>2022-10-06T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;今年国庆提前请了两天假回老家，儿子终于实现了他的坐着高铁去旅行的梦想。&lt;/p&gt;
@@ -144,7 +144,7 @@
     <link href="https://rob2468.github.io/2022/08/03/efficient-basketball/"/>
     <id>https://rob2468.github.io/2022/08/03/efficient-basketball/</id>
     <published>2022-08-03T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
       
@@ -169,7 +169,7 @@
     <link href="https://rob2468.github.io/2022/07/25/fonts/"/>
     <id>https://rob2468.github.io/2022/07/25/fonts/</id>
     <published>2022-07-25T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;CSS-font-face&quot;&gt;&lt;a href=&quot;#CSS-font-face&quot; class=&quot;headerlink&quot; title=&quot;CSS @font-face&quot;&gt;&lt;/a&gt;CSS @font-face&lt;/h2&gt;&lt;p&gt;一个字体家族可能包含多个字型。&lt;/p&gt;
@@ -201,7 +201,7 @@
     <link href="https://rob2468.github.io/2022/07/18/cubetransdev/"/>
     <id>https://rob2468.github.io/2022/07/18/cubetransdev/</id>
     <published>2022-07-18T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;之前做了一个工具 CubeTrans，可以将 “Vue” 代码转译成了 React 代码，具体参考这篇文章 &lt;a href=&quot;/2022/06/27/vue-to-react-cubetrans/&quot; title=&quot;将 &amp;quot;Vue&amp;quot; 转译为 React&quot;&gt;将 &amp;quot;Vue&amp;quot; 转译为 React&lt;/a&gt;。为了让 CubeTrans 有用，又做了 CubeTransDev 工具，核心功能是实时监听文件变化。当监听到代码或 mock data 变化时，能够自动编译并实时预览。&lt;/p&gt;</summary>
@@ -220,7 +220,7 @@
     <link href="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/"/>
     <id>https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/</id>
     <published>2022-06-27T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;本文记录了如何将 Vue 语言转译为 React 语言。主要目的是，当你面对此类源代码分析工作时，能够找到一些结构化处理的思路。&lt;/p&gt;
@@ -242,7 +242,7 @@
     <link href="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/"/>
     <id>https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/</id>
     <published>2021-12-26T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
@@ -263,7 +263,7 @@
     <link href="https://rob2468.github.io/2021/07/31/open-yale-courses-death/"/>
     <id>https://rob2468.github.io/2021/07/31/open-yale-courses-death/</id>
     <published>2021-07-31T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
@@ -284,7 +284,7 @@
     <link href="https://rob2468.github.io/2021/07/11/jing-imagination/"/>
     <id>https://rob2468.github.io/2021/07/11/jing-imagination/</id>
     <published>2021-07-11T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
@@ -305,7 +305,7 @@
     <link href="https://rob2468.github.io/2021/01/09/different-problems/"/>
     <id>https://rob2468.github.io/2021/01/09/different-problems/</id>
     <published>2021-01-09T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
@@ -324,7 +324,7 @@
     <link href="https://rob2468.github.io/2020/12/27/read-with-my-son/"/>
     <id>https://rob2468.github.io/2020/12/27/read-with-my-son/</id>
     <published>2020-12-27T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1&gt;&lt;/h1&gt;
@@ -343,7 +343,7 @@
     <link href="https://rob2468.github.io/2020/12/05/different-sales/"/>
     <id>https://rob2468.github.io/2020/12/05/different-sales/</id>
     <published>2020-12-05T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1&gt;&lt;/h1&gt;
@@ -364,7 +364,7 @@
     <link href="https://rob2468.github.io/2020/08/08/child-reading/"/>
     <id>https://rob2468.github.io/2020/08/08/child-reading/</id>
     <published>2020-08-08T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
@@ -383,7 +383,7 @@
     <link href="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/"/>
     <id>https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/</id>
     <published>2020-05-24T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
@@ -403,7 +403,7 @@
     <link href="https://rob2468.github.io/2020/05/14/xcodeproj/"/>
     <id>https://rob2468.github.io/2020/05/14/xcodeproj/</id>
     <published>2020-05-14T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 class=&quot;&quot;&gt;&lt;/h1&gt;
@@ -426,7 +426,7 @@
     <link href="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/"/>
     <id>https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/</id>
     <published>2019-09-20T00:00:00.000Z</published>
-    <updated>2023-05-23T07:13:46.127Z</updated>
+    <updated>2023-05-23T07:24:52.910Z</updated>
     
     
     <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
@@ -443,6 +443,814 @@
     <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
     
     <category term="HttpServerDebug" scheme="https://rob2468.github.io/tags/HttpServerDebug/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>指数基金基础知识</title>
+    <link href="https://rob2468.github.io/2019/07/28/index-fund-investment-fundation/"/>
+    <id>https://rob2468.github.io/2019/07/28/index-fund-investment-fundation/</id>
+    <published>2019-07-28T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2 id=&quot;section_1&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;投资是一项必备技能，平时通过蚂蚁财富等平台买了不少理财产品，零散之中也学到了一些指数基金的知识。公司最近发了一本书，由天弘指数基金研究小组出品的《指数基金/投资至简》，作为一名非专业人士，通过这本书学到了一些指数基金的知识。本文内容主要来自于这本书。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="读书笔记" scheme="https://rob2468.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>HSB 颜色系统实践入门（译）</title>
+    <link href="https://rob2468.github.io/2019/07/06/hsb-practitioners-primer/"/>
+    <id>https://rob2468.github.io/2019/07/06/hsb-practitioners-primer/</id>
+    <published>2019-07-06T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;本文翻译自 &lt;a href=&quot;https://learnui.design/blog/the-hsb-color-system-practicioners-primer.html&quot; target=&quot;_blank&quot;&gt;The HSB Color System: A Practitioner’s Primer&lt;/a&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="翻译" scheme="https://rob2468.github.io/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+    <category term="读书笔记" scheme="https://rob2468.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>为 GCDWebServer 引入 WebSocket 支持</title>
+    <link href="https://rob2468.github.io/2019/06/15/hsd-websocket/"/>
+    <id>https://rob2468.github.io/2019/06/15/hsd-websocket/</id>
+    <published>2019-06-15T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2 id=&quot;section_1&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;借助一些工具库，iOS 设备可以配置成为服务器，在此之上可以做许多有意思的事情。例如，&lt;a href=&quot;https://github.com/rob2468/HttpServerDebug&quot; target=&quot;_blank&quot;&gt;HttpServerDebug&lt;/a&gt; 基于这种能力，提供了现场调试 iOS App 的能力。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="HttpServerDebug" scheme="https://rob2468.github.io/tags/HttpServerDebug/"/>
+    
+    <category term="WebSocket" scheme="https://rob2468.github.io/tags/WebSocket/"/>
+    
+    <category term="网络" scheme="https://rob2468.github.io/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JavaScript Date 和时区</title>
+    <link href="https://rob2468.github.io/2019/06/10/js-date-and-zone/"/>
+    <id>https://rob2468.github.io/2019/06/10/js-date-and-zone/</id>
+    <published>2019-06-10T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2 id=&#39;section_1&#39;&gt;概述&lt;/h2&gt;
+
+&lt;p&gt;JS 中使用 &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date&quot; target=&quot;_blank&quot;&gt;Date&lt;/a&gt; 类型记录时间。Date 类型是对时间的抽象封装，它提供了许多操作时间的便利方法。本文整理了如何使用 Date 来处理时间，以及解决时区转换带来的问题。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    <category term="JavaScript" scheme="https://rob2468.github.io/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ASCII 编码对照表</title>
+    <link href="https://rob2468.github.io/2019/04/16/lookuptables/"/>
+    <id>https://rob2468.github.io/2019/04/16/lookuptables/</id>
+    <published>2019-04-16T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2019-04-16-asciifull.gif&quot;&gt;&lt;/p&gt;
+&lt;h3</summary>
+        
+      
+    
+    
+    
+    
+    <category term="资源" scheme="https://rob2468.github.io/tags/%E8%B5%84%E6%BA%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CSS 知识</title>
+    <link href="https://rob2468.github.io/2019/04/09/css-knowledge/"/>
+    <id>https://rob2468.github.io/2019/04/09/css-knowledge/</id>
+    <published>2019-04-09T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;选择器的特殊性&quot;&gt;&lt;a href=&quot;#选择器的特殊性&quot; class=&quot;headerlink&quot; title=&quot;选择器的特殊性&quot;&gt;&lt;/a&gt;选择器的特殊</summary>
+        
+      
+    
+    
+    
+    
+    <category term="CSS" scheme="https://rob2468.github.io/tags/CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>博客评论系统的更新历程</title>
+    <link href="https://rob2468.github.io/2019/03/30/blog-comment-system/"/>
+    <id>https://rob2468.github.io/2019/03/30/blog-comment-system/</id>
+    <published>2019-03-30T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;/p&gt;
+这个博客站点使用 Github Pages 搭建，能够提供静态页面的展示，但是没有一套现成的评论系统。从前年开始，就一直在尝试各种方法增加评论功能，每次更新都是方案的重大改变。最终的实现还是使用传统方案，自建服务器，使用数据库存储。应该以后就会围绕这个方案完善下去，好在博客一直没啥人气，我可以慢慢折腾 ==。</summary>
+    
+    
+    
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>蚂蚁金服三个月</title>
+    <link href="https://rob2468.github.io/2019/03/10/three-mothods-in-antfin/"/>
+    <id>https://rob2468.github.io/2019/03/10/three-mothods-in-antfin/</id>
+    <published>2019-03-10T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;p&gt;12月中旬离开百度加入蚂蚁金服。三个月时间转瞬即逝，马上就要提交试用期绩效评估，趁着这个时间自己也总结和梳理下最近的思考。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="思考" scheme="https://rob2468.github.io/tags/%E6%80%9D%E8%80%83/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>设计模式</title>
+    <link href="https://rob2468.github.io/2019/01/12/design-pattern/"/>
+    <id>https://rob2468.github.io/2019/01/12/design-pattern/</id>
+    <published>2019-01-12T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;模型是在某情景（con</summary>
+        
+      
+    
+    
+    
+    
+    <category term="设计模式" scheme="https://rob2468.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    <category term="MVC" scheme="https://rob2468.github.io/tags/MVC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JavaScript 原型链和继承机制</title>
+    <link href="https://rob2468.github.io/2018/11/21/javascript-prototype-chain/"/>
+    <id>https://rob2468.github.io/2018/11/21/javascript-prototype-chain/</id>
+    <published>2018-11-21T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;核心概念&quot;&gt;&lt;a href=&quot;#核心概念&quot; class=&quot;headerlink&quot; title=&quot;核心概念&quot;&gt;&lt;/a&gt;核心概念&lt;/h2&gt;&lt;p&gt;js </summary>
+        
+      
+    
+    
+    
+    
+    <category term="JavaScript" scheme="https://rob2468.github.io/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>视图裁剪</title>
+    <link href="https://rob2468.github.io/2018/10/12/clipped-content/"/>
+    <id>https://rob2468.github.io/2018/10/12/clipped-content/</id>
+    <published>2018-10-12T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;h2&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/rob2468/HttpServerDebug&quot; target=&quot;_blank&quot;&gt;HttpServerDebug&lt;/a&gt; 实现了类似 Xcode Debug View Hierarchy 功能。客户端提供信息，前端绘制并提供交互能力，实现视图调试功能。&lt;/p&gt;
+&lt;p&gt;视图调试其中一项功能是 Show Clipped Content，虽然不知道 Xcode 的实现方式，但是通过计算我们也可以拿到同样的信息。本文说明 HttpServerDebug 中的实现方案。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="HttpServerDebug" scheme="https://rob2468.github.io/tags/HttpServerDebug/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Objective-C Block</title>
+    <link href="https://rob2468.github.io/2018/09/30/block/"/>
+    <id>https://rob2468.github.io/2018/09/30/block/</id>
+    <published>2018-09-30T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;本文内容主要来自 Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书，参考&lt;a href=&quot;/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/&quot;&gt;这篇文章&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;Block 是语言级别的语法，是 C 语言的扩展。Block 可以解释为“包含了局部变量的匿名函数（anonymous functions together with automatic (local) variables）”。本文不多说 Block 的使用方法，着重讨论 Block 的实现机制。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="Objective-C" scheme="https://rob2468.github.io/tags/Objective-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>排序算法，伪代码实现</title>
+    <link href="https://rob2468.github.io/2018/09/17/sort/"/>
+    <id>https://rob2468.github.io/2018/09/17/sort/</id>
+    <published>2018-09-17T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2 id=&quot;section_1&quot;&gt;一、插入排序&lt;/h2&gt;
+
+&lt;h3 id=&quot;section_1_1&quot;&gt;1. 直接插入排序&lt;/h3&gt;
+
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; * 使用插入排序算法，将目标数组从小到大排列&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; * @param array  待排序的目标数组&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; * @param n  数组长度&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;InsertSort&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;array&lt;/span&gt;[], &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; n)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i, j;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; tmp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (i = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;; i &amp;lt; n; i++) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;comment&quot;&gt;// 遍历待排序元素&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        tmp = &lt;span class=&quot;built_in&quot;&gt;array&lt;/span&gt;[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (j = i - &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;; j &amp;gt;= &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; &amp;amp;&amp;amp; &lt;span class=&quot;built_in&quot;&gt;array&lt;/span&gt;[j] &amp;gt; tmp; j--) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;comment&quot;&gt;// 遍历已排序元素&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;built_in&quot;&gt;array&lt;/span&gt;[j + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;] = &lt;span class=&quot;built_in&quot;&gt;array&lt;/span&gt;[j];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;built_in&quot;&gt;array&lt;/span&gt;[j + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;] = tmp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;时间复杂度 O(n^2)，空间复杂度 O(1)。直接插入排序是稳定的排序算法。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="算法" scheme="https://rob2468.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>二叉树的遍历，伪代码实现</title>
+    <link href="https://rob2468.github.io/2018/09/16/binary-tree-traverse/"/>
+    <id>https://rob2468.github.io/2018/09/16/binary-tree-traverse/</id>
+    <published>2018-09-16T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; *  二叉树链表存储，结点数据模型&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;BiTreeNode&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; data;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    BiTreeNode *lchild;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    BiTreeNode *rchild;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    
+    <category term="算法" scheme="https://rob2468.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>管理的实践，读书笔记</title>
+    <link href="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/"/>
+    <id>https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/</id>
+    <published>2018-08-26T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;p&gt;花了好长时间才读完管理的实践这本书，不是因为内容无趣，而是因为必须专注的思考，才能体会德鲁克先生深刻的理念和见解。德鲁克先生的真知灼见和书中的系统论述，让我受益匪浅。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="读书笔记" scheme="https://rob2468.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>iOS 图像解码和最佳实践</title>
+    <link href="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/"/>
+    <id>https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/</id>
+    <published>2018-08-22T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何选择开源许可证？（转）</title>
+    <link href="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/"/>
+    <id>https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/</id>
+    <published>2018-06-27T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;p&gt;原文链接，&lt;a href=&quot;http://www.ruanyifeng.com/blog/2011/05/how_to_choose_free_software_licenses.html&quot; target=&quot;_blank&quot;&gt;阮一峰的网络日志-如何选择开</summary>
+        
+      
+    
+    
+    
+    
+    <category term="资源" scheme="https://rob2468.github.io/tags/%E8%B5%84%E6%BA%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>事件分发和 DOM 事件流（译）</title>
+    <link href="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/"/>
+    <id>https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/</id>
+    <published>2018-06-19T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;原文链接，&lt;a href=&quot;https://www.w3.org/TR/uievents/#event-flow&quot; target=&quot;_blank&quot;&gt;Event dispatch and DOM event flow&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;本文讲述事件分发机制和事件在 DOM 树上的传播行为。Web 应用使用 &lt;code&gt;dispatchEvent()&lt;/code&gt; 方法分发事件对象，事件对象遵循 DOM 事件流，在 DOM 树上传播。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Web" scheme="https://rob2468.github.io/tags/Web/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何在验证失败的情况下发布 Pod</title>
+    <link href="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/"/>
+    <id>https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/</id>
+    <published>2018-05-12T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在 CocoaPods</summary>
+        
+      
+    
+    
+    
+    
+    <category term="经验" scheme="https://rob2468.github.io/tags/%E7%BB%8F%E9%AA%8C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>callMethodWithCompletionBlock 中 Block 的内存管理</title>
+    <link href="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/"/>
+    <id>https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/</id>
+    <published>2018-02-08T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;开发中不时会遇到 &lt;code&gt;[obj callMethodWithCompletionBlock:^&amp;#123; [obj doSomething] &amp;#125;]&lt;/code&gt; 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>像素如何被绘制到屏幕上（译）</title>
+    <link href="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/"/>
+    <id>https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/</id>
+    <published>2018-01-14T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2&gt;前言&lt;/h2&gt;
+之前看到一篇很好的关于视图渲染的文章（&lt;a href=&quot;https://www.objc.io/issues/3-views/moving-pixels-onto-the-screen/?from=timeline&amp;isappinstalled=0&quot; target=&quot;_blank&quot;&gt;Getting Pixels onto the Screen&lt;/a&gt;），最近项目中遇到一些帧率优化的问题，想起来又阅读了一遍，并且抽时间进行了翻译，以便今后学习查阅。
+
+&lt;h2&gt;正文&lt;/h2&gt;
+
+&lt;p&gt;将内容显示到屏幕上，有许多方式可以实现。这个过程包含许多框架，依靠许多函数和方法的组合实现。本文讨论该过程的底层原理。当你需要考虑相关性能问题时，本文内容能够帮助挑选最优的 API。本文研究的对象是 iOS 系统，不过其中大部分内容也适用于 OS X。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="翻译" scheme="https://rob2468.github.io/tags/%E7%BF%BB%E8%AF%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Git 回滚多次提交最佳实践</title>
+    <link href="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/"/>
+    <id>https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/</id>
+    <published>2017-08-30T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;h2&gt;一、前言&lt;/h2&gt;
+
+&lt;p&gt;在开发过程中有这么一种情况，某个特性开发的代码需要回滚，但是该特性的开发提交和所有即将上线的提交处于统一分支，此时需要将该特性相关的提交依次回滚。在回滚代码时希望满足两个要求，能够保留详细的回滚日志信息、只产生一次提交记录。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Git" scheme="https://rob2468.github.io/tags/Git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>代码混淆</title>
+    <link href="https://rob2468.github.io/2017/07/27/code-obfuscation/"/>
+    <id>https://rob2468.github.io/2017/07/27/code-obfuscation/</id>
+    <published>2017-07-27T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.910Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;p&gt;class-dump 可以方便的导出 app 的类名和方法名，即使编译好的程序也能被第三方清晰看到编码信息。为了隐藏这些信息，可以对代码进行混淆，使得用如 class-dump 工具导出的类名和方法名变成毫无意义的乱码。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实现 GitHub Pages 的评论系统</title>
+    <link href="https://rob2468.github.io/2017/04/18/commentme/"/>
+    <id>https://rob2468.github.io/2017/04/18/commentme/</id>
+    <published>2017-04-18T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1&gt;&lt;/h1&gt;
+
+&lt;h2&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;2018-10-29 更新：&lt;/p&gt;
+&lt;p&gt;最近买了个虚拟主机，可以简化前端工作，而且服务端使用命令行工具，也不会像前端实现这么复杂。旧的使用 GitHub API 方式的实现，可以访问&lt;br&gt;&lt;a href=&quot;https://github.com/rob2468/BlogServer/tree/v0.1&quot; target=&quot;_blank&quot;&gt;这个链接&lt;/a&gt;。&lt;/p&gt;
+&lt;hr&gt;
+
+&lt;p&gt;本博客系统使用 GitHub Pages 服务。基本上所有文件为纯文本文件，使用 Git 执行版本控制并托管于 GitHub。GitHub Pages 在后台使用 &lt;a href=&quot;https://jekyllrb.com/&quot; target=&quot;_blank&quot;&gt;Jekyll&lt;/a&gt; 将当前提交内容编译成静态站点，实现网站发布。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+    <category term="Git" scheme="https://rob2468.github.io/tags/Git/"/>
+    
+    <category term="GitHub" scheme="https://rob2468.github.io/tags/GitHub/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ARC 内存管理和 GCD</title>
+    <link href="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/"/>
+    <id>https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/</id>
+    <published>2016-12-29T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;h2&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;Pro Multithreading and Memory Management for iOS and OS X with ARC, Grand Central Dispatch, and Blocks 这本书篇幅不多，可分为如下3部分，共8个章节。&lt;/p&gt;
+&lt;p&gt;内存管理基础知识：第一章、Life Before Automatic Reference Counting；第二章、ARC Rules；第三章、ARC Implementation。&lt;/p&gt;
+&lt;p&gt;Block：第四章、Getting Started with Blocks；第五章、Blocks Implementation。&lt;/p&gt;
+&lt;p&gt;GCD：第六章、Grand Central Dispatch；第七章、GCD Basics；第八章、GCD Implementation。&lt;/p&gt;
+&lt;p&gt;本文为该本书的读书笔记，Block 相关的内容比较多，参考&lt;a href=&quot;/2018/09/30/block&quot;&gt;这篇文章&lt;/a&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="读书笔记" scheme="https://rob2468.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UTI，Uniform Type Identifier</title>
+    <link href="https://rob2468.github.io/2016/09/20/uti/"/>
+    <id>https://rob2468.github.io/2016/09/20/uti/</id>
+    <published>2016-09-20T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;文本文件可以使用文本编辑器打开，图片可以使用图片查看软件打开，这些操作都包含文件类型的判断。文件类型的表示方式很多，本文介绍的 UTI（Uniform Type Identifier）是 Apple 提出的一种表示文件类型的方法。其它的文件类型表示方法还有 OSType、文件名后缀、MIME 等。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="资源" scheme="https://rob2468.github.io/tags/%E8%B5%84%E6%BA%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>可循环滚动的 ScrollView</title>
+    <link href="https://rob2468.github.io/2016/05/26/cycle-scroll-view/"/>
+    <id>https://rob2468.github.io/2016/05/26/cycle-scroll-view/</id>
+    <published>2016-05-26T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;代码：&lt;a href=&quot;https://github.com/rob2468/CycleScrollView&quot;&gt;CycleScrollView&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;上述代码实现可循环滚动的 ScrollView。具体需求有如下2点：&lt;/p&gt;
+&lt;p&gt;1、支持分页滚动；&lt;/p&gt;
+&lt;p&gt;2、支持循环滚动。&lt;/p&gt;
+&lt;p&gt;实现参考了网上搜到的一些方案，经过几次优化，形成最终的版本。许多实现存在一些缺陷，比如，快速滑动时会卡住，等 ScrollView 停止滑动后再滑动就可以了。最初的版本也存在这个问题，因为布局调整是在 scrollViewDidEndDecelerating 中实现的，快速滑动时不会调用到该方法中。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>初试项目管理，个人经验小结</title>
+    <link href="https://rob2468.github.io/2016/05/20/project-management-summary/"/>
+    <id>https://rob2468.github.io/2016/05/20/project-management-summary/</id>
+    <published>2016-05-20T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;加入百度时间不长，一直参与百度浏览器 iPhone 版的开发。开发组里每位同事会轮流负责新版本的管理工作，在试用期转正的1个月后，我承担了一次重大更新版本的项目管理工作。&lt;/p&gt;
+&lt;p&gt;这次重大更新版本从进入开发到 App Store 发布，将近2个月时间。本文是对这段经历的总结，包括管理经验、个人感受、个人思考。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="思考" scheme="https://rob2468.github.io/tags/%E6%80%9D%E8%80%83/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Objective-C 消息传递</title>
+    <link href="https://rob2468.github.io/2016/05/17/objc-message-send/"/>
+    <id>https://rob2468.github.io/2016/05/17/objc-message-send/</id>
+    <published>2016-05-17T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;OC 为动态运行时语言，其将许多决策从编译和链接时延迟到运行时执行。OC 中的方法调用本质为消息传递，[receiver message] 可以解释为向 receiver 对象发送 message 消息。今天阅读了 Apple 开发文档的 &lt;a href=&quot;https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html#//apple_ref/doc/uid/TP40008048-CH104-SW1]&quot;&gt;Messaging 章节&lt;/a&gt;，利用运行时系统提供的相关方法，OC 消息传递式的方法调用最终转换成了标准 C 语言函数调用方式，实现了统一。&lt;/p&gt;
+&lt;p&gt;本文以 Apple 开发文档为基础，讲述 OC 以消息传递方式实现方法调用的执行流程。第一节介绍执行消息解析的函数；第二节讲述消息解析过程中，消息对应的方法实现是如何寻找的；第三节讲述方法实现找到后，如何执行。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JSPatch 代码分析</title>
+    <link href="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/"/>
+    <id>https://rob2468.github.io/2016/05/16/jspatch-code-analysis/</id>
+    <published>2016-05-16T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;
+
+&lt;p&gt;“&lt;a href=&quot;https://github.com/bang590/JSPatch&quot;&gt;JSPatch&lt;/a&gt; 是一个 iOS 动态更新框架，只需在项目中引入极小的引擎，就可以使用 JavaScript 调用任何 Objective-C 原生接口，获得脚本语言的优势：为项目动态添加模块，或替换项目原生代码动态修复 bug。”&lt;/p&gt;
+&lt;p&gt;JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="动态化" scheme="https://rob2468.github.io/tags/%E5%8A%A8%E6%80%81%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>图片查看器中单张图片浏览的实现与优化</title>
+    <link href="https://rob2468.github.io/2016/01/16/image-browser-implementation-and-optimization/"/>
+    <id>https://rob2468.github.io/2016/01/16/image-browser-implementation-and-optimization/</id>
+    <published>2016-01-16T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id=&quot;一、背景&quot;&gt;&lt;a href=&quot;#一、背景&quot; class=&quot;headerlink&quot; title=&quot;一、背景&quot;&gt;&lt;/a&gt;一、背景&lt;/h2&gt;&lt;p&gt;百度浏览器3.1版本引入了图片查看器。我在3.2版本接手该模块，并修改与优化。百度浏览器中的图片查看器效果和微信中查看本人已发布照片调起的图片查看器功能类似。百度浏览器中许多模块能够调起图片查看器，如下载页面、趣星球、网页，以提供用户一致的图片浏览体验。&lt;/p&gt;
+&lt;p&gt;图片查看器的整体设计不必多说。在图片查看器中浏览单张图片时，为了实现最优的浏览体验，自己花了不少时间调试。本文对该部分功能中的知识和经验做记录。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Head Tab View</title>
+    <link href="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/"/>
+    <id>https://rob2468.github.io/2015/11/02/bdphoneheadtabview/</id>
+    <published>2015-11-02T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;源代码：&lt;a href=&quot;https://github.com/rob2468/HeadTabView&quot;&gt;BDPhoneHeadTabView&lt;/a&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在 UIScrollView 中使用 Autolayout</title>
+    <link href="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/"/>
+    <id>https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/</id>
+    <published>2015-10-26T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;通过为控件设定约束，Autolayout 能够实现控件布局的自适应。当 app 运行时，iOS 根据预先设定的约束布局界面元素。&lt;/p&gt;
+&lt;p&gt;以约束的方式为控件 A 设定布局，控件 A 的实际布局数据是通过约束的依赖关系计算出来的。比如，控件 A 的 leading 始终和控件 B 的 trailing 相等，则控件 A 的 leading 数据依赖于控件 B 的 trailing 数据。&lt;/p&gt;
+&lt;h2 id=&quot;一、问题&quot;&gt;&lt;a href=&quot;#一、问题&quot; class=&quot;headerlink&quot; title=&quot;一、问题&quot;&gt;&lt;/a&gt;一、问题&lt;/h2&gt;&lt;p&gt;当在 UIScrollView 中采用 Autolayout 方式布局时，情况变得有些复杂。UIScrollView 的 contentSize 依赖于其子视图的布局，而其子视图的布局依赖于 UIScrollView 的 contentSize。如图1所示。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="工程实践" scheme="https://rob2468.github.io/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>iOS App 在不同状态下收到 push 通知的行为</title>
+    <link href="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/"/>
+    <id>https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/</id>
+    <published>2015-08-14T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;iOS App有多种运行状态，并且可能在任一状态下接收到APNS (Apple Push Notification Service)发送来的push通知；针对一条push通知，用户可能采取不同动作。&lt;/p&gt;
+&lt;p&gt;为了合理的处理push通知，需要开发者在合适的地方提供处理代码。通过测试，本文总结出iOS App在不同状态下接收到push通知的行为。本文只是简单的总结处理push通知的时机，针对更加复杂的push功能未做调研。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>UML 中类及其关系的符号表示</title>
+    <link href="https://rob2468.github.io/2015/05/24/symbol-representation-of-uml-class-diagram/"/>
+    <id>https://rob2468.github.io/2015/05/24/symbol-representation-of-uml-class-diagram/</id>
+    <published>2015-05-24T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;在软件开发过程中，UML类图经常被用来描述工程中的类与类和类之间的关系。在UML中，类及其之间的关系有标准的符号表示，方便开发者表达和理解</summary>
+        
+      
+    
+    
+    
+    
+    <category term="UML" scheme="https://rob2468.github.io/tags/UML/"/>
+    
+    <category term="资源" scheme="https://rob2468.github.io/tags/%E8%B5%84%E6%BA%90/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>视图控制对象的视图的生命周期</title>
+    <link href="https://rob2468.github.io/2015/04/15/lifecycle-of-view-of-viewcontroller/"/>
+    <id>https://rob2468.github.io/2015/04/15/lifecycle-of-view-of-viewcontroller/</id>
+    <published>2015-04-15T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;《iOS编程（第三版）》“图7-20 某个视图控制对象的视图的生命周期”&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://media.githubuser</summary>
+        
+      
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>iOS 工程默认源代码文件简介（译）</title>
+    <link href="https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/"/>
+    <id>https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/</id>
+    <published>2015-04-11T00:00:00.000Z</published>
+    <updated>2023-05-23T07:24:52.906Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;翻译自 Apple iOS developer library&lt;/p&gt;
+&lt;h2 id=&quot;源代码简介&quot;&gt;&lt;a href=&quot;#源代码简介&quot; class=&quot;headerlink&quot; title=&quot;源代码简介&quot;&gt;&lt;/a&gt;源代码简介&lt;/h2&gt;&lt;p&gt;app 工程创建后通常会自动生成一些源代码文件，通过这些源代码文件构建 app。其中大部分的工作是由 &lt;code&gt;UIApplicationMain&lt;/code&gt; 函数完成的，&lt;code&gt;UIApplicationMain&lt;/code&gt; 函数在 &lt;code&gt;main.m&lt;/code&gt; 文件中自动被调用。&lt;code&gt;UIApplicationMain&lt;/code&gt; 函数创建一个应用程序对象，该应用程序对象为 app 创建与 iOS 操作系统协同工作的基础设施环境，包括创建一个向 app 分发输入事件的 &lt;em&gt;run loop&lt;/em&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="iOS" scheme="https://rob2468.github.io/tags/iOS/"/>
+    
+    <category term="翻译" scheme="https://rob2468.github.io/tags/%E7%BF%BB%E8%AF%91/"/>
     
   </entry>
   
