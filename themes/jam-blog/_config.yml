@@ -47,7 +47,7 @@ show_count: false
 recent_posts_limits: 5
 
 # Miscellaneous
-google_analytics:
+google_analytics: 'G-MS2BSFXL7Q'
 gauges_analytics:
 favicon: /favicon.ico
 twitter:
