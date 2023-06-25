@@ -101,6 +101,74 @@
           
   
     <article
+  id="post-callmethodwithcompletionblock-memory-speculating"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-02-08T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-02-08
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/"
+      >
+        callMethodWithCompletionBlock 中 Block 的内存管理
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>开发中不时会遇到 <code>[obj callMethodWithCompletionBlock:^&#123; [obj doSomething] &#125;]</code> 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。</p>
+        
+          <p class="article-more-link">
+            <a href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="cljascx7g000veaoqao6kapv4" data-title="callMethodWithCompletionBlock 中 Block 的内存管理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article
   id="post-getting-pixels-onto-the-screen-translation"
   class="h-entry article article-type-post"
   itemprop="blogPost"
@@ -158,7 +226,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="clj5oaehi0050e1om5av13gqb" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/01/14/getting-pixels-onto-the-screen-translation/" data-id="cljascx9a005aeaoq6zk95x0y" data-title="像素如何被绘制到屏幕上（译）" class="article-share-link">Share</a>
       
       
       
@@ -230,7 +298,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/" data-id="clj5oaef6000se1om4y8x01zq" data-title="Git 回滚多次提交最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/08/30/git-revert-multiple-commit-best-practice/" data-id="cljascx7e000seaoq660wf591" data-title="Git 回滚多次提交最佳实践" class="article-share-link">Share</a>
       
       
       
@@ -300,7 +368,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="clj5oaef5000re1ombqnt3c1c" data-title="代码混淆" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/07/27/code-obfuscation/" data-id="cljascx7e000reaoqayo133uk" data-title="代码混淆" class="article-share-link">Share</a>
       
       
       
@@ -376,7 +444,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2017/04/18/commentme/" data-id="clj5oaef4000qe1om4vwc265v" data-title="实现 GitHub Pages 的评论系统" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2017/04/18/commentme/" data-id="cljascx7d000qeaoq5vqzakh0" data-title="实现 GitHub Pages 的评论系统" class="article-share-link">Share</a>
       
       
       
@@ -452,7 +520,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="clj5oaehb004me1om8f2p8ic9" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/12/29/reading-notes-pro-multithreading-and-memory-management-for-ios-and-osx-with-arc-grand-central-dispatch-and-blocks/" data-id="cljascx970053eaoq22e26evm" data-title="ARC 内存管理和 GCD" class="article-share-link">Share</a>
       
       
       
@@ -520,7 +588,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/09/20/uti/" data-id="clj5oaef2000ne1omdjm1czzy" data-title="UTI，Uniform Type Identifier" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/09/20/uti/" data-id="cljascx7c000neaoqetey0fkr" data-title="UTI，Uniform Type Identifier" class="article-share-link">Share</a>
       
       
       
@@ -592,7 +660,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/26/cycle-scroll-view/" data-id="clj5oaef1000le1om0z88b2co" data-title="可循环滚动的 ScrollView" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/26/cycle-scroll-view/" data-id="cljascx7b000leaoqfg1h18v4" data-title="可循环滚动的 ScrollView" class="article-share-link">Share</a>
       
       
       
@@ -661,7 +729,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/20/project-management-summary/" data-id="clj5oaeeu000ie1ombyn04w1m" data-title="初试项目管理，个人经验小结" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/20/project-management-summary/" data-id="cljascx7a000ieaoq6cl48316" data-title="初试项目管理，个人经验小结" class="article-share-link">Share</a>
       
       
       
@@ -730,82 +798,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="clj5oaeet000ge1om7894gixx" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="cljascx78000geaoqeq1h5gcq" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article
-  id="post-jspatch-code-analysis"
-  class="h-entry article article-type-post"
-  itemprop="blogPost"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
-  <div class="article-meta">
-    <a
-  href="/2016/05/16/jspatch-code-analysis/"
-  class="article-date"
->
-  <time
-    class="dt-published"
-    datetime="2016-05-16T00:00:00.000Z"
-    itemprop="datePublished"
-  >
-    2016-05-16
-  </time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a
-        class="p-name article-title"
-        href="/2016/05/16/jspatch-code-analysis/"
-      >
-        JSPatch 代码分析
-      </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 class="title"></h1>
-
-<p>“<a target="_blank" rel="noopener" href="https://github.com/bang590/JSPatch">JSPatch</a> 是一个 iOS 动态更新框架，只需在项目中引入极小的引擎，就可以使用 JavaScript 调用任何 Objective-C 原生接口，获得脚本语言的优势：为项目动态添加模块，或替换项目原生代码动态修复 bug。”</p>
-<p>JSPatch 的实现原理可参考原作者(bang590)的相关文章。本文给出 JSPatch 部分代码分析纪录。</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/05/16/jspatch-code-analysis/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="clj5oaeeq000ee1oma0uwf76w" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" rel="tag">动态化</a></li></ul>
 
     </footer>
   </div>
@@ -855,7 +852,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
     </div>
   </div>
 
@@ -866,6 +863,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2023/06/21/travel-in-sanya/">2023年6月三亚之旅</a>
+          </li>
         
           <li>
             <a href="/2023/05/17/chrome-extensions-best-practice/">Chrome Extensions 开发最佳实践</a>
@@ -881,10 +882,6 @@
         
           <li>
             <a href="/2023/01/17/how-browser-work/">浏览器工作原理</a>
-          </li>
-        
-          <li>
-            <a href="/2023/01/12/encrypted-communication/">加密通信</a>
           </li>
         
       </ul>

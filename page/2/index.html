@@ -101,6 +101,79 @@
           
   
     <article
+  id="post-vue-to-react-cubetrans"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2022/06/27/vue-to-react-cubetrans/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2022-06-27T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2022-06-27
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2022/06/27/vue-to-react-cubetrans/"
+      >
+        将 &#34;Vue&#34; 转译为 React
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>本文记录了如何将 Vue 语言转译为 React 语言。主要目的是，当你面对此类源代码分析工作时，能够找到一些结构化处理的思路。</p>
+<h2 id="background">背景</h2>
+
+<p>标题中的 Vue 加上了引号，因为要转译的 Vue 代码不是包含了所有 Vue 语言特性的代码，而是 Vue 的一个子集。<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg4MDY0ODk0Ng==&mid=2247483885&idx=1&sn=f3a6a1993bf7b867d9ecf421c454e5bf&chksm=cf70b670f8073f66188329e479a37b4d8866686f98a2fc3a101d9ff8c972b835dd0eb453e785&mpshare=1&scene=1&srcid=0627Aj7Dl7Gj79iaUf7aQ3CP&sharer_sharetime=1656314563040&sharer_shareid=e31ba76f7466506e9f6b0c0056037e45&exportkey=AYxF2XQbEeP5I93T2nntDVI=&acctmode=0&pass_ticket=jGXWXRnxf1OTy8uzRI+uwUCe2k/z1/l5kervjNbaYHcrNHil38F7XZauvj7FMqy/&wx_header=0#rd">Cube 技术解读 | 支付宝新一代动态化技术架构与选型综述</a> 这篇文章介绍了支付宝中使用的动态化框架，“对于Cube卡片，支持基于精简vue的card-dsl。”</p>
+<p>Cube 卡片是一种客户端技术，进行 Cube 卡片研发需要进行繁琐的开发环境配置，将 Vue 转译为 React 能够在浏览器中实时预览，提升研发效率。将精简的 Vue 语法转译为标准的 Vue 语法也能实现浏览器预览，但公司里的 H5 项目均采用 React 开发，转译为 React 能够在 H5 项目中复用已有的 Cube 卡片。</p>
+<p>暂将这个工具命名为 CubeTrans。</p>
+        
+          <p class="article-more-link">
+            <a href="/2022/06/27/vue-to-react-cubetrans/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="cljascx8g002seaoq9pmb3ob1" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AST/" rel="tag">AST</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article
   id="post-fun-facts-about-raising-a-baby"
   class="h-entry article article-type-post"
   itemprop="blogPost"
@@ -155,7 +228,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="clj5oaeh00040e1om0kl26fwj" data-title="养娃趣事" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="cljascx8e002qeaoqbx351zgu" data-title="养娃趣事" class="article-share-link">Share</a>
       
       
       
@@ -227,7 +300,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="clj5oaegd002ne1omhtddds5k" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="cljascx8d002neaoq51xp6cj4" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
       
       
       
@@ -299,7 +372,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="clj5oaegc002le1om6ja815ot" data-title="儿子的想象力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="cljascx8c002leaoq1gjb99eq" data-title="儿子的想象力" class="article-share-link">Share</a>
       
       
       
@@ -369,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="clj5oaega002ie1omami6fmo6" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="cljascx8b002ieaoqfvy9fdva" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
       
       
       
@@ -439,7 +512,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/12/27/read-with-my-son/" data-id="clj5oaeg6002ge1om1iw84s54" data-title="与儿子一起的睡前阅读" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/12/27/read-with-my-son/" data-id="cljascx8a002geaoqavi38mxr" data-title="与儿子一起的睡前阅读" class="article-share-link">Share</a>
       
       
       
@@ -509,7 +582,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/12/05/different-sales/" data-id="clj5oaeg4002de1om7ff6fdke" data-title="不同的销售" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/12/05/different-sales/" data-id="cljascx89002deaoqaoxs8enb" data-title="不同的销售" class="article-share-link">Share</a>
       
       
       
@@ -579,7 +652,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/08/08/child-reading/" data-id="clj5oaeg3002be1om9kfb97tq" data-title="如何开发孩子的阅读潜力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/08/08/child-reading/" data-id="cljascx88002beaoqempu2kio" data-title="如何开发孩子的阅读潜力" class="article-share-link">Share</a>
       
       
       
@@ -650,7 +723,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/" data-id="clj5oaeg20028e1om2tlp35lc" data-title="高效能人士的七个习惯，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/" data-id="cljascx870028eaoq3e0ggjov" data-title="高效能人士的七个习惯，读书笔记" class="article-share-link">Share</a>
       
       
       
@@ -720,83 +793,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/05/14/xcodeproj/" data-id="clj5oaeg10026e1omcntq4nt5" data-title="使用 xcodeproj 构建脚本" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/05/14/xcodeproj/" data-id="cljascx860026eaoqbhjv8xsv" data-title="使用 xcodeproj 构建脚本" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xcodeproj/" rel="tag">xcodeproj</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article
-  id="post-hsd-view-hierarchy-data-structure"
-  class="h-entry article article-type-post"
-  itemprop="blogPost"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
-  <div class="article-meta">
-    <a
-  href="/2019/09/20/hsd-view-hierarchy-data-structure/"
-  class="article-date"
->
-  <time
-    class="dt-published"
-    datetime="2019-09-20T00:00:00.000Z"
-    itemprop="datePublished"
-  >
-    2019-09-20
-  </time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a
-        class="p-name article-title"
-        href="/2019/09/20/hsd-view-hierarchy-data-structure/"
-      >
-        HttpServerDebug 视图层级之数据结构设计
-      </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 class="title"></h1>
-
-<h2 id="section_1">前言</h2>
-
-<p><a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HSD（HttpServerDebug）</a> 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。</p>
-        
-          <p class="article-more-link">
-            <a href="/2019/09/20/hsd-view-hierarchy-data-structure/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/" data-id="clj5oaeg00024e1om9fhbeyuk" data-title="HttpServerDebug 视图层级之数据结构设计" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HttpServerDebug/" rel="tag">HttpServerDebug</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
 
     </footer>
   </div>
@@ -846,7 +847,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
     </div>
   </div>
 
@@ -857,6 +858,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2023/06/21/travel-in-sanya/">2023年6月三亚之旅</a>
+          </li>
         
           <li>
             <a href="/2023/05/17/chrome-extensions-best-practice/">Chrome Extensions 开发最佳实践</a>
@@ -872,10 +877,6 @@
         
           <li>
             <a href="/2023/01/17/how-browser-work/">浏览器工作原理</a>
-          </li>
-        
-          <li>
-            <a href="/2023/01/12/encrypted-communication/">加密通信</a>
           </li>
         
       </ul>
