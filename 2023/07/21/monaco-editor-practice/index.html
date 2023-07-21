@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MS2BSFXL7Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MS2BSFXL7Q');
+</script>
+<!-- End Google Analytics -->
+
+  
+  <title>Monaco Editor | 陈军的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Monaco 是一个代码编辑器，大名鼎鼎的 VS Code 便是基于 Monaco 实现。 背景在公司里做了一个 PC 端应用，应用名 RPCUI，开发语言 Objective-C。可以在该应用中发起 RPC 调用，调试接口。 RPCUI 实现了一个 JSON 编辑器，用于呈现 RPC 的输入和输出数据。这个编辑器实现原理很简单：使用 WKWebView 加载 Monaco，然后再将 webVie">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Monaco Editor">
+<meta property="og:url" content="https://rob2468.github.io/2023/07/21/monaco-editor-practice/index.html">
+<meta property="og:site_name" content="陈军的博客">
+<meta property="og:description" content="Monaco 是一个代码编辑器，大名鼎鼎的 VS Code 便是基于 Monaco 实现。 背景在公司里做了一个 PC 端应用，应用名 RPCUI，开发语言 Objective-C。可以在该应用中发起 RPC 调用，调试接口。 RPCUI 实现了一个 JSON 编辑器，用于呈现 RPC 的输入和输出数据。这个编辑器实现原理很简单：使用 WKWebView 加载 Monaco，然后再将 webVie">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-21T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-21T10:30:16.546Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="工程实践">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-monaco-editor-practice"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2023/07/21/monaco-editor-practice/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2023-07-21T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2023-07-21
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2023/07/21/monaco-editor-practice/"
+      >
+        Monaco Editor
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p><a target="_blank" rel="noopener" href="https://microsoft.github.io/monaco-editor/">Monaco</a> 是一个代码编辑器，大名鼎鼎的 VS Code 便是基于 Monaco 实现。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在公司里做了一个 PC 端应用，应用名 RPCUI，开发语言 Objective-C。可以在该应用中发起 RPC 调用，调试接口。</p>
+<p>RPCUI 实现了一个 JSON 编辑器，用于呈现 RPC 的输入和输出数据。这个编辑器实现原理很简单：使用 WKWebView 加载 Monaco，然后再将 webView 贴到原生视图上。</p>
+<p>本文介绍 Monaco 使用的一些实用功能。</p>
+<span id="more"></span>
+
+<h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><figure class="highlight json"><figcaption><span>package.json</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;rpcui-editor&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;0.0.1&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;RPCUI 子项目，基于 Monaco Editor&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;main&quot;</span>: <span class="string">&quot;index.js&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span>: &#123;&#125;,</span><br><span class="line">  <span class="attr">&quot;author&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;license&quot;</span>: <span class="string">&quot;MIT&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;monaco-editor&quot;</span>: <span class="string">&quot;^0.19.3&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight html"><figcaption><span>index.html</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>browser-amd-editor<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html;charset=utf-8&quot;</span> &gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;./index.css&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;container&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- OR ANY OTHER AMD LOADER HERE INSTEAD OF loader.js --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;../node_modules/monaco-editor/min/vs/loader.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;./index.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><figcaption><span>index.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> editor;</span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">require</span>.config(&#123;</span><br><span class="line">    <span class="attr">paths</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;vs&#x27;</span>: <span class="string">&#x27;../node_modules/monaco-editor/min/vs&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">require</span>([<span class="string">&#x27;vs/editor/editor.main&#x27;</span>], <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    editor = monaco.editor.create(<span class="built_in">document</span>.getElementById(<span class="string">&#x27;container&#x27;</span>), &#123;</span><br><span class="line">      <span class="attr">value</span>: text,</span><br><span class="line">      <span class="attr">language</span>: option.language || <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">      <span class="attr">readOnly</span>: !!option.readOnly,</span><br><span class="line">      <span class="attr">lineNumbers</span>: option.lineNumbers || <span class="string">&#x27;on&#x27;</span>,</span><br><span class="line">      <span class="attr">automaticLayout</span>: <span class="literal">true</span>,</span><br><span class="line">      <span class="attr">wordWrap</span>: <span class="string">&#x27;on&#x27;</span>,</span><br><span class="line">      <span class="attr">minimap</span>: &#123;</span><br><span class="line">        <span class="attr">enabled</span>: <span class="literal">false</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">scrollBeyondLastLine</span>: <span class="literal">false</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;)(<span class="string">&#x27;&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用功能"><a href="#常用功能" class="headerlink" title="常用功能"></a>常用功能</h2><p>下面代码块是一些 util 函数。</p>
+<figure class="highlight js"><figcaption><span>index.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当前光标是否定位在最后一行</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isLastLine</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; lineNumber &#125; = editor.getPosition() || &#123;&#125;;</span><br><span class="line">  <span class="keyword">const</span> isLastLine = lineNumber === editor.getModel().getLineCount();</span><br><span class="line">  <span class="keyword">return</span> isLastLine;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 滚动到编辑器底部</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scrollToBottom</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> lineCount = editor.getModel().getLineCount();</span><br><span class="line">  editor.revealLine(lineCount);</span><br><span class="line">  editor.setPosition(&#123; <span class="attr">lineNumber</span>: lineCount, <span class="attr">column</span>: <span class="number">0</span> &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><p>feature: 如果更新前编辑器定位在最后一行，那么内容更新后，编辑器仍然需要定位在最后一行。</p>
+<figure class="highlight js"><figcaption><span>index.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 更新编辑器内容</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(text);</span><br><span class="line">  <span class="keyword">if</span> (!editor) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;editor not instantiated&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 当前光标是否定位在最后一行</span></span><br><span class="line">  <span class="keyword">const</span> lastLine = isLastLine();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 更新内容</span></span><br><span class="line">  editor.setValue(text);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (option.scrollToBottom &amp;&amp; lastLine) &#123;</span><br><span class="line">    <span class="comment">// 滚动到编辑器底部</span></span><br><span class="line">    scrollToBottom();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="追加"><a href="#追加" class="headerlink" title="追加"></a>追加</h3><p>feature1: 如果追加内容前编辑器定位在最后一行，那么内容更新后，编辑器仍然需要定位在最后一行。</p>
+<p>feature2: 即使编辑器是只读的，也能成功追加内容。</p>
+<p>(RPCUI 中有一个打印日志的功能，追加接口主要给这个功能使用。)</p>
+<figure class="highlight js"><figcaption><span>index.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 追加文本</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">appendText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(text);</span><br><span class="line">  <span class="keyword">if</span> (!editor) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;editor not instantiated&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 是否最后一行</span></span><br><span class="line">  <span class="keyword">const</span> lastLine = isLastLine();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 找到文档最后的位置</span></span><br><span class="line">  <span class="keyword">const</span> lineCount = editor.getModel().getLineCount();</span><br><span class="line">  <span class="keyword">const</span> lastLineLength = editor.getModel().getLineMaxColumn(lineCount);</span><br><span class="line">  <span class="keyword">const</span> range = <span class="keyword">new</span> monaco.Range(</span><br><span class="line">      lineCount,</span><br><span class="line">      lastLineLength,</span><br><span class="line">      lineCount,</span><br><span class="line">      lastLineLength</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 追加文本</span></span><br><span class="line">  !!option.readOnly &amp;&amp; editor.updateOptions(&#123; <span class="attr">readOnly</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">  <span class="keyword">const</span> result = editor.executeEdits(<span class="string">&#x27;&#x27;</span>, [</span><br><span class="line">      &#123; range, text, <span class="attr">forceMoveMarkers</span>: <span class="literal">true</span> &#125;</span><br><span class="line">  ])</span><br><span class="line">  !!option.readOnly &amp;&amp; editor.updateOptions(&#123; <span class="attr">readOnly</span>: <span class="literal">true</span> &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (option.scrollToBottom &amp;&amp; lastLine) &#123;</span><br><span class="line">    <span class="comment">// 滚动到编辑器底部</span></span><br><span class="line">    scrollToBottom();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h3><figure class="highlight js"><figcaption><span>index.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取编辑器内容</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getText</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (editor) &#123;</span><br><span class="line">    <span class="keyword">return</span> editor.getValue();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="原生调用"><a href="#原生调用" class="headerlink" title="原生调用"></a>原生调用</h2><p>上文说到，Monaco 是先被加载到 WKWebView 中，再贴到原生视图上。本小节讲述，PC 原生应用如何与 Monaco 通信。</p>
+<p>Monaco <a href="#%E5%88%9D%E5%A7%8B%E5%8C%96">初始化</a>的时候需要配置一些参数，可以通过跳转链接传递。</p>
+<figure class="highlight objc"><figcaption><span>传递参数(OC代码)</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *editorDir = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@&quot;rpcui-editor&quot;</span> ofType:<span class="string">@&quot;&quot;</span>];</span><br><span class="line"><span class="built_in">NSURL</span> *editorDirURL = [<span class="built_in">NSURL</span> fileURLWithPath:editorDir];</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSString</span> *editorPath = [editorDir stringByAppendingPathComponent:<span class="string">@&quot;src/index.html&quot;</span>];</span><br><span class="line">editorPath = [editorPath stringByAddingPercentEncodingWithAllowedCharacters:[<span class="built_in">NSCharacterSet</span> URLPathAllowedCharacterSet]];</span><br><span class="line"><span class="built_in">NSString</span> *query = [<span class="built_in">NSString</span> stringWithFormat:</span><br><span class="line">    <span class="string">@&quot;?language=%@&amp;lineNumbers=%@&amp;readOnly=%@&amp;scrollToBottom=%@&quot;</span>,</span><br><span class="line">    <span class="keyword">self</span>.option.language,</span><br><span class="line">    <span class="keyword">self</span>.option.lineNumbers,</span><br><span class="line">    <span class="keyword">self</span>.option.readOnly ? <span class="string">@&quot;1&quot;</span> : <span class="string">@&quot;&quot;</span>,</span><br><span class="line">    <span class="keyword">self</span>.option.scrollToBottom ? <span class="string">@&quot;1&quot;</span> : <span class="string">@&quot;&quot;</span>];</span><br><span class="line"><span class="built_in">NSString</span> *editorUrlStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@&quot;file://%@%@&quot;</span>, editorPath, query];</span><br><span class="line"><span class="built_in">NSURL</span> *url = [<span class="built_in">NSURL</span> URLWithString:editorUrlStr];</span><br><span class="line">[<span class="keyword">self</span>.webView loadFileURL:url allowingReadAccessToURL:editorDirURL];</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><figcaption><span>接收参数(js代码)</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> urlParams = <span class="keyword">new</span> URLSearchParams(<span class="built_in">window</span>.location.search);</span><br><span class="line"><span class="keyword">const</span> option = &#123;</span><br><span class="line">  <span class="attr">language</span>: urlParams.get(<span class="string">&#x27;language&#x27;</span>),</span><br><span class="line">  <span class="attr">readOnly</span>: urlParams.get(<span class="string">&#x27;readOnly&#x27;</span>),</span><br><span class="line">  <span class="attr">lineNumbers</span>: urlParams.get(<span class="string">&#x27;lineNumbers&#x27;</span>),</span><br><span class="line">  <span class="attr">scrollToBottom</span>: urlParams.get(<span class="string">&#x27;scrollToBottom&#x27;</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如上文所述，编辑器的接口已经直接暴露在了 H5 全局作用域中。原生应用调用编辑器的方式如下所示。</p>
+<figure class="highlight objc"><figcaption><span>发起调用(OC代码)</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)_appendText:(<span class="built_in">NSString</span> *)str &#123;</span><br><span class="line">    <span class="built_in">NSString</span> *res = [str <span class="keyword">copy</span>];</span><br><span class="line">    res = [res stringByReplacingOccurrencesOfString:<span class="string">@&quot;\&quot;&quot;</span> withString:<span class="string">@&quot;\\\&quot;&quot;</span>];</span><br><span class="line">    res = [res stringByReplacingOccurrencesOfString:<span class="string">@&quot;\n&quot;</span> withString:<span class="string">@&quot;\\n&quot;</span>];</span><br><span class="line">    res = [res stringByReplacingOccurrencesOfString:<span class="string">@&quot;\r&quot;</span> withString:<span class="string">@&quot;&quot;</span>];</span><br><span class="line">    res = [res stringByReplacingOccurrencesOfString:<span class="string">@&quot;&#x27;&quot;</span> withString:<span class="string">@&quot;\\&#x27;&quot;</span>];</span><br><span class="line">    <span class="built_in">NSString</span> *jsStr = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@&quot;appendText(&#x27;%@&#x27;);&quot;</span>, res];</span><br><span class="line">    [<span class="keyword">self</span>.webView evaluateJavaScript:jsStr completionHandler:^(<span class="keyword">id</span> _Nullable res, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2023/07/21/monaco-editor-practice/" data-id="clkcfx3ck003jdtovg7vl5cnz" data-title="Monaco Editor" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/06/21/travel-in-sanya/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2023年6月三亚之旅</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5"><span class="toc-text">引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-text">常用功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0"><span class="toc-text">更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%BD%E5%8A%A0"><span class="toc-text">追加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96"><span class="toc-text">获取</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%94%9F%E8%B0%83%E7%94%A8"><span class="toc-text">原生调用</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 11.43px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/07/21/monaco-editor-practice/">Monaco Editor</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/21/travel-in-sanya/">2023年6月三亚之旅</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/17/chrome-extensions-best-practice/">Chrome Extensions 开发最佳实践</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/16/understanding-react/">React 实现原理之异步渲染</a>
+          </li>
+        
+          <li>
+            <a href="/2023/02/09/understanding-jsx/">理解 JSX</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
