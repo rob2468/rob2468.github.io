@@ -14,17 +14,17 @@ ul {
   list-style-type: none;
 }
 h1 {
-  font-size: 22px;
+  font-size: 30px;
 }
 h2 {
-  font-size: 18px;
+  font-size: 22px;
 }
 h3 {
-  font-size: 16px;
+  font-size: 19px;
 }
 h4,
 h5 {
-  font-size: 15px;
+  font-size: 18px;
 }
 p {
   font-size: 15px;
@@ -40,6 +40,10 @@ h1 {
 }
 h2 {
   padding-bottom: 5px;
+}
+h4 {
+  margin-top: 14px;
+  margin-bottom: 14px;
 }
 h5,
 p {
