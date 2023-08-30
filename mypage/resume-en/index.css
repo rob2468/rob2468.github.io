@@ -1,0 +1,10 @@
+li {
+  letter-spacing: 0.05em;
+}
+h2 {
+  margin-bottom: 0;
+}
+
+.job ul {
+  list-style-type: disc;
+}

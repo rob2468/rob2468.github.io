@@ -13,6 +13,9 @@ body {
 ul {
   list-style-type: none;
 }
+li {
+  line-height: 1.74;
+}
 h1 {
   font-size: 30px;
 }
