@@ -56,15 +56,42 @@
 
         <h5>Stock Business, June 2023 - Present</h5>
 
-        <p>随着养老金业务的稳定，年中回归了股票业务。</p>
+        <ul>
+          <li>
+            With the stability of the pension business, I returned to the stock business in the middle of 2023.
+          </li>
+        </ul>
 
         <h5>Pension Business, August 2022 - June 2023</h5>
 
-        <p>22年底个人养老金政策颁布，政策落地前夕，我加入了养老金团队承担保障业务开闸对外的工作。</p>
+        <ul>
+          <li>
+            Towards the end of 2022, the individual pension policy was issued.
 
-        <p>养老金业务很早就在为个养开闸做准备，但是系统的稳定性并不可靠。我加入团队后 review
-          了关键链路的方案和实现，修正了一些问题。比如，调整了切流开关设计不合理的问题，使得个养阵地能够同时支持开闸前后的状态，持续迭代。完全承接了大促活动项目，与产品对焦玩法链路、逐行 review
-          大促活动的代码，并在对外前发布上线。基于以往的经验，切流将是开闸对外非常重要的一项功能，因此提前做好了技术准备，最终支持了项目组、蚂蚁集团、阿里巴巴集团、城市维度、百分比粒度的放量对外。</p>
+            On the eve of policy announcement, I joined the pension team to undertake the opening up task.
+          </li>
+
+          <li>
+            The pension business had been preparing for the opening of individual pension accounts for a long time, but
+            the system's stability was not reliable.
+
+            After joining the team, I reviewed the solutions and implementations of key processes and corrected some
+            issues.
+
+            For example, I adjusted the design of the switch for traffic cutting, which was not reasonable, making it
+            possible to support both pre and post-opening states, allowing for continuous iteration.
+
+            I completely took over the major promotional project, discussed the gameplay with the product team, reviewed
+            the code line by line for
+            the promotion, and deployed it before the public release.
+
+            Based on past experience, I realized traffic cutting would be a crucial feature for the opening, so I made
+            technical preparations in advance.
+
+            Ultimately it supported the opening to be launched externally at the project team level, Ant Group, Alibaba
+            Group, city level, and percentage level.
+          </li>
+        </ul>
 
         <h5>Securities Wealth Management Business, January 2022 - August 2022</h5>
 
@@ -84,27 +111,104 @@
 
         <h5>Stock, Pension, Investment Research, Community Business, April 2020 - December 2021</h5>
 
-        <p>20年4月新入职了一位同学，组织任命其为 Team
-          Lead，并开始组建新团队。团队初期定位为终端基础，要求能够云动支持上一级大团队的业务。我作为核心开发在这个阶段经历了频繁的业务变动，在股票、养老金、投研、社区等多个项目中独当一面，证明了团队的战斗力。最终团队得到组织认可，得以负责完整的股票业务，并剥离了其它规模较小的业务。
-        </p>
+        <ul>
+          <li>
+            In April 2020, a new colleague joined the company and was appointed as the team leader.
 
-        <p>
-          在接手养老金业务后，刚好面临财富+保险融合的大改版需求。我作为负责人完成了从需求分析到开发上线的大部分工作，最终顺利切流对外。在紧张的工程开发期间，我还对发现的一些体验问题进行了优化，如首页加载闪动的问题。由于首页头部卡片逻辑复杂，架构设计上将首页的数据处理分成了两个
-          model (页面 model 和 头部卡片
-          model)。分析发现由于头部卡片处理耗时长，而页面框架整体反而结构简单，能够快速处理。若页面数据已处理完成并渲染，然后头部卡片才处理完成，此时头部卡片渲染出来，便会造成闪动的问题。解决方案是在两个 model
-          之间加上了时序控制，页面 model 只有等到头部卡片 model 的数据处理完成，才允许提交数据。最后完美的解决了该问题。</p>
+            We started to build a new team, and the team was required to be able to flexibly support the work of the
+            higher-level team.
 
-        <p>在投研业务中，前端需要开发一个内部 B 端应用，用于展示金融工程同学生产的数据，同时还需要维护一个对外的 B 端应用，功能是内部应用的子集。应用采用 BFF (Backend For Frontend) 架构，一组前端
-          + nodejs 应用提供对内服务、另一组前端 + nodejs 应用提供对外服务。前端使用 npm 包来共享页面样式，nodejs
-          层使用插件来共享接口实现。我从0到1完成了整个应用系统的搭建，并带领2个外包同学进行业务迭代，在此模式下支撑了业务的发展。</p>
+            I went through frequent personnel changes in this time period.
 
-        <p>在股票业务中，存在如下两个问题，一是如股票首页这种 H5 页面，启动速度慢体验差，二是使用原生 iOS/Android
-          技术开发时，人力资源耗费大、业务迭代效率低。基于支付宝自研的高性能动态化引擎，进行了股票研发模式的升级改造。我负责打通服务端的数据链路，对接管理后台并在 nodejs
-          层封装成业务可用的接口，与客户端同学联调配合，完成改造上线。股票首页完成改造升级后，平均启动时长从 2000ms 缩短到了 700ms。股票详情页接入该链路后，研发效能提升50%。</p>
+            As a core developer, I took the lead in various projects such as Stock, Pension, Investment Research, and
+            Communities, proving the team's combat effectiveness.
 
-        <p>
-          用户对股票详情页不同标的的访问情况，能够侧面体现出市场当前的热度。前端会上报用户的访问数据并记录到数据仓库，因此也是离数据源头最近的角色。在此背景下，我在业余时间学习了洗数据的流程，并制作了一份股票详情页分个股、指数、板块各类型的
-          top UV 的报表。口口相传，目前已有10+左右不同业务线的运营同学申请了该报表权限，起到了辅助业务决策的作用。
+            Eventually, the team gained recognition from the organization and was entrusted with the complete
+            responsibility for the Stock business, while the smaller-scale businesses were separated.
+          </li>
+
+          <li>
+            After taking over the Pension business, I happened to face the need for a major overhaul of wealth and
+            insurance integration.
+
+            As the person in charge, I completed most of the work from requirements analysis to development and finally
+            successfully published this project.
+
+            During the intense development period, I also optimized some experience issues that were discovered, such as
+            the flashing issue when loading the homepage.
+
+            Due to the complexity of the logic in the header cards of the homepage, the architecture design divided the
+            data processing of the homepage into two models (the page model and the header card model).
+
+            Analysis revealed that the header card processing took a long time, while the overall structure of the page
+            was relatively simple and could be processed quickly.
+
+            If the page data was already processed and rendered, and then the header card was processed and then
+            rendered. Thus the header card would push other cards below. This execution process caused the flashing
+            issue.
+
+            The solution was to add temporal control between the two models.
+
+            When the header card model's data processing is completed, the page model can submit data to render.
+
+            Finally, the problem was perfectly solved.
+          </li>
+
+          <li>
+            In the Investment Research business, we need to develop an internal web application to display the data
+            produced by the financial engineering team.
+
+            Additionally, we need to develop an external web application that was a subset of the internal application.
+
+            The applications were built using the BFF (Backend For Frontend) architecture, where one group
+            of web page with node application provided internal services, and another group provided external
+            services.
+
+            I used npm packages to share web implementations, while the node layer used plugins to share interface
+            implementations.
+
+            I built the entire application system from scratch and led two outsourced colleagues in iterative
+            development.
+
+            This architecture had supported the growth of the business.
+          </li>
+
+          <li>
+            In the Stock business, there were two main issues.
+
+            First, H5 pages like the stock homepage had slow startup speeds and poor user experience.
+
+            Second, developing using iOS/Android technologies required a large amount of manpower and had low efficiency
+            for business development.
+
+            To address these issues, we upgraded the Stock development mode based on Alipay's self-developed
+            high-performance dynamic engine.
+
+            My job was to establish the data link on the server side, integrate with the management backend, and
+            encapsulate it into usable interfaces at the node layer.
+
+            I collaborated with the client team to complete the upgrade. And it released successfully.
+
+            After the upgrade, the average startup time of the stock homepage was reduced from 2000ms to 700ms.
+
+            The efficiency of stock detail page development increased by 50% after taking this solution.
+          </li>
+
+          <li>
+            Users' visits to different stocks on the stock detail page can reflect the current market trends.
+
+            The front-end team reports user visit data and records it to the data warehouse, making us the closest role
+            to the source of data.
+
+            In this context, I took the initiative to learn the process of data cleansing in my spare time and created a
+            report on the top UV for individual stock, index, and sector pages.
+
+            Through word of mouth, there are now more than 10 operational colleagues from different business lines who
+            have requested access to this report.
+
+            It has played a role in assisting business decision-making.
+          </li>
+        </ul>
 
         <h5>High-net-worth Wealth Management Business, December 2018 - March 2020</h5>
 
@@ -115,7 +219,7 @@
             integration to ensure business expansion at any time.
 
             The front-end team was consisted of 3 people. In the early stages, I was responsible for developing a
-            mini-program for dual recording (audio and video), and later I was responsible for the entire front-end
+            mini-program of dual recording (audio and video), and later I was responsible for the entire front-end
             project.
 
             Ultimately, the business was successfully launched to the outside world in the middle of 2019.
@@ -151,49 +255,138 @@
         </ul>
         <h3>2. Baidu, May 2015 - December 2018, Shanghai</h3>
 
-        <h5>小说 SDK 2017年9月-2018年12月</h5>
-        <p>承担角色：技术负责人</p>
-        <p>项目描述：将百度 App 小说垂类剥离成独立 SDK，接入其它宿主 App。</p>
-        <p>项目职责：从主线剥离小说代码，配置 Demo 工程，开发 SDK 打包脚本。设计开发模式，以对接不同宿主方。进行定制化开发，并与宿主联调，解决编译冲突问题。</p>
-        <p>项目业绩：目前已接入百度网盘和百度贴吧。</p>
-
-        <h5>百度 App 小说组件化 2017年9月-2017年12月</h5>
-        <p>承担角色：技术负责人</p>
-        <p>项目描述：组件化是大项目大团队的必经之路，需将小说剥离成独立组件。</p>
-        <p>项目职责：将小说从应用层剥离，并下层至组件层。进行工作量调研，制定工作计划，在三个版本内完成了组件化开发。持续优化，完成小说数据库迁移。</p>
-
-        <h5>百度 App iOS 客户端小说和动漫垂类 2017年6月-2018年12月</h5>
-        <p>承担角色：技术负责人</p>
-        <p>项目描述：百度 App 小说和动漫。</p>
-        <p>项目职责：初期作为小说核心开发者，负责多个重要功能需求的开发。作为小说和动漫垂类开发组长，参与工时评估和人力分配，协助确认技术方案，进行代码评审。主导小说动漫性能优化，规划优化点，确认评测方案，与组员讨论优化方向。
-        </p>
-        <p>项目业绩：开发质量高，无重大 bug。开发能力能够独当一面，独立完成复杂功能开发，如小说阅读器上下翻页功能。重视文档建设，团队开发记录可追溯。性能优化多项指标赶超竞品。</p>
-
-        <h5>百度浏览器趣听垂类 2017年1月-2017年4月</h5>
-        <p>承担角色：技术负责人 (共5人)</p>
-        <p>项目描述：百度浏览器趣听垂类，提供用户丰富多样的音频内容，可以搜索音频节目、管理播放记录、下载音频文件等。创建通用组件趣听播放器，趣听垂类和资讯流模块可调用趣听播放器播放音频文件和文本合成音频。</p>
-        <p>项目职责：负责架构设计和开发，协调多名 RD 参与其中，整体把控项目前进方向。</p>
-        <p>角色分工：本人：趣听框架、播放器架构、趣听首页、趣听搜索；同事1：趣听个人中心；同事2：播放器界面、播放器业务需求；同事3：播放能力支持；同事4：资讯流对接趣听。</p>
-        <p>项目业绩：从0到1全新搭建趣听垂类，功能稳定，结构清晰。</p>
-
-        <h5>百度浏览器小说垂类 2016年6月</h5>
-        <p>承担角色：开发者</p>
-        <p>项目职责：与同事合作全新开发小说垂类，搭建小说整体框架并负责多个子模块开发。</p>
-        <p>项目业绩：从0到1全新开发，构建小说框架，满足后续持续迭代的要求。</p>
-
-        <h5>百度浏览器热修复能力 2015年12月-2016年5月</h5>
-        <p>承担角色：技术负责人</p>
-        <p>项目描述：利用 JSPatch 核心代码，结合百度浏览器服务端配置平台，设计构建了一套完整的热修复流程，为百度浏览器和 Hao123 App 提供热修复能力。</p>
-        <p>项目职责：调研 JSPatch 原理和可用性；分析热修复场景，设计热修复流程；开发和维护，下发修复脚本时提供技术支持。</p>
-        <p>项目业绩：共计下发十多次热修复脚本，实现了线上问题快速验证，多次避免重新发版。向 JSPatch 库多次贡献代码。</p>
-
-        <h5>百度浏览器 iOS 客户端 2015年5月-2017年8月</h5>
-        <p>承担角色：开发者</p>
-        <p>项目描述：百度浏览器提供用户连接网络的入口，满足用户的日常需求，如浏览网页、看视频、阅读小说、查看假期、获取资讯等。</p>
+        <h5>Novel SDK, September 2017 - December 2018</h5>
+        <p>Role: Technical leader</p>
         <p>
-          项目职责：开发和维护模块：节假日、书签历史、自动化测试、分享、Hao123、“我的”标签、头部标签、我的视频、我的下载、推送、图片查看器、启动教育页、JSPatch、首页、消息中心、小说、阅读模式、首页运营位、主题模式、趣听等。在4.0版本进行项目管理工作。
+          Project description:
+          Separated the Baidu App novel subcategory into an independent SDK and integrated it into other host apps.
         </p>
-        <p>项目业绩：百度浏览器不断迭代，持续更新发版。</p>
+        <p>
+          Responsibility:
+          Extracted the novel code from the mainline, configured a demo project, and developed SDK packaging scripts.
+          Designed development patterns to integrate with different host applications.
+          Customized development was carried out, and collaborated with the host app to resolve compilation conflicts.
+        </p>
+        <p>
+          Achievement:
+          Baidu Netdisk App and Baidu Tieba App had been integrated.
+        </p>
+
+        <h5>Baidu App novel modularity, September 2017 - December 2017</h5>
+        <p>Role: Technical leader</p>
+        <p>
+          Project description:
+          Modularity is a necessary path for large projects and teams.
+          It is required to separate the novel module into an independent component.
+        </p>
+        <p>
+          Responsibility:
+          The novel module was separated from the application layer and moved to the component layer.
+          Workload assessment was conducted, and a work plan was developed, completing the componentization development
+          within three versions.
+          Continuous optimization was carried out, and the migration of the novel database was completed.
+        </p>
+
+        <h5>Baidu App iOS novel and comic, June 2017 - December 2018</h5>
+        <p>Role: Technical leader</p>
+        <p>
+          Responsibility:
+          Initially, as the core developer for the novel module, I was responsible for developing multiple important
+          features.
+          As the team leader for novel and comic subcategories, I participated in the estimation of work hours and
+          allocation of manpower.
+          I assisted in confirming technical solutions and conducting code reviews.
+          I led the performance optimization of the novel and comic, planned optimization points, confirmed evaluation
+          plans, and discussed optimization directions with team members.
+        </p>
+        <p>
+          Achievement:
+          Developed with high quality and no major bugs.
+          Capable of independently handling complex feature development, such as implementing the page flipping
+          functionality in the novel reader.
+          Emphasized documentation construction, team development records can be traced.
+          Surpassed competitors in multiple performance optimization indicators.
+        </p>
+
+        <h5>Baidu Browser App "QuTing", January 2017 - April 2017</h5>
+        <p>Role: Technical leader (a total of 5 people)</p>
+        <p>
+          Project description:
+          Baidu Browser's "QuTing" (means fun listening) subcategory provides users with a diverse range of audio
+          content, allowing them to search for audio programs, manage playback history, and download audio files.
+          A universal component called "QuTing Player" was created, which can be used by the QuTing subcategory and the
+          News Feed module to play audio files and synthesize text-to-speech audio.
+        </p>
+        <p>
+          Responsibility:
+          Responsible for architecture design and development, coordinating multiple RDs to participate and project
+          manage.
+        </p>
+        <p>
+          Task Allocation:
+          My Responsibilities: QuTing framework, player architecture, QuTing homepage, QuTing search.
+          Colleague 1: QuTing personal center.
+          Colleague 2: Player interface, player business requirements.
+          Colleague 3: Player capability support.
+          Colleague 4: Integration of News Feed with QuTing.
+        </p>
+        <p>
+          Achievement:
+          From scratch, built the QuTing subcategory, ensuring stable functionality and clear structure.
+        </p>
+
+        <h5>Baidu Browser App novel, June 2016</h5>
+        <p>Role: Developer</p>
+        <p>
+          Responsibility:
+          Collaborated with colleagues to develop a new novel subcategory, built the basic framework, and was
+          responsible for developing multiple sub-modules.
+        </p>
+        <p>
+          Achievement:
+          Developed from scratch, built the novel framework to meet the requirements of subsequent continuous
+          iterations.
+        </p>
+
+        <h5>Baidu Browser hotfix, December 2015 - May 2016</h5>
+        <p>Role: Technical leader</p>
+        <p>
+          Project description:
+          By utilizing the core code of JSPatch and combining it with the Baidu Browser server configuration platform, a
+          complete hotfix process was designed and built to provide hotfix capabilities for Baidu Browser and Hao123
+          App.
+        </p>
+        <p>
+          Responsibility:
+          Researching the principle and feasibility of JSPatch; analyzing hotfix scenarios and designing the hotfix
+          process; developing and maintaining, providing technical support when deploying patch scripts.
+        </p>
+        <p>
+          Achievement:
+          A total of over ten hotfix scripts were deployed, achieving quick validation of online issues and avoiding
+          multiple re-releases.
+
+          Made multiple contributions to the JSPatch library by providing code.
+        </p>
+
+        <h5>Baidu Browser iOS, May 2015 - August 2017</h5>
+        <p>Role: Developer</p>
+        <p>
+          Project description:
+          Baidu Browser provides users with an entrance to connect to the internet, meeting their daily needs such as
+          browsing webpages, watching videos, reading novels, checking holidays, and accessing news and information.
+        </p>
+        <p>
+          Responsibility:
+          Development and maintenance of modules: holidays, bookmark history, automated testing, sharing, Hao123, "My"
+          tab, header tab, my video, my downloads, push notifications, image viewer, startup education page, JSPatch,
+          homepage, message center, novels, reading mode, homepage operation banner, theme mode, fun listening, etc.
+          Project management work was carried out in version 4.0.
+        </p>
+        <p>
+          Achievement:
+          Baidu Browser undergoes continuous iteration and regular updates and releases.
+        </p>
 
         <h3>3. Fudan University, September 2012 - July 2015, Shanghai</h3>
 
