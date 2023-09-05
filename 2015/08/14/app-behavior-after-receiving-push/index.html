@@ -25,7 +25,7 @@
 <meta property="og:description" content="iOS App有多种运行状态，并且可能在任一状态下接收到APNS (Apple Push Notification Service)发送来的push通知；针对一条push通知，用户可能采取不同动作。 为了合理的处理push通知，需要开发者在合适的地方提供处理代码。通过测试，本文总结出iOS App在不同状态下接收到push通知的行为。本文只是简单的总结处理push通知的时机，针对更加复杂的push">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-08-14T00:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-01T03:54:23.475Z">
+<meta property="article:modified_time" content="2023-09-05T11:28:28.337Z">
 <meta property="article:author" content="陈军">
 <meta property="article:tag" content="iOS">
 <meta name="twitter:card" content="summary">
@@ -171,7 +171,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/" data-id="clm029qau0007esoneyd88qv9" data-title="iOS App 在不同状态下收到 push 通知的行为" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/" data-id="clm6893eg0007euow3zpx7blg" data-title="iOS App 在不同状态下收到 push 通知的行为" class="article-share-link">Share</a>
       
       
       
@@ -274,7 +274,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.86px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.86px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
     </div>
   </div>
 
@@ -296,6 +296,10 @@
       <ul>
         
           <li>
+            <a href="/2023/09/05/compound-interest-simple-interest/">复利与单利</a>
+          </li>
+        
+          <li>
             <a href="/2023/09/01/git-log-commit-time/">统计特定时间段的代码提交记录</a>
           </li>
         
@@ -309,10 +313,6 @@
         
           <li>
             <a href="/2023/05/17/chrome-extensions-best-practice/">Chrome Extensions 开发最佳实践</a>
-          </li>
-        
-          <li>
-            <a href="/2023/02/16/understanding-react/">React 实现原理之异步渲染</a>
           </li>
         
       </ul>

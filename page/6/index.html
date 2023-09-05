@@ -101,6 +101,78 @@
           
   
     <article
+  id="post-cycle-scroll-view"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2016/05/26/cycle-scroll-view/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2016-05-26T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2016-05-26
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2016/05/26/cycle-scroll-view/"
+      >
+        可循环滚动的 ScrollView
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>代码：<a target="_blank" rel="noopener" href="https://github.com/rob2468/CycleScrollView">CycleScrollView</a></p>
+<p>上述代码实现可循环滚动的 ScrollView。具体需求有如下2点：</p>
+<p>1、支持分页滚动；</p>
+<p>2、支持循环滚动。</p>
+<p>实现参考了网上搜到的一些方案，经过几次优化，形成最终的版本。许多实现存在一些缺陷，比如，快速滑动时会卡住，等 ScrollView 停止滑动后再滑动就可以了。最初的版本也存在这个问题，因为布局调整是在 scrollViewDidEndDecelerating 中实现的，快速滑动时不会调用到该方法中。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/05/26/cycle-scroll-view/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2016/05/26/cycle-scroll-view/" data-id="clm6893es000leuow49px6dfh" data-title="可循环滚动的 ScrollView" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article
   id="post-project-management-summary"
   class="h-entry article article-type-post"
   itemprop="blogPost"
@@ -152,7 +224,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/20/project-management-summary/" data-id="clm029qb5000iesonh8s78uop" data-title="初试项目管理，个人经验小结" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/20/project-management-summary/" data-id="clm6893er000ieuow4f1k9wnr" data-title="初试项目管理，个人经验小结" class="article-share-link">Share</a>
       
       
       
@@ -221,7 +293,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="clm029qb1000geson73sjgbbr" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/17/objc-message-send/" data-id="clm6893em000geuowe0rb6i2i" data-title="Objective-C 消息传递" class="article-share-link">Share</a>
       
       
       
@@ -292,7 +364,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="clm029qaz000eeson10cp1719" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/05/16/jspatch-code-analysis/" data-id="clm6893ek000eeuow8j6v2p5j" data-title="JSPatch 代码分析" class="article-share-link">Share</a>
       
       
       
@@ -361,7 +433,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2016/01/16/image-browser-implementation-and-optimization/" data-id="clm029qay000deson14refpq0" data-title="图片查看器中单张图片浏览的实现与优化" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2016/01/16/image-browser-implementation-and-optimization/" data-id="clm6893ej000deuowc20q8wpj" data-title="图片查看器中单张图片浏览的实现与优化" class="article-share-link">Share</a>
       
       
       
@@ -429,7 +501,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="clm029qax000beson7qga7ke1" data-title="Head Tab View" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/11/02/bdphoneheadtabview/" data-id="clm6893ei000beuow0g477wjy" data-title="Head Tab View" class="article-share-link">Share</a>
       
       
       
@@ -499,7 +571,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/" data-id="clm029qaw000aeson290yenez" data-title="在 UIScrollView 中使用 Autolayout" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/10/26/autolayout-in-uiscrollView/" data-id="clm6893eh000aeuowb4ssdi5n" data-title="在 UIScrollView 中使用 Autolayout" class="article-share-link">Share</a>
       
       
       
@@ -568,7 +640,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/" data-id="clm029qau0007esoneyd88qv9" data-title="iOS App 在不同状态下收到 push 通知的行为" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/08/14/app-behavior-after-receiving-push/" data-id="clm6893eg0007euow3zpx7blg" data-title="iOS App 在不同状态下收到 push 通知的行为" class="article-share-link">Share</a>
       
       
       
@@ -633,7 +705,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/05/24/symbol-representation-of-uml-class-diagram/" data-id="clm029qau0006eson9mgc69mu" data-title="UML 中类及其关系的符号表示" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/05/24/symbol-representation-of-uml-class-diagram/" data-id="clm6893ef0006euow5jqnafhh" data-title="UML 中类及其关系的符号表示" class="article-share-link">Share</a>
       
       
       
@@ -698,7 +770,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/04/15/lifecycle-of-view-of-viewcontroller/" data-id="clm029qat0005eson74fdf79l" data-title="视图控制对象的视图的生命周期" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2015/04/15/lifecycle-of-view-of-viewcontroller/" data-id="clm6893ee0005euow051l0j6l" data-title="视图控制对象的视图的生命周期" class="article-share-link">Share</a>
       
       
       
@@ -715,80 +787,11 @@
 
 
   
-    <article
-  id="post-review-the-default-ios-source-code"
-  class="h-entry article article-type-post"
-  itemprop="blogPost"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
-  <div class="article-meta">
-    <a
-  href="/2015/04/11/review-the-default-ios-source-code/"
-  class="article-date"
->
-  <time
-    class="dt-published"
-    datetime="2015-04-11T00:00:00.000Z"
-    itemprop="datePublished"
-  >
-    2015-04-11
-  </time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a
-        class="p-name article-title"
-        href="/2015/04/11/review-the-default-ios-source-code/"
-      >
-        iOS 工程默认源代码文件简介（译）
-      </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>翻译自 Apple iOS developer library</p>
-<h2 id="源代码简介"><a href="#源代码简介" class="headerlink" title="源代码简介"></a>源代码简介</h2><p>app 工程创建后通常会自动生成一些源代码文件，通过这些源代码文件构建 app。其中大部分的工作是由 <code>UIApplicationMain</code> 函数完成的，<code>UIApplicationMain</code> 函数在 <code>main.m</code> 文件中自动被调用。<code>UIApplicationMain</code> 函数创建一个应用程序对象，该应用程序对象为 app 创建与 iOS 操作系统协同工作的基础设施环境，包括创建一个向 app 分发输入事件的 <em>run loop</em>。</p>
-        
-          <p class="article-more-link">
-            <a href="/2015/04/11/review-the-default-ios-source-code/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2015/04/11/review-the-default-ios-source-code/" data-id="clm029qar0003esonfkwqckg9" data-title="iOS 工程默认源代码文件简介（译）" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag">翻译</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
   </nav>
 
 
@@ -812,7 +815,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.86px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 11.43px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.86px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
     </div>
   </div>
 
@@ -834,6 +837,10 @@
       <ul>
         
           <li>
+            <a href="/2023/09/05/compound-interest-simple-interest/">复利与单利</a>
+          </li>
+        
+          <li>
             <a href="/2023/09/01/git-log-commit-time/">统计特定时间段的代码提交记录</a>
           </li>
         
@@ -847,10 +854,6 @@
         
           <li>
             <a href="/2023/05/17/chrome-extensions-best-practice/">Chrome Extensions 开发最佳实践</a>
-          </li>
-        
-          <li>
-            <a href="/2023/02/16/understanding-react/">React 实现原理之异步渲染</a>
           </li>
         
       </ul>
