@@ -105,6 +105,95 @@
           
   
     <article
+  id="post-css-knowledge"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2019/04/09/css-knowledge/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2019-04-09T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2019-04-09
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2019/04/09/css-knowledge/"
+      >
+        CSS 知识
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="选择器的特殊性"><a href="#选择器的特殊性" class="headerlink" title="选择器的特殊性"></a>选择器的特殊性</h2><p>根据选择器的特殊性决定规则的次序。具有更特殊选择器的规则优先于具有一般选择器的规则。如果两个规则的特殊性相同，那么后定义的规则优先。</p>
+<p>选择器的特殊性分成4个成分等级：a、b、c 和 d。</p>
+<ul>
+<li>如果样式是行内样式，那么 a = 1.</li>
+<li>b 等于 ID 选择器的总数。</li>
+<li>c 等于类、伪类和属性选择器的数量。</li>
+<li>d 等于类型选择器和伪元素选择器的数量。</li>
+</ul>
+<div class="post-table-title">特殊性示例</div>
+
+<pre><code>-----------------------------------------------------
+|  选择器                              |  特殊性      |
+|-------------------------------------|-------------|
+|  style=""                           |  1,0,0,0    |
+|  #wrapper #content &#123;&#125;               |  0,2,0,0    |
+|  #content .datePosted &#123;&#125;            |  0,1,1,0    |
+|  div#content &#123;&#125;                     |  0,1,0,1    |
+|  #content &#123;&#125;                        |  0,1,0,0    |
+|  p.comment .datePosted &#123;&#125;           |  0,0,2,1    |
+|  p.comment &#123;&#125;                       |  0,0,1,1    |
+|  div p &#123;&#125;                           |  0,0,0,2    |
+|  p &#123;&#125;                               |  0,0,0,1    |
+-----------------------------------------------------
+</code></pre>
+
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>Andy Budd, Simon Collison, Cameron Moll, 陈剑瓯（译）. 精通 CSS 高级 Web 标准解决方案. 人民邮电出版社.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2019/04/09/css-knowledge/" data-id="clmnm2fzs001pf3or2456aymk" data-title="CSS 知识" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article
   id="post-blog-comment-system"
   class="h-entry article article-type-post"
   itemprop="blogPost"
@@ -158,7 +247,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/03/30/blog-comment-system/" data-id="clmm8b7ai001newoihng29jb0" data-title="博客评论系统的更新历程" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/03/30/blog-comment-system/" data-id="clmnm2fzr001nf3or9rw6de5j" data-title="博客评论系统的更新历程" class="article-share-link">Share</a>
       
       
       
@@ -228,7 +317,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/03/10/three-mothods-in-antfin/" data-id="clmm8b7ag001kewoicyj4f12l" data-title="蚂蚁金服三个月" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/03/10/three-mothods-in-antfin/" data-id="clmnm2fzo001kf3orgfp6bnj9" data-title="蚂蚁金服三个月" class="article-share-link">Share</a>
       
       
       
@@ -656,7 +745,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/01/12/design-pattern/" data-id="clmm8b7af001iewoibswf6oqh" data-title="设计模式" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2019/01/12/design-pattern/" data-id="clmnm2fzn001if3orgkua7lfl" data-title="设计模式" class="article-share-link">Share</a>
       
       
       
@@ -732,7 +821,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/11/21/javascript-prototype-chain/" data-id="clmm8b7ae001fewoiacpxazwo" data-title="JavaScript 原型链和继承机制" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/11/21/javascript-prototype-chain/" data-id="clmnm2fzm001ff3orglffa0hd" data-title="JavaScript 原型链和继承机制" class="article-share-link">Share</a>
       
       
       
@@ -805,7 +894,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="clmm8b7ad001dewoi51h19990" data-title="视图裁剪" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="clmnm2fzl001df3or76k5f8re" data-title="视图裁剪" class="article-share-link">Share</a>
       
       
       
@@ -878,7 +967,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="clmm8b7bv005fewoibm0uam82" data-title="Objective-C Block" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="clmnm2g0y005df3or7hse7fiq" data-title="Objective-C Block" class="article-share-link">Share</a>
       
       
       
@@ -954,7 +1043,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="clmm8b7ac001aewoieprlbrt3" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="clmnm2fzi001af3or9fu7ckms" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
       
       
       
@@ -1024,7 +1113,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="clmm8b7ab0018ewoig9z7370n" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="clmnm2fzh0018f3or6i16fyid" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
       
       
       
@@ -1094,83 +1183,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="clmm8b7by005mewoifl2t86r4" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="clmnm2g12005mf3orbntbdmax" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag">读书笔记</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article
-  id="post-image-and-graphics-best-practices"
-  class="h-entry article article-type-post"
-  itemprop="blogPost"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
-  <div class="article-meta">
-    <a
-  href="/2018/08/22/image-and-graphics-best-practices/"
-  class="article-date"
->
-  <time
-    class="dt-published"
-    datetime="2018-08-22T00:00:00.000Z"
-    itemprop="datePublished"
-  >
-    2018-08-22
-  </time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a
-        class="p-name article-title"
-        href="/2018/08/22/image-and-graphics-best-practices/"
-      >
-        iOS 图像解码和最佳实践
-      </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 class="title"></h1>
-
-<h2>前言</h2>
-
-<p>最近组内同事做了 iOS 图像解码的分享。针对不太清楚的问题，又做了些调研，梳理如下。</p>
-        
-          <p class="article-more-link">
-            <a href="/2018/08/22/image-and-graphics-best-practices/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="clmm8b7aa0015ewoiej9k5v71" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
 
     </footer>
   </div>
@@ -1249,7 +1266,7 @@
           </li>
         
           <li>
-            <a href="/2023/05/17/chrome-extensions-best-practice/">Chrome Extensions 开发最佳实践</a>
+            <a href="/2023/05/31/reading-notes-zhi-shen-shi-nei/">置身事内-读书笔记</a>
           </li>
         
       </ul>
