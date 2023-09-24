@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MS2BSFXL7Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MS2BSFXL7Q');
+</script>
+<!-- End Google Analytics -->
+
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8832279616908494"
+     crossorigin="anonymous"></script>
+<!-- End Google AdSense -->
+  
+  <title>边框可拉伸的盒子 | 陈军的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="问题前端开发中有时会遇到如下图所示的需求，即在一个不规则边框的容器中显示内容。本文讲述如何拆解这个需求，并通过 border-image CSS 属性实现。(下文讲解使用的原始图片是这个。)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="边框可拉伸的盒子">
+<meta property="og:url" content="https://rob2468.github.io/2023/09/22/stretch-border-box/index.html">
+<meta property="og:site_name" content="陈军的博客">
+<meta property="og:description" content="问题前端开发中有时会遇到如下图所示的需求，即在一个不规则边框的容器中显示内容。本文讲述如何拆解这个需求，并通过 border-image CSS 属性实现。(下文讲解使用的原始图片是这个。)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-%E7%A4%BA%E4%BE%8B.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-border-image-slice-position.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-border-image-slice-demo.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-border-image-width-demo.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-border-image-outset-demo.jpg">
+<meta property="article:published_time" content="2023-09-22T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-24T15:14:52.859Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="CSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-%E7%A4%BA%E4%BE%8B.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="陈军的博客" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-stretch-border-box"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2023/09/22/stretch-border-box/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2023-09-22T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2023-09-22
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2023/09/22/stretch-border-box/"
+      >
+        边框可拉伸的盒子
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>前端开发中有时会遇到如下图所示的需求，即在一个不规则边框的容器中显示内容。本文讲述如何拆解这个需求，并通过 border-image CSS 属性实现。(下文讲解使用的原始图片是<a href="/images/2023-09-22-dialog.png">这个</a>。)</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-%E7%A4%BA%E4%BE%8B.jpg"></p>
+<span id="more"></span>
+
+<p>border-image 的完整语法很复杂，不关心细节可以直接跳到 <a href="#%E7%AE%80%E5%8C%96">后面的章节</a>。</p>
+<h2 id="需求拆解"><a href="#需求拆解" class="headerlink" title="需求拆解"></a>需求拆解</h2><ol>
+<li><p>准备图片。首先我们需要一张图片，图片的四个角可以是不规则的，但四条边和背景色是可以拉伸的；</p>
+</li>
+<li><p>测量四个角需要保留的长度；</p>
+</li>
+<li><p>测量边的宽度；</p>
+</li>
+<li><p>尺寸调整。因为图片渲染是不会超出盒模型的，所以很有可能视觉效果上边框与内容会靠的太近，因此需要让图片渲染的超出盒模型一些。</p>
+</li>
+</ol>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>使用 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image">border-mage</a> CSS 属性可以实现这个需求。从 2012 年下半年开始，Chrome Android 和 Safari on iOS 都已经支持了该属性。</p>
+<p>border-image 的值是一组 CSS 属性的缩写，分别是 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-source">border-image-source</a> / <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-slice">border-image-slice</a> / <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-width">border-image-width</a> / <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-outset">border-image-outset</a> / <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-repeat">border-image-repeat</a>。他们各自的含义可以参考官方 MDN 文档，下面只讲述一下要点。</p>
+<h3 id="border-image-slice-的作用"><a href="#border-image-slice-的作用" class="headerlink" title="border-image-slice 的作用"></a>border-image-slice 的作用</h3><p>图片渲染的要求是四个角固定、剩余区域拉伸，border-image-slice 的作用就是将固定区域与可拉伸区域划分出来。</p>
+<p>border-image-slice 对于图片不同区域的划分如下图所示。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-border-image-slice-position.png" alt="(来自 MDN 文档)"></p>
+<p>border-image-slice 的值相对的是图片本身的大小。</p>
+<p>比如，<code>border-image-slice: 40</code> 划分出的区域如下图所示。(红色方块为固定区域、剩余的为可拉伸区域)</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-border-image-slice-demo.jpg"></p>
+<h3 id="border-image-width-的作用"><a href="#border-image-width-的作用" class="headerlink" title="border-image-width 的作用"></a>border-image-width 的作用</h3><p>border-image-width 用户指定边框的宽度。比如，当 border-image-width 指定四个值时，则分别表示上右下左，含义如下图所示。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-border-image-width-demo.jpg"></p>
+<p>注意，border-image-slice 的值相对的是图片本身的大小，border-image-width 的值是 DOM 元素的大小。所以，如果 border-image-width 的值大于 border-image-slice 的值，则固定区域的图像会被拉伸；反之固定区域的图像会被压缩。</p>
+<h3 id="border-image-outset-的作用"><a href="#border-image-outset-的作用" class="headerlink" title="border-image-outset 的作用"></a>border-image-outset 的作用</h3><p>“border-image-outset 属性定义边框图像可超出边框盒的大小。”</p>
+<p>下图示例可以看懂 border-image-outset 属性的作用。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-09-22-border-image-outset-demo.jpg"></p>
+<h2 id="简化"><a href="#简化" class="headerlink" title="简化"></a>简化</h2><p>实现本文开头所说的需求，关键点是将 border-image-slice 和 border-image-width 设置一样的值，这样保证四个角内的图像按原始大小显示。</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// React 组件</span><br><span class="line">const StretchBorderBox = (props) =&gt; &#123;</span><br><span class="line">  const &#123; imgUrl, fixedLength, outset, content &#125; = props;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div</span><br><span class="line">      className=&quot;stretch-border-box&quot;</span><br><span class="line">      style=&#123;&#123;</span><br><span class="line">        borderImageSource: `url($&#123;imgUrl&#125;)`,</span><br><span class="line">        borderImageSlice: `$&#123;fixedLength&#125; fill`,</span><br><span class="line">        borderImageWidth: `$&#123;fixedLength&#125;px`,</span><br><span class="line">        borderImageOutset: outset,</span><br><span class="line">        borderImageRepeat: &#x27;stretch&#x27;,</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &gt;</span><br><span class="line">      &#123;content&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 渲染组件</span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;StretchBorderBox imgUrl=&quot;https://mdn.alipayobjects.com/huamei_kmi0zi/afts/img/A*vLdFTYMEEzkAAAAAAAAAAAAADv17AQ/original&quot;</span><br><span class="line">    fixedLength=&#123;40&#125;</span><br><span class="line">    outset=&quot;19px 19px 19px 35px&quot;</span><br><span class="line">    content=&quot;这个孩子会非常有名， 我们世界里的每一个人都会知道他的名字。&quot;</span><br><span class="line"></span><br><span class="line">  /&gt;,</span><br><span class="line">  document.getElementById(&#x27;app&#x27;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><iframe
+  width="100%"
+  height="300"
+  src="https://rob2468.github.io/mypage/stretch-border-box-demo/"
+>
+</iframe>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本文讲述的是实现一个边框可拉伸盒子（比如对话框）的相关技术。</p>
+<p>其中的一些知识点对你理解 border-image CSS 属性也有帮助。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2023/09/22/stretch-border-box/" data-id="clmxlpf8f003lfloncp7vdekx" data-title="边框可拉伸的盒子" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/" rel="tag">CSS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/09/05/compound-interest-simple-interest/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">复利与单利</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E6%8B%86%E8%A7%A3"><span class="toc-text">需求拆解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E6%A1%88"><span class="toc-text">方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#border-image-slice-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">border-image-slice 的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#border-image-width-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">border-image-width 的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#border-image-outset-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-text">border-image-outset 的作用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8C%96"><span class="toc-text">简化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Demo"><span class="toc-text">Demo</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-text">结语</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 12.86px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.86px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 14.29px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.43px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 10px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/09/22/stretch-border-box/">边框可拉伸的盒子</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/05/compound-interest-simple-interest/">复利与单利</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/01/git-log-commit-time/">统计特定时间段的代码提交记录</a>
+          </li>
+        
+          <li>
+            <a href="/2023/07/21/monaco-editor-practice/">Monaco Editor</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/21/travel-in-sanya/">2023年6月三亚之旅</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

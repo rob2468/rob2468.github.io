@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="../global.css" />
+  <style>
+    .app {
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+
+  <!-- babel is required in order to parse JSX -->
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <!-- import react.js -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+
+  <!-- import react-dom.js -->
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"> </script>
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <script type="text/babel">
+    // React 组件
+    const StretchBorderBox = (props) => {
+      const { imgUrl, fixedLength, outset, content } = props;
+      return (
+        <div
+          className="stretch-border-box"
+          style={{
+            borderImageSource: `url(${imgUrl})`,
+            borderImageSlice: `${fixedLength} fill`,
+            borderImageWidth: `${fixedLength}px`,
+            borderImageOutset: outset,
+            borderImageRepeat: 'stretch',
+            maxWidth: '50%',
+            wordWrap: 'break-word',
+          }}
+        >
+          {content}
+        </div>
+      );
+    };
+
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { text: '这个孩子会非常有名， 我们世界里的每一个人都会知道他的名字。' };
+      }
+      componentDidMount() {
+        setInterval(() => {
+          this.setState({
+            text: document.querySelector('#story').value,
+          });
+        }, 500);
+      }
+
+      render() {
+        const { text } = this.state;
+        return (
+          <div className="app">
+            <StretchBorderBox imgUrl="https://mdn.alipayobjects.com/huamei_kmi0zi/afts/img/A*vLdFTYMEEzkAAAAAAAAAAAAADv17AQ/original"
+              fixedLength={40}
+              outset="19px 19px 19px 35px"
+              content={text}
+            />
+
+            <textarea id="story" name="story" rows="5" cols="33" style={{ marginTop: '50px' }} defaultValue={text}>
+            </textarea>
+          </div>
+        )
+      }
+    }
+
+    // 渲染
+    ReactDOM.render(
+      <App />,
+      document.getElementById('app')
+    );
+
+  </script>
+
+</body>
+
+</html>
