@@ -9,7 +9,7 @@ tags:
 
 ## 问题
 
-前端开发中有时会遇到如下图所示的需求，即在一个不规则边框的容器中显示内容。本文讲述如何拆解这个需求，并通过 border-image CSS 属性实现。(下文讲解使用的原始图片是[这个](/images/2023-09-22-dialog.png)。)
+前端开发中有时会遇到如下图所示的需求，即在一个不规则边框的容器中显示内容。本文讲述如何拆解这个需求，并通过 border-image CSS 属性实现。(下文讲解使用的原始图片是[这个](https://mdn.alipayobjects.com/huamei_kmi0zi/afts/img/A*vLdFTYMEEzkAAAAAAAAAAAAADv17AQ/original)。)
 
 ![](/images/2023-09-22-示例.jpg)
 
@@ -31,7 +31,7 @@ border-image 的完整语法很复杂，不关心细节可以直接跳到 [后�
 
 使用 [border-mage](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image) CSS 属性可以实现这个需求。从 2012 年下半年开始，Chrome Android 和 Safari on iOS 都已经支持了该属性。
 
-border-image 的值是一组 CSS 属性的缩写，分别是 [border-image-source](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-source) / [border-image-slice](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-slice) / [border-image-width](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-width) / [border-image-outset](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-outset) / [border-image-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-repeat)。他们各自的含义可以参考官方 MDN 文档，下面只讲述一下要点。
+border-image 的值是一组 CSS 属性的缩写，分别是 [border-image-source](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-source) / [border-image-slice](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-slice) / [border-image-width](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-width) / [border-image-outset](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-outset) / [border-image-repeat](https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-image-repeat)。他们各自的含义可以参考官方 MDN 文档，下面只讲述一些要点。
 
 ### border-image-slice 的作用
 
@@ -49,7 +49,7 @@ border-image-slice 的值相对的是图片本身的大小。
 
 ### border-image-width 的作用
 
-border-image-width 用户指定边框的宽度。比如，当 border-image-width 指定四个值时，则分别表示上右下左，含义如下图所示。
+border-image-width 用于指定边框的宽度。比如，当 border-image-width 设为四个值时，则分别表示上右下左，含义如下图所示。
 
 ![](/images/2023-09-22-border-image-width-demo.jpg)
 
