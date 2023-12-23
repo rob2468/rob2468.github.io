@@ -25,6 +25,18 @@ Extensions 使用 [vanilla-js](https://www.carrentalgateway.com/glossary/vanilla
 
 有许多文章讲过这个话题，比如 [Creating a Chrome extension with React and TypeScript](https://blog.logrocket.com/creating-chrome-extension-react-typescript/)。最近自己做了一个 Extension 工具，于是从自己的视角总结出这篇文章。
 
+## 20231223 更新
+
+示例代码： [chrome-extension-best-practice2](https://github.com/rob2468/chrome-extension-best-practice2)
+
+之前写的内容基本上没有涉及 content scripts 部分，这次更新加上了这部分内容。另外还更新了打包方式，直接使用 webpack 构建和打包，替换了 craco。
+
+[content scripts](https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts?hl=zh-cn) 可以在网页中运行，但是它本身运行在一个孤立的环境中，与网页的交互存在各种限制，如同源策略的限制。
+
+上面的示例代码提供了一种方案。content scripts 中没有写大量的业务逻辑，而是将包含了主要业务逻辑的代码通过 script 标签的方式插入到网页中去执行。
+
+## --- 分割线 ---
+
 ## 项目结构
 
 项目顶层结构与 [create-react-app](https://create-react-app.dev/) 创建的应用类似。`src/` 存放主要的业务代码；`public/` 存放需要输出的文件如模版文件、图片、配置等；[项目构建](https://github.com/rob2468/chrome-extension-best-practice/blob/master/package.json#L7)后的产物放在 `build/` 文件夹中，该文件夹可以直接加载成 Chrome Extension 执行。
