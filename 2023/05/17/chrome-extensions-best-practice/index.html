@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-project-structure.png">
 <meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-webpackJsonpchecker-error.jpg">
 <meta property="article:published_time" content="2023-05-17T00:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-24T15:20:40.848Z">
+<meta property="article:modified_time" content="2023-12-23T12:59:11.784Z">
 <meta property="article:author" content="陈军">
 <meta property="article:tag" content="webpack">
 <meta property="article:tag" content="React">
@@ -157,7 +157,11 @@
 <p>如何开发 Chrome Extensions 可参考 <a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/">Google 开发者文档</a>。</p>
 <p>Extensions 使用 <a target="_blank" rel="noopener" href="https://www.carrentalgateway.com/glossary/vanilla-javascript/">vanilla-js</a> 开发，开发复杂项目有点痛苦。本文讲述如何为 Extensions 项目配置 <a target="_blank" rel="noopener" href="https://v4.webpack.js.org/concepts/">webpack</a>/React/Typescript，完整代码可跳到 <a href="#%E4%BB%A3%E7%A0%81">文章最后</a> 获取。</p>
 <p>有许多文章讲过这个话题，比如 <a target="_blank" rel="noopener" href="https://blog.logrocket.com/creating-chrome-extension-react-typescript/">Creating a Chrome extension with React and TypeScript</a>。最近自己做了一个 Extension 工具，于是从自己的视角总结出这篇文章。</p>
-<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>项目顶层结构与 <a target="_blank" rel="noopener" href="https://create-react-app.dev/">create-react-app</a> 创建的应用类似。<code>src/</code> 存放主要的业务代码；<code>public/</code> 存放需要输出的文件如模版文件、图片、配置等；<a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/package.json#L7">项目构建</a>后的产物放在 <code>build/</code> 文件夹中，该文件夹可以直接加载成 Chrome Extension 执行。</p>
+<h2 id="20231223-更新"><a href="#20231223-更新" class="headerlink" title="20231223 更新"></a>20231223 更新</h2><p>示例代码： <a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice2">chrome-extension-best-practice2</a></p>
+<p>之前写的内容基本上没有涉及 content scripts 部分，这次更新加上了这部分内容。另外还更新了打包方式，直接使用 webpack 构建和打包，替换了 craco。</p>
+<p><a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/extensions/develop/concepts/content-scripts?hl=zh-cn">content scripts</a> 可以在网页中运行，但是它本身运行在一个孤立的环境中，与网页的交互存在各种限制，如同源策略的限制。</p>
+<p>上面的示例代码提供了一种方案。content scripts 中没有写大量的业务逻辑，而是将包含了主要业务逻辑的代码通过 script 标签的方式插入到网页中去执行。</p>
+<h2 id="—-分割线-—"><a href="#—-分割线-—" class="headerlink" title="— 分割线 —"></a>— 分割线 —</h2><h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>项目顶层结构与 <a target="_blank" rel="noopener" href="https://create-react-app.dev/">create-react-app</a> 创建的应用类似。<code>src/</code> 存放主要的业务代码；<code>public/</code> 存放需要输出的文件如模版文件、图片、配置等；<a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/package.json#L7">项目构建</a>后的产物放在 <code>build/</code> 文件夹中，该文件夹可以直接加载成 Chrome Extension 执行。</p>
 <p><code>src/</code> 下的文件按 Chrome Extensions 的概念进行了组织，看文件名就能看懂。</p>
 <p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2023-05-17-project-structure.png"></p>
 <h2 id="支持多文件打包"><a href="#支持多文件打包" class="headerlink" title="支持多文件打包"></a>支持多文件打包</h2><p>webpack 相关的配置在 <a target="_blank" rel="noopener" href="https://github.com/rob2468/chrome-extension-best-practice/blob/master/craco.config.js">craco.config.js</a> 文件中。(<a target="_blank" rel="noopener" href="https://craco.js.org/">craco 官网</a>)</p>
@@ -185,7 +189,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2023/05/17/chrome-extensions-best-practice/" data-id="clmxlww2w0039f2oy9q4mh0h3" data-title="Chrome Extensions 开发最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2023/05/17/chrome-extensions-best-practice/" data-id="clqi2hnau0039expwbirp18fm" data-title="Chrome Extensions 开发最佳实践" class="article-share-link">Share</a>
       
       
       
@@ -279,7 +283,7 @@
     <div class="widget-wrap">
       <h3 class="widget-title">Contents</h3>
       <div class="widget">
-        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%A4%9A%E6%96%87%E4%BB%B6%E6%89%93%E5%8C%85"><span class="toc-text">支持多文件打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E6%89%93%E5%8C%85"><span class="toc-text">支持多页面打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FAQ"><span class="toc-text">FAQ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpackJsonpchecker-%E9%94%99%E8%AF%AF"><span class="toc-text">webpackJsonpchecker 错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">运行环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#notification-%E4%B8%8E-alarms"><span class="toc-text">notification 与 alarms</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-text">参考文档</span></a></li></ol></p>
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#20231223-%E6%9B%B4%E6%96%B0"><span class="toc-text">20231223 更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%94-%E5%88%86%E5%89%B2%E7%BA%BF-%E2%80%94"><span class="toc-text">— 分割线 —</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%A4%9A%E6%96%87%E4%BB%B6%E6%89%93%E5%8C%85"><span class="toc-text">支持多文件打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%A4%9A%E9%A1%B5%E9%9D%A2%E6%89%93%E5%8C%85"><span class="toc-text">支持多页面打包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FAQ"><span class="toc-text">FAQ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpackJsonpchecker-%E9%94%99%E8%AF%AF"><span class="toc-text">webpackJsonpchecker 错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">运行环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#notification-%E4%B8%8E-alarms"><span class="toc-text">notification 与 alarms</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-text">参考文档</span></a></li></ol></p>
       </div>
     </div>
   
