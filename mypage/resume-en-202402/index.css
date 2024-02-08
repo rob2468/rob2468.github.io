@@ -1,0 +1,51 @@
+body {
+  font-size: 13px;
+}
+h1 {
+  padding: 0;
+}
+h2 {
+  padding: 0;
+  margin: 12px 0 5px;
+  font-size: 18px;
+}
+
+.content {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  .contact {
+    font-size: 12px;
+    margin-left: 50px;
+  }
+}
+
+.employment {
+  .experience {
+    margin-bottom: 15px;
+    .title-containter {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+}
+
+.technical-experience {
+  .name {
+    font-weight: 600;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .content {
+    width: 710px;
+  }
+}
