@@ -145,11 +145,30 @@ Scheduling 阶段的任务使用小顶堆保存，恢复后从堆顶获取任务
 
 Reconciliation 阶段的 Fiber 树为链表结构，workInProgress 指针指向当前正在处理的节点，恢复后则从 workInProgress 节点继续执行。
 
+## Commit
+
+Commit 阶段才会真正将虚拟 DOM 的变更更新到视图上，且这一阶段的执行是不可中断的。
+
+### 双缓冲
+
+Reconciliation 阶段的任务是更新虚拟 DOM，即不断处理 workInProgress 指向的节点。Reconciliation 开始时，会从当前根节点复制出一个新节点 workInProgress，然后从这个新节点开始遍历。Reconciliation 全部完成后，workInProgress 会指向一棵新的 DOM 树的根节点。
+
+在 Commit 阶段，React 会将虚拟 DOM 的根节点指向 workInProgress，即指向新的 DOM 树。随后，基于新的 DOM 树更新视图：在 web 环境中更新 DOM、在 ReactNative 环境中更新 Native 视图。
+
+{% codeblock lang:ts %}
+function commitRootImpl(
+  root: FiberRoot,
+) {
+  // 节点切换 (finishedWork 为 workInProgress)
+  root.current = finishedWork;
+  // 更新 UI
+  Scheduler.requestPaint();
+}
+{% endcodeblock %}
+
 ## 总结
 
-React 的实现原理有许多主题，本文主要讲述其异步可中断的能力是如何实现的。
-
-React 整个渲染过程，除了本文所讲的 Scheduling 和 Recociliation 阶段，还有 Commit 阶段。Commit 阶段才会真正将虚拟 DOM 的变更更新到视图上，且这一阶段的执行是不可中断的。
+React 的实现原理有许多主题，本文主要讲述其异步可中断的能力是如何实现的，包括：任务设计、Fiber 数据结构、DOM Diff 算法、双缓冲机制。
 
 ## 参考文档
 
