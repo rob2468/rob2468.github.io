@@ -23,5 +23,6 @@
     "hexo-renderer-marked": "^4.0.0",
     "hexo-renderer-stylus": "^2.0.0",
     "hexo-server": "^2.0.0"
-  }
+  },
+  "repository": "git@github.com:rob2468/rob2468.github.io.git"
 }
