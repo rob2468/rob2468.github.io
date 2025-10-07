@@ -54,6 +54,7 @@
   </div>
 </section>
 <% } %>
+
 <% if (!index && post.comments && theme.valine.enable && theme.valine.appId && theme.valine.appKey){ %>
   <section id="comments" class="vcomment">
 
@@ -61,6 +62,8 @@
 <% } %>
 
 <% if (theme.gitalk.enable && pageType === 'post') { %>
+<section id="comments">
   <div id="gitalk-container"></div>
   <%- include('post/gitalk.ejs') %>
+</section>
 <% } %>
