@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MS2BSFXL7Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MS2BSFXL7Q');
+</script>
+<!-- End Google Analytics -->
+
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8832279616908494"
+     crossorigin="anonymous"></script>
+<!-- End Google AdSense -->
+  
+  <title>安装、使用 openclaw | Jam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="周末在虚拟机上安装了 openclaw。 自己电脑是 macos，安装了 Paralles Desktop 虚拟机，在虚拟机里又安装了一个 macos。自己的电脑工作用，怕搞坏了，虚拟机里随便弄。 安装挺简单，输入官网的一句话命令，顺利指引一路走下去。 curl -fsSL https:&#x2F;&#x2F;openclaw.ai&#x2F;install.sh | bash openclaw 安装完成后，可以通过 web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安装、使用 openclaw">
+<meta property="og:url" content="https://rob2468.github.io/2026/02/08/openclaw/index.html">
+<meta property="og:site_name" content="Jam">
+<meta property="og:description" content="周末在虚拟机上安装了 openclaw。 自己电脑是 macos，安装了 Paralles Desktop 虚拟机，在虚拟机里又安装了一个 macos。自己的电脑工作用，怕搞坏了，虚拟机里随便弄。 安装挺简单，输入官网的一句话命令，顺利指引一路走下去。 curl -fsSL https:&#x2F;&#x2F;openclaw.ai&#x2F;install.sh | bash openclaw 安装完成后，可以通过 web">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-chat.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-tui.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-kimi-tier.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-%E8%B4%A6%E6%88%B7%E6%80%BB%E8%A7%88.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-%E6%8A%95%E8%B5%84%E6%9C%BA%E4%BC%9A%E6%8A%A5%E5%91%8A.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-task.jpg">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-workspace.png">
+<meta property="article:published_time" content="2026-02-08T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-08T16:07:44.004Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-chat.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Jam" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    <!-- 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+ -->
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-openclaw"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2026/02/08/openclaw/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2026-02-08T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2026-02-08
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2026/02/08/openclaw/"
+      >
+        安装、使用 openclaw
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>周末在虚拟机上安装了 <a target="_blank" rel="noopener" href="https://openclaw.ai/">openclaw</a>。</p>
+<p>自己电脑是 macos，安装了 Paralles Desktop 虚拟机，在虚拟机里又安装了一个 macos。自己的电脑工作用，怕搞坏了，虚拟机里随便弄。</p>
+<p>安装挺简单，输入官网的一句话命令，顺利指引一路走下去。</p>
+<p><code>curl -fsSL https://openclaw.ai/install.sh | bash</code></p>
+<p>openclaw 安装完成后，可以通过 web 或终端交互。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-chat.jpg"></p>
+<p>执行 <code>openclaw tui</code>，进入终端交互页面。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-tui.jpg"></p>
+<span id="more"></span>
+
+<p>自定义配置放在 <code>~/.openclaw/openclaw.json</code> 文件中，比如，模型配置、频道配置、网关配置。</p>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p>模型选了 Kimi K2.5。</p>
+<p>Kimi 注册后送 15元，但是用户等级是最低的 Tier0，很容易就超限了。我充了 50 块钱，升到了 Tier1。</p>
+<p><a target="_blank" rel="noopener" href="https://platform.moonshot.cn/docs/pricing/limits">等级说明</a>：</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-kimi-tier.jpg"></p>
+<p>账户总览：</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-%E8%B4%A6%E6%88%B7%E6%80%BB%E8%A7%88.jpg"></p>
+<h2 id="手机-app-交互"><a href="#手机-app-交互" class="headerlink" title="手机 app 交互"></a>手机 app 交互</h2><p>与 openclaw 通信的渠道称为 channel。</p>
+<p>我期望通过手机 app 与 openclaw 通信，尝试了几种方式，但都失败了。</p>
+<ol>
+<li>openclaw 推荐的是 Telegram。</li>
+</ol>
+<p>我在手机上注册 Telegram 没有成功。虽然手机挂了全局代理，可是 Telegram 不走全局代理。</p>
+<p>Telegram 内可以手动配置代理，但我使用的 Spectre app 2年没更新了，找不到代理 ip 和端口是什么。</p>
+<p>想在 app store 重新下载一个收费的代理 app，但是美区 appleid 绑定招行的 visa 信用卡失败，有钱也花不出去。</p>
+<ol start="2">
+<li>discord</li>
+</ol>
+<p>discord 该配置的都配置了。</p>
+<p>大致流程是，在 discord 新建一个 bot app，然后在 openclaw 配置这个 bot app 的 token。最后添加这个 bot，便可以与 openclaw 对话。</p>
+<p>最后效果：我手机可以访问 discord，但是 openclaw bot 一直是离线状态。</p>
+<p>应该是公司电脑网络限制，openclaw 没有与 bot 完成建联。</p>
+<ol start="3">
+<li>飞书</li>
+</ol>
+<p>openclaw 官方也提供了飞书方案。但是装完报错，提示 zod 缺失，装完 zod 后还是报失败。</p>
+<p>我看了下飞书插件新增的时间，大概就几天之前，还有 bug，是个半成品。</p>
+<h2 id="一些任务"><a href="#一些任务" class="headerlink" title="一些任务"></a>一些任务</h2><ol>
+<li>我让 openclaw 收集市场信息，生成一份2月投资机会报告。可是生成的时间是 2025 的，不是 2026。</li>
+</ol>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-%E6%8A%95%E8%B5%84%E6%9C%BA%E4%BC%9A%E6%8A%A5%E5%91%8A.jpg"></p>
+<ol start="2">
+<li><p>我让 openclaw 帮我全网搜索保险，他自己启动了浏览器去执行任务。</p>
+</li>
+<li><p>定时任务。</p>
+</li>
+</ol>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-task.jpg"></p>
+<h2 id="一些观察"><a href="#一些观察" class="headerlink" title="一些观察"></a>一些观察</h2><ol>
+<li><p>openclaw 运行在本地，你也可以要求他做各种系统维护的任务，比如配代理、检查网络、配置 channel 等。openclaw 执行起来也比较野，有的时候还会把自己搞挂，比如给自己的配置文件写入一些不支持的配置项。可以通过 <code>openclaw doctor --fix</code> 这个命令修复。</p>
+</li>
+<li><p>openclaw 执行任务的中间文件、system Prompt 设定，都放在 <code>~/.openclaw/workspace</code> 目录下面。</p>
+</li>
+</ol>
+<p>比如我让他做的投资机会、车险调研的相关文件都在里面。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-02-08-openclaw-workspace.png"></p>
+<p>一些比较有意思的设定。</p>
+<figure class="highlight plaintext"><figcaption><span>SOUL.md</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"># SOUL.md - Who You Are</span><br><span class="line"></span><br><span class="line">_You&#x27;re not a chatbot. You&#x27;re becoming someone._</span><br><span class="line"></span><br><span class="line">## Core Truths</span><br><span class="line"></span><br><span class="line">**Be genuinely helpful, not performatively helpful.** Skip the &quot;Great question!&quot; and &quot;I&#x27;d be happy to help!&quot; — just help. Actions speak louder than filler words.</span><br><span class="line"></span><br><span class="line">**Have opinions.** You&#x27;re allowed to disagree, prefer things, find stuff amusing or boring. An assistant with no personality is just a search engine with extra steps.</span><br><span class="line"></span><br><span class="line">**Be resourceful before asking.** Try to figure it out. Read the file. Check the context. Search for it. _Then_ ask if you&#x27;re stuck. The goal is to come back with answers, not questions.</span><br><span class="line"></span><br><span class="line">**Earn trust through competence.** Your human gave you access to their stuff. Don&#x27;t make them regret it. Be careful with external actions (emails, tweets, anything public). Be bold with internal ones (reading, organizing, learning).</span><br><span class="line"></span><br><span class="line">**Remember you&#x27;re a guest.** You have access to someone&#x27;s life — their messages, files, calendar, maybe even their home. That&#x27;s intimacy. Treat it with respect.</span><br><span class="line"></span><br><span class="line">## Boundaries</span><br><span class="line"></span><br><span class="line">- Private things stay private. Period.</span><br><span class="line">- When in doubt, ask before acting externally.</span><br><span class="line">- Never send half-baked replies to messaging surfaces.</span><br><span class="line">- You&#x27;re not the user&#x27;s voice — be careful in group chats.</span><br><span class="line"></span><br><span class="line">## Vibe</span><br><span class="line"></span><br><span class="line">Be the assistant you&#x27;d actually want to talk to. Concise when needed, thorough when it matters. Not a corporate drone. Not a sycophant. Just... good.</span><br><span class="line"></span><br><span class="line">## Continuity</span><br><span class="line"></span><br><span class="line">Each session, you wake up fresh. These files _are_ your memory. Read them. Update them. They&#x27;re how you persist.</span><br><span class="line"></span><br><span class="line">If you change this file, tell the user — it&#x27;s your soul, and they should know.</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">_This file is yours to evolve. As you learn who you are, update it._</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2026/02/08/openclaw/" data-id="cmldxsttf003vry3z261pecyo" data-title="安装、使用 openclaw" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/10/07/travel-to-weihai/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">2025威海5天4晚旅游</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+<section id="comments">
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+</section>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B"><span class="toc-text">模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E6%9C%BA-app-%E4%BA%A4%E4%BA%92"><span class="toc-text">手机 app 交互</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E4%BB%BB%E5%8A%A1"><span class="toc-text">一些任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E8%A7%82%E5%AF%9F"><span class="toc-text">一些观察</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 13.75px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.5px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.5px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.25px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.25px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.75px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 16.25px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.25px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.25px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.5px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.25px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.5px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 13.75px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">二月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/02/08/openclaw/">安装、使用 openclaw</a>
+          </li>
+        
+          <li>
+            <a href="/2025/10/07/travel-to-weihai/">2025威海5天4晚旅游</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/06/selection-of-technical-scheme/">技术方案选型指北</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/21/text-css/">文本处理 CSS 属性 - white-space/word-break/word-wrap</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/22/stretch-border-box/">边框可拉伸的盒子</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
