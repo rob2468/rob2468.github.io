@@ -14,3 +14,4 @@ db.json
 node_modules/
 public/
 .deploy*/
+claude-conversation/
