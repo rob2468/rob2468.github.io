@@ -105,6 +105,83 @@
           
   
     <article
+  id="post-javascript-prototype-chain"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2018/11/21/javascript-prototype-chain/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2018-11-21T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2018-11-21
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2018/11/21/javascript-prototype-chain/"
+      >
+        JavaScript 原型链和继承机制
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><p>js 中的继承不同于 C++、Java 此类面向对象语言，其继承机制基于原型链。当需要在 js 中使用继承机制时，构造正确的原型链即可实现继承。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2018-11-21-javascript-object-layout.jpg"></p>
+<p>js 原型链机制中的各对象之间的关系如上图所示。构造正确的符合继承行为的原型链的关键在于，构造函数的 prototype 属性以及 prototype 的 constructor 属性。</p>
+<h2 id="为构造函数构造原型链"><a href="#为构造函数构造原型链" class="headerlink" title="为构造函数构造原型链"></a>为构造函数构造原型链</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">extend</span>(<span class="params">Child, Parent</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> F = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line">    F.prototype = Parent.prototype;</span><br><span class="line">    Child.prototype = <span class="keyword">new</span> F();</span><br><span class="line">    Child.prototype.constructor = Child;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为构造函数构造原型链处理的是构造函数，用于实例化出任意多的对象实例。</p>
+<h2 id="为对象实例构造原型链"><a href="#为对象实例构造原型链" class="headerlink" title="为对象实例构造原型链"></a>为对象实例构造原型链</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">    F.prototype = o;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为对象实例构造原型链是一次性的行为，所以 F.prototype.constructor 不需要严格设定。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="http://www.mollypages.org/tutorials/js.mp" target="_blank">http://www.mollypages.org/tutorials/js.mp</a></p>
+<p><a href="http://blog.vjeux.com/2011/javascript/how-prototypal-inheritance-really-works.html" target="_blank">Javascript – How Prototypal Inheritance really works</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance.html" target="_blank">Javascript面向对象编程（二）：构造函数的继承</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance_continued.html" target="_blank">Javascript面向对象编程（三）：非构造函数的继承</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2018/11/21/javascript-prototype-chain/" data-id="cmlix9rdh001frh3z7i0438ug" data-title="JavaScript 原型链和继承机制" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article
   id="post-clipped-content"
   class="h-entry article article-type-post"
   itemprop="blogPost"
@@ -160,7 +237,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="cmldxstse001dry3z8tac7ynf" data-title="视图裁剪" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/10/12/clipped-content/" data-id="cmlix9rdh001drh3zbn9o0s1g" data-title="视图裁剪" class="article-share-link">Share</a>
       
       
       
@@ -234,7 +311,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="cmldxsttw005qry3z3pj0asw3" data-title="Objective-C Block" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/30/block/" data-id="cmlix9res005urh3z03sb89yl" data-title="Objective-C Block" class="article-share-link">Share</a>
       
       
       
@@ -311,7 +388,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="cmldxstsd001ary3zeaneet21" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/17/sort/" data-id="cmlix9rdg001arh3z4iot9t1j" data-title="排序算法，伪代码实现" class="article-share-link">Share</a>
       
       
       
@@ -382,7 +459,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="cmldxstsc0018ry3z5jg2e0ri" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/09/16/binary-tree-traverse/" data-id="cmlix9rdf0018rh3zekyucg0i" data-title="二叉树的遍历，伪代码实现" class="article-share-link">Share</a>
       
       
       
@@ -453,7 +530,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="cmldxstu0005zry3z9q0p039a" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/26/the-practice-of-management-reading-notes/" data-id="cmlix9rev0063rh3z0cda0odz" data-title="管理的实践，读书笔记" class="article-share-link">Share</a>
       
       
       
@@ -526,7 +603,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cmldxstsa0015ry3z6m1cf72p" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/08/22/image-and-graphics-best-practices/" data-id="cmlix9rde0015rh3z6hb3b3n9" data-title="iOS 图像解码和最佳实践" class="article-share-link">Share</a>
       
       
       
@@ -595,7 +672,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="cmldxsts80013ry3zbcgmgc1a" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/27/how-to-choose-opensource-liscence/" data-id="cmlix9rdc0013rh3z8k5i2bgs" data-title="如何选择开源许可证？（转）" class="article-share-link">Share</a>
       
       
       
@@ -665,7 +742,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="cmldxsts70010ry3zeufs4w00" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/06/19/event-dispatch-and-dom-event-flow-translation/" data-id="cmlix9rdb0010rh3z1i4ta25t" data-title="事件分发和 DOM 事件流（译）" class="article-share-link">Share</a>
       
       
       
@@ -737,80 +814,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="cmldxsts6000yry3zg3jcf9eu" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2018/05/12/pod-trunk-push-without-validation/" data-id="cmlix9rda000yrh3zhnm3547n" data-title="如何在验证失败的情况下发布 Pod" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%8F%E9%AA%8C/" rel="tag">经验</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article
-  id="post-callmethodwithcompletionblock-memory-speculating"
-  class="h-entry article article-type-post"
-  itemprop="blogPost"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
-  <div class="article-meta">
-    <a
-  href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/"
-  class="article-date"
->
-  <time
-    class="dt-published"
-    datetime="2018-02-08T00:00:00.000Z"
-    itemprop="datePublished"
-  >
-    2018-02-08
-  </time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a
-        class="p-name article-title"
-        href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/"
-      >
-        callMethodWithCompletionBlock 中 Block 的内存管理
-      </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>开发中不时会遇到 <code>[obj callMethodWithCompletionBlock:^&#123; [obj doSomething] &#125;]</code> 这种写法。调用一个 OC 实例对象的带有 block 回调的方法，并且 block 实现又引用了该实例变量。写到这里经常会犹豫，要不要弱引用该实例变量，会不会造成循环引用。本文通过 Demo 演示了相关的几种情况，并对内存管理加以分析。</p>
-        
-          <p class="article-more-link">
-            <a href="/2018/02/08/callmethodwithcompletionblock-memory-speculating/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2018/02/08/callmethodwithcompletionblock-memory-speculating/" data-id="cmldxsts5000vry3z9gp10us5" data-title="callMethodWithCompletionBlock 中 Block 的内存管理" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
 
     </footer>
   </div>
@@ -852,7 +860,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 13.75px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.5px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.5px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.25px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.25px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.75px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 16.25px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.25px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.25px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.5px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.25px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.5px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 13.75px;">资源</a>
+      <a href="/tags/AI/" style="font-size: 11.25px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 13.75px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.5px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.5px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.25px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.25px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.75px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 16.25px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.25px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.25px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.5px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.25px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.5px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 13.75px;">资源</a>
     </div>
   </div>
 
@@ -874,6 +882,10 @@
       <ul>
         
           <li>
+            <a href="/2026/02/12/ai-era-productivity-and-production-relations/">AI 时代 - 生产力和生产关系</a>
+          </li>
+        
+          <li>
             <a href="/2026/02/08/openclaw/">安装、使用 openclaw</a>
           </li>
         
@@ -887,10 +899,6 @@
         
           <li>
             <a href="/2025/05/21/text-css/">文本处理 CSS 属性 - white-space/word-break/word-wrap</a>
-          </li>
-        
-          <li>
-            <a href="/2023/09/22/stretch-border-box/">边框可拉伸的盒子</a>
           </li>
         
       </ul>

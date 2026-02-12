@@ -105,6 +105,80 @@
           
   
     <article
+  id="post-vue-to-react-cubetrans"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2022/06/27/vue-to-react-cubetrans/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2022-06-27T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2022-06-27
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2022/06/27/vue-to-react-cubetrans/"
+      >
+        将 &#34;Vue&#34; 转译为 React
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>本文记录了如何将 Vue 语言转译为 React 语言。主要目的是，当你面对此类源代码分析工作时，能够找到一些结构化处理的思路。</p>
+<h2 id="background">背景</h2>
+
+<p>标题中的 Vue 加上了引号，因为要转译的 Vue 代码不是包含了所有 Vue 语言特性的代码，而是 Vue 的一个子集。<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=Mzg4MDY0ODk0Ng==&mid=2247483885&idx=1&sn=f3a6a1993bf7b867d9ecf421c454e5bf&chksm=cf70b670f8073f66188329e479a37b4d8866686f98a2fc3a101d9ff8c972b835dd0eb453e785&mpshare=1&scene=1&srcid=0627Aj7Dl7Gj79iaUf7aQ3CP&sharer_sharetime=1656314563040&sharer_shareid=e31ba76f7466506e9f6b0c0056037e45&exportkey=AYxF2XQbEeP5I93T2nntDVI=&acctmode=0&pass_ticket=jGXWXRnxf1OTy8uzRI+uwUCe2k/z1/l5kervjNbaYHcrNHil38F7XZauvj7FMqy/&wx_header=0#rd">Cube 技术解读 | 支付宝新一代动态化技术架构与选型综述</a> 这篇文章介绍了支付宝中使用的动态化框架，“对于Cube卡片，支持基于精简vue的card-dsl。”</p>
+<p>Cube 卡片是一种客户端技术，进行 Cube 卡片研发需要进行繁琐的开发环境配置，将 Vue 转译为 React 能够在浏览器中实时预览，提升研发效率。将精简的 Vue 语法转译为标准的 Vue 语法也能实现浏览器预览，但公司里的 H5 项目均采用 React 开发，转译为 React 能够在 H5 项目中复用已有的 Cube 卡片。</p>
+<p>暂将这个工具命名为 CubeTrans。</p>
+        
+          <p class="article-more-link">
+            <a href="/2022/06/27/vue-to-react-cubetrans/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2022/06/27/vue-to-react-cubetrans/" data-id="cmlix9rdy002srh3zb7du9wk1" data-title="将 &#34;Vue&#34; 转译为 React" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AST/" rel="tag">AST</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article
   id="post-fun-facts-about-raising-a-baby"
   class="h-entry article article-type-post"
   itemprop="blogPost"
@@ -159,7 +233,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="cmldxstsz002pry3z245ueowc" data-title="养娃趣事" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/12/26/fun-facts-about-raising-a-baby/" data-id="cmlix9rdx002qrh3z40tpcx1w" data-title="养娃趣事" class="article-share-link">Share</a>
       
       
       
@@ -232,7 +306,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="cmldxstsy002nry3zfy9q0p9w" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/31/open-yale-courses-death/" data-id="cmlix9rdx002orh3z14e97eaa" data-title="耶鲁大学公开课:死亡-读后感" class="article-share-link">Share</a>
       
       
       
@@ -305,7 +379,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="cmldxstsx002jry3zga4uep60" data-title="儿子的想象力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/07/11/jing-imagination/" data-id="cmlix9rdw002lrh3z7iszgzme" data-title="儿子的想象力" class="article-share-link">Share</a>
       
       
       
@@ -376,7 +450,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="cmldxstsy002lry3zh5r7hsd9" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2021/01/09/different-problems/" data-id="cmlix9rdv002jrh3zb57bht28" data-title="简单问题、复杂问题、混沌问题" class="article-share-link">Share</a>
       
       
       
@@ -447,7 +521,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/12/27/read-with-my-son/" data-id="cmldxstsw002gry3z1evx3rke" data-title="与儿子一起的睡前阅读" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/12/27/read-with-my-son/" data-id="cmlix9rdv002grh3z3rvkhd3d" data-title="与儿子一起的睡前阅读" class="article-share-link">Share</a>
       
       
       
@@ -518,7 +592,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/12/05/different-sales/" data-id="cmldxstsw002ery3z0xreeczv" data-title="不同的销售" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/12/05/different-sales/" data-id="cmlix9rdu002erh3z6d9d8gjj" data-title="不同的销售" class="article-share-link">Share</a>
       
       
       
@@ -589,7 +663,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/08/08/child-reading/" data-id="cmldxstsv002bry3zdqqo43vz" data-title="如何开发孩子的阅读潜力" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/08/08/child-reading/" data-id="cmlix9rdt002brh3zhjba7zxj" data-title="如何开发孩子的阅读潜力" class="article-share-link">Share</a>
       
       
       
@@ -661,7 +735,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/" data-id="cmldxstsv0029ry3z7fis31as" data-title="高效能人士的七个习惯，读书笔记" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/05/24/the-7-habits-of-highly-effectivce-people/" data-id="cmlix9rdt0029rh3z8bamelp1" data-title="高效能人士的七个习惯，读书笔记" class="article-share-link">Share</a>
       
       
       
@@ -732,84 +806,11 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2020/05/14/xcodeproj/" data-id="cmldxstsu0026ry3zgjhagagz" data-title="使用 xcodeproj 构建脚本" class="article-share-link">Share</a>
+      <a data-url="https://rob2468.github.io/2020/05/14/xcodeproj/" data-id="cmlix9rds0026rh3ze1x70kpv" data-title="使用 xcodeproj 构建脚本" class="article-share-link">Share</a>
       
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xcodeproj/" rel="tag">xcodeproj</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article
-  id="post-hsd-view-hierarchy-data-structure"
-  class="h-entry article article-type-post"
-  itemprop="blogPost"
-  itemscope
-  itemtype="https://schema.org/BlogPosting"
->
-  <div class="article-meta">
-    <a
-  href="/2019/09/20/hsd-view-hierarchy-data-structure/"
-  class="article-date"
->
-  <time
-    class="dt-published"
-    datetime="2019-09-20T00:00:00.000Z"
-    itemprop="datePublished"
-  >
-    2019-09-20
-  </time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a
-        class="p-name article-title"
-        href="/2019/09/20/hsd-view-hierarchy-data-structure/"
-      >
-        HttpServerDebug 视图层级之数据结构设计
-      </a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 class="title"></h1>
-
-<h2 id="section_1">前言</h2>
-
-<p><a href="https://github.com/rob2468/HttpServerDebug" target="_blank">HSD（HttpServerDebug）</a> 实现了类似 Xcode 中的视图调试功能，如下图所示。在 HSD 中，该功能的核心是视图数据，视图数据包括视图的层次、属性等。本文描述视图数据的组织方式。</p>
-        
-          <p class="article-more-link">
-            <a href="/2019/09/20/hsd-view-hierarchy-data-structure/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://rob2468.github.io/2019/09/20/hsd-view-hierarchy-data-structure/" data-id="cmldxstst0024ry3z585fdp67" data-title="HttpServerDebug 视图层级之数据结构设计" class="article-share-link">Share</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HttpServerDebug/" rel="tag">HttpServerDebug</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li></ul>
 
     </footer>
   </div>
@@ -851,7 +852,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/AI/" style="font-size: 10px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 13.75px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.5px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.5px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.25px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.25px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.75px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 16.25px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.25px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.25px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.5px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.25px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.5px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 13.75px;">资源</a>
+      <a href="/tags/AI/" style="font-size: 11.25px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 13.75px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.5px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.5px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.25px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.25px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.75px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 16.25px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.25px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.25px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.5px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.25px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.5px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 13.75px;">资源</a>
     </div>
   </div>
 
@@ -873,6 +874,10 @@
       <ul>
         
           <li>
+            <a href="/2026/02/12/ai-era-productivity-and-production-relations/">AI 时代 - 生产力和生产关系</a>
+          </li>
+        
+          <li>
             <a href="/2026/02/08/openclaw/">安装、使用 openclaw</a>
           </li>
         
@@ -886,10 +891,6 @@
         
           <li>
             <a href="/2025/05/21/text-css/">文本处理 CSS 属性 - white-space/word-break/word-wrap</a>
-          </li>
-        
-          <li>
-            <a href="/2023/09/22/stretch-border-box/">边框可拉伸的盒子</a>
           </li>
         
       </ul>
