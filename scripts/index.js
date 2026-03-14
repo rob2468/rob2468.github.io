@@ -9,6 +9,23 @@ hexo.extend.filter.register('marked:renderer', function(renderer) {
     const { relative_link } = hexo.config;
     const { lazyload, prependRoot, postPath } = options;
 
+    // 解析 query string
+    let width = null;
+    const queryIndex = href.indexOf('?');
+    if (queryIndex !== -1) {
+      const queryString = href.substring(queryIndex + 1);
+      const cleanHref = href.substring(0, queryIndex);
+
+      // 解析 width 参数
+      const params = new URLSearchParams(queryString);
+      if (params.has('width')) {
+        width = params.get('width');
+      }
+
+      // 使用清理后的 href（不带 query string）
+      href = cleanHref;
+    }
+
     if (!/^(#|\/\/|http(s)?:)/.test(href) && !relative_link && prependRoot) {
       if (!href.startsWith('/') && !href.startsWith('\\') && postPath) {
         const PostAsset = hexo.model('PostAsset');
@@ -32,6 +49,7 @@ hexo.extend.filter.register('marked:renderer', function(renderer) {
 
     if (text) out += ` alt="${text}"`;
     if (title) out += ` title="${title}"`;
+    if (width) out += ` width="${width}"`;
     if (lazyload) out += ' loading="lazy"';
 
     out += '>';
