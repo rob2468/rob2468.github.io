@@ -9,6 +9,8 @@ tags:
 
 ![](/images/2026-03-14-transformer架构.png?width=50%)
 
+<!-- more -->
+
 + 基本概念
     - 向量：一维数组
 
