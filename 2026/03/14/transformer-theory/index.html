@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MS2BSFXL7Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MS2BSFXL7Q');
+</script>
+<!-- End Google Analytics -->
+
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8832279616908494"
+     crossorigin="anonymous"></script>
+<!-- End Google AdSense -->
+  
+  <title>Transformer工作原理 | Jam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="基本概念 向量：一维数组    输入 输入：“我想买苹果手机” 模型收到输入后，先切词（token）：[ “我”, “想”, “买”, “苹果”, “手机” ] 向量化 (Embedding)：每个词（token）变成一个初始向量，称为 X 向量。比如“苹果”变成了 [0.1, -0.3, 0.5…]，表示为 X苹果。后续计算的核心，就是迭代 X 向量。    位置编码：模型同时对所有 tok">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transformer工作原理">
+<meta property="og:url" content="https://rob2468.github.io/2026/03/14/transformer-theory/index.html">
+<meta property="og:site_name" content="Jam">
+<meta property="og:description" content="基本概念 向量：一维数组    输入 输入：“我想买苹果手机” 模型收到输入后，先切词（token）：[ “我”, “想”, “买”, “苹果”, “手机” ] 向量化 (Embedding)：每个词（token）变成一个初始向量，称为 X 向量。比如“苹果”变成了 [0.1, -0.3, 0.5…]，表示为 X苹果。后续计算的核心，就是迭代 X 向量。    位置编码：模型同时对所有 tok">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-transformer%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E8%BE%93%E5%85%A5%E4%B8%8E%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E5%A4%9A%E5%A4%B4%E6%B3%A8%E6%84%8F%E5%8A%9B.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E5%A4%9A%E8%BD%AE%E8%BF%AD%E4%BB%A3.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E8%BE%93%E5%87%BA%E6%9C%BA%E5%88%B6.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E9%80%90%E4%B8%AA%E8%BE%93%E5%87%BAtoken.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-masked%E6%B3%A8%E6%84%8F%E5%8A%9B.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-kv-caching%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E6%B3%A8%E6%84%8F%E5%8A%9B%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-kv-caching%E8%BF%87%E7%A8%8B.gif">
+<meta property="article:published_time" content="2026-03-14T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-14T16:02:08.442Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-transformer%E6%9E%B6%E6%9E%84.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Jam" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    <!-- 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+ -->
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-transformer-theory"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2026/03/14/transformer-theory/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2026-03-14T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2026-03-14
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2026/03/14/transformer-theory/"
+      >
+        Transformer工作原理
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-transformer%E6%9E%B6%E6%9E%84.png" width="50%"></p>
+<ul>
+<li>基本概念<ul>
+<li>向量：一维数组</li>
+</ul>
+</li>
+</ul>
+<h3 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h3><ul>
+<li>输入：“我想买苹果手机”</li>
+<li>模型收到输入后，先切词（token）：[ “我”, “想”, “买”, “苹果”, “手机” ]</li>
+<li>向量化 (Embedding)：每个词（token）变成一个初始向量，称为 <em><strong>X</strong></em> 向量。比如“苹果”变成了 [0.1, -0.3, 0.5…]，表示为 <em><strong>X</strong></em><sub><em><strong>苹果</strong></em></sub>。后续计算的核心，就是迭代 <em><strong>X</strong></em> 向量。</li>
+</ul>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E8%BE%93%E5%85%A5%E4%B8%8E%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png" width="50%"></p>
+<ul>
+<li>位置编码：模型同时对所有 token 进行了向量化，token 在句子中的“位置”需要在这一步完成。比如，“苹果”是第4个词。</li>
+</ul>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E4%BD%8D%E7%BD%AE%E7%BC%96%E7%A0%81.png" width="50%"></p>
+<h3 id="循环-迭代-X-向量"><a href="#循环-迭代-X-向量" class="headerlink" title="循环 - 迭代 X 向量"></a>循环 - 迭代 <em>X</em> 向量</h3><ul>
+<li><em><strong>X</strong></em> 向量乘以权重矩阵，拆解成 <em><strong>Q</strong><em>、</em><strong>K</strong><em>、</em><strong>V</strong></em> 三个向量。<ul>
+<li><em><strong>Q</strong></em> 向量：Query/查询，用来去问别人：“谁能帮我确定我的具体含义？”</li>
+<li><em><strong>K</strong></em> 向量：Key/键，用来告诉别人：“我包含水果和品牌的特征。”</li>
+<li><em><strong>V</strong></em> 向量：Value/值，它本身最原始的内容：“美味、昂贵”</li>
+</ul>
+</li>
+</ul>
+<p>（权重矩阵是模型经过训练后，沉淀下来的转换规则。有三种权重矩阵：生成查询的矩阵、生成键的矩阵、生成值的矩阵。）</p>
+<ul>
+<li><em><strong>Q</strong><em>、</em><strong>K</strong><em>、</em><strong>V</strong></em>  是 <em><strong>X</strong></em> 的三个“临时工作分身”，专门为了和其他词进行交流（计算注意力）而生成的。注意力计算后，生成一个新的 <em><strong>X</strong></em><sub><em><strong>新</strong></em></sub> 向量。</li>
+</ul>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6.png" width="50%"></p>
+<ul>
+<li>多头（Multi-Head）的含义：</li>
+</ul>
+<p>模型不会只生成一组 <em><strong>Q</strong><em>、</em><strong>K</strong><em>、</em><strong>V</strong></em> ，而是会生成很多组。这就好比模型长了“多个脑袋”。</p>
+<p>头 A 专门负责找语法关系（比如主谓宾）。</p>
+<p>头 B 专门负责找情感关系（正向还是负向）。</p>
+<p>头 C 专门负责找指代关系（“它”指的是谁）。</p>
+<p>所有脑袋同时计算，最后把结果拼起来，为了让模型思考得更全面。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E5%A4%9A%E5%A4%B4%E6%B3%A8%E6%84%8F%E5%8A%9B.png"></p>
+<ul>
+<li>这个过程会进行多轮（比如，GPT-3 有 96 轮）。每一轮 <em><strong>X</strong></em> 向量都在进化，包含了越来越丰富的信息。比如：</li>
+</ul>
+<p>第 1 轮思考：刚才那个更新后的 <em><strong>X</strong></em><sub><em><strong>新</strong></em></sub>，变成了第二轮的输入 <em><strong>X</strong></em> 。此时它可能只是弄懂了“苹果”和“手机”连在一起。</p>
+<p>第 10 轮思考：随着范围扩大，它搞懂了句子的语法结构（谁是主语，谁是宾语）。</p>
+<p>第 50 轮思考：它开始理解更抽象的情感和意图（比如用户想花钱买昂贵的数码产品）。</p>
+<p>最后一轮思考结束：那个历经千锤百炼的终极 <em><strong>X</strong></em> 向量出炉！这个向量已经包含了无比丰富的逻辑、语境和情感信息。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E5%A4%9A%E8%BD%AE%E8%BF%AD%E4%BB%A3.png" width="50%"></p>
+<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><ul>
+<li>计算下一个 token 输出什么，模型只看上一个 token 的 <em><strong>X</strong></em> 向量。比如对于上面的例子，模型只看“手机” 这个 token。</li>
+</ul>
+<p>因为“手机”的终极 <em><strong>X</strong></em> 向量，其实已经相当于“整句话的总结报告”了。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E8%BE%93%E5%87%BA%E6%9C%BA%E5%88%B6.png" width="50%"></p>
+<ul>
+<li><p>计算再下一个 token 的输出。会将前次输出的 token 拼接到句子里，重头开始、重新进行思考。</p>
+<ul>
+<li>第一轮</li>
+</ul>
+<p>  输入：[ “我”, “想”, “买”, “苹果”, “手机” ]；输出：”它”</p>
+<ul>
+<li>第二轮</li>
+</ul>
+<p>  输入：[ “我”, “想”, “买”, “苹果”, “手机” , “它”]；输出：”很”</p>
+<ul>
+<li>第三轮</li>
+</ul>
+<p>  输入：[ “我”, “想”, “买”, “苹果”, “手机” , “它”, “很”]；输出：”贵”</p>
+<ul>
+<li>第四轮</li>
+</ul>
+<p>  输入：[ “我”, “想”, “买”, “苹果”, “手机” , “它”, “很”, “贵”]；输出：&lt;EOS&gt; (End of Sentence，句子结束符)。</p>
+</li>
+</ul>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E9%80%90%E4%B8%AA%E8%BE%93%E5%87%BAtoken.png" width="50%"></p>
+<ul>
+<li><p>Masked Multi-Head Attention 的含义和作用</p>
+<p>  <img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-masked%E6%B3%A8%E6%84%8F%E5%8A%9B.png" width="50%"></p>
+<ul>
+<li>训练阶段：模型训练的语料是完整的，比如“我想买苹果手机”“它很贵”模型训练时都直接就能看到全貌。为了训练模型的推理能力，在训练阶段会“盖住”还没有生成的内容。</li>
+</ul>
+<p>  它<font style="color:rgb(27, 19, 17);">██</font></p>
+<p>  它很<font style="color:rgb(27, 19, 17);">█</font></p>
+<p>  它很贵</p>
+<ul>
+<li>推理阶段：虽然在推理阶段模型本来就看不到未生成的 token，但是需要保持与训练阶段数学运算规则的一致。</li>
+</ul>
+</li>
+</ul>
+<h3 id="ChatGPT-架构与-Transformer-论文架构的区别"><a href="#ChatGPT-架构与-Transformer-论文架构的区别" class="headerlink" title="ChatGPT 架构与 Transformer 论文架构的区别"></a>ChatGPT 架构与 Transformer 论文架构的区别</h3><ul>
+<li>Transformer 论文中的架构，输入和输出是分开的。<ul>
+<li>输入阶段：token 不仅可以计算与前面 token 的注意力，也可以计算与后面 token 的注意力。</li>
+<li>输出阶段：增加了 Masked 机制，token 只计算自己前面 token 的注意力。</li>
+</ul>
+</li>
+<li>ChatGPT 架构采用了统一的架构。即使在输入阶段也有 Masked 机制，token 只计算自己前面 token 的注意力。</li>
+</ul>
+<p>我<font style="color:rgb(27, 19, 17);">██████</font></p>
+<p>我想<font style="color:rgb(27, 19, 17);">█████</font></p>
+<p>我想买<font style="color:rgb(27, 19, 17);">████</font></p>
+<p>我想买苹<font style="color:rgb(27, 19, 17);">███</font></p>
+<p>我想买苹果<font style="color:rgb(27, 19, 17);">██</font></p>
+<p>我想买苹果手<font style="color:rgb(27, 19, 17);">█</font></p>
+<p>我想买苹果手机</p>
+<h3 id="KV-Caching-优化"><a href="#KV-Caching-优化" class="headerlink" title="KV Caching 优化"></a>KV Caching 优化</h3><ul>
+<li>上面可以看到，计算 token 输出的方式非常暴力。通过 KV Caching 优化，可以节省大量计算。（空间换时间。）KV Caching 只在输出环节起作用。</li>
+</ul>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-kv-caching%E6%9E%B6%E6%9E%84.png"></p>
+<ul>
+<li>Scaled dot-product attention 计算公式</li>
+</ul>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-%E6%B3%A8%E6%84%8F%E5%8A%9B%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F.png" width="80%"></p>
+<ul>
+<li><p>[ “我”, “想”, “买”, “苹果”, “手机” ]，计算过程示例</p>
+<ul>
+<li>第 0 步：准备工作。进入模型后，每个 token 都带有初始向量 <em><strong>X</strong></em> ，分别乘以了权重矩阵后获得 <em><strong>Q</strong><em>、</em><strong>K</strong><em>、</em><strong>V</strong></em></li>
+</ul>
+<p>  我： <em><strong>Q</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub></p>
+<p>  想： <em><strong>Q</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>2</strong></em></sub></p>
+<p>  买： <em><strong>Q</strong></em><sub><em><strong>3</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>3</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>3</strong></em></sub></p>
+<p>  苹果： <em><strong>Q</strong></em><sub><em><strong>4</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>4</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>4</strong></em></sub></p>
+<p>  手机： <em><strong>Q</strong></em><sub><em><strong>5</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>5</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>5</strong></em></sub></p>
+<ul>
+<li>第 1 步：处理“我”（时间点 1）由于 Mask 机制的存在，它们只能往左看！</li>
+</ul>
+<p>  <em><strong>Q</strong></em><sub><em><strong>1</strong></em></sub> 只能匹配到 <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub></p>
+<p>  得出权重 (Softmax)：100% 的注意力只能放在自己身上。</p>
+<p>  吸收内容 (<em><strong>V</strong></em><sub><em><strong>1新</strong></em></sub>)：把 100% 的 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub> 拿过来。</p>
+<ul>
+<li>第 2 步：处理“想”（时间点 2）</li>
+</ul>
+<p>  <em><strong>Q</strong></em><sub><em><strong>2</strong></em></sub> 匹配到 <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>2</strong></em></sub></p>
+<p>  得出权重 (Softmax)：假设 30% 给“我”，70% 给自己。</p>
+<p>  吸收内容 (<em><strong>V</strong></em>)：把 30% 的 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub>和  70% 的 <em><strong>V</strong></em><sub><em><strong>2</strong></em></sub>混合在一起。</p>
+<p>  本轮结果：此时更新后的“想”向量，不再是单纯的“思考/希望”，它变成了一个复合概念：“某人（我）产生了一个念头”。</p>
+<p>  <font style="color:#DF2A3F;">KV Caching 机制： <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub>使用第 1 步计算后缓存的值</font></p>
+<ul>
+<li>第 3 步：处理“买”（时间点 3）</li>
+</ul>
+<p>  <em><strong>Q</strong></em><sub><em><strong>3</strong></em></sub>匹配到 <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>3</strong></em></sub></p>
+<p>  得出权重：假设 10%给“我”，40%给“想”，50%给自己。</p>
+<p>  吸收内容 (<em><strong>V</strong></em>)：把 10% 的 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub>、40% 的 <em><strong>V</strong></em><sub><em><strong>2</strong></em></sub>、50% 的 <em><strong>V</strong></em><sub><em><strong>3</strong></em></sub> 混合在一起。</p>
+<p>  本轮结果：此时的“买”向量，已经吸纳了前置语境，它的含义变成了：“一个强烈的购物意愿（我想买）”。</p>
+<p>  <font style="color:#DF2A3F;">KV Caching 机制： <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>2</strong></em></sub>使用前 2 步计算后缓存的值</font></p>
+<ul>
+<li>第 4 步：处理“苹果”（时间点 4）—— 💡关键转折点！</li>
+</ul>
+<p>  <em><strong>Q</strong></em><sub><em><strong>4</strong></em></sub>匹配到 <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>3</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>4</strong></em></sub></p>
+<p>  得出权重 (Softmax)：它把大部分注意力放在了“买”和自己身上。</p>
+<p>  吸收内容 (<em><strong>V</strong></em>)：混合 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>3</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>4</strong></em></sub></p>
+<p>  本轮结果：在没有看到“手机”的情况下，此时更新后的“苹果”向量，处于一种“薛定谔的状态”。它代表着“某人打算购买的一个叫苹果的物品（可能是水果，也可能是设备）”。</p>
+<p>  <font style="color:#DF2A3F;">KV Caching 机制： <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>3</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>3</strong></em></sub>使用前 3 步计算后缓存的值</font></p>
+<ul>
+<li>第 5 步：处理“手机”（时间点 5）—— 🌟终极大融合！</li>
+</ul>
+<p>  <em><strong>Q</strong></em><sub><em><strong>5</strong></em></sub>匹配到 <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>3、</strong></em></sub><em><strong>K</strong></em><sub><em><strong>4</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>5</strong></em></sub></p>
+<p>  得出权重：假设 5%给[我/想]，15%给[买]，45%给[苹果]，35%给自己。</p>
+<p>  吸收内容 (<em><strong>V</strong></em>)：按照上面的百分比，把前面所有词的 V 狠狠地“吸”到自己身上！混合成一杯极其丰富、完美的鸡尾酒。</p>
+<p>  本轮结果：“手机”这个词的终极向量，已经变成了一个“黑洞”。它不仅包含了“手机”本身的含义，它还完美地吸收了“苹果品牌”的定语，以及“我想买”的用户意图。</p>
+<p>  <font style="color:#DF2A3F;">KV Caching 机制： <em><strong>K</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>1</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>2</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>3</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>3</strong></em></sub>、 <em><strong>K</strong></em><sub><em><strong>4</strong></em></sub>、 <em><strong>V</strong></em><sub><em><strong>4</strong></em></sub>使用前 4 步计算后缓存的值</font></p>
+</li>
+<li><p>对应的运算过程如下图</p>
+</li>
+</ul>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-03-14-kv-caching%E8%BF%87%E7%A8%8B.gif"></p>
+<p><a target="_blank" rel="noopener" href="https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf">Attention is All you Need 论文</a></p>
+<p><a target="_blank" rel="noopener" href="https://lilianweng.github.io/posts/2018-06-24-attention/">https://lilianweng.github.io/posts/2018-06-24-attention/</a></p>
+<p><a target="_blank" rel="noopener" href="https://medium.com/@joaolages/kv-caching-explained-276520203249">Transformers KV Caching Explained</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2026/03/14/transformer-theory/" data-id="cmmqiklmh003zuo21ffg180wm" data-title="Transformer工作原理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/02/12/ai-era-productivity-and-production-relations/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">AI 时代 - 生产力和生产关系</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+<section id="comments">
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+</section>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5"><span class="toc-text">输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF-%E8%BF%AD%E4%BB%A3-X-%E5%90%91%E9%87%8F"><span class="toc-text">循环 - 迭代 X 向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%87%BA"><span class="toc-text">输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ChatGPT-%E6%9E%B6%E6%9E%84%E4%B8%8E-Transformer-%E8%AE%BA%E6%96%87%E6%9E%B6%E6%9E%84%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">ChatGPT 架构与 Transformer 论文架构的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KV-Caching-%E4%BC%98%E5%8C%96"><span class="toc-text">KV Caching 优化</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 12.5px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 13.75px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.5px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.5px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.5px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.5px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.25px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.25px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.75px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 16.25px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.25px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.25px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.5px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.25px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.5px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 13.75px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">二月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/03/14/transformer-theory/">Transformer工作原理</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/12/ai-era-productivity-and-production-relations/">AI 时代 - 生产力和生产关系</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/08/openclaw/">安装、使用 openclaw</a>
+          </li>
+        
+          <li>
+            <a href="/2025/10/07/travel-to-weihai/">2025威海5天4晚旅游</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/06/selection-of-technical-scheme/">技术方案选型指北</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
