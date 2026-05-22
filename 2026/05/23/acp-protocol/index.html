@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MS2BSFXL7Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MS2BSFXL7Q');
+</script>
+<!-- End Google Analytics -->
+
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8832279616908494"
+     crossorigin="anonymous"></script>
+<!-- End Google AdSense -->
+  
+  <title>ACP (Agent Communication Protocol) 概念梳理 | Jam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="ACP 解决什么问题Claude Code、Codex 这些 AI coding agent 各有自己的私有内核。如果你想在自己的应用里程序化地驱动它们（比如发一条 prompt、拿到流式回复、审批工具调用），每家 agent 的对接方式都不一样，你得为每家写一套集成代码。 ACP（Agent Communication Protocol）就是为了解决这个问题——定义一套统一的协议，让任何 cli">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ACP (Agent Communication Protocol) 概念梳理">
+<meta property="og:url" content="https://rob2468.github.io/2026/05/23/acp-protocol/index.html">
+<meta property="og:site_name" content="Jam">
+<meta property="og:description" content="ACP 解决什么问题Claude Code、Codex 这些 AI coding agent 各有自己的私有内核。如果你想在自己的应用里程序化地驱动它们（比如发一条 prompt、拿到流式回复、审批工具调用），每家 agent 的对接方式都不一样，你得为每家写一套集成代码。 ACP（Agent Communication Protocol）就是为了解决这个问题——定义一套统一的协议，让任何 cli">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-23T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-22T16:35:29.023Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Jam" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    <!-- 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+ -->
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-acp-protocol"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2026/05/23/acp-protocol/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2026-05-23T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2026-05-23
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2026/05/23/acp-protocol/"
+      >
+        ACP (Agent Communication Protocol) 概念梳理
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><h2 id="ACP-解决什么问题"><a href="#ACP-解决什么问题" class="headerlink" title="ACP 解决什么问题"></a>ACP 解决什么问题</h2><p>Claude Code、Codex 这些 AI coding agent 各有自己的私有内核。如果你想在自己的应用里程序化地驱动它们（比如发一条 prompt、拿到流式回复、审批工具调用），每家 agent 的对接方式都不一样，你得为每家写一套集成代码。</p>
+<p>ACP（Agent Communication Protocol）就是为了解决这个问题——定义一套统一的协议，让任何 client 都能用同一种方式对接任何 agent。一个协议，多个 agent 实现，多个 client 实现，互相可以对接。</p>
+<span id="more"></span>
+
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────┐         ┌──────────────────┐         ┌───────────────────────┐</span><br><span class="line">│  你的应用    │  ACP协议  │  ACP Adapter      │  内部调用  │  Agent 内核            │</span><br><span class="line">│ (ACP Client)│ ◄──────► │ (协议翻译层)       │ ◄───────► │ (Claude Code / Codex) │</span><br><span class="line">└─────────────┘  stdio   └──────────────────┘          └───────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>三个角色：</p>
+<ul>
+<li><strong>Agent 内核</strong>：Claude Code CLI、Codex CLI，各家厂商的私有实现，只能在终端里人机交互。</li>
+<li><strong>ACP Adapter</strong>：包装 agent 内核，对外暴露标准 ACP 接口。是一个独立的可执行进程。</li>
+<li><strong>ACP Client</strong>：你的应用。spawn adapter 进程，通过标准协议与之通信。</li>
+</ul>
+<p>通信方式是：client spawn adapter 进程后，通过进程的 stdin/stdout 收发 JSON 格式的消息。</p>
+<h2 id="以-LSP-类比"><a href="#以-LSP-类比" class="headerlink" title="以 LSP 类比"></a>以 LSP 类比</h2><p>ACP 的设计思路完全参考了 LSP（Language Server Protocol）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">LSP 生态                          ACP 生态</span><br><span class="line">─────────                         ─────────</span><br><span class="line">LSP 协议规范                       ACP 协议规范</span><br><span class="line">TypeScript Language Server        claude-agent-acp (Claude Code adapter)</span><br><span class="line">Rust Analyzer                     codex-acp (Codex adapter)</span><br><span class="line">VS Code (client)                  Zed 编辑器 (client)</span><br><span class="line">Neovim (client)                   自建应用 (client)</span><br></pre></td></tr></table></figure>
+
+<p>LSP 让任何编辑器对接任何语言服务器，ACP 让任何客户端对接任何 AI agent。协议由 Zed Industries（Zed 编辑器的公司）主导推出。</p>
+<h2 id="协议本身：JSON-RPC-over-stdio"><a href="#协议本身：JSON-RPC-over-stdio" class="headerlink" title="协议本身：JSON-RPC over stdio"></a>协议本身：JSON-RPC over stdio</h2><p>ACP 协议的传输方式是 JSON-RPC over stdio，即：</p>
+<ul>
+<li><strong>传输通道</strong>用 stdio：client 往 adapter 进程的 stdin 写消息，从 stdout 读消息。每条消息占一行，<code>\n</code> 分隔。不需要开端口，不需要 HTTP，进程退出即断开。</li>
+<li><strong>消息格式</strong>用 JSON-RPC：一个通用的远程过程调用格式。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// client → agent 请求</span><br><span class="line">&#123;&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: 1, &quot;method&quot;: &quot;session/prompt&quot;, &quot;params&quot;: &#123;...&#125;&#125;</span><br><span class="line"></span><br><span class="line">// agent → client 响应</span><br><span class="line">&#123;&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: 1, &quot;result&quot;: &#123;...&#125;&#125;</span><br><span class="line"></span><br><span class="line">// agent → client 通知（无 id，无需回复）</span><br><span class="line">&#123;&quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;method&quot;: &quot;session/update&quot;, &quot;params&quot;: &#123;...&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ACP 在这个基础上定义了具体的方法集——<code>session/new</code> 创建会话、<code>session/prompt</code> 发送用户消息、<code>session/update</code> 流式返回回复、<code>session/cancel</code> 中断执行、<code>fs/read_text_file</code> agent 请求 client 读文件、<code>terminal/create</code> agent 请求 client 执行命令等等。</p>
+<h2 id="ACP-Adapter"><a href="#ACP-Adapter" class="headerlink" title="ACP Adapter"></a>ACP Adapter</h2><p>Agent 内核（Claude Code CLI、Codex CLI）本身不直接暴露 ACP 接口，需要一个 adapter 层来桥接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Claude Code CLI (agent 内核)</span><br><span class="line">       ↑ adapter 内部调用</span><br><span class="line">claude-agent-acp (ACP adapter 进程)</span><br><span class="line">       ↑ 标准 ACP 协议 (JSON-RPC over stdio)</span><br><span class="line">你的应用 (ACP client)</span><br></pre></td></tr></table></figure>
+
+<p>adapter 是独立的 npm 包，需要单独安装：</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>ACP adapter 包</th>
+<th>安装后的可执行文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Claude Code</td>
+<td><code>@agentclientprotocol/claude-agent-acp</code></td>
+<td><code>claude-agent-acp</code></td>
+</tr>
+<tr>
+<td>Codex</td>
+<td><code>@agentclientprotocol/codex-acp</code></td>
+<td><code>codex-acp</code></td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @agentclientprotocol/claude-agent-acp</span><br><span class="line">npm install -g @agentclientprotocol/codex-acp</span><br></pre></td></tr></table></figure>
+
+<p>adapter 由 ACP 协议社区做适配，不是各家 agent 厂商自己发布。但 adapter 底层会依赖各家厂商的官方 SDK/二进制来驱动 agent 内核。</p>
+<h2 id="ACP-Client-端实现"><a href="#ACP-Client-端实现" class="headerlink" title="ACP Client 端实现"></a>ACP Client 端实现</h2><p>client 端不需要依赖任何 ACP 三方库。协议就是 JSON-RPC over stdio，用 Node.js 内置模块即可实现：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; spawn &#125; <span class="keyword">from</span> <span class="string">&#x27;node:child_process&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; createInterface &#125; <span class="keyword">from</span> <span class="string">&#x27;node:readline&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// spawn adapter 进程</span></span><br><span class="line"><span class="keyword">const</span> proc = spawn(<span class="string">&#x27;claude-agent-acp&#x27;</span>, [], &#123;</span><br><span class="line">  <span class="attr">cwd</span>: <span class="string">&#x27;/path/to/workspace&#x27;</span>,</span><br><span class="line">  <span class="attr">stdio</span>: [<span class="string">&#x27;pipe&#x27;</span>, <span class="string">&#x27;pipe&#x27;</span>, <span class="string">&#x27;pipe&#x27;</span>],</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从 stdout 逐行读取消息</span></span><br><span class="line"><span class="keyword">const</span> rl = createInterface(&#123; <span class="attr">input</span>: proc.stdout &#125;);</span><br><span class="line">rl.on(<span class="string">&#x27;line&#x27;</span>, <span class="function">(<span class="params">line</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> message = <span class="built_in">JSON</span>.parse(line);</span><br><span class="line">  <span class="comment">// 处理响应或通知...</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 往 stdin 写入请求</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">request</span>(<span class="params">method, params</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> message = &#123; <span class="attr">jsonrpc</span>: <span class="string">&#x27;2.0&#x27;</span>, <span class="attr">id</span>: nextId++, method, params &#125;;</span><br><span class="line">  proc.stdin.write(<span class="built_in">JSON</span>.stringify(message) + <span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 典型调用流程</span></span><br><span class="line">request(<span class="string">&#x27;initialize&#x27;</span>, &#123; <span class="attr">protocolVersion</span>: <span class="number">1</span>, <span class="attr">clientInfo</span>: &#123; <span class="attr">name</span>: <span class="string">&#x27;MyApp&#x27;</span> &#125; &#125;);</span><br><span class="line">request(<span class="string">&#x27;session/new&#x27;</span>, &#123; <span class="attr">cwd</span>: <span class="string">&#x27;/path/to/workspace&#x27;</span> &#125;);</span><br><span class="line">request(<span class="string">&#x27;session/prompt&#x27;</span>, &#123; <span class="attr">sessionId</span>: <span class="string">&#x27;...&#x27;</span>, <span class="attr">blocks</span>: [&#123; <span class="attr">type</span>: <span class="string">&#x27;text&#x27;</span>, <span class="attr">text</span>: <span class="string">&#x27;帮我分析这个项目&#x27;</span> &#125;] &#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="与-Claude-Agent-SDK-的关系"><a href="#与-Claude-Agent-SDK-的关系" class="headerlink" title="与 Claude Agent SDK 的关系"></a>与 Claude Agent SDK 的关系</h2><p>之前的博客写过 <a href="/2026/03/26/claude-agent-sdk/">Claude Agent SDK</a>（<code>@anthropic-ai/claude-agent-sdk</code>），它和 ACP 是两种不同的对接 Claude Code 的方式：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Claude Agent SDK</th>
+<th>ACP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>对接方式</td>
+<td>直接 import SDK 包在 Node.js 里调用</td>
+<td>spawn adapter 进程通过 stdio 通信</td>
+</tr>
+<tr>
+<td>支持的 agent</td>
+<td>仅 Claude Code</td>
+<td>Claude Code、Codex、以及未来任何实现 ACP 的 agent</td>
+</tr>
+<tr>
+<td>协议标准</td>
+<td>Anthropic 私有</td>
+<td>开放标准</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>只需对接 Claude 的简单场景</td>
+<td>需要统一对接多种 agent 的场景</td>
+</tr>
+</tbody></table>
+<p>ACP 的优势在于一套 client 实现就能对接所有支持 ACP 的 agent，不需要为每家写不同的集成代码。</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ul>
+<li>ACP 官网：<a target="_blank" rel="noopener" href="https://agentclientprotocol.com/">https://agentclientprotocol.com</a></li>
+<li>ACP 协议概览：<a target="_blank" rel="noopener" href="https://agentclientprotocol.com/protocol/overview.md">https://agentclientprotocol.com/protocol/overview.md</a></li>
+<li>ACP 架构说明：<a target="_blank" rel="noopener" href="https://agentclientprotocol.com/get-started/architecture.md">https://agentclientprotocol.com/get-started/architecture.md</a></li>
+<li>ACP 入门介绍：<a target="_blank" rel="noopener" href="https://agentclientprotocol.com/get-started/introduction.md">https://agentclientprotocol.com/get-started/introduction.md</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2026/05/23/acp-protocol/" data-id="cmph55904005wuu0b0aqh0egq" data-title="ACP (Agent Communication Protocol) 概念梳理" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/03/26/claude-agent-sdk/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Claude Agent SDK 试用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+<section id="comments">
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+</section>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ACP-%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="toc-text">ACP 解决什么问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-text">整体架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5-LSP-%E7%B1%BB%E6%AF%94"><span class="toc-text">以 LSP 类比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE%E6%9C%AC%E8%BA%AB%EF%BC%9AJSON-RPC-over-stdio"><span class="toc-text">协议本身：JSON-RPC over stdio</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ACP-Adapter"><span class="toc-text">ACP Adapter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ACP-Client-%E7%AB%AF%E5%AE%9E%E7%8E%B0"><span class="toc-text">ACP Client 端实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E-Claude-Agent-SDK-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">与 Claude Agent SDK 的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3"><span class="toc-text">参考文档</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 14.44px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 13.33px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.22px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.22px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.22px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.22px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.11px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.11px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.89px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15.56px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 16.67px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.11px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 11.11px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.22px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.11px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.78px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 13.33px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">二月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/05/23/acp-protocol/">ACP (Agent Communication Protocol) 概念梳理</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/26/claude-agent-sdk/">Claude Agent SDK 试用</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/14/transformer-theory/">Transformer工作原理</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/12/ai-era-productivity-and-production-relations/">AI 时代 - 生产力和生产关系</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/08/openclaw/">安装、使用 openclaw</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
