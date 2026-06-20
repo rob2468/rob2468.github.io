@@ -1,27 +1,26 @@
-// https://github.com/chriskempson/tomorrow-theme
-highlight-background = #2d2d2d
-highlight-current-line = #393939
-highlight-selection = #515151
-highlight-foreground = #cccccc
-highlight-comment = #999999
-highlight-red = #f2777a
-highlight-orange = #f99157
-highlight-yellow = #ffcc66
-highlight-green = #99cc99
-highlight-aqua = #66cccc
-highlight-blue = #6699cc
-highlight-purple = #cc99cc
+// Light theme (GitHub-light inspired, 语雀风格)
+highlight-background = #f7f8fa
+highlight-current-line = #eef1f3
+highlight-selection = #e3e8ee
+highlight-foreground = #262626
+highlight-comment = #a0a8b0
+highlight-red = #d73a49
+highlight-orange = #e36209
+highlight-yellow = #b08800
+highlight-green = #22863a
+highlight-aqua = #1b7c83
+highlight-blue = #005cc5
+highlight-purple = #6f42c1
 
 $code-block
   background: highlight-background
-  margin: 0 article-padding * -1
-  padding: 15px article-padding
-  border-style: solid
-  border-color: color-border
-  border-width: 1px 0
+  margin: 1.2em 0
+  padding: 16px
+  border: 1px solid color-border
+  border-radius: 8px
   overflow: auto
   color: highlight-foreground
-  line-height: font-size * line-height
+  line-height: 1.7
 
 $line-numbers
   color: #666
@@ -31,15 +30,19 @@ $line-numbers
   pre, code
     font-family: font-mono
   code
-    background: color-background
-    text-shadow: 0 1px #fff
-    padding: 0 0.3em
+    background: rgba(0, 0, 0, 0.06)
+    color: #c0341d
+    padding: 2px 5px
+    border-radius: 4px
+    font-size: 0.875em
   pre
     @extend $code-block
     code
       background: none
-      text-shadow: none
+      color: inherit
       padding: 0
+      border-radius: 0
+      font-size: 0.875em
   .highlight
     @extend $code-block
     pre
@@ -65,7 +68,7 @@ $line-numbers
       text-align: right
       padding-right: 20px
     .line
-      height: font-size * line-height
+      line-height: 1.7
     .line.marked
       background: highlight-selection
   .gist
