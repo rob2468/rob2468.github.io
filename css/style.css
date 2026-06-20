@@ -124,7 +124,7 @@ body,
 }
 body {
   background: #eee;
-  font: 15px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font: 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-text-size-adjust: 100%;
 }
 .outer {
@@ -208,12 +208,12 @@ body {
   background: #fff;
   -webkit-box-shadow: 1px 2px 3px #ddd;
   box-shadow: 1px 2px 3px #ddd;
-  border: 1px solid #ddd;
+  border: 1px solid #e8e8e8;
   border-radius: 3px;
 }
 .article-entry h1,
 .widget h1 {
-  font-size: 2em;
+  font-size: 1.75em;
 }
 .article-entry h2,
 .widget h2 {
@@ -221,11 +221,11 @@ body {
 }
 .article-entry h3,
 .widget h3 {
-  font-size: 1.3em;
+  font-size: 1.25em;
 }
 .article-entry h4,
 .widget h4 {
-  font-size: 1.2em;
+  font-size: 1.125em;
 }
 .article-entry h5,
 .widget h5 {
@@ -238,7 +238,8 @@ body {
 }
 .article-entry hr,
 .widget hr {
-  border: 1px dashed #ddd;
+  border: 0;
+  border-top: 1px solid #e8e8e8;
 }
 .article-entry strong,
 .widget strong {
@@ -284,7 +285,7 @@ body {
 .article-entry dl,
 .widget dl {
   margin: 0 20px;
-  line-height: 1.6em;
+  line-height: 1.75em;
 }
 .article-entry ul ul,
 .widget ul ul,
@@ -311,7 +312,7 @@ body {
 }
 #header {
   position: relative;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e8e8e8;
 }
 #header.index {
   height: 200px;
@@ -428,9 +429,9 @@ body {
 .nav-icon {
   font-family: FontAwesome;
   text-align: center;
-  font-size: 15px;
-  width: 15px;
-  height: 15px;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
   padding: 20px 15px;
   position: relative;
   cursor: pointer;
@@ -497,9 +498,9 @@ body {
 .search-form-input {
   border: none;
   background: none;
-  color: #555;
+  color: #262626;
   width: 100%;
-  font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   outline: none;
 }
 .search-form-input::-webkit-search-results-decoration,
@@ -558,8 +559,8 @@ body {
   text-decoration: none;
   font-size: 2em;
   font-weight: bold;
-  color: #555;
-  line-height: 1.1em;
+  color: #262626;
+  line-height: 1.4em;
   -webkit-transition: color 0.2s;
   -moz-transition: color 0.2s;
   -ms-transition: color 0.2s;
@@ -569,7 +570,7 @@ a.article-title:hover {
   color: #258fb8;
 }
 .article-entry {
-  color: #555;
+  color: #262626;
   padding: 0 20px;
 }
 .article-entry:before,
@@ -582,8 +583,8 @@ a.article-title:hover {
 }
 .article-entry p,
 .article-entry table {
-  line-height: 1.6em;
-  margin: 1.6em 0;
+  line-height: 1.75em;
+  margin: 1em 0;
 }
 .article-entry h1,
 .article-entry h2,
@@ -591,16 +592,14 @@ a.article-title:hover {
 .article-entry h4,
 .article-entry h5,
 .article-entry h6 {
-  font-weight: bold;
+  font-weight: 600;
+  line-height: 1.4em;
+  color: #262626;
+  margin: 1.6em 0 0.8em;
 }
 .article-entry h1,
-.article-entry h2,
-.article-entry h3,
-.article-entry h4,
-.article-entry h5,
-.article-entry h6 {
-  line-height: 1.1em;
-  margin: 1.1em 0;
+.article-entry h2 {
+  margin-top: 1.8em;
 }
 .article-entry a {
   color: #258fb8;
@@ -612,15 +611,23 @@ a.article-title:hover {
 .article-entry ul,
 .article-entry ol,
 .article-entry dl {
-  margin-top: 1.6em;
-  margin-bottom: 1.6em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.article-entry li {
+  line-height: 1.75em;
+  margin: 0.3em 0;
 }
 .article-entry img,
 .article-entry video {
   max-width: 100%;
   height: auto;
   display: block;
-  margin: auto;
+  margin: 1em auto;
+  border-radius: 6px;
+}
+.article-entry hr {
+  margin: 2em 0;
 }
 .article-entry iframe {
   border: none;
@@ -631,24 +638,30 @@ a.article-title:hover {
   border-spacing: 0;
 }
 .article-entry th {
-  font-weight: bold;
-  border-bottom: 3px solid #ddd;
-  padding-bottom: 0.5em;
+  font-weight: 600;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  padding: 8px 14px;
+  text-align: left;
 }
 .article-entry td {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
+  border: 1px solid #e8e8e8;
+  padding: 8px 14px;
 }
 .article-entry blockquote {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1.4em;
-  margin: 1.6em 20px;
-  text-align: center;
+  margin: 1em 0;
+  padding: 0.4em 1em;
+  color: #8c8c8c;
+  border-left: 4px solid #e8e8e8;
+  background: #fafafa;
+}
+.article-entry blockquote p {
+  margin: 0.4em 0;
 }
 .article-entry blockquote footer {
-  font-size: 15px;
-  margin: 1.6em 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  margin: 1.75em 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .article-entry blockquote footer cite:before {
   content: "—";
@@ -709,9 +722,9 @@ a.article-title:hover {
 }
 .article-footer {
   font-size: 0.85em;
-  line-height: 1.6em;
-  border-top: 1px solid #ddd;
-  padding-top: 1.6em;
+  line-height: 1.75em;
+  border-top: 1px solid #e8e8e8;
+  padding-top: 1.75em;
   margin: 0 20px 20px;
 }
 .article-footer:before,
@@ -727,7 +740,7 @@ a.article-title:hover {
   text-decoration: none;
 }
 .article-footer a:hover {
-  color: #555;
+  color: #262626;
 }
 .article-tag-list-item {
   float: left;
@@ -779,7 +792,7 @@ a.article-title:hover {
     margin-left: -4px;
     content: "";
     border-radius: 50%;
-    background: #ddd;
+    background: #e8e8e8;
     -webkit-box-shadow: 0 1px 2px #fff;
     box-shadow: 0 1px 2px #fff;
   }
@@ -796,7 +809,7 @@ a.article-title:hover {
   display: block;
 }
 .article-nav-link-wrap:hover {
-  color: #555;
+  color: #262626;
 }
 @media screen and (min-width: 768px) {
   .article-nav-link-wrap {
@@ -821,7 +834,7 @@ a.article-title:hover {
 .article-nav-caption {
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #ddd;
+  color: #e8e8e8;
   line-height: 1em;
   font-weight: bold;
 }
@@ -830,7 +843,7 @@ a.article-title:hover {
 }
 .article-nav-title {
   font-size: 0.85em;
-  line-height: 1.6em;
+  line-height: 1.75em;
   margin-top: 0.5em;
 }
 .article-share-box {
@@ -853,11 +866,11 @@ a.article-title:hover {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font: 14px -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 0 15px;
-  color: #555;
+  color: #262626;
   outline: none;
-  border: 1px solid #ddd;
+  border: 1px solid #e8e8e8;
   border-radius: 3px 3px 0 0;
   height: 36px;
   line-height: 36px;
@@ -963,7 +976,7 @@ a.article-title:hover {
   -webkit-box-shadow: 1px 2px 3px #ddd;
   box-shadow: 1px 2px 3px #ddd;
   padding: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid #e8e8e8;
   border-radius: 3px;
   margin: 50px 0;
 }
@@ -1016,12 +1029,12 @@ a.article-title:hover {
 .archive-article-title {
   text-decoration: none;
   font-weight: bold;
-  color: #555;
+  color: #262626;
   -webkit-transition: color 0.2s;
   -moz-transition: color 0.2s;
   -ms-transition: color 0.2s;
   transition: color 0.2s;
-  line-height: 1.6em;
+  line-height: 1.75em;
 }
 .archive-article-title:hover {
   color: #258fb8;
@@ -1042,7 +1055,7 @@ a.article-title:hover {
   background: #fff;
   -webkit-box-shadow: 1px 2px 3px #ddd;
   box-shadow: 1px 2px 3px #ddd;
-  border: 1px solid #ddd;
+  border: 1px solid #e8e8e8;
   border-radius: 3px;
   text-align: center;
   color: #999;
@@ -1085,16 +1098,16 @@ a.article-title:hover {
   }
 }
 #page-nav .current {
-  color: #555;
+  color: #262626;
   font-weight: bold;
 }
 #page-nav .space {
-  color: #ddd;
+  color: #e8e8e8;
 }
 #footer {
   background: #262a30;
   padding: 50px 0;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #e8e8e8;
   color: #999;
 }
 #footer a {
@@ -1105,20 +1118,19 @@ a.article-title:hover {
   text-decoration: underline;
 }
 #footer-info {
-  line-height: 1.6em;
+  line-height: 1.75em;
   font-size: 0.85em;
 }
 .article-entry pre,
 .article-entry .highlight {
-  background: #2d2d2d;
-  margin: 0 -20px;
-  padding: 15px 20px;
-  border-style: solid;
-  border-color: #ddd;
-  border-width: 1px 0;
+  background: #f7f8fa;
+  margin: 1.2em 0;
+  padding: 16px;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
   overflow: auto;
-  color: #ccc;
-  line-height: 24px;
+  color: #262626;
+  line-height: 1.7;
 }
 .article-entry .highlight .gutter pre,
 .article-entry .gist .gist-file .gist-data .line-numbers {
@@ -1127,17 +1139,21 @@ a.article-title:hover {
 }
 .article-entry pre,
 .article-entry code {
-  font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
+  font-family: "SFMono-Regular", "Source Code Pro", Consolas, Monaco, Menlo, monospace;
 }
 .article-entry code {
-  background: #eee;
-  text-shadow: 0 1px #fff;
-  padding: 0 0.3em;
+  background: rgba(0,0,0,0.06);
+  color: #c0341d;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-size: 0.875em;
 }
 .article-entry pre code {
   background: none;
-  text-shadow: none;
+  color: inherit;
   padding: 0;
+  border-radius: 0;
+  font-size: 0.875em;
 }
 .article-entry .highlight pre {
   border: none;
@@ -1154,7 +1170,7 @@ a.article-title:hover {
 }
 .article-entry .highlight figcaption {
   font-size: 0.85em;
-  color: #999;
+  color: #a0a8b0;
   line-height: 1em;
   margin-bottom: 1em;
 }
@@ -1174,22 +1190,22 @@ a.article-title:hover {
   padding-right: 20px;
 }
 .article-entry .highlight .line {
-  height: 24px;
+  line-height: 1.7;
 }
 .article-entry .highlight .line.marked {
-  background: #515151;
+  background: #e3e8ee;
 }
 .article-entry .gist {
   margin: 0 -20px;
   border-style: solid;
-  border-color: #ddd;
+  border-color: #e8e8e8;
   border-width: 1px 0;
-  background: #2d2d2d;
+  background: #f7f8fa;
   padding: 15px 20px 15px 0;
 }
 .article-entry .gist .gist-file {
   border: none;
-  font-family: "Source Code Pro", Consolas, Monaco, Menlo, Consolas, monospace;
+  font-family: "SFMono-Regular", "Source Code Pro", Consolas, Monaco, Menlo, monospace;
   margin: 0;
 }
 .article-entry .gist .gist-file .gist-data {
@@ -1210,9 +1226,9 @@ a.article-title:hover {
   border: none;
 }
 .article-entry .gist .gist-file .gist-meta {
-  background: #2d2d2d;
-  color: #999;
-  font: 0.85em -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  background: #f7f8fa;
+  color: #a0a8b0;
+  font: 0.85em -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-shadow: 0 0;
   padding: 0;
   margin-top: 1em;
@@ -1227,7 +1243,7 @@ a.article-title:hover {
 }
 pre .comment,
 pre .title {
-  color: #999;
+  color: #a0a8b0;
 }
 pre .variable,
 pre .attribute,
@@ -1241,7 +1257,7 @@ pre .html .doctype,
 pre .css .id,
 pre .css .class,
 pre .css .pseudo {
-  color: #f2777a;
+  color: #d73a49;
 }
 pre .number,
 pre .preprocessor,
@@ -1249,12 +1265,12 @@ pre .built_in,
 pre .literal,
 pre .params,
 pre .constant {
-  color: #f99157;
+  color: #e36209;
 }
 pre .class,
 pre .ruby .class .title,
 pre .css .rules .attribute {
-  color: #9c9;
+  color: #22863a;
 }
 pre .string,
 pre .value,
@@ -1262,10 +1278,10 @@ pre .inheritance,
 pre .header,
 pre .ruby .symbol,
 pre .xml .cdata {
-  color: #9c9;
+  color: #22863a;
 }
 pre .css .hexcolor {
-  color: #6cc;
+  color: #1b7c83;
 }
 pre .function,
 pre .python .decorator,
@@ -1275,11 +1291,11 @@ pre .ruby .title .keyword,
 pre .perl .sub,
 pre .javascript .title,
 pre .coffeescript .title {
-  color: #69c;
+  color: #005cc5;
 }
 pre .keyword,
 pre .javascript .function {
-  color: #c9c;
+  color: #6f42c1;
 }
 @media screen and (max-width: 479px) {
   #mobile-nav {
@@ -1348,7 +1364,7 @@ pre .javascript .function {
   list-style: disc;
 }
 .widget {
-  line-height: 1.6em;
+  line-height: 1.75em;
   word-wrap: break-word;
   font-size: 0.9em;
 }
