@@ -285,7 +285,7 @@ body {
 .article-entry dl,
 .widget dl {
   margin: 0 20px;
-  line-height: 1.75em;
+  line-height: 1.6em;
 }
 .article-entry ul ul,
 .widget ul ul,
@@ -583,7 +583,7 @@ a.article-title:hover {
 }
 .article-entry p,
 .article-entry table {
-  line-height: 1.75em;
+  line-height: 1.6em;
   margin: 1em 0;
 }
 .article-entry h1,
@@ -615,7 +615,7 @@ a.article-title:hover {
   margin-bottom: 1em;
 }
 .article-entry li {
-  line-height: 1.75em;
+  line-height: 1.6em;
   margin: 0.3em 0;
 }
 .article-entry img,
@@ -660,7 +660,7 @@ a.article-title:hover {
 }
 .article-entry blockquote footer {
   font-size: 16px;
-  margin: 1.75em 0;
+  margin: 1.6em 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .article-entry blockquote footer cite:before {
@@ -722,9 +722,9 @@ a.article-title:hover {
 }
 .article-footer {
   font-size: 0.85em;
-  line-height: 1.75em;
+  line-height: 1.6em;
   border-top: 1px solid #e8e8e8;
-  padding-top: 1.75em;
+  padding-top: 1.6em;
   margin: 0 20px 20px;
 }
 .article-footer:before,
@@ -843,7 +843,7 @@ a.article-title:hover {
 }
 .article-nav-title {
   font-size: 0.85em;
-  line-height: 1.75em;
+  line-height: 1.6em;
   margin-top: 0.5em;
 }
 .article-share-box {
@@ -1034,7 +1034,7 @@ a.article-title:hover {
   -moz-transition: color 0.2s;
   -ms-transition: color 0.2s;
   transition: color 0.2s;
-  line-height: 1.75em;
+  line-height: 1.6em;
 }
 .archive-article-title:hover {
   color: #258fb8;
@@ -1118,7 +1118,7 @@ a.article-title:hover {
   text-decoration: underline;
 }
 #footer-info {
-  line-height: 1.75em;
+  line-height: 1.6em;
   font-size: 0.85em;
 }
 .article-entry pre,
@@ -1364,7 +1364,7 @@ pre .javascript .function {
   list-style: disc;
 }
 .widget {
-  line-height: 1.75em;
+  line-height: 1.6em;
   word-wrap: break-word;
   font-size: 0.9em;
 }
