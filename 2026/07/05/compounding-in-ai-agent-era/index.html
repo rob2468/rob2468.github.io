@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MS2BSFXL7Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MS2BSFXL7Q');
+</script>
+<!-- End Google Analytics -->
+
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8832279616908494"
+     crossorigin="anonymous"></script>
+<!-- End Google AdSense -->
+  
+  <title>AI Agent 时代的复利 | Jam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="与 AI 合作、与他人对话，“复利”这个词经常出现在我的想法里。这些过程中，有些是让我很赞赏的：沉淀的工作可以不断被复用。有些是让我觉得很难受的：在以造传统软件的方式创建一些工具，解决一些非常局限的问题；或者以等同于“许愿”的方式，寄希望于 agent 能自动解决 xx 问题。 本来想梳理下自己的思考。结果，给了 codex 几个关键字，他把整篇内容都写出来的。我整理了一下，贴在了分割线下面。 关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI Agent 时代的复利">
+<meta property="og:url" content="https://rob2468.github.io/2026/07/05/compounding-in-ai-agent-era/index.html">
+<meta property="og:site_name" content="Jam">
+<meta property="og:description" content="与 AI 合作、与他人对话，“复利”这个词经常出现在我的想法里。这些过程中，有些是让我很赞赏的：沉淀的工作可以不断被复用。有些是让我觉得很难受的：在以造传统软件的方式创建一些工具，解决一些非常局限的问题；或者以等同于“许愿”的方式，寄希望于 agent 能自动解决 xx 问题。 本来想梳理下自己的思考。结果，给了 codex 几个关键字，他把整篇内容都写出来的。我整理了一下，贴在了分割线下面。 关">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-07-05T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-06T16:19:58.840Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="思考">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Jam" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    <!-- 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+ -->
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-compounding-in-ai-agent-era"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2026/07/05/compounding-in-ai-agent-era/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2026-07-05T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2026-07-05
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2026/07/05/compounding-in-ai-agent-era/"
+      >
+        AI Agent 时代的复利
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>与 AI 合作、与他人对话，“复利”这个词经常出现在我的想法里。这些过程中，有些是让我很赞赏的：沉淀的工作可以不断被复用。有些是让我觉得很难受的：在以造传统软件的方式创建一些工具，解决一些非常局限的问题；或者以等同于“许愿”的方式，寄希望于 agent 能自动解决 xx 问题。</p>
+<p>本来想梳理下自己的思考。结果，给了 codex 几个关键字，他把整篇内容都写出来的。我整理了一下，贴在了分割线下面。</p>
+<p>关于“反复利：更快地制造负债”的描述尤其让我担心。以悲观主义的视角来看，系统天然趋向熵增的方向发展，即使有部分在朝着好的方向推进，但更多的产出在让系统变得混乱。与 AI Agent 合作是必然的，人人都在使用 AI。长期演进的结果，要么是整个系统崩溃、要么是系统里那些制造混乱的个体被淘汰。</p>
+<span id="more"></span>
+
+<hr>
+<h2 id="复利不是收益率，而是结构"><a href="#复利不是收益率，而是结构" class="headerlink" title="复利不是收益率，而是结构"></a>复利不是收益率，而是结构</h2><p>很多人谈复利时，容易把注意力放在收益率上。收益率当然重要，但它不是全部。</p>
+<p>真正决定复利能不能发生的，是结构：</p>
+<ul>
+<li>这次产出能不能被保存下来？</li>
+<li>保存下来的东西，下次能不能被复用？</li>
+<li>复用时会不会降低下一次行动的成本？</li>
+<li>多次复用之后，会不会让系统本身变得更强？</li>
+</ul>
+<p>如果答案都是肯定的，那它就是复利结构。反过来，如果一件事做完之后只留下“完成了”这个状态，没有留下任何可复用的资产，那它更像单利，甚至只是一次性消耗。</p>
+<h2 id="传统软件工程里的复利"><a href="#传统软件工程里的复利" class="headerlink" title="传统软件工程里的复利"></a>传统软件工程里的复利</h2><p>传统软件工程里，本来就有很多复利资产。</p>
+<p>代码是复利资产。一次抽象、一个函数、一个模块，如果边界清晰、质量可靠，就会在之后被不断调用。</p>
+<p>测试是复利资产。每次写下一个测试，都是在未来替自己挡住一次回归。</p>
+<p>文档是复利资产。它把一个人的理解从脑子里拿出来，变成团队可以共享的上下文。</p>
+<p>工程化工具也是复利资产。脚手架、CI、lint、发布流水线，这些东西本身不直接产生业务价值，但它们不断降低后续交付的摩擦。</p>
+<p>所以，好的软件工程一直都不是只追求“把这次需求做完”。它追求的是：这次做完之后，系统有没有比之前更容易被理解、更容易被修改、更容易被验证。</p>
+<h2 id="AI-Agent-改变了什么"><a href="#AI-Agent-改变了什么" class="headerlink" title="AI Agent 改变了什么"></a>AI Agent 改变了什么</h2><p>AI Agent 出现之后，很多事情的形态变了。</p>
+<p>以前写代码，人的主要成本在“亲手做”。现在很多局部任务可以交给 agent 做：查资料、读代码、改文件、跑测试、修报错、整理结论。</p>
+<p>这会带来一个很明显的变化：一次性完成任务的成本下降了。</p>
+<p>但也正因为如此，我们更容易掉进一个新陷阱：让 agent 帮我们完成了很多事情，却没有留下任何可积累的东西。</p>
+<p>比如：</p>
+<ul>
+<li>问了一次 agent，得到一个答案，然后答案散落在聊天记录里。</li>
+<li>让 agent 修了一次问题，但没有把根因、测试方法、约束条件沉淀下来。</li>
+<li>让 agent 生成了一段代码，但没有把可复用模式提炼成脚本、规范或模板。</li>
+<li>每次都从零开始描述背景，而不是把项目知识变成稳定上下文。</li>
+</ul>
+<p>这些事情看起来很高效，实际上可能只是把“一次性劳动”加速了。它们提高的是瞬时速度，不一定提高长期能力。</p>
+<h2 id="AI-Agent-时代的新复利资产"><a href="#AI-Agent-时代的新复利资产" class="headerlink" title="AI Agent 时代的新复利资产"></a>AI Agent 时代的新复利资产</h2><p>在 with AI Agent 的环境下，我觉得复利资产会发生一些变化。</p>
+<p>第一类是高质量上下文。</p>
+<p>如果一个项目有清晰的 README、AGENTS.md、代码规范、运行方式、常见问题、架构决策记录，那么 agent 每次进入项目时就不是从零开始。上下文本身会变成生产力。</p>
+<p>第二类是可执行的验证。</p>
+<p>测试、lint、类型检查、构建命令、最小复现脚本，这些东西在过去就重要，在 agent 时代会更重要。因为 agent 可以很快做修改，但判断修改是否正确，不能只靠“看起来合理”。可执行验证越强，agent 的工作越容易闭环。</p>
+<p>第三类是可复用的工作流。</p>
+<p>过去我们可能把经验存在脑子里：遇到某类问题先看哪里，怎么排查，怎么验证。现在这些经验可以变成 prompt、脚本、检查清单、自动化流程，甚至变成一个定制 agent。</p>
+<p>第四类是项目知识库。</p>
+<p>一个项目的复杂度，很多时候不在代码本身，而在那些隐含知识里：为什么这样设计，哪些地方不能改，线上有哪些历史包袱，哪些接口看似没用但有人依赖。把这些知识结构化下来，就是给未来的自己和未来的 agent 存本金。</p>
+<h2 id="反复利：更快地制造负债"><a href="#反复利：更快地制造负债" class="headerlink" title="反复利：更快地制造负债"></a>反复利：更快地制造负债</h2><p>AI Agent 也会放大反复利。</p>
+<p>如果一个人只是不断让 agent 生成代码，却不验证、不整理、不沉淀，那么系统可能会变得更快地膨胀，也更快地失控。</p>
+<p>代码多了，但边界没有更清楚。</p>
+<p>功能多了，但测试没有跟上。</p>
+<p>文档多了，但没有人维护真实性。</p>
+<p>聊天记录多了，但知识没有进入项目。</p>
+<p>这种情况下，agent 提高的不是复利速度，而是技术债增殖速度。它让我们更快地堆东西，也更快地遗忘为什么要这样堆。</p>
+<h2 id="我的判断"><a href="#我的判断" class="headerlink" title="我的判断"></a>我的判断</h2><p>我现在越来越相信，AI Agent 时代的差距，不只来自谁更会提问，也不只来自谁用了更强的模型。</p>
+<p>更大的差距来自：谁能把每一次 agent 的工作，转化成下一次工作的本金。</p>
+<p>同样是让 agent 修一个 bug，有的人只得到一个修复提交；有的人会顺手得到一个回归测试、一段排查记录、一个更清晰的模块边界、一条可以复用的操作路径。</p>
+<p>前者是在消费 agent 的能力。</p>
+<p>后者是在用 agent 构建自己的系统能力。</p>
+<p>这两件事短期看差别不大，长期看完全不同。</p>
+<h2 id="我想怎么实践"><a href="#我想怎么实践" class="headerlink" title="我想怎么实践"></a>我想怎么实践</h2><p>以后每次和 agent 协作完成一个任务，我想多问几个问题：</p>
+<ul>
+<li>这次产生了什么可以复用的东西？</li>
+<li>下次遇到类似问题，能不能更快开始？</li>
+<li>这次踩过的坑，有没有进入测试、文档、脚本或规范？</li>
+<li>项目的上下文有没有比之前更清楚？</li>
+<li>这个流程有没有可能自动化？</li>
+</ul>
+<p>如果每次任务都能留下哪怕一点点这样的资产，时间拉长之后，它就不只是“用了 AI 提效”，而是在建立一个会自我增强的工作系统。</p>
+<p>这可能就是我现在理解的复利：不是某一次做得多快，而是每一次做完之后，下一次是否站得更高。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2026/07/05/compounding-in-ai-agent-era/" data-id="cmr9femcx005gu43ghzozffma" data-title="AI Agent 时代的复利" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag">工程实践</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%9D%E8%80%83/" rel="tag">思考</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/06/21/residential-proxy-and-claude-registration/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">美国住宅IP&amp;Claude注册-从原理到实操</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+<section id="comments">
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+</section>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%88%A9%E4%B8%8D%E6%98%AF%E6%94%B6%E7%9B%8A%E7%8E%87%EF%BC%8C%E8%80%8C%E6%98%AF%E7%BB%93%E6%9E%84"><span class="toc-text">复利不是收益率，而是结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E9%87%8C%E7%9A%84%E5%A4%8D%E5%88%A9"><span class="toc-text">传统软件工程里的复利</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-Agent-%E6%94%B9%E5%8F%98%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-text">AI Agent 改变了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-Agent-%E6%97%B6%E4%BB%A3%E7%9A%84%E6%96%B0%E5%A4%8D%E5%88%A9%E8%B5%84%E4%BA%A7"><span class="toc-text">AI Agent 时代的新复利资产</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%A4%8D%E5%88%A9%EF%BC%9A%E6%9B%B4%E5%BF%AB%E5%9C%B0%E5%88%B6%E9%80%A0%E8%B4%9F%E5%80%BA"><span class="toc-text">反复利：更快地制造负债</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E5%88%A4%E6%96%AD"><span class="toc-text">我的判断</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E6%83%B3%E6%80%8E%E4%B9%88%E5%AE%9E%E8%B7%B5"><span class="toc-text">我想怎么实践</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 15.71px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/CSS/" style="font-size: 14.29px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.86px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 15.71px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 12.86px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.43px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">六月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">二月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/05/compounding-in-ai-agent-era/">AI Agent 时代的复利</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/21/residential-proxy-and-claude-registration/">美国住宅IP&amp;Claude注册-从原理到实操</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/23/acp-protocol/">ACP (Agent Communication Protocol) 概念梳理</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/26/claude-agent-sdk/">Claude Agent SDK 试用</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/14/transformer-theory/">Transformer工作原理</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
