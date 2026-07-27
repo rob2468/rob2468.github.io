@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MS2BSFXL7Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MS2BSFXL7Q');
+</script>
+<!-- End Google Analytics -->
+
+  <!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8832279616908494"
+     crossorigin="anonymous"></script>
+<!-- End Google AdSense -->
+  
+  <title>Human in the Loop：别让人成为 Agent 的瓶颈 | Jam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="最近有个流行的缩写 HITL，即 Human in the Loop，描述的是在 Agent 流程中引入人类节点。 Agent 可以在很短时间里完成过去需要人长时间执行的工作：检索和理解代码、修改多个文件等。但 Agent 完成任务之后，人仍然需要理解修改、判断风险并作出决策。Agent 的执行速度提高了，人的判断速度却没有同步提高。 研发流程的瓶颈正在发生转移。过去：代码生产与任务执行、现在：理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Human in the Loop：别让人成为 Agent 的瓶颈">
+<meta property="og:url" content="https://rob2468.github.io/2026/07/22/human-in-the-loop/index.html">
+<meta property="og:site_name" content="Jam">
+<meta property="og:description" content="最近有个流行的缩写 HITL，即 Human in the Loop，描述的是在 Agent 流程中引入人类节点。 Agent 可以在很短时间里完成过去需要人长时间执行的工作：检索和理解代码、修改多个文件等。但 Agent 完成任务之后，人仍然需要理解修改、判断风险并作出决策。Agent 的执行速度提高了，人的判断速度却没有同步提高。 研发流程的瓶颈正在发生转移。过去：代码生产与任务执行、现在：理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-07-22-%E7%94%9F%E6%88%90%E5%BC%8FUI%E8%AF%84%E5%AE%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0.png">
+<meta property="og:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-07-22-Codex%E4%BA%A7%E5%93%81%E8%A7%82%E5%AF%9F%E5%8F%B0.jpg">
+<meta property="article:published_time" content="2026-07-22T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-27T16:23:39.602Z">
+<meta property="article:author" content="陈军">
+<meta property="article:tag" content="思考">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="软件工程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-07-22-%E7%94%9F%E6%88%90%E5%BC%8FUI%E8%AF%84%E5%AE%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Jam" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+    <!-- 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+ -->
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header" class="">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    
+
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <!-- 小屏设备的展开菜单入口 -->
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        <!-- 导航菜单 -->
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      
+        <a id="logo-wrap" href="/">
+          <img
+            id="logo-img"
+            src="https://gw.alipayobjects.com/mdn/rms_6dcfb1/afts/img/A*6l2PRIgAfEAAAAAAAAAAAAAAARQnAQ"
+            alt=""
+          />
+        </a>
+      
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <!-- 搜索框 -->
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://rob2468.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+          <article
+  id="post-human-in-the-loop"
+  class="h-entry article article-type-post"
+  itemprop="blogPost"
+  itemscope
+  itemtype="https://schema.org/BlogPosting"
+>
+  <div class="article-meta">
+    <a
+  href="/2026/07/22/human-in-the-loop/"
+  class="article-date"
+>
+  <time
+    class="dt-published"
+    datetime="2026-07-22T00:00:00.000Z"
+    itemprop="datePublished"
+  >
+    2026-07-22
+  </time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a
+        class="p-name article-title"
+        href="/2026/07/22/human-in-the-loop/"
+      >
+        Human in the Loop：别让人成为 Agent 的瓶颈
+      </a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>最近有个流行的缩写 HITL，即 Human in the Loop，描述的是在 Agent 流程中引入人类节点。</p>
+<p>Agent 可以在很短时间里完成过去需要人长时间执行的工作：检索和理解代码、修改多个文件等。但 Agent 完成任务之后，人仍然需要理解修改、判断风险并作出决策。Agent 的执行速度提高了，人的判断速度却没有同步提高。</p>
+<p>研发流程的瓶颈正在发生转移。过去：代码生产与任务执行、现在：理解、验证与决策</p>
+<p>Agent 节省了执行时间，却可能制造更多等待人确认的任务。如果仍然沿用“Agent 每执行一步，人就审核一步”的协作方式，人会成为整个系统的瓶颈。所以，在 Agentic Software Development 中，人机协同的关键不是把人插入更多流程节点，而是重新设计人的注意力如何被调用。</p>
+<span id="more"></span>
+
+<h2 id="两个例子"><a href="#两个例子" class="headerlink" title="两个例子"></a>两个例子</h2><h3 id="用-Review-工作台汇聚多角色决策"><a href="#用-Review-工作台汇聚多角色决策" class="headerlink" title="用 Review 工作台汇聚多角色决策"></a>用 Review 工作台汇聚多角色决策</h3><p>在一个生成式 UI 项目，页面模块不是由设计师直接产出，而是根据不同策略、业务数据和基础设计规范自动生成。</p>
+<p>因为内容是生成的，每一批产物都需要前端、后端、产品经理和设计师共同 Review。前端关注实现约束，后端关注数据和接口，产品经理关注策略目标和业务效果，设计师关注视觉质量和规范一致性。</p>
+<p>如果沿用传统的逐级审批流程，不同角色会在不同时间、不同渠道查看不同版本的产物。版本难以对齐，意见难以汇总，一轮评审需要经过多次等待和往返。</p>
+<p>但这个项目需要快速、持续地上线几十个策略。如果每一批生成结果都要经历这样的流程，生成式 UI 即使提高了内容生产效率，也会被后面的人工评审完全抵消。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-07-22-%E7%94%9F%E6%88%90%E5%BC%8FUI%E8%AF%84%E5%AE%A1%E5%B7%A5%E4%BD%9C%E5%8F%B0.png"></p>
+<p>为了解决这个问题，我 Vibe 了一个 Review 工作台，把不同角色关心的信息以结构化、版本化的方式组织起来，并按版本记录评审意见。所有参与者看到的是同一批产物、同一组上下文和完整的历史意见。</p>
+<p>在这个基础上，我只需要组织一次电话会议，就可以让所有角色在同一个上下文里集中评审，一次性完成筛选和决策。</p>
+<p>工作台没有替代任何一个角色的专业判断。它解决的是判断之前的信息组织，以及判断之后的意见汇聚。它把分散、异步、逐级的反馈，压缩成了一次高密度的集体决策。</p>
+<p>正是因为评审流程获得了足够高的决策吞吐量，这个生成式 UI 项目才真正具备可行性，并最终成功上线。</p>
+<h3 id="用产品观察台降低上下文负担"><a href="#用产品观察台降低上下文负担" class="headerlink" title="用产品观察台降低上下文负担"></a>用产品观察台降低上下文负担</h3><p>在另一个项目，团队建设一套端到端能力，让产品经理通过与 Codex 对话，自己完成一个承接页并最终上线。</p>
+<p>从交互形式上看，产品经理始终处于同一个对话上下文中。但一个端到端项目包含大量持续变化的信息，比如：迭代在哪里？用到了哪些数据指标？使用了哪一种设计风格？当前处于什么阶段？下一步是什么？已经授权了哪些协议？</p>
+<p>这些信息虽然存在于 Codex 的上下文里，却不等于人能够稳定地理解和记住它们。如果状态只散落在聊天记录中，产品经理就需要不断回看对话、恢复上下文和确认进度。对话越长，信息越多，人越容易迷失方向。</p>
+<p>此时限制项目推进的不是 Agent 能否继续执行，而是人是否仍然知道项目在哪里、为什么这样做，以及接下来应该做什么。</p>
+<p><img src="https://media.githubusercontent.com/media/rob2468/rob2468.github.io/master/images/2026-07-22-Codex%E4%BA%A7%E5%93%81%E8%A7%82%E5%AF%9F%E5%8F%B0.jpg"></p>
+<p>为此，我开发了一个“产品观察台”，把散落在 Agent 上下文中的关键信息提取出来，以稳定、结构化的方式持续呈现。</p>
+<p>产品经理仍然通过同一个对话完成工作，但不再需要依赖自己的短期记忆管理整个项目。对话记录被转化为当前状态，隐含上下文被转化为可见信息，漫长的执行过程被压缩为当前阶段和下一步。</p>
+<p>产品观察台同样没有替代人的决策。它更像是 Agent 工作流与人之间的一个观察界面，让人能够用更低的理解成本持续掌握全局。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>现在，除了为 Agent 设计更好的 Harness，也要同时思考人的负载在哪里。比如，跨团队合作、注意力。有时，为人设计是提升全局效率的手段。</p>
+<p>In the AGI era, Human could be out of the Loop.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://rob2468.github.io/2026/07/22/human-in-the-loop/" data-id="cms3fs9n60049tc4sc17a0dzl" data-title="Human in the Loop：别让人成为 Agent 的瓶颈" class="article-share-link">Share</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AI/" rel="tag">AI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Agent/" rel="tag">Agent</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%9D%E8%80%83/" rel="tag">思考</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag">软件工程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2026/07/05/compounding-in-ai-agent-era/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">AI Agent 时代的复利</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+<section id="comments">
+  <div id="gitalk-container"></div>
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+  var gitalk = new Gitalk({
+    clientID: 'ca620c98d68fb29d158a',
+    clientSecret: 'c8a79801f98bc2971d3b936f5892afd255db7df2',
+    repo: 'rob2468.github.io',
+    owner: 'rob2468',
+    admin: 'rob2468'.split(','),
+    id: location.pathname.slice(1, 11),
+    labels: 'Gitalk'.split(','),
+    perPage: 15,
+    pagerDirection: 'last',
+    createIssueManually: true,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+
+  function renderCommentHint(count) {
+    setTimeout(() => {
+      var issueLinkRef = document.querySelector('.gt-link.gt-link-counts');
+      var commmentRef = document.querySelector('.gt-header-comment');
+      if (count > 10) {
+        return;
+      }
+      if (!issueLinkRef || !commmentRef) {
+        renderCommentHint(count + 1);
+        return;
+      }
+
+      var hintRef = document.createElement('div');
+      hintRef.setAttribute('style', 'color:#999;text-align:right;font-size:0.875em;display:flex;justify-content:flex-end;margin-top:0.5em;');
+      hintRef.innerHTML = `<span>* 评论使用 Github Issues 存储，需要你登录 GitHub 账号并授权来发表评论，你也可以直接到 <a href="${issueLinkRef.href}" target="_blank">这里</a> 评论</span>`;
+      commmentRef.appendChild(hintRef);
+    }, 800);
+  }
+  renderCommentHint(0);
+
+</script>
+</section>
+
+
+        </section>
+        
+          <aside
+  id="sidebar"
+  
+>
+  
+    <!-- 目录 table of content -->
+
+  
+  
+    <div class="widget-wrap">
+      <h3 class="widget-title">Contents</h3>
+      <div class="widget">
+        <p><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E4%BE%8B%E5%AD%90"><span class="toc-text">两个例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8-Review-%E5%B7%A5%E4%BD%9C%E5%8F%B0%E6%B1%87%E8%81%9A%E5%A4%9A%E8%A7%92%E8%89%B2%E5%86%B3%E7%AD%96"><span class="toc-text">用 Review 工作台汇聚多角色决策</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E4%BA%A7%E5%93%81%E8%A7%82%E5%AF%9F%E5%8F%B0%E9%99%8D%E4%BD%8E%E4%B8%8A%E4%B8%8B%E6%96%87%E8%B4%9F%E6%8B%85"><span class="toc-text">用产品观察台降低上下文负担</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></p>
+      </div>
+    </div>
+  
+
+
+
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI/" style="font-size: 17.14px;">AI</a> <a href="/tags/AST/" style="font-size: 10px;">AST</a> <a href="/tags/Agent/" style="font-size: 10px;">Agent</a> <a href="/tags/CSS/" style="font-size: 14.29px;">CSS</a> <a href="/tags/Git/" style="font-size: 12.86px;">Git</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HttpServerDebug/" style="font-size: 12.86px;">HttpServerDebug</a> <a href="/tags/JavaScript/" style="font-size: 12.86px;">JavaScript</a> <a href="/tags/MVC/" style="font-size: 10px;">MVC</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/React/" style="font-size: 12.86px;">React</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/UML/" style="font-size: 10px;">UML</a> <a href="/tags/Web/" style="font-size: 11.43px;">Web</a> <a href="/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/webpack/" style="font-size: 11.43px;">webpack</a> <a href="/tags/xcodeproj/" style="font-size: 10px;">xcodeproj</a> <a href="/tags/%E5%8A%A8%E6%80%81%E5%8C%96/" style="font-size: 10px;">动态化</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" style="font-size: 18.57px;">工程实践</a> <a href="/tags/%E6%80%9D%E8%80%83/" style="font-size: 17.14px;">思考</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 15.71px;">生活</a> <a href="/tags/%E7%9F%A5%E8%AF%86/" style="font-size: 10px;">知识</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 11.43px;">算法</a> <a href="/tags/%E7%BB%8F%E9%AA%8C/" style="font-size: 10px;">经验</a> <a href="/tags/%E7%BD%91%E7%BB%9C/" style="font-size: 12.86px;">网络</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 12.86px;">翻译</a> <a href="/tags/%E8%A7%82%E5%AF%9F/" style="font-size: 10px;">观察</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 11.43px;">设计模式</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 17.14px;">读书笔记</a> <a href="/tags/%E8%B5%84%E6%BA%90/" style="font-size: 14.29px;">资源</a> <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">软件工程</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">六月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">二月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">十月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/07/">七月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">五月 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/">七月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">九月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/07/22/human-in-the-loop/">Human in the Loop：别让人成为 Agent 的瓶颈</a>
+          </li>
+        
+          <li>
+            <a href="/2026/07/05/compounding-in-ai-agent-era/">AI Agent 时代的复利</a>
+          </li>
+        
+          <li>
+            <a href="/2026/06/21/residential-proxy-and-claude-registration/">美国住宅IP&amp;Claude注册-从原理到实操</a>
+          </li>
+        
+          <li>
+            <a href="/2026/05/23/acp-protocol/">ACP (Agent Communication Protocol) 概念梳理</a>
+          </li>
+        
+          <li>
+            <a href="/2026/03/26/claude-agent-sdk/">Claude Agent SDK 试用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 陈军<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <!-- 小屏设备的导航菜单 -->
+<nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
